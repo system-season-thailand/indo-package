@@ -1,72 +1,10 @@
 /* Function to prevent the page refresh by mistake */
-window.addEventListener('beforeunload', function (event) {
+/* window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-});
+}); */
 
 
-
-
-/* async function deletePastMonthRows() {
-    try {
-        const today = new Date(); // Current date for comparison
-
-        // Month order for comparison (January = 0, December = 11)
-        const monthOrder = {
-            "January": 0, "February": 1, "March": 2, "April": 3, "May": 4, "June": 5,
-            "July": 6, "August": 7, "September": 8, "October": 9, "November": 10, "December": 11
-        };
-
-        // Fetch all rows from Supabase
-        const { data: allRows, error: fetchError } = await supabase
-            .from('best_all_package_indo')
-            .select('*');
-
-        if (fetchError) throw fetchError;
-
-        // Filter rows that have a past month+year date
-        const rowsToDelete = allRows.filter(row => {
-            const rawDateStr = row.package_indo_last_month_date?.trim(); // e.g., "14 November 2025"
-
-            if (!rawDateStr) return false;
-
-            // Attempt to parse the date
-            const parsedDate = new Date(rawDateStr);
-
-            // Check if it's a valid date and before today
-            return !isNaN(parsedDate) && parsedDate < today;
-        });
-
-        // Delete each matching row
-        for (const row of rowsToDelete) {
-            const { error } = await supabase
-                .from('best_all_package_indo')
-                .delete()
-                .eq('package_indo_user_current_date', row.package_indo_user_current_date);
-
-            if (error) {
-                console.error('❌ Delete failed:', error);
-            } else {
-                console.log(`✅ Deleted row with date: ${row.package_indo_last_month_date}`);
-            }
-        }
-
-    } catch (error) {
-        console.error('❌ Error in deletePastMonthRows:', error);
-    }
-}
-
-// Check if today is the 6th, 7th, or 8th before running the function
-function shouldRunCleanup() {
-    const today = new Date();
-    const currentDay = today.getDate(); // Returns day of the month (1-31)
-    return [5, 6, 7, 8, 9, 10].includes(currentDay);
-}
-
-// Execute only if today is the 5th, 6th, 7th, 8th, 9th, or 10th
-if (shouldRunCleanup()) {
-    deletePastMonthRows();
-} */
 
 
 
@@ -3699,5 +3637,4 @@ function toggleFullscreen(textAreaId) {
 
     // Append exit button to body
     document.body.appendChild(exitTextAreaFullScreenButton);
-
 }

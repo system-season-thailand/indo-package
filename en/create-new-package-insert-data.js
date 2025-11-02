@@ -1,12 +1,12 @@
+/* Ensure To Use The "Re-Create the data" Codes */
+
+
+
+
 /* Variable to save a number for counting functionality (Ex: hotel row table unique id..?) */
 let insertedFlightDataDivUniqueId;
 let insertedHotelDataDivUniqueId;
 let insertedClintMovementsRowDivUniqueId = 1;
-
-
-
-
-
 
 
 
@@ -5319,7 +5319,7 @@ autoCreateALlClintMovementsData = function () {
                 }
 
                 if ((cityName === "Bali" || cityName === "Jakarta") && !hasCenterTourTextBeenAdded) {
-                    checkInOutText = checkInOutText.replace(`${hotelName} Check-in`, `${hotelName} Check-in + Around the center`);
+                    checkInOutText = checkInOutText.replace(`${hotelName} Check-in`, `${hotelName} Check-in + Going around the center`);
                     hasCenterTourTextBeenAdded = true;
                 }
 
