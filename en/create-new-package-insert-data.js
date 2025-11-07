@@ -6631,10 +6631,9 @@ downloadPdfWithCurrentUserCodeName = function () {
         });
 
 
-        // Ensure 'handleUserPackageUniqueNumber' function completes first, then sendDataToSupabase and sendDataToSupabase
+        // Ensure 'handleUserPackageUniqueNumber' function that is called above to completes first, then call the sendDataToSupabase
         formPromise
             .then(() => {
-                sendDataToSupabase();
                 sendDataToSupabase();
             })
             .then(() => {
@@ -7345,10 +7344,9 @@ downloadOnlyClintMovementsDataFunction = function () {
         document.getElementById('download_clint_movements_data_p_id').innerText = 'جاري التحميل..';
 
 
-        // Ensure submitForm completes first, then sendDataToSupabase
+        // Ensure 'handleUserPackageUniqueNumber' function that is called above to completes first, then call the sendDataToSupabase
         formPromise
             .then(() => {
-                sendDataToSupabase();
                 sendDataToSupabase();
             })
             .then(() => {
