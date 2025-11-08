@@ -636,10 +636,10 @@ const packageIncludingTranslations = {
     'فعالية Rafting': 'Rafting Activity',
 
     // Hotel booking with breakfast
-    'إقامة مريحة في فنادق ومنتجعات مختارة تشمل إفطار يومي لشخصين، وإقامة مجانية لطفل تحت 5 سنوات إن وجد': 'Comfortable accommodation in selected hotels and resorts including daily breakfast for two people, and free accommodation for a child under 5 years old if available',
+    'إقامة مريحة في فنادق ومنتجعات مختارة تشمل إفطار يومي لشخصين، وإقامة مجانية لطفل تحت 5 سنوات إن وجد': 'Comfortable accommodation in selected hotels and resorts including daily breakfast for two people, and free accommodation for a child under 5 years old (if exist)',
     'إقامة مريحة في فنادق ومنتجعات': 'Comfortable accommodation in selected hotels and resorts',
-    'مختارة تشمل إفطار يومي لشخصين، وإقامة مجانية لطفل تحت 5 سنوات إن وجد': 'including daily breakfast for two people, and free accommodation for a child under 5 years old if available',
-    'إقامة مريحة في فنادق ومنتجعات\n                            مختارة تشمل إفطار يومي لشخصين، وإقامة مجانية لطفل تحت 5 سنوات إن وجد': 'Comfortable accommodation in selected hotels and resorts including daily breakfast for two people, and free accommodation for a child under 5 years old if available',
+    'مختارة تشمل إفطار يومي لشخصين، وإقامة مجانية لطفل تحت 5 سنوات إن وجد': 'including daily breakfast for two people, and free accommodation for a child under 5 years old (if exist)',
+    'إقامة مريحة في فنادق ومنتجعات\n                            مختارة تشمل إفطار يومي لشخصين، وإقامة مجانية لطفل تحت 5 سنوات إن وجد': 'Comfortable accommodation in selected hotels and resorts including daily breakfast for two people, and free accommodation for a child under 5 years old (if exist)',
 
     // Welcome and transfer
     'الإستقبال والتوديع والتوصيل للفنادق والجولات السياحية': 'Welcoming and transport to hotels and tourist tours',
