@@ -9,6 +9,9 @@ window.addEventListener('beforeunload', function (event) {
 
 
 
+
+
+
 /* Function to show the hotels names based on the check out date */
 function handleHotelNameInputClick() {
     const checkOutInputValue = document.getElementById('hotel_check_out_input_id').value;
@@ -547,82 +550,91 @@ kidsPackagePersonAmountInputOptions.forEach(option => {
 
 
 /* Dropdown company names functionality */
-let companyNamesInput = document.getElementById('clint_company_name_input_id');
+function setupCompanyNamesDropdown() {
+    let companyNamesInput = document.getElementById('clint_company_name_input_id');
 
-// Get the options within the dropdown
-let companyNamesInputOptions = document.querySelectorAll('#company_names_dropdown h3');
+    // Use event delegation on the container to work with dynamically added elements
+    const companyNamesContainer = document.querySelector('#company_names_dropdown .company_names_options_dropdown_class');
 
-companyNamesInputOptions.forEach(option => {
-    option.addEventListener('click', () => {
+    if (!companyNamesContainer || !companyNamesInput) {
+        // Elements not ready yet, retry after a short delay
+        setTimeout(setupCompanyNamesDropdown, 100);
+        return;
+    }
 
-        // Play a sound effect
-        playSoundEffect('click');
+    companyNamesContainer.addEventListener('click', (e) => {
+        if (e.target.tagName === 'H3') {
+            const option = e.target;
 
+            // Play a sound effect
+            playSoundEffect('click');
 
-        /* if the clicked h3 element was delete then reset the 'clint_company_name_input_id' value */
-        if (option.textContent === 'حذف') {
-            companyNamesInput.value = '';
+            /* if the clicked h3 element was delete then reset the 'clint_company_name_input_id' value */
+            if (option.textContent === 'حذف') {
+                companyNamesInput.value = '';
 
+                /* Reset the company by value from the "company_by_value_p_id" p element */
+                document.getElementById('company_by_value_p_id').style.display = 'none';
 
-            /* Reset the company by value from the "company_by_value_p_id" p element */
-            document.getElementById('company_by_value_p_id').style.display = 'none';
-
-
-            /* Delete the innerText (in case if exist) */
-            document.getElementById('store_google_sheet_clint_company_name_value').innerText = '';
-
-
-        } else {
-            companyNamesInput.value = option.textContent; // Set input value to selected option
-
-
-
-
-
-            /* Place the company by value in the "company_by_value_p_id" p element */
-            document.getElementById('company_by_value_p_id').innerText = option.getAttribute('company_by_value');
-            document.getElementById('company_by_value_p_id').style.display = '';
-
-            /* Set the color of the "company_by_value_p_id" based on the company value */
-            if (option.getAttribute('company_by_value') === 'awa') {
-                document.getElementById('company_by_value_p_id').style.setProperty('background', 'rgb(10, 83, 168)', 'important');
-                document.getElementById('company_by_value_p_id').style.setProperty('color', 'white', 'important');
-
-            } else if (option.getAttribute('company_by_value') === 'mst') {
-                document.getElementById('company_by_value_p_id').style.setProperty('background', 'rgb(255, 229, 160)', 'important');
-                document.getElementById('company_by_value_p_id').style.setProperty('color', 'black', 'important');
+                /* Delete the innerText (in case if exist) */
+                document.getElementById('store_google_sheet_clint_company_name_value').innerText = '';
 
             } else {
-                document.getElementById('company_by_value_p_id').style.setProperty('background', 'rgb(232, 234, 237)', 'important');
-                document.getElementById('company_by_value_p_id').style.setProperty('color', 'black', 'important');
+                companyNamesInput.value = option.textContent; // Set input value to selected option
+
+
+
+
+
+                /* Place the company by value in the "company_by_value_p_id" p element */
+                document.getElementById('company_by_value_p_id').innerText = option.getAttribute('company_by_value');
+                document.getElementById('company_by_value_p_id').style.display = '';
+
+                /* Set the color of the "company_by_value_p_id" based on the company value */
+                if (option.getAttribute('company_by_value') === 'awa') {
+                    document.getElementById('company_by_value_p_id').style.setProperty('background', 'rgb(10, 83, 168)', 'important');
+                    document.getElementById('company_by_value_p_id').style.setProperty('color', 'white', 'important');
+
+                } else if (option.getAttribute('company_by_value') === 'mst') {
+                    document.getElementById('company_by_value_p_id').style.setProperty('background', 'rgb(255, 229, 160)', 'important');
+                    document.getElementById('company_by_value_p_id').style.setProperty('color', 'black', 'important');
+
+                } else {
+                    document.getElementById('company_by_value_p_id').style.setProperty('background', 'rgb(232, 234, 237)', 'important');
+                    document.getElementById('company_by_value_p_id').style.setProperty('color', 'black', 'important');
+                }
+
+
+
+
+
+
+
+                /* Store the inserted values in the stored p elements for later use (when importing) */
+                document.getElementById('store_google_sheet_clint_company_name_value').innerText = option.textContent;
             }
 
+            /* Reset the value of 'company_names_search_bar_input_id' after picking a hotek name */
+            document.getElementById('company_names_search_bar_input_id').value = '';
 
+            // Get the dropdown div associated with the input
+            let dropdownDivOptions = document.getElementById('company_names_search_bar_input_id').closest('.searchable_names_dropdown_class').querySelectorAll('h3');
 
+            // Reset the display of all <h3> elements
+            dropdownDivOptions.forEach(option => {
+                option.style.display = 'block'; // Show all options
+            });
 
-
-
-
-            /* Store the inserted values in the stored p elements for later use (when importing) */
-            document.getElementById('store_google_sheet_clint_company_name_value').innerText = option.textContent;
+            hideOverlay(); // Hide overlay after selection
         }
-
-
-        /* Reset the value of 'company_names_search_bar_input_id' after picking a hotek name */
-        document.getElementById('company_names_search_bar_input_id').value = '';
-
-        // Get the dropdown div associated with the input
-        let dropdownDivOptions = document.getElementById('company_names_search_bar_input_id').closest('.searchable_names_dropdown_class').querySelectorAll('h3');
-
-        // Reset the display of all <h3> elements
-        dropdownDivOptions.forEach(option => {
-            option.style.display = 'block'; // Show all options
-        });
-
-
-        hideOverlay(); // Hide overlay after selection
     });
-});
+}
+
+// Set up company names dropdown listeners
+setupCompanyNamesDropdown();
+
+
+
 
 
 let clintPackagePriceTypeDiv = document.querySelectorAll('#clint_package_price_type_div input[type="checkbox"]');
@@ -1514,97 +1526,103 @@ function calculateTotalNights() {
 /* Function to store the clicked hotel unit amount */
 
 /* Dropdown hotel names functionality */
-let hotelNameInput = document.getElementById('hotel_name_input_id');
+function setupHotelNamesDropdown() {
+    let hotelNameInput = document.getElementById('hotel_name_input_id');
 
-// Get the options within the dropdown
-let hotelNameInputOptions = document.querySelectorAll('#all_hotel_names_dropdown h3');
+    // Use event delegation on the container to work with dynamically added elements
+    const hotelNamesContainer = document.querySelector('#all_hotel_names_dropdown .company_names_options_dropdown_class');
 
-hotelNameInputOptions.forEach(option => {
-    option.addEventListener('click', () => {
+    if (!hotelNamesContainer || !hotelNameInput) {
+        // Elements not ready yet, retry after a short delay
+        setTimeout(setupHotelNamesDropdown, 100);
+        return;
+    }
 
-        // Play a sound effect
-        playSoundEffect('click');
+    hotelNamesContainer.addEventListener('click', (e) => {
+        // Check if the clicked element is an h3
+        if (e.target.tagName === 'H3') {
+            const option = e.target;
 
+            // Play a sound effect
+            playSoundEffect('click');
 
-        /* First store the corrent hotel name for later comparing (to reset the hotel room type or no need) */
-        currentHotelName = hotelNameInput.value
+            /* First store the current hotel name for later comparing (to reset the hotel room type or no need) */
+            currentHotelName = hotelNameInput.value;
 
+            /* Set the input value with the clicked hotel name h3 innerText */
+            hotelNameInput.value = option.textContent;
+            hideOverlay(); // Hide overlay after selection
 
-        /* Set the input value with the clicked rooms number h3 innerText */
-        hotelNameInput.value = option.textContent;
-        hideOverlay(); // Hide overlay after selection
+            /* Reset the value of 'all_hotel_names_search_bar_input_id' after picking a hotel name */
+            document.getElementById('all_hotel_names_search_bar_input_id').value = '';
 
+            // Get the dropdown div associated with the input
+            let dropdownDivOptions = document.getElementById('all_hotel_names_search_bar_input_id').closest('.searchable_names_dropdown_class').querySelectorAll('h3');
 
-        /* Reset the value of 'all_hotel_names_search_bar_input_id' after picking a hotek name */
-        document.getElementById('all_hotel_names_search_bar_input_id').value = '';
-
-        // Get the dropdown div associated with the input
-        let dropdownDivOptions = document.getElementById('all_hotel_names_search_bar_input_id').closest('.searchable_names_dropdown_class').querySelectorAll('h3');
-
-        // Reset the display of all <h3> elements
-        dropdownDivOptions.forEach(option => {
-            option.style.display = 'block'; // Show all options
-        });
-
-
-
-
-
-
-        /* Function to check if there is a matching hotle name to show important message */
-        document.getElementById("hotelDetails").innerHTML = ""; // Clear previous messages
-
-        // Find the hotel object that matches the selected hotel name
-        const foundHotel = hotelMessageInfoArray.find(hotel => hotel.hotelName === option.textContent);
-
-        if (foundHotel) {
-            // Set the title message dynamically to only include the hotel name
-            document.getElementById("important_hotel_info_message_title_id").innerText = `[${option.textContent}]`;
-
-            // Loop through messageInfo_p properties and create <p> elements
-            Object.keys(foundHotel).forEach(key => {
-                if (key.startsWith("messageInfo_p")) {
-                    const pElement = document.createElement("p");
-                    pElement.textContent = foundHotel[key];
-                    document.getElementById("hotelDetails").appendChild(pElement);
-                }
+            // Reset the display of all <h3> elements
+            dropdownDivOptions.forEach(option => {
+                option.style.display = 'block'; // Show all options
             });
 
-            // Show the modal smoothly
-            document.getElementById("hotel_important_info_box_div").style.visibility = 'visible';
-            document.getElementById("hotel_important_info_box_div").style.opacity = '1';
+
+
+
+
+
+            /* Function to check if there is a matching hotel name to show important message */
+            document.getElementById("hotelDetails").innerHTML = ""; // Clear previous messages
+
+            // Find the hotel object that matches the selected hotel name
+            const foundHotel = hotelMessageInfoArray.find(hotel => hotel.hotelName === option.textContent);
+
+            if (foundHotel) {
+                // Set the title message dynamically to only include the hotel name
+                document.getElementById("important_hotel_info_message_title_id").innerText = `[${option.textContent}]`;
+
+                // Loop through messageInfo_p properties and create <p> elements
+                Object.keys(foundHotel).forEach(key => {
+                    if (key.startsWith("messageInfo_p")) {
+                        const pElement = document.createElement("p");
+                        pElement.textContent = foundHotel[key];
+                        document.getElementById("hotelDetails").appendChild(pElement);
+                    }
+                });
+
+                // Show the modal smoothly
+                document.getElementById("hotel_important_info_box_div").style.visibility = 'visible';
+                document.getElementById("hotel_important_info_box_div").style.opacity = '1';
+            }
+
+
+
+
+
+
+            /* If the hotel name got changed then reset all the following values */
+            if (option.textContent !== currentHotelName) {
+                document.getElementById('hotel_room_type_description_input_id').value = '';
+                document.getElementById('hotel_room_type_description_input_id_2').value = '';
+                document.getElementById('hotel_arabic_room_type_description_input_id').value = '';
+                document.getElementById('hotel_arabic_room_type_description_input_id_2').value = '';
+
+                document.getElementById('hotel_room_contain_pool_input_id').value = '';
+                document.getElementById('hotel_room_contain_pool_input_id_2').value = '';
+
+                document.getElementById('hotel_room_view_input_id').value = '';
+                document.getElementById('hotel_room_view_input_id_2').value = '';
+
+                document.getElementById('hotel_special_room_request_input_id').value = '';
+                document.getElementById('hotel_special_room_request_input_id_2').value = '';
+
+                document.getElementById('hotel_room_extra_info_textarea_id').value = '';
+                document.getElementById('hotel_room_extra_info_textarea_id_2').value = '';
+            }
         }
-
-
-
-
-
-
-        /* If the hotel name got changed then reset all the following values */
-        if (option.textContent !== currentHotelName) {
-            document.getElementById('hotel_room_type_description_input_id').value = '';
-            document.getElementById('hotel_room_type_description_input_id_2').value = '';
-
-
-            document.getElementById('hotel_room_contain_pool_input_id').value = '';
-            document.getElementById('hotel_room_contain_pool_input_id_2').value = '';
-
-
-            document.getElementById('hotel_room_view_input_id').value = '';
-            document.getElementById('hotel_room_view_input_id_2').value = '';
-
-
-            document.getElementById('hotel_special_room_request_input_id').value = '';
-            document.getElementById('hotel_special_room_request_input_id_2').value = '';
-
-
-            document.getElementById('hotel_room_extra_info_textarea_id').value = '';
-            document.getElementById('hotel_room_extra_info_textarea_id_2').value = '';
-        }
-
-
     });
-});
+}
+
+// Set up hotel names dropdown listeners
+setupHotelNamesDropdown();
 
 
 
@@ -3684,6 +3702,4 @@ function toggleFullscreen(textAreaId) {
 
     // Append exit button to body
     document.body.appendChild(exitTextAreaFullScreenButton);
-
 }
-
