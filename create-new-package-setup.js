@@ -168,6 +168,11 @@ window.addEventListener('load', () => {
 
 
 
+    /* Run a funtion to apply the company and hotels names h3 elements */
+    populateDropdowns();
+
+
+
     /* Code to check the localstorage value to turn on/off the website sounds */
     const checkbox = document.getElementById("mute_website_checkbox"), key = "websiteSound";
     localStorage.getItem(key) ?? localStorage.setItem(key, "on");
