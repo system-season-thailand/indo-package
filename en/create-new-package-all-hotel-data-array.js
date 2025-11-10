@@ -216,6 +216,12 @@ let allHotelDataArray = [
         hotelArea: 'Ubud',
         hotelRoomTypes: ['Jungle Suite', 'River Valley Suite', 'One BR Pool Villa', 'Two BR Pool Villa', 'Two BR Lagoon Infinity Pool Villa', 'Two BR Sky Pool Villa'],
     },
+    {
+        hotelName: 'The Royal Pita Maha',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['Deluxe Pool Villa', 'Royal Pool Villa', 'Ayung Healing Villa'],
+    },
 
 
 
@@ -776,11 +782,15 @@ let allHotelDataArray = [
         hotelLocation: 'Jakarta',
         hotelRoomTypes: ['Grandeur City View', 'Grandeur Deluxe Room', 'Signature Room City View', 'Executive Room', 'Junior Suite'],
     },
-
     {
         hotelName: 'Merlynn Park',
         hotelLocation: 'Jakarta',
         hotelRoomTypes: ['Executive Room', 'Tiffany Suite', 'Family Suite', 'Prada Suite', 'Bulgari Suite', 'Armany Suite', 'Merlynn Suite', 'The Resident', 'Presidential Suite'],
+    },
+    {
+        hotelName: 'Hotel Indonesia Kempinski',
+        hotelLocation: 'Jakarta',
+        hotelRoomTypes: ['Deluxe Room Inner Courtyard View', 'Deluxe Room Bunderan HI View', 'Grand Deluxe Room Inner Courtyard View', 'Grand Deluxe Room Inner Courtyard View', 'Grand Deluxe Room Corner Room'],
     },
 
 
