@@ -1,8 +1,8 @@
 /* Function to prevent the page refresh by mistake */
-/* window.addEventListener('beforeunload', function (event) {
+window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-}); */
+});
 
 
 
@@ -2886,11 +2886,12 @@ hideAndShowClintMovementSectionFunction = function () {
 
     if (document.getElementById('downloaded_pdf_clint_movements_data_page').style.display === 'none') {
         document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'block';
+        document.getElementById('inserted_clint_movements_data_position_div').style.display = 'block';
 
     } else {
         document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'none';
+        document.getElementById('inserted_clint_movements_data_position_div').style.display = 'none';
     }
-
 }
 
 
