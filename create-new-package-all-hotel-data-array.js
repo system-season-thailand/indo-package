@@ -216,6 +216,12 @@ let allHotelDataArray = [
         hotelArea: 'اوبود',
         hotelRoomTypes: ['جنغل سويت', 'ريفر فالي سويت', 'فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم', 'فيلا لاجون انفينيتي من غرفتين نوم', 'فيلا سكاي من غرفتين نوم'],
     },
+    {
+        hotelName: 'The Royal Pita Maha',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['ديلوكس فيلا', 'رويال فيلا', 'ايونق هيلنج فيلا'],
+    },
 
 
 
@@ -775,6 +781,11 @@ let allHotelDataArray = [
         hotelName: 'Mulia Senayan',
         hotelLocation: 'جاكرتا',
         hotelRoomTypes: ['جرانديور روم', 'جرانديور ديلوكس روم', 'سيجناشور روم', 'تنفيذي روم', 'جونيور سويت'],
+    },
+    {
+        hotelName: 'Hotel Indonesia Kempinski',
+        hotelLocation: 'جاكرتا',
+        hotelRoomTypes: ['ديلوكس روم', 'جرانديور ديلوكس روم', 'سيجناشور روم', 'تنفيذي روم', 'جونيور سويت'],
     },
 
 
