@@ -618,11 +618,25 @@ async function importContentForSelectedName(name) {
             }
         }
 
-        // Check if inserted_clint_movements_data_position_div is empty and hide its container if true
+        
+        
+        
+
+        // Check if 'inserted_clint_movements_data_position_div' is empty OR hidden and hide its PDF container if true
         const movementsDiv = document.getElementById('inserted_clint_movements_data_position_div');
         const movementsPdf = document.getElementById('downloaded_pdf_clint_movements_data_page');
-        if (movementsDiv && movementsPdf && movementsDiv.children.length === 0) {
-            movementsPdf.style.display = 'none';
+        if (movementsDiv && movementsPdf) {
+            const inlineStyleDisplay = movementsDiv.style ? movementsDiv.style.display : '';
+            const styleAttr = movementsDiv.getAttribute && movementsDiv.getAttribute('style') ? movementsDiv.getAttribute('style') : '';
+            const computedDisplay = (typeof window !== 'undefined' && window.getComputedStyle) ? window.getComputedStyle(movementsDiv).display : '';
+            const isHidden =
+                inlineStyleDisplay === 'none' ||
+                /(\b|;)display\s*:\s*none\b/i.test(styleAttr || '') ||
+                computedDisplay === 'none';
+
+            if (movementsDiv.children.length === 0 || isHidden) {
+                movementsPdf.style.display = 'none';
+            }
         }
 
         // Check if inserted_flight_data_position_div is empty and hide its container if true
@@ -638,6 +652,8 @@ async function importContentForSelectedName(name) {
         if (totalPriceDiv && totalPricePdf && totalPriceDiv.children.length === 0) {
             totalPricePdf.style.display = 'none';
         }
+
+
 
 
 
