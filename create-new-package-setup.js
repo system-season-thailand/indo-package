@@ -2936,11 +2936,12 @@ hideAndShowClintMovementSectionFunction = function () {
 
     if (document.getElementById('downloaded_pdf_clint_movements_data_page').style.display === 'none') {
         document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'block';
+        document.getElementById('inserted_clint_movements_data_position_div').style.display = 'block';
 
     } else {
         document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'none';
+        document.getElementById('inserted_clint_movements_data_position_div').style.display = 'none';
     }
-
 }
 
 
