@@ -3294,10 +3294,6 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
 
 
 
-    /* Make sure to get the close sell data by running the 'handleHotelNameInputClick */
-    fetchAllCloseSellDataFunction_Supabase();
-
-
 
 
     /* Make sure the correct section is the one that is visiable */
@@ -3540,9 +3536,11 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
 
 
 
+    
 
 
-
+    /* Make sure to get the close sell data by running the 'handleHotelNameInputClick */
+    fetchAllCloseSellDataFunction_Supabase();
 
 
 
