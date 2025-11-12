@@ -1607,8 +1607,6 @@ function setupHotelNamesDropdown() {
             if (option.textContent !== currentHotelName) {
                 document.getElementById('hotel_room_type_description_input_id').value = '';
                 document.getElementById('hotel_room_type_description_input_id_2').value = '';
-                document.getElementById('hotel_arabic_room_type_description_input_id').value = '';
-                document.getElementById('hotel_arabic_room_type_description_input_id_2').value = '';
 
                 document.getElementById('hotel_room_contain_pool_input_id').value = '';
                 document.getElementById('hotel_room_contain_pool_input_id_2').value = '';
