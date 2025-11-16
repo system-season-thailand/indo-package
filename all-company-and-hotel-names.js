@@ -260,6 +260,10 @@ const companyNames = [
     { name: "توب تريب", company_by_value: "ofs" },
     { name: "فيجن للسفر", company_by_value: "ofs" },
     { name: "وجهة المسافر", company_by_value: "mst" },
+    { name: "وهج الريادة", company_by_value: "mst" },
+    { name: "ميلاف", company_by_value: "ofs" },
+    { name: "واجهة الاحلام", company_by_value: "mst" },
+    { name: "مسارات العضيب", company_by_value: "ofs" },
     { name: "ibs", company_by_value: null }
 ];
 
@@ -466,3 +470,4 @@ if (typeof module !== 'undefined' && module.exports) {
         hotelNames
     };
 }
+
