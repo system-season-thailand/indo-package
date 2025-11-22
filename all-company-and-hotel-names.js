@@ -442,7 +442,7 @@ const hotelNames = [
     "Mahha Dii Meru Resort",
     "The Royal Pita Maha",
     "Hotel Indonesia Kempinski",
-    "Grand Mercure Bali Seminyak",
+    "Grand Mercure Seminyak",
 
 
 
