@@ -467,6 +467,12 @@ let allHotelDataArray = [
         hotelArea: 'سيمنياك',
         hotelRoomTypes: ['فيلا من غرفة نوم واحدة'],
     },
+    {
+        hotelName: 'Grand Mercure Seminyak',
+        hotelLocation: 'بالي',
+        hotelArea: 'سيمنياك',
+        hotelRoomTypes: ['ديلوكس روم'],
+    },
 
 
 
@@ -787,11 +793,6 @@ let allHotelDataArray = [
         hotelLocation: 'جاكرتا',
         hotelRoomTypes: ['ديلوكس روم', 'جرانديور ديلوكس روم', 'سيجناشور روم', 'تنفيذي روم', 'جونيور سويت'],
     },
-
-
-
-
-
     {
         hotelName: 'Merlynn Park',
         hotelLocation: 'جاكرتا',
