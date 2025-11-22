@@ -468,7 +468,7 @@ let allHotelDataArray = [
         hotelRoomTypes: ['One BR Pool Villa'],
     },
     {
-        hotelName: 'Grand Mercure Bali Seminyak',
+        hotelName: 'Grand Mercure Seminyak',
         hotelLocation: 'Bali',
         hotelArea: 'Seminyak',
         hotelRoomTypes: ['Deluxe Room Street View', 'Deluxe Garden View', 'Deluxe Pool View'],
