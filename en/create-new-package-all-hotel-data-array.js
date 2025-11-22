@@ -333,7 +333,7 @@ let allHotelDataArray = [
         hotelName: 'Impiana Villa',
         hotelLocation: 'Bali',
         hotelArea: 'Seminyak',
-        hotelRoomTypes: ['One BR Pool Villa', 'Deluxe One BR Pool Villa', 'Two BR Pool Villa', 'Three BR Pool Villa','Four BR Pool Villa','Five BR Pool Villa'],
+        hotelRoomTypes: ['One BR Pool Villa', 'Deluxe One BR Pool Villa', 'Two BR Pool Villa', 'Three BR Pool Villa', 'Four BR Pool Villa', 'Five BR Pool Villa'],
     },
     {
         hotelName: 'W Bali',
@@ -466,6 +466,12 @@ let allHotelDataArray = [
         hotelLocation: 'Bali',
         hotelArea: 'Seminyak',
         hotelRoomTypes: ['One BR Pool Villa'],
+    },
+    {
+        hotelName: 'Grand Mercure Bali Seminyak',
+        hotelLocation: 'Bali',
+        hotelArea: 'Seminyak',
+        hotelRoomTypes: ['Deluxe Room Street View', 'Deluxe Garden View', 'Deluxe Pool View'],
     },
 
 
