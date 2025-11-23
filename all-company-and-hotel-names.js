@@ -264,6 +264,8 @@ const companyNames = [
     { name: "ميلاف", company_by_value: "ofs" },
     { name: "واجهة الاحلام", company_by_value: "mst" },
     { name: "مسارات العضيب", company_by_value: "ofs" },
+    { name: "بوم سبيد", company_by_value: "ofs" },
+    { name: "المشعل للسفر والسياحة", company_by_value: "ofs" },
     { name: "ibs", company_by_value: null }
 ];
 
@@ -443,6 +445,7 @@ const hotelNames = [
     "The Royal Pita Maha",
     "Hotel Indonesia Kempinski",
     "Grand Mercure Seminyak",
+    "Maar Resort & Spa Ubud",
 
 
 
