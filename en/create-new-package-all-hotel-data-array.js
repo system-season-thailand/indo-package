@@ -222,6 +222,12 @@ let allHotelDataArray = [
         hotelArea: 'Ubud',
         hotelRoomTypes: ['Deluxe Pool Villa', 'Royal Pool Villa', 'Ayung Healing Villa'],
     },
+    {
+        hotelName: 'Maar Resort Ubud',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['One BR Villa with Jacuzzi', 'Grand One BR Villa with PP', 'Family Suite Room', 'Two BR Villa with PP'],
+    },
 
 
 
@@ -471,7 +477,7 @@ let allHotelDataArray = [
         hotelName: 'Grand Mercure Seminyak',
         hotelLocation: 'Bali',
         hotelArea: 'Seminyak',
-        hotelRoomTypes: ['Deluxe Room Street View', 'Deluxe Garden View', 'Deluxe Pool View'],
+        hotelRoomTypes: ['Deluxe Street View', 'Deluxe Garden View', 'Deluxe Pool View'],
     },
 
 
