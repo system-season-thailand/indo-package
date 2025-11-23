@@ -222,6 +222,12 @@ let allHotelDataArray = [
         hotelArea: 'اوبود',
         hotelRoomTypes: ['ديلوكس فيلا', 'رويال فيلا', 'ايونق هيلنج فيلا'],
     },
+    {
+        hotelName: 'Maar Resort Ubud',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['فيلا من غرفة نوم واحدة مع جاكوزي', 'جراند فيلا من غرفة نوم واحدة', 'فاميلي سويت روم', 'فيلا من غرفتين نوم'],
+    },
 
 
 
