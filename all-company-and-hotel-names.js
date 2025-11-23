@@ -445,7 +445,7 @@ const hotelNames = [
     "The Royal Pita Maha",
     "Hotel Indonesia Kempinski",
     "Grand Mercure Seminyak",
-    "Maar Resort & Spa Ubud",
+    "Maar Resort Ubud",
 
 
 
