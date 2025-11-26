@@ -267,6 +267,7 @@ const companyNames = [
     { name: "بوم سبيد", company_by_value: "ofs" },
     { name: "المشعل للسفر والسياحة", company_by_value: "ofs" },
     { name: "الفارس الدولي", company_by_value: "mst" },
+    { name: "الاوس الدولية", company_by_value: "mst" },
     { name: "ibs", company_by_value: null }
 ];
 
