@@ -228,6 +228,12 @@ let allHotelDataArray = [
         hotelArea: 'اوبود',
         hotelRoomTypes: ['فيلا من غرفة نوم واحدة مع جاكوزي', 'جراند فيلا من غرفة نوم واحدة', 'فاميلي سويت روم', 'فيلا من غرفتين نوم'],
     },
+    {
+        hotelName: 'Adiwana Resort Jembawan',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['اديوانا روم', 'سويت روم', 'فيلا من غرفة نوم واحدة'],
+    },
 
 
 
