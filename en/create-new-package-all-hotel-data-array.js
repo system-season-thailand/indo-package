@@ -229,7 +229,7 @@ let allHotelDataArray = [
         hotelRoomTypes: ['One BR Villa with Jacuzzi', 'Grand One BR Villa with PP', 'Family Suite Room', 'Two BR Villa with PP'],
     },
     {
-        hotelName: 'Adiwana Resort Jembawan',
+        hotelName: 'Adiwana Suweta',
         hotelLocation: 'Bali',
         hotelArea: 'Ubud',
         hotelRoomTypes: ['Adiwana Room', 'Suite Room', 'One BR Villa'],
