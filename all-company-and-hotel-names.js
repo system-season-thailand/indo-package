@@ -449,7 +449,7 @@ const hotelNames = [
     "Hotel Indonesia Kempinski",
     "Grand Mercure Seminyak",
     "Maar Resort Ubud",
-    "Adiwana Resort Jembawan",
+    "Adiwana Suweta",
 
 
 
