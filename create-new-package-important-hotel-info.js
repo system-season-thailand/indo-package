@@ -71,4 +71,13 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "صالح للإستخدام الى 30 نوفمبر 2026",
     },
 
+
+    {
+        hotelName: "Grand Aston",
+        messageInfo_p1: "في شهر ديسمبر فقط",
+        messageInfo_p2: "من 1-9 ديلوكس باطلالة الجبل كلها في الادوار المنخفظة",
+        messageInfo_p3: "يوم 10 ويوم 11 ديلوكس باطلالة الجبل غير متوفرة",
+        messageInfo_p4: "اتمنى لك كل التوفيق",
+    },
+
 ];
