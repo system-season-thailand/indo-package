@@ -450,6 +450,7 @@ const hotelNames = [
     "Grand Mercure Seminyak",
     "Maar Resort Ubud",
     "Adiwana Suweta",
+    "Divan Hills Resort",
 
 
 
