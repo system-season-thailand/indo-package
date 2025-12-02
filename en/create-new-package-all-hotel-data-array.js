@@ -890,6 +890,11 @@ let allHotelDataArray = [
         hotelLocation: 'Puncak',
         hotelRoomTypes: ['Cliff Edge with Private Jacuzzi', 'Forest Villa with Private Jacuzzi'],
     },
+    {
+        hotelName: 'Divan Hills Resort',
+        hotelLocation: 'Puncak',
+        hotelRoomTypes: ['Villa One BR with PP', 'Villa Two BR with PP', 'Villa Three BR with PP', 'Villa Four BR with PP'],
+    },
 
 
 
