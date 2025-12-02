@@ -890,6 +890,11 @@ let allHotelDataArray = [
         hotelLocation: 'بونشاك',
         hotelRoomTypes: ['كيف ادج', 'فوريست فيلا'],
     },
+    {
+        hotelName: 'Divan Hills Resort',
+        hotelLocation: 'بونشاك',
+        hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم', 'فيلا من ثلاث غرف نوم', 'فيلا من اربع غرف نوم'],
+    },
 
 
 
