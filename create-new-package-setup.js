@@ -45,36 +45,6 @@ function handleHotelNameInputClick() {
 
 
 
-// Function to display the modal
-const showCloseSellModal = (messageText) => {
-    const modal = document.getElementById("closeSellModal");
-    const message = document.getElementById("closeSellMessage");
-
-    // Update the modal text
-    message.innerText = messageText;
-
-    // Check if overlay already exists
-    let overlay = document.getElementById("closeSellOverlay");
-
-    if (!overlay) {
-        overlay = document.createElement("div");
-        overlay.classList.add("black_overlay");
-        overlay.id = "closeSellOverlay";
-        document.body.appendChild(overlay);
-
-        // Force a reflow to trigger transition
-        void overlay.offsetWidth;
-    }
-
-    // Fade in overlay
-    overlay.style.opacity = "1";
-
-    // Show the modal
-    modal.style.display = "flex";
-    modal.classList.add("show");
-    modal.classList.remove("hide");
-};
-
 
 
 // Function to hide the modal
@@ -3096,21 +3066,6 @@ let innerDatePickerArabicMonths = [
 let arabicDays = ['أحد', 'إثن', 'ثلو', 'ربو', 'خمي', 'جمع', 'سبت'];
 
 
-// Arabic month names
-let arabicMonths = {
-    January: 'يناير',
-    February: 'فبراير',
-    March: 'مارس',
-    April: 'ابريل',
-    May: 'ماي',
-    June: 'يونيو',
-    July: 'يوليو',
-    August: 'اغسطس',
-    September: 'سبتمبر',
-    October: 'اكتوبر',
-    November: 'نوفمبر',
-    December: 'ديسمبر'
-};
 
 // Arabic month names reverse lookup
 let arabicMonthsReverse = {
