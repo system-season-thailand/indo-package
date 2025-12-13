@@ -269,6 +269,7 @@ const companyNames = [
     { name: "الفارس الدولي", company_by_value: "mst" },
     { name: "الاوس الدولية", company_by_value: "mst" },
     { name: "خبراء الاختيار", company_by_value: "ofs" },
+    { name: "ثبات", company_by_value: "awa" },
     { name: "الميادين للسفر", company_by_value: null },
     { name: "ibs", company_by_value: null }
 ];
