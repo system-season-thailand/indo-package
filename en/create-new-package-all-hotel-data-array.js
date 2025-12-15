@@ -315,7 +315,7 @@ let allHotelDataArray = [
         hotelName: 'Holiday Inn Nusa Dua',
         hotelLocation: 'Bali',
         hotelArea: 'Nusa Dua',
-        hotelRoomTypes: ['Standard Room', 'Standard Pool View', 'Standard Ocean View', 'Standard Ocean Front', 'Standard Pool Access', 'Kids Adventure Suite', 'Family Adventure Suite'],
+        hotelRoomTypes: ['Standard Room', 'Premium Room', 'Premium Room Ocean Front', 'Standard Pool View', 'Standard Ocean View', 'Standard Ocean Front', 'Standard Pool Access', 'Kids Adventure Suite', 'Family Adventure Suite'],
     },
 
 
