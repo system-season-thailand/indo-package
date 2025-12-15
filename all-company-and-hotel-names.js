@@ -271,6 +271,7 @@ const companyNames = [
     { name: "خبراء الاختيار", company_by_value: "ofs" },
     { name: "ثبات", company_by_value: "awa" },
     { name: "فرسان", company_by_value: "ofs" },
+    { name: "السائح العالمي", company_by_value: "ofs" },
     { name: "الميادين للسفر", company_by_value: null },
     { name: "ibs", company_by_value: null }
 ];
