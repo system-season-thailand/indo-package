@@ -317,6 +317,12 @@ let allHotelDataArray = [
         hotelArea: 'Nusa Dua',
         hotelRoomTypes: ['Standard Room', 'Premium Room', 'Premium Room Ocean Front', 'Standard Pool View', 'Standard Ocean View', 'Standard Ocean Front', 'Standard Pool Access', 'Kids Adventure Suite', 'Family Adventure Suite'],
     },
+    {
+        hotelName: 'Grand Mirage Resort Bali',
+        hotelLocation: 'Bali',
+        hotelArea: 'Nusa Dua',
+        hotelRoomTypes: ['Premiere Garden', 'Premiere Ocean', 'Ocean View Suite'],
+    },
 
 
 
