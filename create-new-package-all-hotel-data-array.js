@@ -317,6 +317,12 @@ let allHotelDataArray = [
         hotelArea: 'نوسا دوا',
         hotelRoomTypes: ['ستاندرد روم', 'بريميوم روم', 'بريميوم روم مقابل المحيط', 'ستاندرد روم بول اكسس', 'كيدس ادفانتشور سويت', 'فاميلي ادفانتشور سويت'],
     },
+    {
+        hotelName: 'Grand Mirage Resort Bali',
+        hotelLocation: 'بالي',
+        hotelArea: 'نوسا دوا',
+        hotelRoomTypes: ['بريمير جاردن', 'بريميوم اوشن', 'سويت روم'],
+    },
 
 
 
