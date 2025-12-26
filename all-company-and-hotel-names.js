@@ -456,6 +456,7 @@ const hotelNames = [
     "Adiwana Suweta",
     "Divan Hills Resort",
     "Grand Mirage Resort Bali",
+    "Equipoise Resort Ubud",
 
 
 
