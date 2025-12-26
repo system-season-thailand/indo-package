@@ -234,6 +234,12 @@ let allHotelDataArray = [
         hotelArea: 'اوبود',
         hotelRoomTypes: ['اديوانا روم', 'سويت روم', 'فيلا من غرفة نوم واحدة'],
     },
+    {
+        hotelName: 'Equipoise Resort Ubud',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم', 'فيلا من غرفة نوم واحدة'],
+    },
 
 
 
