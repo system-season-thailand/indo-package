@@ -234,6 +234,12 @@ let allHotelDataArray = [
         hotelArea: 'Ubud',
         hotelRoomTypes: ['Adiwana Room', 'Suite Room', 'One BR Villa'],
     },
+    {
+        hotelName: 'Equipoise Resort Ubud',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['One BR Villa', 'Two BR Villa'],
+    },
 
 
 
