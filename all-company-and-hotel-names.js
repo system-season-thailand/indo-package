@@ -457,6 +457,7 @@ const hotelNames = [
     "Divan Hills Resort",
     "Grand Mirage Resort Bali",
     "Equipoise Resort Ubud",
+    "Regent Resort Canggu",
 
 
 
