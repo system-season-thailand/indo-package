@@ -273,6 +273,7 @@ const companyNames = [
     { name: "فرسان", company_by_value: "ofs" },
     { name: "السائح العالمي", company_by_value: "ofs" },
     { name: "اكتشف العالم", company_by_value: "mst" },
+    { name: "ماجد للسفر والسياحة", company_by_value: "ofs" },
     { name: "الميادين للسفر", company_by_value: null },
     { name: "ibs", company_by_value: null }
 ];
