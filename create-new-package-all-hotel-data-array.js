@@ -523,7 +523,7 @@ let allHotelDataArray = [
         hotelName: 'Tribe Kuta',
         hotelLocation: 'بالي',
         hotelArea: 'كوتا',
-        hotelRoomTypes: ['ترايب كومفورت بلكوني', 'ترايب كومفورت XL بلكوني'],
+        hotelRoomTypes: ['ترايب كومفورت بلكوني', 'ترايب كومفورت XL بلكوني','ترايب كومفورت بدون بلكوني'],
     },
     {
         hotelName: 'Aloft Kuta',
