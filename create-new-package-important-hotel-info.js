@@ -75,7 +75,6 @@ const hotelMessageInfoArray = [
     {
         hotelName: "Grand Aston",
         messageInfo_p1: "في شهر يناير:",
-        messageInfo_p2: "غرفة ديلوكس بإطلالة على الجبل في يوم 18 غير متوفرة",
+        messageInfo_p2: "غرفة ديلوكس بإطلالة على الجبل في يوم 18 ويوم 23 غير متوفرة",
     },
-
 ];
