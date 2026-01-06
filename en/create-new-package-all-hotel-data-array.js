@@ -523,7 +523,7 @@ let allHotelDataArray = [
         hotelName: 'Tribe Kuta',
         hotelLocation: 'Bali',
         hotelArea: 'Kuta',
-        hotelRoomTypes: ['Tribe Comfort Balcony', 'Tribe Comfort XL Balcony'],
+        hotelRoomTypes: ['Tribe Comfort Balcony', 'Tribe Comfort XL Balcony','Tribe Comfort Non Balcony'],
     },
     {
         hotelName: 'Aloft Kuta',
