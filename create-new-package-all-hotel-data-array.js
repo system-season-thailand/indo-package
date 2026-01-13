@@ -240,6 +240,12 @@ let allHotelDataArray = [
         hotelArea: 'اوبود',
         hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم', 'فيلا من غرفة نوم واحدة'],
     },
+    {
+        hotelName: 'Impiana Private Villas Ubud',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['سويت', 'ديلوكس سويت', 'جاردن فيلا','ريفرسايد فيلا'],
+    },
 
 
 
