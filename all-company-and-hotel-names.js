@@ -462,6 +462,7 @@ const hotelNames = [
     "Grand Mirage Resort Bali",
     "Equipoise Resort Ubud",
     "Regent Resort Canggu",
+    "Impiana Private Villas Ubud",
 
 
 
