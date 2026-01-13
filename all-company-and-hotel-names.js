@@ -275,6 +275,7 @@ const companyNames = [
     { name: "اكتشف العالم", company_by_value: "mst" },
     { name: "ماجد للسفر والسياحة", company_by_value: "ofs" },
     { name: "فكرة الوسيط", company_by_value: "ofs" },
+    { name: "سما للسفر والسياحة", company_by_value: "awa" },
     { name: "الميادين للسفر", company_by_value: null },
     { name: "ibs", company_by_value: null }
 ];
