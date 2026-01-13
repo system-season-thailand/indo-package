@@ -240,6 +240,12 @@ let allHotelDataArray = [
         hotelArea: 'Ubud',
         hotelRoomTypes: ['One BR Villa', 'Two BR Villa'],
     },
+        {
+        hotelName: 'Impiana Private Villas Ubud',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['Suite', 'Deluxe Suite', 'Garden Pool Villa','Riverside Pool Villa'],
+    },
 
 
 
