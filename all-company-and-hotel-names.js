@@ -276,6 +276,8 @@ const companyNames = [
     { name: "ماجد للسفر والسياحة", company_by_value: "ofs" },
     { name: "فكرة الوسيط", company_by_value: "ofs" },
     { name: "سما للسفر والسياحة", company_by_value: "awa" },
+    { name: "سيال للسياحة", company_by_value: "mst" },
+    { name: "كريسمار للسفر", company_by_value: "awa" },
     { name: "الميادين للسفر", company_by_value: null },
     { name: "ibs", company_by_value: null }
 ];
@@ -463,6 +465,12 @@ const hotelNames = [
     "Equipoise Resort Ubud",
     "Regent Resort Canggu",
     "Impiana Private Villas Ubud",
+
+
+    "Ayana Segara Bali",
+    "Ayana Resort Bali",
+    "Ayana Villas Bali",
+    "Rimba Ayana Bali",
 
 
 
