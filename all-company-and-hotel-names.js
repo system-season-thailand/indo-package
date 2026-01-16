@@ -278,6 +278,7 @@ const companyNames = [
     { name: "سما للسفر والسياحة", company_by_value: "awa" },
     { name: "سيال للسياحة", company_by_value: "mst" },
     { name: "كريسمار للسفر", company_by_value: "awa" },
+    { name: "تريب كابتن", company_by_value: "awa" },
     { name: "الميادين للسفر", company_by_value: null },
     { name: "ibs", company_by_value: null }
 ];
