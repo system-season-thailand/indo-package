@@ -630,6 +630,30 @@ let allHotelDataArray = [
         hotelArea: 'جيمباران',
         hotelRoomTypes: ['كلاسيك بلكوني', 'Classic Singaraja Space Access', 'Premium Mezzanine Singaraja Space Access', 'Premium Club Lounge Access Balcony', 'Premium Mezzanine Area Club Lounge Access Balcony', 'Suite Club Lounge Access'],
     },
+    {
+        hotelName: 'Ayana Segara Bali',
+        hotelLocation: 'بالي',
+        hotelArea: 'جيمباران',
+        hotelRoomTypes: ['ريسورت فيو روم', 'جيمباران باي روم', 'اوشن فيو روم', 'ريسورت فيو سويت', 'اوشن فيو من غرفتين نوم', 'اوشن فيو ريسيدينس من غرفة نوم واحدة','اوشن فيو ريسيدينس من غرفتين نوم'],
+    },
+    {
+        hotelName: 'Ayana Resort Bali',
+        hotelLocation: 'بالي',
+        hotelArea: 'جيمباران',
+        hotelRoomTypes: ['ريسورت فيو روم', 'جيمباران باي روم', 'اوشن فيو روم', 'اوشن فيو سويت', 'ريسورت فيو من غرفتين نوم', 'اوشن فيو من غرفتين نوم','اوشن فيو سويت من غرفتين نوم'],
+    },
+    {
+        hotelName: 'Ayana Villas Bali',
+        hotelLocation: 'بالي',
+        hotelArea: 'جيمباران',
+        hotelRoomTypes: ['فيلا اوشن فيو من غرفة نوم واحدة', 'فيلا اوشن فرونت من غرفة نوم واحدة', 'فيلا اوشن فيو من غرفتين نوم', 'فيلا اوشن فرونت من غرفتين نوم'],
+    },
+    {
+        hotelName: 'Rimba Ayana Bali',
+        hotelLocation: 'بالي',
+        hotelArea: 'جيمباران',
+        hotelRoomTypes: ['ريسورت فيو روم', 'جيمباران باي روم', 'بوول اكسس روم', 'ريسورت فيو سويت','بوول اكسس سويت','ريسورت فيو من غرفتين نوم','ريسورت فيو سويت من غرفتين نوم','وآنا ريسورت فيو يوم','وآنا جاردن فيو روم','وآنا اوشن فيو روم','وآنا بوول اكسس روم','وآنا ريسورت فيو من غرفتين نوم','وآنا اوشن فيو من غرفتين نوم'],
+    },
 
 
 
