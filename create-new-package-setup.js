@@ -459,7 +459,7 @@ adultPackagePersonAmountInputOptions.forEach(option => {
             const wholePackagePersonAmountValue = getArabicTextForPeopleCount(totalPeople);
 
             // Update SMS card value with adult count only
-            document.getElementById('sms_card_with_internet_amount_input_id').value = `شرائح إنترنت ل${getArabicTextForPeopleCount(adultCount)}`;
+            document.getElementById('sms_card_with_internet_amount_input_id').value = `شرائح إنترنت عادية ل${getArabicTextForPeopleCount(adultCount)}`;
 
             // Update flight tickets with total people count
             document.getElementById('inner_flight_tickets_amount_input_id').value = `تذاكر الطيران الداخلي ل${wholePackagePersonAmountValue}`;
@@ -506,7 +506,7 @@ kidsPackagePersonAmountInputOptions.forEach(option => {
         const wholePackagePersonAmountValue = getArabicTextForPeopleCount(totalPeople);
 
         // Update SMS card value with adult count only
-        document.getElementById('sms_card_with_internet_amount_input_id').value = `شرائح إنترنت ل${getArabicTextForPeopleCount(adultCount)}`;
+        document.getElementById('sms_card_with_internet_amount_input_id').value = `شرائح إنترنت عادية ل${getArabicTextForPeopleCount(adultCount)}`;
 
         // Update flight tickets with total people count
         document.getElementById('inner_flight_tickets_amount_input_id').value = `تذاكر الطيران الداخلي ل${wholePackagePersonAmountValue}`;
@@ -2384,7 +2384,7 @@ smsCardWithInternetAmountInputOptions.forEach(option => {
 
                     } else {
                         // Set the value of the sms card input field with the selected option
-                        lastClickedClintMovementsCityInput.value = `شرائح إنترنت ل${option.textContent}`;
+                        lastClickedClintMovementsCityInput.value = `شرائح إنترنت عادية ل${option.textContent}`;
 
                     }
 
