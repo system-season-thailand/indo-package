@@ -279,6 +279,7 @@ const companyNames = [
     { name: "سيال للسياحة", company_by_value: "mst" },
     { name: "كريسمار للسفر", company_by_value: "awa" },
     { name: "تريب كابتن", company_by_value: "awa" },
+    { name: "مار المدينة", company_by_value: "mst" },
     { name: "الميادين للسفر", company_by_value: null },
     { name: "ibs", company_by_value: null }
 ];
@@ -466,12 +467,12 @@ const hotelNames = [
     "Equipoise Resort Ubud",
     "Regent Resort Canggu",
     "Impiana Private Villas Ubud",
-
-
     "Ayana Segara Bali",
     "Ayana Resort Bali",
     "Ayana Villas Bali",
     "Rimba Ayana Bali",
+    "Bambootel Sawah View",
+    "InterContinental Bandung",
 
 
 
