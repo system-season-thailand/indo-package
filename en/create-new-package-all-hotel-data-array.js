@@ -240,11 +240,17 @@ let allHotelDataArray = [
         hotelArea: 'Ubud',
         hotelRoomTypes: ['One BR Villa', 'Two BR Villa'],
     },
-        {
+    {
         hotelName: 'Impiana Private Villas Ubud',
         hotelLocation: 'Bali',
         hotelArea: 'Ubud',
-        hotelRoomTypes: ['Suite', 'Deluxe Suite', 'Garden Pool Villa','Riverside Pool Villa'],
+        hotelRoomTypes: ['Suite', 'Deluxe Suite', 'Garden Pool Villa', 'Riverside Pool Villa'],
+    },
+    {
+        hotelName: 'Bambootel Sawah View',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['Suite Pool Access', 'Deluxe Suite Jacuzzi', 'One BR Sky Villa', 'One BR Pool Villa', 'Sawah View Pool Villa', 'Two BR Pool Villa', 'Three BR Pool Villa'],
     },
 
 
@@ -529,7 +535,7 @@ let allHotelDataArray = [
         hotelName: 'Tribe Kuta',
         hotelLocation: 'Bali',
         hotelArea: 'Kuta',
-        hotelRoomTypes: ['Tribe Comfort Balcony', 'Tribe Comfort XL Balcony','Tribe Comfort Non Balcony'],
+        hotelRoomTypes: ['Tribe Comfort Balcony', 'Tribe Comfort XL Balcony', 'Tribe Comfort Non Balcony'],
     },
     {
         hotelName: 'Aloft Kuta',
@@ -629,6 +635,30 @@ let allHotelDataArray = [
         hotelLocation: 'Bali',
         hotelArea: 'Jimbaran',
         hotelRoomTypes: ['Classic Garden View Balcony', 'Classic Singaraja Space Access Garden View', 'Premium Mezzanine Singaraja Space Access', 'Premium Club Lounge Access Garden View Balcony', 'Premium Mezzanine Area Club Lounge Access Balcony', 'One BR Suite Club Lounge Access'],
+    },
+    {
+        hotelName: 'Ayana Segara Bali',
+        hotelLocation: 'Bali',
+        hotelArea: 'Jimbaran',
+        hotelRoomTypes: ['Resort View Room', 'Jimbaran Bay Room', 'Ocean View Room', 'Resort View Suite', 'Two BR Ocean View Room', 'One BR Ocean View Residence', 'Two BR Ocean View Residence', 'Two BR Ocean View Residence with Pool'],
+    },
+    {
+        hotelName: 'Ayana Segara Bali',
+        hotelLocation: 'Bali',
+        hotelArea: 'Jimbaran',
+        hotelRoomTypes: ['Resort View Room', 'Jimbaran Bay Room', 'Ocean View Room', 'Ocean View Suite', 'Two BR Resort View Room', 'Two BR Ocean View Room ', 'Two BR Ocean View Suite'],
+    },
+    {
+        hotelName: 'Ayana Villas Bali',
+        hotelLocation: 'Bali',
+        hotelArea: 'Jimbaran',
+        hotelRoomTypes: ['One BR Ocean View Villa', 'One BR Ocean Front Villa', 'Two BR Ocean View Villa', 'Two BR Ocean Front Villa'],
+    },
+    {
+        hotelName: 'Rimba Ayana Bali',
+        hotelLocation: 'Bali',
+        hotelArea: 'Jimbaran',
+        hotelRoomTypes: ['Resort View Room', 'Jimbaran Bay Room', 'Pool Access Room', 'Resort View Suite', 'Pool Access Suite', 'Two BR Resort View Room', 'Two BR Resort View Suite', 'Wana Resort View Room', 'Wana Garden View Room', 'Wana Ocean View Room', 'Wana Pool Access Room', 'Wana 2 BR Resort View Room', 'Wana 2 BR Ocean View Room'],
     },
 
 
@@ -958,6 +988,11 @@ let allHotelDataArray = [
         hotelName: 'Hotel Indigo Bandung',
         hotelLocation: 'Bandung',
         hotelRoomTypes: ['Standard Room', 'Premium Room', 'Suite City View'],
+    },
+    {
+        hotelName: 'InterContinental Bandung',
+        hotelLocation: 'Bandung',
+        hotelRoomTypes: ['Classic Room', 'Premium Room', 'Premium Room with Golf View', 'Junior Suite'],
     },
 
 
