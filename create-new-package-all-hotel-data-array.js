@@ -246,6 +246,12 @@ let allHotelDataArray = [
         hotelArea: 'اوبود',
         hotelRoomTypes: ['سويت', 'ديلوكس سويت', 'جاردن فيلا','ريفرسايد فيلا'],
     },
+    {
+        hotelName: 'Bambootel Sawah View',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['سويت بول اكسس', 'ديلوكس سويت جاكوزي', 'سكاي فيلا من غرفة نوم واحدة','فيلا من غرفة نوم واحدة','ساواه فيو فيلا','فيلا من غرفتين نوم','فيلا من ثلاث غرف نوم'],
+    },
 
 
 
@@ -982,6 +988,11 @@ let allHotelDataArray = [
         hotelName: 'Hotel Indigo Bandung',
         hotelLocation: 'باندونق',
         hotelRoomTypes: ['ستاندرد روم', 'بريميوم روم', 'سويت كينج'],
+    },
+    {
+        hotelName: 'InterContinental Bandung',
+        hotelLocation: 'باندونق',
+        hotelRoomTypes: ['كلاسيك روم', 'بريميوم روم', 'جونيور سويت'],
     },
 
 
