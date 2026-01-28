@@ -1081,6 +1081,39 @@ input {
     box-shadow: 0 0 0.5px 0.5px black;
     text-align: center;
     cursor: pointer;
+    outline: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.company_names_options_dropdown_class h3:active {
+    background: white;
+    box-shadow: 0 0 0.5px 0.5px black;
+    transform: none;
+}
+
+/* Selected h3 in special room request dropdown - green background */
+#special_room_request_dropdown .company_names_options_dropdown_class h3.special_room_request_h3_selected {
+    background: rgb(0, 155, 0);
+    color: white;
+}
+
+/* تأكيد button above special room request options */
+.special_room_request_confirm_btn_class {
+    display: block;
+    width: fit-content;
+    margin: 0 10px 10px 0;
+    padding: 3px 10px;
+    background: white;
+    color: black;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: right;
+    box-sizing: border-box;
+    align-self: self-start;
+    border-radius: 5px;
+    border: 1px solid black;
 }
 
 

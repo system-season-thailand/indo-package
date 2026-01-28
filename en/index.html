@@ -598,7 +598,7 @@
 
 
                         <input type="text" id="hotel_special_room_request_input_id" placeholder="الإضافات" readonly
-                            autocomplete="off" onclick="showOverlay('special_room_request_dropdown')"
+                            autocomplete="off" onclick="showOverlay('special_room_request_dropdown', this)"
                             style="cursor: pointer;">
 
 
@@ -645,7 +645,7 @@
                             style="cursor: pointer;">
 
                         <input type="text" id="hotel_special_room_request_input_id_2" placeholder="الإضافات" readonly
-                            autocomplete="off" onclick="showOverlay('special_room_request_dropdown')"
+                            autocomplete="off" onclick="showOverlay('special_room_request_dropdown', this)"
                             style="cursor: pointer;">
 
 
@@ -914,8 +914,9 @@
 
         <!-- Dropdown div for room amount -->
         <div id="special_room_request_dropdown" class="searchable_names_dropdown_class">
+            <button type="button" id="special_room_request_confirm_btn_id"
+                class="special_room_request_confirm_btn_class">تأكيد</button>
             <div class="company_names_options_dropdown_class">
-                <h3 style="color: red;">حذف</h3>
                 <h3>Honeymoon Package</h3>
                 <h3>One Time Massage for Two Pax (30 min)</h3>
                 <h3>One Time Massage for Two Pax (60 min)</h3>
@@ -2365,7 +2366,8 @@
 
             <h6 class="hide_for_sky_global">
                 <ion-icon name="airplane" style="color:#4caf50;"></ion-icon>
-                If the package includes internet SIM cards, any data top-up required after the allocated data is consumed will be the responsibility of the client.
+                If the package includes internet SIM cards, any data top-up required after the allocated data is
+                consumed will be the responsibility of the client.
             </h6>
 
             <h6 class="hide_for_sky_global">
