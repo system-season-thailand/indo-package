@@ -72,11 +72,5 @@ const hotelMessageInfoArray = [
         messageInfo_p2: "طبقين غداء او عشاء لشخصين لمره واحدة",
         messageInfo_p3: "صالح للإستخدام الى 30 نوفمبر 2026",
     },
-
-
-    {
-        hotelName: "Grand Aston",
-        messageInfo_p1: "في شهر يناير:",
-        messageInfo_p2: "غرفة ديلوكس بإطلالة على الجبل في يوم 18 ويوم 23 غير متوفرة",
-    },
 ];
+
