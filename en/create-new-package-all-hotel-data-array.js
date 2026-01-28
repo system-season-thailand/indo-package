@@ -252,6 +252,12 @@ let allHotelDataArray = [
         hotelArea: 'Ubud',
         hotelRoomTypes: ['Suite Pool Access', 'Deluxe Suite Jacuzzi', 'One BR Sky Villa', 'One BR Pool Villa', 'Sawah View Pool Villa', 'Two BR Pool Villa', 'Three BR Pool Villa'],
     },
+    {
+        hotelName: 'The Sebali Resort Ubud',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['One BR Pool Villa Valley View', 'One BR Pool Villa River View', 'Two bR River View with Heated Pool and Living Room'],
+    },
 
 
 
