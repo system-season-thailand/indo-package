@@ -2990,13 +2990,24 @@ function formatDate(date) {
 
 
 // Function to show the overlay
-function showOverlay(clickedInputDropdownIdName) {
+// sourceInputElement: optional; when opening 'special_room_request_dropdown', pass the input that was clicked so the correct value is used for auto-selection
+function showOverlay(clickedInputDropdownIdName, sourceInputElement) {
 
     // Disable scrolling
     document.documentElement.style.overflow = 'hidden';
 
 
     let clickedInputDropdown = document.getElementById(clickedInputDropdownIdName);
+
+    // When opening special room request dropdown: use the clicked input (passed explicitly) so we always use the right one
+    if (clickedInputDropdownIdName === 'special_room_request_dropdown') {
+        if (sourceInputElement && (sourceInputElement.id === 'hotel_special_room_request_input_id' || sourceInputElement.id === 'hotel_special_room_request_input_id_2')) {
+            lastClickedSpecialRoomRequestInput = sourceInputElement;
+        }
+        if (typeof applySpecialRoomRequestSelectionFromInputValue === 'function') {
+            applySpecialRoomRequestSelectionFromInputValue();
+        }
+    }
 
     // Store the reference to the last clicked input field
     lastClickedClintMovementsCityInput = document.getElementById(event.target.id);
@@ -3700,5 +3711,4 @@ function toggleFullscreen(textAreaId) {
 
     // Append exit button to body
     document.body.appendChild(exitTextAreaFullScreenButton);
-
 }
