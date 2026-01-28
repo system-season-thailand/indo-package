@@ -474,6 +474,7 @@ const hotelNames = [
     "Rimba Ayana Bali",
     "Bambootel Sawah View",
     "InterContinental Bandung",
+    "The Sebali Resort Ubud",
 
 
 
