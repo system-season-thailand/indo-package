@@ -1,8 +1,8 @@
 /* Function to prevent the page refresh by mistake */
-window.addEventListener('beforeunload', function (event) {
+/* window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-});
+}); */
 
 
 
@@ -2057,27 +2057,62 @@ document.getElementById('hotel_special_room_request_input_id_2').addEventListene
 // Get the options within the dropdown
 let specialRoomRequestInputOptions = document.querySelectorAll('#special_room_request_dropdown h3');
 
+const specialRoomRequestHoneymoonLongText = '+ باقة شهر عسل بعشاء رومانسي على ضوء الشموع + عصير + زينة لمرة واحدة + علاج سبا لمدة 60 دقيقة + إفطار عائم لمرة واحدة بالإضافة لسلة فواكة + شاي بعد الظهر';
+
+/* Clear selection state when special_room_request_dropdown is shown */
+function clearSpecialRoomRequestSelection() {
+    specialRoomRequestInputOptions.forEach(h => h.classList.remove('special_room_request_h3_selected'));
+}
+
+/* Auto-select h3 options based on existing value in lastClickedSpecialRoomRequestInput */
+function applySpecialRoomRequestSelectionFromInputValue() {
+    clearSpecialRoomRequestSelection();
+    if (!lastClickedSpecialRoomRequestInput) return;
+    const inputVal = (lastClickedSpecialRoomRequestInput.value || '').trim();
+    if (!inputVal) return;
+
+    if (inputVal.includes(specialRoomRequestHoneymoonLongText)) {
+        const honeymoonH3 = Array.from(specialRoomRequestInputOptions).find(h => h.textContent.trim() === 'باقة شهر عسل');
+        if (honeymoonH3) honeymoonH3.classList.add('special_room_request_h3_selected');
+    }
+    const remaining = inputVal.replace(specialRoomRequestHoneymoonLongText, '').replace(/^\s*\+\s*|\s*\+\s*$/g, '').trim();
+    const parts = remaining ? remaining.split(/\s*\+\s*/).map(s => s.trim()).filter(Boolean) : [];
+    specialRoomRequestInputOptions.forEach(h => {
+        const t = h.textContent.trim();
+        if (t === 'باقة شهر عسل') return; // already handled
+        if (parts.includes(t)) h.classList.add('special_room_request_h3_selected');
+    });
+}
+
+/* Toggle multi-select on h3 click: add/remove green background */
 specialRoomRequestInputOptions.forEach(option => {
     option.addEventListener('click', () => {
-
         // Play a sound effect
         playSoundEffect('click');
-
-
-        if (option.textContent === 'حذف') {
-            lastClickedSpecialRoomRequestInput.value = '';
-
-        } else if (option.textContent === 'باقة شهر عسل') {
-            lastClickedSpecialRoomRequestInput.value = '+ باقة شهر عسل بعشاء رومانسي على ضوء الشموع + عصير + زينة لمرة واحدة + علاج سبا لمدة 60 دقيقة + إفطار عائم لمرة واحدة بالإضافة لسلة فواكة + شاي بعد الظهر';
-
-        } else {
-            lastClickedSpecialRoomRequestInput.value = `+ ${option.textContent}`;
-
-        }
-
-        hideOverlay(); // Hide overlay after selection
+        option.classList.toggle('special_room_request_h3_selected');
     });
 });
+
+/* تأكيد button: insert selected h3 values into lastClickedSpecialRoomRequestInput, separated by + */
+const specialRoomRequestConfirmBtn = document.getElementById('special_room_request_confirm_btn_id');
+if (specialRoomRequestConfirmBtn) {
+    specialRoomRequestConfirmBtn.addEventListener('click', () => {
+        // Play a sound effect
+        playSoundEffect('success');
+
+        const selected = document.querySelectorAll('#special_room_request_dropdown h3.special_room_request_h3_selected');
+        const texts = Array.from(selected).map(h => {
+            const t = h.textContent.trim();
+            if (t === 'باقة شهر عسل') return specialRoomRequestHoneymoonLongText;
+            return t;
+        });
+        if (lastClickedSpecialRoomRequestInput) {
+            lastClickedSpecialRoomRequestInput.value = texts.join(' + ');
+        }
+        clearSpecialRoomRequestSelection();
+        hideOverlay();
+    });
+}
 
 
 
@@ -2966,13 +3001,24 @@ function formatDate(date) {
 
 
 // Function to show the overlay
-function showOverlay(clickedInputDropdownIdName) {
+// sourceInputElement: optional; when opening 'special_room_request_dropdown', pass the input that was clicked so the correct value is used for auto-selection
+function showOverlay(clickedInputDropdownIdName, sourceInputElement) {
 
     // Disable scrolling
     document.documentElement.style.overflow = 'hidden';
 
 
     let clickedInputDropdown = document.getElementById(clickedInputDropdownIdName);
+
+    // When opening special room request dropdown: use the clicked input (passed explicitly) so we always use the right one
+    if (clickedInputDropdownIdName === 'special_room_request_dropdown') {
+        if (sourceInputElement && (sourceInputElement.id === 'hotel_special_room_request_input_id' || sourceInputElement.id === 'hotel_special_room_request_input_id_2')) {
+            lastClickedSpecialRoomRequestInput = sourceInputElement;
+        }
+        if (typeof applySpecialRoomRequestSelectionFromInputValue === 'function') {
+            applySpecialRoomRequestSelectionFromInputValue();
+        }
+    }
 
     // Store the reference to the last clicked input field
     lastClickedClintMovementsCityInput = document.getElementById(event.target.id);
