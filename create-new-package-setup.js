@@ -1,8 +1,8 @@
 /* Function to prevent the page refresh by mistake */
-/* window.addEventListener('beforeunload', function (event) {
+window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-}); */
+});
 
 
 
@@ -2057,7 +2057,7 @@ document.getElementById('hotel_special_room_request_input_id_2').addEventListene
 // Get the options within the dropdown
 let specialRoomRequestInputOptions = document.querySelectorAll('#special_room_request_dropdown h3');
 
-const specialRoomRequestHoneymoonLongText = '+ باقة شهر عسل بعشاء رومانسي على ضوء الشموع + عصير + زينة لمرة واحدة + علاج سبا لمدة 60 دقيقة + إفطار عائم لمرة واحدة بالإضافة لسلة فواكة + شاي بعد الظهر';
+const specialRoomRequestHoneymoonLongText = 'باقة شهر عسل بعشاء رومانسي على ضوء الشموع + عصير + زينة لمرة واحدة + علاج سبا لمدة 60 دقيقة + إفطار عائم لمرة واحدة بالإضافة لسلة فواكة + شاي بعد الظهر';
 
 /* Clear selection state when special_room_request_dropdown is shown */
 function clearSpecialRoomRequestSelection() {
@@ -2103,11 +2103,11 @@ if (specialRoomRequestConfirmBtn) {
         const selected = document.querySelectorAll('#special_room_request_dropdown h3.special_room_request_h3_selected');
         const texts = Array.from(selected).map(h => {
             const t = h.textContent.trim();
-            if (t === 'باقة شهر عسل') return specialRoomRequestHoneymoonLongText;
-            return t;
+            if (t === 'باقة شهر عسل') return `+ ${specialRoomRequestHoneymoonLongText}`;
+            return `+ ${t}`;
         });
         if (lastClickedSpecialRoomRequestInput) {
-            lastClickedSpecialRoomRequestInput.value = texts.join(' + ');
+            lastClickedSpecialRoomRequestInput.value = texts.join(' ');
         }
         clearSpecialRoomRequestSelection();
         hideOverlay();
