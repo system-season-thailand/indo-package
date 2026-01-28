@@ -252,6 +252,12 @@ let allHotelDataArray = [
         hotelArea: 'اوبود',
         hotelRoomTypes: ['سويت بول اكسس', 'ديلوكس سويت جاكوزي', 'سكاي فيلا من غرفة نوم واحدة','فيلا من غرفة نوم واحدة','ساواه فيو فيلا','فيلا من غرفتين نوم','فيلا من ثلاث غرف نوم'],
     },
+    {
+        hotelName: 'The Sebali Resort Ubud',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم مع صالة'],
+    },
 
 
 
