@@ -2090,7 +2090,7 @@ if (specialRoomRequestConfirmBtn) {
         );
 
         const texts = Array.from(selected).map(h =>
-            `${h.textContent.trim()} +`
+            `+ ${h.textContent.trim()}`
         );
 
 
@@ -3700,4 +3700,5 @@ function toggleFullscreen(textAreaId) {
 
     // Append exit button to body
     document.body.appendChild(exitTextAreaFullScreenButton);
+
 }
