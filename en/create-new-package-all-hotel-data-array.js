@@ -258,6 +258,12 @@ let allHotelDataArray = [
         hotelArea: 'Ubud',
         hotelRoomTypes: ['One BR Pool Villa Valley View', 'One BR Pool Villa River View', 'Two bR River View with Heated Pool and Living Room'],
     },
+    {
+        hotelName: 'The Lumbung Jaya Resort',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['One BR Suite PP Valley View', 'One BR PP Villa Valley View', 'One BR Villa Rooftop PP Valley View'],
+    },
 
 
 
@@ -998,7 +1004,7 @@ let allHotelDataArray = [
     {
         hotelName: 'InterContinental Bandung',
         hotelLocation: 'Bandung',
-        hotelRoomTypes: ['Classic Room', 'Premium Room', 'Premium Room with Golf View', 'Junior Suite'],
+        hotelRoomTypes: ['Classic Room', 'Premium Room', 'Kembang Villa'],
     },
 
 
@@ -1024,6 +1030,11 @@ let allHotelDataArray = [
         hotelName: 'Royal Avila Boutique Resort',
         hotelLocation: 'Lombok',
         hotelRoomTypes: ['Ocean Deluxe', 'Ocean Premier', 'Ocean Rooftop', 'Ocean Suite', 'Rooftop Suite', 'The Penthouse'],
+    },
+    {
+        hotelName: 'Katamaran Resort Lombok',
+        hotelLocation: 'Lombok',
+        hotelRoomTypes: ['Premier Room', 'Premier Suite', 'Ocean View Suite', 'One BR Tropical Pool Villa', 'Premier Club', 'Two BR Family Suite', 'Oceanfront Suite with Infinity Pool', 'Two BR Tropical Pool Villa', 'Presindential Penthouse', 'Royal Penthouse'],
     },
 
 
