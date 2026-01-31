@@ -955,6 +955,11 @@ let allHotelDataArray = [
         hotelLocation: 'Puncak',
         hotelRoomTypes: ['Villa One BR with PP', 'Villa Two BR with PP', 'Villa Three BR with PP', 'Villa Four BR with PP'],
     },
+    {
+        hotelName: 'Villa Aura Puncak',
+        hotelLocation: 'Puncak',
+        hotelRoomTypes: ['Villa One BR with PP', 'Villa Two BR with PP', 'Villa Three BR with PP'],
+    },
 
 
 
