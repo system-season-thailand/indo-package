@@ -955,6 +955,11 @@ let allHotelDataArray = [
         hotelLocation: 'بونشاك',
         hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم', 'فيلا من ثلاث غرف نوم', 'فيلا من اربع غرف نوم'],
     },
+    {
+        hotelName: 'Villa Aura Puncak',
+        hotelLocation: 'بونشاك',
+        hotelRoomTypes: ['فيلا من غرفتين نوم', 'فيلا من ثلاث غرف نوم', 'فيلا من اربع غرف نوم'],
+    },
 
 
 
