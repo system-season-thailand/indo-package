@@ -378,7 +378,7 @@ let allHotelDataArray = [
         hotelRoomTypes: ['فيلا ذكية من غرفة نوم واحدة مع جاكوزي', 'فيلا جراند ذكية مع جاكوزي'],
     },
     {
-        hotelName: 'Impiana Villa',
+        hotelName: 'Impiana Private Villas Seminyak',
         hotelLocation: 'بالي',
         hotelArea: 'سيمنياك',
         hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم', 'فيلا من ثلاث غرف نوم', 'فيلا من اربع غرف نوم', 'فيلا من خمس غرف نوم'],
