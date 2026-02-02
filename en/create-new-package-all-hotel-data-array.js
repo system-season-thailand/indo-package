@@ -378,7 +378,7 @@ let allHotelDataArray = [
         hotelRoomTypes: ['Smart One BR Villa with PP and Jacuzi', 'Grand Smart One BR Villa with PP and Jacuzzi', 'Grand Smart One BR Villa with PP and Jacuzzi with Lagoon Access', 'Grand Smart Suite Double with Bathtub', 'Grand Smart Suite Twin with Bathtub', 'Smart Suite Room'],
     },
     {
-        hotelName: 'Impiana Villa',
+        hotelName: 'Impiana Private Villas Seminyak',
         hotelLocation: 'Bali',
         hotelArea: 'Seminyak',
         hotelRoomTypes: ['One BR Pool Villa', 'Deluxe One BR Pool Villa', 'Two BR Pool Villa', 'Three BR Pool Villa', 'Four BR Pool Villa', 'Five BR Pool Villa'],
