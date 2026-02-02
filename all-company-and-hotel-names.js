@@ -283,6 +283,15 @@ const companyNames = [
     { name: "الوجهة الاولى", company_by_value: "mst" },
     { name: "ملاذ للسفر والسياحة", company_by_value: "mst" },
     { name: "لوكسري ترافل", company_by_value: "mst" },
+    { name: "سكاي ترافيلر", company_by_value: "mst" },
+    { name: "روافي الاحلام", company_by_value: "ofs" },
+    { name: "عالم الراية", company_by_value: "mst" },
+    { name: "بلاتينيوم للسفر", company_by_value: "mst" },
+    { name: "تذكرة دوت كوم", company_by_value: "mst" },
+    { name: "ترافل يلا", company_by_value: "mst" },
+    { name: "رحلة", company_by_value: null },
+    { name: "اميال المتحدة", company_by_value: null },
+    { name: "حفاوة المسافرون", company_by_value: null },
     { name: "الميادين للسفر", company_by_value: null },
     { name: "ibs", company_by_value: null }
 ];
