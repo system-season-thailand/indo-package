@@ -387,7 +387,7 @@ let allHotelDataArray = [
         hotelName: 'W Bali',
         hotelLocation: 'بالي',
         hotelArea: 'سيمنياك',
-        hotelRoomTypes: ['سوبريور روم', 'بريمير روم', 'فيلا اويسس من غرفة نوم واحدة', 'فيلا اويسس من غرفتين نوم'],
+        hotelRoomTypes: ['سوبريور روم', 'بريمير روم مواجهة للمحيط', 'فيلا اويسس من غرفة نوم واحدة', 'فيلا اويسس من غرفتين نوم'],
     },
     {
         hotelName: 'Aleva Villa',
