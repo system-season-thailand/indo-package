@@ -9,7 +9,6 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "صالح للإستخدام الى 31 ديسمبر 2025",
     },
 
-
     {
         hotelName: "Indigo Bali",
         messageInfo_p1: "حجز ثلاث ليالي او اكثر:",
@@ -26,7 +25,6 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "صالح للإستخدام الى 31 أكتوبر 2025",
     },
 
-
     {
         hotelName: "E Sanctuary Resort",
         messageInfo_p1: "حجز ليلين او اكثر:",
@@ -41,14 +39,12 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "صالح للإستخدام الى 23 ديسمبر 2025",
     },
 
-
     {
         hotelName: "Komaneka Keramas",
         messageInfo_p1: "حجز ليلين او اكثر",
         messageInfo_p2: "إفطار عائم مجاني لشخصين لمره واحدة",
         messageInfo_p3: "صالح للإستخدام الى 23 ديسمبر 2025",
     },
-
 
     {
         hotelName: "Tejaprana Resort & Spa",
@@ -57,7 +53,6 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "صالح للإستخدام الى 31 مارس 2026",
     },
 
-
     {
         hotelName: "Bali Beach Hotel Sanur",
         messageInfo_p1: "حجز ليلتين او أكثر:",
@@ -65,11 +60,45 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "صالح للإستخدام الى 30 نوفمبر 2026",
     },
 
-
     {
         hotelName: "The Meru Sanur",
         messageInfo_p1: "حجز ليلتين او أكثر:",
         messageInfo_p2: "طبقين غداء او عشاء لشخصين لمره واحدة",
         messageInfo_p3: "صالح للإستخدام الى 30 نوفمبر 2026",
+    },
+
+    {
+        hotelName: "Adiwana Suweta",
+        messageInfo_p1: "اديوانا عندهم شاي بعد الظهر يومياً",
+    },
+
+    {
+        hotelName: "Aksari Suweta",
+        messageInfo_p1: "حجز 3 ليالي او أكثر",
+        messageInfo_p2: "إفطار عائم لمرة واحدة + ديكور ورد رومنسي على السرير لمرة واحدة",
+        messageInfo_p3: "الإفطار العائم متوفرة في الفلل فقط",
+    },
+    
+    {
+        hotelName: "Amarea Ubud",
+        messageInfo_p1: "حجز 3 ليالي او أكثر",
+        messageInfo_p2: "إفطار عائم لمرة واحدة + ديكور ورد رومنسي على السرير لمرة واحدة",
+        messageInfo_p3: "الإفطار العائم متوفرة في الفلل فقط",
+    },
+
+    {
+        hotelName: "Samsara Ubud",
+        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
+        messageInfo_p3: "طبقين عشاء رومانسي على ضوء الشموع لشخصين في الفيلا لمرة واحدة",
+        messageInfo_p4: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
+        messageInfo_p5: "صالح للإستخدام الى 31 مارس 2027",
+    },
+
+    {
+        hotelName: "The Claremont Villa",
+        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
+        messageInfo_p3: "ابو تميم ماحدد مدة صلاحية الاستخدام",
     },
 ];
