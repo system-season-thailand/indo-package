@@ -101,4 +101,11 @@ const hotelMessageInfoArray = [
         messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
         messageInfo_p3: "ابو تميم ماحدد مدة صلاحية الاستخدام",
     },
+
+    {
+        hotelName: "Impiana Private Villas Ubud",
+        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
+        messageInfo_p3: "ابو تميم ماحدد مدة صلاحية الاستخدام",
+    },
 ];
