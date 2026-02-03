@@ -115,4 +115,11 @@ const hotelMessageInfoArray = [
         messageInfo_p2: "جلسة سبأ لشخصين لمرة واحدة",
         messageInfo_p3: "صالح للإستخدام الى 30 يونيو 2026",
     },
+
+    {
+        hotelName: "Holiday Inn Nusa Dua",
+        messageInfo_p1: "حجز 3 ليالي او أكثر",
+        messageInfo_p2: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
+        messageInfo_p3: "صالح للإستخدام في حجوزات بتواريخ من 1 فبراير الى 20 ديسمبر 2026",
+    },
 ];
