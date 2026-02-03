@@ -12,8 +12,8 @@ const hotelMessageInfoArray = [
     {
         hotelName: "Indigo Bali",
         messageInfo_p1: "حجز ثلاث ليالي او اكثر:",
-        messageInfo_p2: "مساج مجاني لشخصين لمدة 60 دقيقة",
-        messageInfo_p3: "صالح للإستخدام الى 31 أكتوبر 2025",
+        messageInfo_p2: "مساج لشخصين لمدة 60 دقيقة",
+        messageInfo_p3: "صالح للإستخدام الى 28 فبراير (حجوزات في تواريخ 5 يناير - 31 مايو)",
         messageInfo_p4: "حجز ثلاث ليالي او اكثر في غرفة ستاندرد = فري ابجريد الى ستاندر جاردن:",
         messageInfo_p5: "الفري ابجريد صالح للإستخدام الى 28 فبراير فقط - لفترة الحجز من 5 يناير الى 17 مارس",
     },
@@ -78,7 +78,7 @@ const hotelMessageInfoArray = [
         messageInfo_p2: "إفطار عائم لمرة واحدة + ديكور ورد رومنسي على السرير لمرة واحدة",
         messageInfo_p3: "الإفطار العائم متوفرة في الفلل فقط",
     },
-    
+
     {
         hotelName: "Amarea Ubud",
         messageInfo_p1: "حجز 3 ليالي او أكثر",
@@ -105,7 +105,7 @@ const hotelMessageInfoArray = [
 
     {
         hotelName: "Impiana Private Villas Ubud",
-        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p1: "حجز ليلتين او أكثر في أي فيلا",
         messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
         messageInfo_p3: "ابو تميم ماحدد مدة صلاحية الاستخدام",
     },
@@ -122,5 +122,12 @@ const hotelMessageInfoArray = [
         messageInfo_p1: "حجز 3 ليالي او أكثر",
         messageInfo_p2: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
         messageInfo_p3: "صالح للإستخدام في حجوزات بتواريخ من 1 فبراير الى 20 ديسمبر 2026",
+    },
+
+    {
+        hotelName: "Komaneka Keramas",
+        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2026",
     },
 ];
