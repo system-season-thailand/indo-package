@@ -292,6 +292,7 @@ const companyNames = [
     { name: "ماي تيكت", company_by_value: "mst" },
     { name: "ساعة السفر", company_by_value: "awa" },
     { name: "راينا", company_by_value: "awa" },
+    { name: "باقة افكار", company_by_value: "ofs" },
     { name: "واجهة السفر", company_by_value: null },
     { name: "رحلة", company_by_value: null },
     { name: "اميال المتحدة", company_by_value: null },
