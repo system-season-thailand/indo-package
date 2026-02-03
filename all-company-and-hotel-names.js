@@ -31,7 +31,6 @@ const companyNames = [
     { name: "انجاز الاتحاد", company_by_value: "awa" },
     { name: "اهدافي", company_by_value: "awa" },
     { name: "اوتاد", company_by_value: "awa" },
-    { name: "باقة سفر", company_by_value: "ofs" },
     { name: "بن غيث", company_by_value: null },
     { name: "بوابة الخروج", company_by_value: "awa" },
     { name: "بوردينق", company_by_value: "ofs" },
