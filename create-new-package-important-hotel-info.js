@@ -21,8 +21,8 @@ const hotelMessageInfoArray = [
     {
         hotelName: "Maharaja Villas Seminyak",
         messageInfo_p1: "حجز ليلين او اكثر:",
-        messageInfo_p2: "إفطار عائم مجاني لشخصين لمره واحدة",
-        messageInfo_p3: "صالح للإستخدام الى 31 أكتوبر 2025",
+        messageInfo_p2: "إفطار عائم لشخصين لمره واحدة",
+        messageInfo_p3: "صالح للإستخدام الى 30 يونيو 2026",
     },
 
     {
@@ -50,7 +50,7 @@ const hotelMessageInfoArray = [
         hotelName: "Tejaprana Resort & Spa",
         messageInfo_p1: "حجز ليلين او اكثر",
         messageInfo_p2: "إفطار عائم مجاني لشخصين لمره واحدة",
-        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2026",
+        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2027",
     },
 
     {
@@ -86,6 +86,17 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "الإفطار العائم متوفرة في الفلل فقط",
     },
 
+    {
+        hotelName: "Samsara Ubud",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
+        messageInfo_p3: "عشاء رومانسي لشخصين في الفيلا لمرة واحدة",
+        messageInfo_p4: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
+        messageInfo_p6: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+
+    /* 1 April 2026 Onward Use The Following Benefits And Remove The Above One */
     /* {
         hotelName: "Samsara Ubud",
         messageInfo_p1: "حجز ليلتين او أكثر",
@@ -95,6 +106,7 @@ const hotelMessageInfoArray = [
         messageInfo_p5: "تزيين ورد في حوض الاستحمام",
         messageInfo_p6: "صالح للإستخدام من 1 ابريل الى 31 مارس 2027",
     }, */
+
 
     {
         hotelName: "The Claremont Villa",
@@ -129,5 +141,41 @@ const hotelMessageInfoArray = [
         messageInfo_p1: "حجز ليلتين او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
         messageInfo_p3: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+
+    /* 1 April 2026 Onward Use The Following Benefits And Remove The Above One */
+    /* {
+        hotelName: "Komaneka Keramas",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p2: "غداء او عشاء لشخصين لمرة واحدة",
+        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2027",
+    }, */
+
+
+    {
+        hotelName: "Natya Resort",
+        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p2: "شاي بعد الظهر لمرة واحدة",
+        messageInfo_p3: "صالح للإستخدام الى 30 يونيو 2026",
+    },
+
+    {
+        hotelName: "Sanctoo Suites And Villas",
+        messageInfo_p1: "حجز ليلتين او أكثر في أي فيلا",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p2: "شاي بعد الظهر يومياً",
+        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+    {
+        hotelName: "Umana Bali",
+        messageInfo_p1: "حجز ليلتين او أكثر في أي فيلا",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p3: "الإفطار صالح للإستخدام الى 31 مارس 2027",
+        messageInfo_p4: "طبقين عشاء او غداء (طعام فقط) لمرة واحدة",
+        messageInfo_p5: "صالح للإستخدام الى 31 أغسطس 2026",
     },
 ];
