@@ -92,7 +92,7 @@ const hotelMessageInfoArray = [
         messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
         messageInfo_p3: "عشاء رومانسي لشخصين في الفيلا لمرة واحدة",
         messageInfo_p4: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
-        messageInfo_p6: "صالح للإستخدام الى 31 مارس 2026",
+        messageInfo_p5: "صالح للإستخدام الى 31 مارس 2026",
     },
 
 
