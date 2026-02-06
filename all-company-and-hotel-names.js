@@ -297,6 +297,7 @@ const companyNames = [
     { name: "عالم المسافر", company_by_value: "awa" },
     { name: "رحلة العالم", company_by_value: "awa" },
     { name: "xml holiday", company_by_value: "mst" },
+    { name: "طلعة للسفر", company_by_value: "ofs" },
     { name: "واجهة السفر", company_by_value: null },
     { name: "رحلة", company_by_value: null },
     { name: "اميال المتحدة", company_by_value: null },
