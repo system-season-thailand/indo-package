@@ -158,7 +158,6 @@ const hotelMessageInfoArray = [
         hotelName: "Natya Resort",
         messageInfo_p1: "حجز ليلتين او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p2: "شاي بعد الظهر لمرة واحدة",
         messageInfo_p3: "صالح للإستخدام الى 30 يونيو 2026",
     },
 
