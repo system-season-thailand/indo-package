@@ -177,4 +177,43 @@ const hotelMessageInfoArray = [
         messageInfo_p4: "طبقين عشاء او غداء (طعام فقط) لمرة واحدة",
         messageInfo_p5: "صالح للإستخدام الى 31 أغسطس 2026",
     },
+
+    {
+        hotelName: "Aksari Seminyak",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+    {
+        hotelName: "Aleva Villa",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+    {
+        hotelName: "Astera Villa",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+    {
+        hotelName: "Ayona Villa",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+    {
+        hotelName: "Courtyard Seminyak",
+        messageInfo_p1: "غير مشترط بعدد ليالي",
+        messageInfo_p2: "فري ابجريد الى ديلوكس بول فيو",
+        messageInfo_p3: "صالح للإستخدام الى 28 فبراير 2026 (حجوزات بتواريخ الى 31 مارس 2026)",
+    },
 ];
