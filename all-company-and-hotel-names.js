@@ -372,7 +372,7 @@ const hotelNames = [
     "Aleva Villa",
     "Monolocale Resort",
     "Ize Seminyak",
-    "Aksari Villa",
+    "Aksari Seminyak",
     "Astera Villa",
     "Ayona Villa",
     "Cyrus Villa",
