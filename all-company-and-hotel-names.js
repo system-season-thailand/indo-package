@@ -299,6 +299,7 @@ const companyNames = [
     { name: "xml holiday", company_by_value: "mst" },
     { name: "طلعة للسفر", company_by_value: "ofs" },
     { name: "نيو ريفر", company_by_value: "ofs" },
+    { name: "كوف ترافل", company_by_value: "ofs" },
     { name: "طير تورز", company_by_value: null },
     { name: "واجهة السفر", company_by_value: null },
     { name: "رحلة", company_by_value: null },
