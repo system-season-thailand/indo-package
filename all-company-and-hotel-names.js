@@ -300,7 +300,7 @@ const companyNames = [
     { name: "طلعة للسفر", company_by_value: "ofs" },
     { name: "نيو ريفر", company_by_value: "ofs" },
     { name: "كوف ترافل", company_by_value: "ofs" },
-    { name: "ابدا رحلتك", company_by_value: null },
+    { name: "ابدا رحلتك", company_by_value: "mst" },
     { name: "سفريات الجزيرة 2", company_by_value: null },
     { name: "ايراد", company_by_value: null },
     { name: "ترافنوسا", company_by_value: null },
