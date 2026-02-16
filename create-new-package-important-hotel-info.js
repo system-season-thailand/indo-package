@@ -173,9 +173,7 @@ const hotelMessageInfoArray = [
         hotelName: "Umana Bali",
         messageInfo_p1: "حجز ليلتين او أكثر في أي فيلا",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p3: "الإفطار صالح للإستخدام الى 31 مارس 2027",
-        messageInfo_p4: "طبقين عشاء او غداء (طعام فقط) لمرة واحدة",
-        messageInfo_p5: "صالح للإستخدام الى 31 أغسطس 2026",
+        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2026 (حجوزات بتواريخ من الان الى 31 مارس 2026)",
     },
 
     {
