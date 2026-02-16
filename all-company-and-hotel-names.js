@@ -301,6 +301,9 @@ const companyNames = [
     { name: "نيو ريفر", company_by_value: "ofs" },
     { name: "كوف ترافل", company_by_value: "ofs" },
     { name: "ابدا رحلتك", company_by_value: "mst" },
+    { name: "سماء المسافر", company_by_value: "mst" },
+    { name: "حلول السفر", company_by_value: "mst" },
+    { name: "فاموس ترافل", company_by_value: "ofs" },
     { name: "سفريات الجزيرة 2", company_by_value: null },
     { name: "ايراد", company_by_value: null },
     { name: "ترافنوسا", company_by_value: null },
@@ -430,6 +433,7 @@ const hotelNames = [
     "Vertu Harmoni",
     "Pan Pacific",
     "Ascott Kuningan",
+    "Ascott Menteng Jakarta",
     "Grand Mercure",
     "Sheraton Soekarno",
     "Grove Suites",
@@ -504,6 +508,12 @@ const hotelNames = [
     "InterContinental Bandung",
     "The Sebali Resort Ubud",
     "Villa Aura Puncak",
+    "Ayuterra Resort",
+    "The Leaf Jimbaran",
+    "S18 Bali Villas",
+    "Asvara Luxury Resort",
+    "Avani Seminyak Resort",
+    "The Lumbung Jaya Resort",
 
 
 
