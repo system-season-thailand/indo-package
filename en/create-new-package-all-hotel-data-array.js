@@ -264,6 +264,18 @@ let allHotelDataArray = [
         hotelArea: 'Ubud',
         hotelRoomTypes: ['One BR Suite PP Valley View', 'One BR PP Villa Valley View', 'One BR Villa Rooftop PP Valley View'],
     },
+    {
+        hotelName: 'Ayuterra Resort',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['One BR Deluxe Villa', 'One BR Royal Villa', 'Two BR Penthouse Villa'],
+    },
+    {
+        hotelName: 'Asvara Luxury Resort',
+        hotelLocation: 'Bali',
+        hotelArea: 'Ubud',
+        hotelRoomTypes: ['One BR with PP', 'Two BR with PP'],
+    },
 
 
 
@@ -521,6 +533,12 @@ let allHotelDataArray = [
         hotelArea: 'Seminyak',
         hotelRoomTypes: ['Deluxe Street View', 'Deluxe Garden View', 'Deluxe Pool View'],
     },
+    {
+        hotelName: 'Avani Seminyak Resort',
+        hotelLocation: 'Bali',
+        hotelArea: 'Seminyak',
+        hotelRoomTypes: ['One BR Apartment Suites', 'Two BR Apartment Suites', 'One BR Pool Villa', 'Two BR Pool Villa'],
+    },
 
 
 
@@ -672,6 +690,12 @@ let allHotelDataArray = [
         hotelArea: 'Jimbaran',
         hotelRoomTypes: ['Resort View Room', 'Jimbaran Bay Room', 'Pool Access Room', 'Resort View Suite', 'Pool Access Suite', 'Two BR Resort View Room', 'Two BR Resort View Suite', 'Wana Resort View Room', 'Wana Garden View Room', 'Wana Ocean View Room', 'Wana Pool Access Room', 'Wana 2 BR Resort View Room', 'Wana 2 BR Ocean View Room'],
     },
+    {
+        hotelName: 'The Leaf Jimbaran',
+        hotelLocation: 'Bali',
+        hotelArea: 'Jimbaran',
+        hotelRoomTypes: ['Spearmint One BR Villa', 'Sage Two BR Villa', 'Rosemary Three BR Villa'],
+    },
 
 
 
@@ -740,6 +764,12 @@ let allHotelDataArray = [
         hotelLocation: 'Bali',
         hotelArea: 'Legian',
         hotelRoomTypes: ['Smart 1 BR Villa with PP and Jacuzi', 'Grand Smart 1 BR Villa with PP and Jacuzzi', 'Grand Smart One BR Villa with PP and Jacuzzi with Lagoon Access', 'Grand Smart Suite Double with Bathtub', 'Grand Smart Suite Twin with Bathtub', 'Smart Suite Room'],
+    },
+    {
+        hotelName: 'S18 Bali Villas',
+        hotelLocation: 'Bali',
+        hotelArea: 'Legian',
+        hotelRoomTypes: ['One BR Villa', 'Two BR Villa', 'Three BR Villa'],
     },
 
 
@@ -824,6 +854,11 @@ let allHotelDataArray = [
         hotelName: 'Ascott Kuningan',
         hotelLocation: 'Jakarta',
         hotelRoomTypes: ['One BR Executive', 'One BR Premier ', 'Two BR Premier', 'Three BR Premier'],
+    },
+    {
+        hotelName: 'Ascott Menteng Jakarta',
+        hotelLocation: 'Jakarta',
+        hotelRoomTypes: ['Studio Premier', 'One BR Premier ', 'Family Suite', 'Two BR Premier'],
     },
     {
         hotelName: 'Grand Mercure',
