@@ -264,6 +264,18 @@ let allHotelDataArray = [
         hotelArea: 'اوبود',
         hotelRoomTypes: ['سويت من غرفة نوم واحدة', 'فيلا من غرفة نوم واحدة', 'فيلا روفتوب من غرفة نوم واحدة'],
     },
+    {
+        hotelName: 'Ayuterra Resort',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['فيلا ديلوكس من غرفة نوم واحدة', 'فيلا رويال من غرفة نوم واحدة', 'فيلا بينتهاوس من غرفتين نوم'],
+    },
+    {
+        hotelName: 'Asvara Luxury Resort',
+        hotelLocation: 'بالي',
+        hotelArea: 'اوبود',
+        hotelRoomTypes: ['غرفة نوم واحدة مع مسبح خاص', 'غرفتين نوم مع مسبح خاص'],
+    },
 
 
 
@@ -408,7 +420,7 @@ let allHotelDataArray = [
         hotelRoomTypes: ['ديلوكس روم', 'ديلوكس جاكوزي', 'كلوب روم', 'جونيور سويت'],
     },
     {
-        hotelName: 'Aksari Villa',
+        hotelName: 'Aksari Seminyak',
         hotelLocation: 'بالي',
         hotelArea: 'سيمنياك',
         hotelRoomTypes: ['فيلا رويال ذكية من غرفة نوم واحدة مع حوض إستحمام'],
@@ -517,6 +529,12 @@ let allHotelDataArray = [
     },
     {
         hotelName: 'Grand Mercure Seminyak',
+        hotelLocation: 'بالي',
+        hotelArea: 'سيمنياك',
+        hotelRoomTypes: ['ديلوكس روم'],
+    },
+    {
+        hotelName: 'Avani Seminyak Resort',
         hotelLocation: 'بالي',
         hotelArea: 'سيمنياك',
         hotelRoomTypes: ['ديلوكس روم'],
@@ -672,6 +690,12 @@ let allHotelDataArray = [
         hotelArea: 'جيمباران',
         hotelRoomTypes: ['ريسورت فيو روم', 'جيمباران باي روم', 'بوول اكسس روم', 'ريسورت فيو سويت', 'بوول اكسس سويت', 'ريسورت فيو من غرفتين نوم', 'ريسورت فيو سويت من غرفتين نوم', 'وآنا ريسورت فيو يوم', 'وآنا جاردن فيو روم', 'وآنا اوشن فيو روم', 'وآنا بوول اكسس روم', 'وآنا ريسورت فيو من غرفتين نوم', 'وآنا اوشن فيو من غرفتين نوم'],
     },
+    {
+        hotelName: 'The Leaf Jimbaran',
+        hotelLocation: 'بالي',
+        hotelArea: 'جيمباران',
+        hotelRoomTypes: ['سبيرمنت فيلا من غرفة نوم واحدة', 'سيج فيلا من غرفتين نوم', 'روزماري فيلا من ثلاث غرف نوم'],
+    },
 
 
 
@@ -740,6 +764,12 @@ let allHotelDataArray = [
         hotelLocation: 'بالي',
         hotelArea: 'ليجين',
         hotelRoomTypes: ['فيلا رويال من غرفة نوم واحدة وجاكوزي', 'فيلا من غرفتين نوم وجاكوزي'],
+    },
+    {
+        hotelName: 'S18 Bali Villas',
+        hotelLocation: 'بالي',
+        hotelArea: 'ليجين',
+        hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم','فيلا من ثلاث غرف نوم'],
     },
 
 
@@ -824,6 +854,11 @@ let allHotelDataArray = [
         hotelName: 'Ascott Kuningan',
         hotelLocation: 'جاكرتا',
         hotelRoomTypes: ['التنفيذي من غرفة نوم واحدة', 'بريمير من غرفة نوم واحدة', 'بريمير من غرفتين نوم', 'بريمير من ثلاث غرف نوم', 'ديلوكس روم', 'سويت روم'],
+    },
+    {
+        hotelName: 'Ascott Menteng Jakarta',
+        hotelLocation: 'جاكرتا',
+        hotelRoomTypes: ['ستوديو بريمير', 'بريمير من غرفة نوم واحدة', 'فاميلي سويت', 'بريمير من غرفتين نوم'],
     },
     {
         hotelName: 'Grand Mercure',
