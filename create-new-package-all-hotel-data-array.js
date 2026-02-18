@@ -537,7 +537,7 @@ let allHotelDataArray = [
         hotelName: 'Avani Seminyak Resort',
         hotelLocation: 'بالي',
         hotelArea: 'سيمنياك',
-        hotelRoomTypes: ['ديلوكس روم'],
+        hotelRoomTypes: ['شقة بغرفة نوم واحدة','شقة من غرفتين نوم','فيلا من غرفة نوم واحدة','فيلا من غرفتين نوم'],
     },
 
 
