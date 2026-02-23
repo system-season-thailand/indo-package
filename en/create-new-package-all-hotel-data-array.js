@@ -928,7 +928,7 @@ let allHotelDataArray = [
     {
         hotelName: 'Botanica Sanctuary',
         hotelLocation: 'Puncak',
-        hotelRoomTypes: ['Deluxe Room', 'Deluxe Secret Garden', 'Premier Room', 'Unique Corner', 'Loft Room', 'The Garden Suites', 'The Valley Suite'],
+        hotelRoomTypes: ['Deluxe Room', 'Deluxe Secret Garden', 'Premier Room', 'Loft Family Room'],
     },
     {
         hotelName: 'Pesona Alam',
