@@ -928,7 +928,7 @@ let allHotelDataArray = [
     {
         hotelName: 'Botanica Sanctuary',
         hotelLocation: 'بونشاك',
-        hotelRoomTypes: ['سوبريور روم', 'ديلوكس روم', 'برمير روم', 'ذا فالي سويت'],
+        hotelRoomTypes: ['ديلوكس روم', 'ديلوكس سيكرت جارن', 'برمير روم', 'لوفت فاميلي روم'],
     },
     {
         hotelName: 'Pesona Alam',
