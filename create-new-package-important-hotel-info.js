@@ -86,25 +86,14 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "الإفطار العائم متوفرة في الفلل فقط",
     },
 
-    {
-        hotelName: "Samsara Ubud",
-        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
-        messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
-        messageInfo_p3: "عشاء رومانسي لشخصين في الفيلا لمرة واحدة",
-        messageInfo_p4: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
-        messageInfo_p5: "صالح للإستخدام الى 31 مارس 2026",
-    },
-
-
     /* 1 April 2026 Onward Use The Following Benefits And Remove The Above One */
     /* {
         hotelName: "Samsara Ubud",
         messageInfo_p1: "حجز ليلتين او أكثر",
         messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
-        messageInfo_p3: "طبقين عشاء رومانسي على ضوء الشموع لشخصين في الفيلا لمرة واحدة",
+        messageInfo_p3: "عشاء رومانسي لشخصين في الفيلا لمرة واحدة",
         messageInfo_p4: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
-        messageInfo_p5: "تزيين ورد في حوض الاستحمام",
-        messageInfo_p6: "صالح للإستخدام من 1 ابريل الى 31 مارس 2027",
+        messageInfo_p5: "صالح للإستخدام الى 31 مارس 2027",
     }, */
 
 
@@ -186,6 +175,14 @@ const hotelMessageInfoArray = [
 
     {
         hotelName: "Aleva Villa",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+    {
+        hotelName: "Cyrus Villa",
         messageInfo_p1: "حجز ثلاث ليالي او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
         messageInfo_p3: "تزيين ورد رومنسي على السرير",
