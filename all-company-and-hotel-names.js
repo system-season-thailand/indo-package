@@ -305,6 +305,8 @@ const companyNames = [
     { name: "حلول السفر", company_by_value: "mst" },
     { name: "فاموس ترافل", company_by_value: "ofs" },
     { name: "المغامر", company_by_value: "ofs" },
+    { name: "خبير العالم", company_by_value: "mst" },
+    { name: "مواصله", company_by_value: null },
     { name: "سفريات الجزيرة 2", company_by_value: null },
     { name: "ايراد", company_by_value: null },
     { name: "ترافنوسا", company_by_value: null },
