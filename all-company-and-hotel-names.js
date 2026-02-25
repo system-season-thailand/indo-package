@@ -308,6 +308,7 @@ const companyNames = [
     { name: "خبير العالم", company_by_value: "mst" },
     { name: "مواصله", company_by_value: "ofs" },
     { name: "اطياف تورز", company_by_value: "mst" },
+    { name: "تاكيد", company_by_value: "ofs" },
     { name: "سفريات الجزيرة 2", company_by_value: null },
     { name: "ايراد", company_by_value: null },
     { name: "ترافنوسا", company_by_value: null },
