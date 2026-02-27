@@ -131,14 +131,13 @@ const hotelMessageInfoArray = [
     },
 
 
-    /* 1 April 2026 Onward Use The Following Benefits And Remove The Above One */
-    /* {
+    {
         hotelName: "Komaneka Keramas",
         messageInfo_p1: "حجز ثلاث ليالي او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p2: "غداء او عشاء لشخصين لمرة واحدة",
-        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2027",
-    }, */
+        messageInfo_p3: "غداء او عشاء لشخصين لمرة واحدة",
+        messageInfo_p4: "صالح للإستخدام الى 31 مارس 2027",
+    },
 
 
     {
@@ -152,8 +151,8 @@ const hotelMessageInfoArray = [
         hotelName: "Sanctoo Suites And Villas",
         messageInfo_p1: "حجز ليلتين او أكثر في أي فيلا",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p2: "شاي بعد الظهر يومياً",
-        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2026",
+        messageInfo_p3: "شاي بعد الظهر يومياً",
+        messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
     },
 
     {
@@ -208,5 +207,21 @@ const hotelMessageInfoArray = [
         messageInfo_p1: "غير مشترط بعدد ليالي",
         messageInfo_p2: "فري ابجريد الى ديلوكس بول فيو",
         messageInfo_p3: "صالح للإستخدام الى 28 فبراير 2026 (حجوزات بتواريخ الى 31 مارس 2026)",
+    },
+
+    {
+        hotelName: "The Samaya Seminyak",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "وجبة غداء خفيفة مرة واحدة لشخصين غير شامل المشروبات",
+        messageInfo_p3: "صالح للإستخدام الى 31 مارس 2026",
+    },
+
+    {
+        hotelName: "ًW Bali",
+        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p2: "فري ابجريد من سوبريور جاردن الى بريمير مواجهة للمحيط",
+        messageInfo_p3: "الابجريد غير متوفر في حجوزات 1-5 ابريل",
+        messageInfo_p4: "الابجريد متوفرة في حال غرفة البريمير متوفرة",
+        messageInfo_p5: "صالح للإستخدام الى 31 مارس 2026 (حجوزات بتواريخ من 20 مارس الى 30 ابريل 2026)",
     },
 ];
