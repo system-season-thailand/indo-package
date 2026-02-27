@@ -233,4 +233,26 @@ const hotelMessageInfoArray = [
         messageInfo_p4: "تزيين رومنسي في حوض الاستحمام",
         messageInfo_p5: "صالح للإستخدام الى 31 مارس 2026 (حجوزات بتواريخ من 20 مارس الى 30 ابريل 2026)",
     },
+
+    {
+        hotelName: "Four Seasons Sayan",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "ثلاث أطباق غداء (طعام فقط) لشخصين لمرة واحدة",
+        messageInfo_p3: "صالح للإستخدام الى 30 يونيو 2026",
+    },
+
+    {
+        hotelName: "Four Seasons Jimbaran",
+        messageInfo_p1: "حجز ثلاث ليالي او أكثر",
+        messageInfo_p2: "ثلاث أطباق غداء (طعام فقط) لشخصين لمرة واحدة",
+        messageInfo_p3: "صالح للإستخدام الى 30 يونيو 2026",
+    },
+
+    {
+        hotelName: "Hanging Garden of Bali",
+        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
+        messageInfo_p3: "الافطار العائم غير متوفر في حال استخدمت ميزة (حجز 3 ليالي بسعر ليلتين)",
+        messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
+    },
 ];
