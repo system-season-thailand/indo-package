@@ -86,16 +86,14 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "الإفطار العائم متوفرة في الفلل فقط",
     },
 
-    /* 1 April 2026 Onward Use The Following Benefits And Remove The Above One */
-    /* {
+    {
         hotelName: "Samsara Ubud",
         messageInfo_p1: "حجز ليلتين او أكثر",
         messageInfo_p2: "إفطار عائم لمرة واحدة لشخصين",
         messageInfo_p3: "عشاء رومانسي لشخصين في الفيلا لمرة واحدة",
         messageInfo_p4: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
         messageInfo_p5: "صالح للإستخدام الى 31 مارس 2027",
-    }, */
-
+    },
 
     {
         hotelName: "The Claremont Villa",
