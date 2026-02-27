@@ -75,14 +75,14 @@ const hotelMessageInfoArray = [
     {
         hotelName: "Aksari Suweta",
         messageInfo_p1: "حجز 3 ليالي او أكثر",
-        messageInfo_p2: "إفطار عائم لمرة واحدة + ديكور ورد رومنسي على السرير لمرة واحدة",
+        messageInfo_p2: "إفطار عائم لمرة واحدة + ديكور رومنسي على السرير لمرة واحدة",
         messageInfo_p3: "الإفطار العائم متوفرة في الفلل فقط",
     },
 
     {
         hotelName: "Amarea Ubud",
         messageInfo_p1: "حجز 3 ليالي او أكثر",
-        messageInfo_p2: "إفطار عائم لمرة واحدة + ديكور ورد رومنسي على السرير لمرة واحدة",
+        messageInfo_p2: "إفطار عائم لمرة واحدة + ديكور رومنسي على السرير لمرة واحدة",
         messageInfo_p3: "الإفطار العائم متوفرة في الفلل فقط",
     },
 
@@ -166,7 +166,7 @@ const hotelMessageInfoArray = [
         hotelName: "Aksari Seminyak",
         messageInfo_p1: "حجز ثلاث ليالي او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p3: "تزيين رومنسي على السرير",
         messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
     },
 
@@ -174,7 +174,7 @@ const hotelMessageInfoArray = [
         hotelName: "Aleva Villa",
         messageInfo_p1: "حجز ثلاث ليالي او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p3: "تزيين رومنسي على السرير",
         messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
     },
 
@@ -182,7 +182,7 @@ const hotelMessageInfoArray = [
         hotelName: "Cyrus Villa",
         messageInfo_p1: "حجز ثلاث ليالي او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p3: "تزيين رومنسي على السرير",
         messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
     },
 
@@ -190,7 +190,7 @@ const hotelMessageInfoArray = [
         hotelName: "Astera Villa",
         messageInfo_p1: "حجز ثلاث ليالي او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p3: "تزيين رومنسي على السرير",
         messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
     },
 
@@ -198,7 +198,7 @@ const hotelMessageInfoArray = [
         hotelName: "Ayona Villa",
         messageInfo_p1: "حجز ثلاث ليالي او أكثر",
         messageInfo_p2: "افطار عائم لشخصين لمرة واحدة",
-        messageInfo_p3: "تزيين ورد رومنسي على السرير",
+        messageInfo_p3: "تزيين رومنسي على السرير",
         messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
     },
 
@@ -222,6 +222,15 @@ const hotelMessageInfoArray = [
         messageInfo_p2: "فري ابجريد من سوبريور جاردن الى بريمير مواجهة للمحيط",
         messageInfo_p3: "الابجريد غير متوفر في حجوزات 1-5 ابريل",
         messageInfo_p4: "الابجريد متوفرة في حال غرفة البريمير متوفرة",
+        messageInfo_p5: "صالح للإستخدام الى 31 مارس 2026 (حجوزات بتواريخ من 20 مارس الى 30 ابريل 2026)",
+    },
+
+    {
+        hotelName: "ًAyuterra Resort",
+        messageInfo_p1: "حجز ليلتين او أكثر",
+        messageInfo_p2: "مساج لشخصين لمدة 60 دقيقة لمرة واحدة",
+        messageInfo_p3: "تزيين رومنسي على السرير",
+        messageInfo_p4: "تزيين رومنسي في حوض الاستحمام",
         messageInfo_p5: "صالح للإستخدام الى 31 مارس 2026 (حجوزات بتواريخ من 20 مارس الى 30 ابريل 2026)",
     },
 ];
