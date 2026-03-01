@@ -61,13 +61,6 @@ const hotelMessageInfoArray = [
     },
 
     {
-        hotelName: "The Meru Sanur",
-        messageInfo_p1: "حجز ليلتين او أكثر:",
-        messageInfo_p2: "طبقين غداء او عشاء لشخصين لمره واحدة",
-        messageInfo_p3: "صالح للإستخدام الى 30 نوفمبر 2026",
-    },
-
-    {
         hotelName: "Adiwana Suweta",
         messageInfo_p1: "اديوانا عندهم شاي بعد الظهر يومياً",
     },
