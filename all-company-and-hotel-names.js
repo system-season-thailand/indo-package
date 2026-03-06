@@ -176,7 +176,7 @@ const companyNames = [
     { name: "الجناح الجوي", company_by_value: null },
     { name: "مدارس دار الفكر", company_by_value: null },
     { name: "sstr", company_by_value: "ofs" },
-    { name: "دليلك", company_by_value: null },
+    { name: "دليلك", company_by_value: "awa" },
     { name: "ممر السعادة", company_by_value: "awa" },
     { name: "وسام النجاح", company_by_value: "awa" },
     { name: "مون واي", company_by_value: "awa" },
