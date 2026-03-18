@@ -537,7 +537,7 @@ let allHotelDataArray = [
         hotelName: 'Avani Seminyak Resort',
         hotelLocation: 'بالي',
         hotelArea: 'سيمنياك',
-        hotelRoomTypes: ['شقة بغرفة نوم واحدة','شقة من غرفتين نوم','فيلا من غرفة نوم واحدة','فيلا من غرفتين نوم'],
+        hotelRoomTypes: ['شقة بغرفة نوم واحدة', 'شقة من غرفتين نوم', 'فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم'],
     },
 
 
@@ -769,7 +769,7 @@ let allHotelDataArray = [
         hotelName: 'S18 Bali Villas',
         hotelLocation: 'بالي',
         hotelArea: 'ليجين',
-        hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم','فيلا من ثلاث غرف نوم'],
+        hotelRoomTypes: ['فيلا من غرفة نوم واحدة', 'فيلا من غرفتين نوم', 'فيلا من ثلاث غرف نوم'],
     },
 
 
@@ -928,7 +928,7 @@ let allHotelDataArray = [
     {
         hotelName: 'Botanica Sanctuary',
         hotelLocation: 'بونشاك',
-        hotelRoomTypes: ['ديلوكس روم', 'ديلوكس سيكرت جارن', 'برمير روم', 'لوفت فاميلي روم'],
+        hotelRoomTypes: ['ديلوكس روم', 'ديلوكس سيكرت جارن', 'برمير روم', 'لوفت فاميلي روم', 'ذا فالي سويت'],
     },
     {
         hotelName: 'Pesona Alam',
