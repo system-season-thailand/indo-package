@@ -248,4 +248,9 @@ const hotelMessageInfoArray = [
         messageInfo_p3: "الافطار العائم غير متوفر في حال استخدمت ميزة (حجز 3 ليالي بسعر ليلتين)",
         messageInfo_p4: "صالح للإستخدام الى 31 مارس 2026",
     },
+
+    {
+        hotelName: "Grand Aston",
+        messageInfo_p1: "من 20 الى 24 يوليو الفندق مافيه توافر",
+    },
 ];
