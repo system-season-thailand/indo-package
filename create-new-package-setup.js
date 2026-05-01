@@ -681,7 +681,7 @@ websiteUsersNameInputOptions.forEach(option => {
 
         let newValue;
 
-        if (option.textContent === 'سامي' || option.textContent === 'ابو سما') {
+        if (option.textContent === 'سامي') {
             newValue = `بكج مستر ${option.textContent}`; // Set input value to selected option
         } else {
             newValue = `بكج ${option.textContent}`; // Set input value to selected option
@@ -1501,6 +1501,86 @@ function calculateTotalNights() {
 /* Function to store the clicked hotel unit amount */
 
 /* Dropdown hotel names functionality */
+const HOTEL_BENEFITS_TABLE_NAME = "indo_hotel_benefits";
+let hotelBenefitsByNameMap = new Map();
+let hotelBenefitsLoadPromise = null;
+let supportsHotelIsHiddenColumn = true;
+
+async function loadHotelBenefitsFromSupabase() {
+    if (hotelBenefitsLoadPromise) return hotelBenefitsLoadPromise;
+
+    hotelBenefitsLoadPromise = (async () => {
+        try {
+            const sbClient = window.supabaseClient || window.supabase;
+            if (!sbClient || typeof sbClient.from !== "function") {
+                console.warn("Supabase client is not ready to fetch hotel benefits.");
+                return;
+            }
+
+            let data = null;
+            let error = null;
+            const withHiddenRes = await sbClient
+                .from(HOTEL_BENEFITS_TABLE_NAME)
+                .select("hotel_name, benefits, is_hidden");
+            data = withHiddenRes.data;
+            error = withHiddenRes.error;
+
+            if (error && /is_hidden|column/i.test(String(error.message || ""))) {
+                supportsHotelIsHiddenColumn = false;
+                const fallbackRes = await sbClient
+                    .from(HOTEL_BENEFITS_TABLE_NAME)
+                    .select("hotel_name, benefits");
+                data = fallbackRes.data;
+                error = fallbackRes.error;
+            } else {
+                supportsHotelIsHiddenColumn = true;
+            }
+
+            if (error) throw error;
+
+            hotelBenefitsByNameMap = new Map();
+            (data || []).forEach(row => {
+                const hotelName = String(row.hotel_name || "").trim();
+                if (!hotelName) return;
+                const isHidden = supportsHotelIsHiddenColumn ? Boolean(row.is_hidden) : false;
+                if (isHidden) return;
+                const benefits = Array.isArray(row.benefits)
+                    ? row.benefits.map(item => String(item || "").trim()).filter(Boolean)
+                    : [];
+                hotelBenefitsByNameMap.set(hotelName, benefits);
+            });
+        } catch (err) {
+            console.error("Failed loading hotel benefits from Supabase:", err);
+        }
+    })();
+
+    return hotelBenefitsLoadPromise;
+}
+
+async function showHotelImportantInfoFromSupabase(hotelName) {
+    const importantInfoBox = document.getElementById("hotel_important_info_box_div");
+    const detailsContainer = document.getElementById("hotelDetails");
+    const titleEl = document.getElementById("important_hotel_info_message_title_id");
+    if (!importantInfoBox || !detailsContainer || !titleEl) return;
+
+    detailsContainer.innerHTML = "";
+    titleEl.innerText = `[${hotelName}]`;
+
+    await loadHotelBenefitsFromSupabase();
+    const benefits = hotelBenefitsByNameMap.get(hotelName) || [];
+    if (!benefits.length) return;
+
+    benefits.forEach(text => {
+        const pElement = document.createElement("p");
+        pElement.textContent = text;
+        pElement.style.whiteSpace = "pre-line";
+        detailsContainer.appendChild(pElement);
+    });
+
+    importantInfoBox.style.visibility = "visible";
+    importantInfoBox.style.opacity = "1";
+}
+
 function setupHotelNamesDropdown() {
     let hotelNameInput = document.getElementById('hotel_name_input_id');
 
@@ -1513,7 +1593,7 @@ function setupHotelNamesDropdown() {
         return;
     }
 
-    hotelNamesContainer.addEventListener('click', (e) => {
+    hotelNamesContainer.addEventListener('click', async (e) => {
         // Check if the clicked element is an h3
         if (e.target.tagName === 'H3') {
             const option = e.target;
@@ -1545,28 +1625,7 @@ function setupHotelNamesDropdown() {
 
 
             /* Function to check if there is a matching hotel name to show important message */
-            document.getElementById("hotelDetails").innerHTML = ""; // Clear previous messages
-
-            // Find the hotel object that matches the selected hotel name
-            const foundHotel = hotelMessageInfoArray.find(hotel => hotel.hotelName === option.textContent);
-
-            if (foundHotel) {
-                // Set the title message dynamically to only include the hotel name
-                document.getElementById("important_hotel_info_message_title_id").innerText = `[${option.textContent}]`;
-
-                // Loop through messageInfo_p properties and create <p> elements
-                Object.keys(foundHotel).forEach(key => {
-                    if (key.startsWith("messageInfo_p")) {
-                        const pElement = document.createElement("p");
-                        pElement.textContent = foundHotel[key];
-                        document.getElementById("hotelDetails").appendChild(pElement);
-                    }
-                });
-
-                // Show the modal smoothly
-                document.getElementById("hotel_important_info_box_div").style.visibility = 'visible';
-                document.getElementById("hotel_important_info_box_div").style.opacity = '1';
-            }
+            await showHotelImportantInfoFromSupabase(option.textContent);
 
 
 
@@ -1596,6 +1655,7 @@ function setupHotelNamesDropdown() {
 
 // Set up hotel names dropdown listeners
 setupHotelNamesDropdown();
+loadHotelBenefitsFromSupabase();
 
 
 
