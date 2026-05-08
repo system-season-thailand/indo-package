@@ -19,9 +19,14 @@
 <div class="container">
     <div class="header">
         <div class="header-title-wrap">
-            <button id="openAdminAccessBtn" class="btn-outline admin-access-toggle" type="button">
-                <i class="fas fa-lock"></i> Admin Access
-            </button>
+            <div class="header-top-actions">
+                <button id="openAdminAccessBtn" class="btn-outline admin-access-toggle" type="button">
+                    <i class="fas fa-lock"></i> Admin Access
+                </button>
+                <button id="openAllHotelsBtn" class="btn-outline admin-access-toggle" type="button">
+                    <i class="fas fa-list-ul"></i> All Hotels
+                </button>
+            </div>
             <div id="adminAccessBox" class="admin-access-box" hidden>
                 <div class="admin-access-panel">
                     <input id="adminPasswordInput" type="password" placeholder="Enter admin password">
@@ -44,6 +49,11 @@
         <i class="fas fa-database"></i> Page End: <strong>Indo Hotel Benefits</strong>
     </footer>
 </div>
+
+<button id="backToTopBtn" class="back-to-top-btn" type="button" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
 
 
 

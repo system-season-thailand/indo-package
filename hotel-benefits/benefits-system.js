@@ -12,6 +12,8 @@
     let hotelPickerModalRefs = null;
     let adminAccessHideTimer = null;
     let hotelPickerHideTimer = null;
+    let allHotelsModalRefs = null;
+    let allHotelsHideTimer = null;
 
     const resolvedHotelNames = (() => {
         if (typeof hotelNames !== "undefined" && Array.isArray(hotelNames)) return hotelNames;
@@ -132,6 +134,16 @@
         return benefits.map(item => String(item || "").trim()).filter(Boolean);
     }
 
+    function areStringArraysEqual(a, b) {
+        const arrA = Array.isArray(a) ? a : [];
+        const arrB = Array.isArray(b) ? b : [];
+        if (arrA.length !== arrB.length) return false;
+        for (let i = 0; i < arrA.length; i += 1) {
+            if (arrA[i] !== arrB[i]) return false;
+        }
+        return true;
+    }
+
     function splitBenefitsAndExpiredInfo(benefits) {
         const normalized = normalizeBenefits(benefits);
         if (!normalized.length) return { benefitsOnly: [], bookingPeriodText: "", expiredText: "" };
@@ -218,6 +230,146 @@
                 .map(select => (select.value || "").trim())
                 .filter(Boolean)
         );
+    }
+
+    function getCurrentCardHotelNamesLowerSet() {
+        const cards = document.querySelectorAll(".hotel-card .hotel-name-input");
+        return new Set(
+            [...cards]
+                .map(input => (input.value || "").trim().toLowerCase())
+                .filter(Boolean)
+        );
+    }
+
+    async function copyTextToClipboard(text) {
+        if (!text) return false;
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (err) {
+                // Ignore and fallback to legacy copy.
+            }
+        }
+        const tempTextarea = document.createElement("textarea");
+        tempTextarea.value = text;
+        tempTextarea.setAttribute("readonly", "");
+        tempTextarea.style.position = "fixed";
+        tempTextarea.style.opacity = "0";
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        const copied = document.execCommand("copy");
+        document.body.removeChild(tempTextarea);
+        return copied;
+    }
+
+    function ensureAllHotelsModal() {
+        if (allHotelsModalRefs) return allHotelsModalRefs;
+
+        const overlay = document.createElement("div");
+        overlay.className = "all-hotels-overlay";
+        overlay.hidden = true;
+        overlay.innerHTML = `
+        <div class="all-hotels-modal" role="dialog" aria-modal="true" aria-labelledby="allHotelsTitle">
+            <div class="all-hotels-modal-head">
+                <h3 id="allHotelsTitle">All Hotels</h3>
+                <div id="allHotelsSummary" class="all-hotels-summary"></div>
+            </div>
+            <input id="allHotelsSearchInput" class="all-hotels-search" type="text" placeholder="Search hotel name..." list="allHotelsDatalist" autocomplete="off">
+            <datalist id="allHotelsDatalist"></datalist>
+            <div id="allHotelsList" class="all-hotels-list"></div>
+            <div class="all-hotels-actions">
+                <button id="closeAllHotelsBtn" type="button" class="btn-outline">Close</button>
+            </div>
+        </div>
+    `;
+        document.body.appendChild(overlay);
+
+        const searchInput = overlay.querySelector("#allHotelsSearchInput");
+        const datalistEl = overlay.querySelector("#allHotelsDatalist");
+        const listEl = overlay.querySelector("#allHotelsList");
+        const summaryEl = overlay.querySelector("#allHotelsSummary");
+        const closeBtn = overlay.querySelector("#closeAllHotelsBtn");
+
+        datalistEl.innerHTML = "";
+        allowedHotelNames.forEach(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            datalistEl.appendChild(option);
+        });
+
+        closeBtn.addEventListener("click", () => closeAllHotelsModal());
+        overlay.addEventListener("click", e => {
+            if (e.target === overlay) closeAllHotelsModal();
+        });
+        searchInput.addEventListener("keydown", e => {
+            if (e.key === "Escape") closeAllHotelsModal();
+        });
+        searchInput.addEventListener("input", () => renderAllHotelsList());
+        listEl.addEventListener("click", async e => {
+            const clickedItem = e.target.closest(".all-hotels-item");
+            if (!clickedItem) return;
+            const hotelName = (clickedItem.dataset.hotelName || "").trim();
+            if (!hotelName) return;
+            const copied = await copyTextToClipboard(hotelName);
+            showToast(copied ? `Copied: ${hotelName}` : "Could not copy hotel name", !copied);
+        });
+
+        allHotelsModalRefs = { overlay, searchInput, listEl, summaryEl };
+        return allHotelsModalRefs;
+    }
+
+    function renderAllHotelsList() {
+        const refs = ensureAllHotelsModal();
+        const { searchInput, listEl, summaryEl } = refs;
+        const query = (searchInput.value || "").trim().toLowerCase();
+        const existingHotelNamesLowerSet = getCurrentCardHotelNamesLowerSet();
+
+        const filteredNames = allowedHotelNames.filter(name => name.toLowerCase().includes(query));
+        const addedCount = filteredNames.filter(name => existingHotelNamesLowerSet.has(name.toLowerCase())).length;
+        const missingCount = filteredNames.length - addedCount;
+
+        summaryEl.textContent = `Added: ${addedCount} || Missing: ${missingCount}`;
+
+        if (!filteredNames.length) {
+            listEl.innerHTML = '<div class="all-hotels-empty">No hotels match your search.</div>';
+            return;
+        }
+
+        listEl.innerHTML = filteredNames.map(name => {
+            const isAdded = existingHotelNamesLowerSet.has(name.toLowerCase());
+            const statusClass = isAdded ? "hotel-status-added" : "hotel-status-missing";
+            const statusText = isAdded ? "Added" : "Missing";
+            return `
+                <div class="all-hotels-item" data-hotel-name="${name.replace(/"/g, "&quot;")}">
+                    <div class="all-hotels-name">${name}</div>
+                    <span class="hotel-status-badge ${statusClass}">${statusText}</span>
+                </div>
+            `;
+        }).join("");
+    }
+
+    function openAllHotelsModal() {
+        const { overlay, searchInput } = ensureAllHotelsModal();
+        if (allHotelsHideTimer) {
+            clearTimeout(allHotelsHideTimer);
+            allHotelsHideTimer = null;
+        }
+        overlay.hidden = false;
+        renderAllHotelsList();
+        requestAnimationFrame(() => overlay.classList.add("is-open"));
+        setTimeout(() => searchInput.focus(), 0);
+    }
+
+    function closeAllHotelsModal() {
+        const { overlay, searchInput } = ensureAllHotelsModal();
+        overlay.classList.remove("is-open");
+        if (allHotelsHideTimer) clearTimeout(allHotelsHideTimer);
+        allHotelsHideTimer = setTimeout(() => {
+            overlay.hidden = true;
+            allHotelsHideTimer = null;
+        }, 240);
+        searchInput.value = "";
     }
 
     function ensureHotelPickerModal() {
@@ -599,12 +751,45 @@
         }
 
         try {
-            const { data: existingRows, error: existingErr } = await sbClient
-                .from(TABLE_NAME)
-                .select("id");
+            let existingRows = null;
+            let existingErr = null;
+            if (supportsIsHiddenColumn) {
+                const withHiddenRes = await sbClient
+                    .from(TABLE_NAME)
+                    .select("id, hotel_name, benefits, is_hidden");
+                existingRows = withHiddenRes.data;
+                existingErr = withHiddenRes.error;
+                if (existingErr && /is_hidden|column/i.test(String(existingErr.message || ""))) {
+                    supportsIsHiddenColumn = false;
+                    const fallbackRes = await sbClient
+                        .from(TABLE_NAME)
+                        .select("id, hotel_name, benefits");
+                    existingRows = fallbackRes.data;
+                    existingErr = fallbackRes.error;
+                }
+            } else {
+                const fallbackRes = await sbClient
+                    .from(TABLE_NAME)
+                    .select("id, hotel_name, benefits");
+                existingRows = fallbackRes.data;
+                existingErr = fallbackRes.error;
+            }
             if (existingErr) throw existingErr;
 
-            const existingIds = new Set((existingRows || []).map(row => row.id));
+            const normalizedExistingRows = (existingRows || []).map(row => ({
+                id: row.id,
+                hotelName: String(row.hotel_name || "").trim(),
+                benefits: normalizeBenefits(row.benefits),
+                isHidden: Boolean(row.is_hidden)
+            }));
+
+            const existingRowsById = new Map(
+                normalizedExistingRows
+                    .filter(row => Number.isInteger(row.id))
+                    .map(row => [row.id, row])
+            );
+
+            const existingIds = new Set(normalizedExistingRows.map(row => row.id));
             const keptIds = new Set(hotels.filter(h => Number.isInteger(h.id)).map(h => h.id));
             const idsToDelete = [...existingIds].filter(id => !keptIds.has(id));
             if (idsToDelete.length) {
@@ -612,19 +797,39 @@
                 if (deleteErr) throw deleteErr;
             }
 
+            let insertedCount = 0;
+            let updatedCount = 0;
+            let deletedCount = idsToDelete.length;
+
             for (const hotel of hotels) {
                 const payload = { hotel_name: hotel.hotelName, benefits: hotel.benefits };
                 if (supportsIsHiddenColumn) payload.is_hidden = Boolean(hotel.isHidden);
                 if (Number.isInteger(hotel.id)) {
+                    const existingRow = existingRowsById.get(hotel.id);
+                    const isChanged = !existingRow
+                        || existingRow.hotelName !== hotel.hotelName
+                        || !areStringArraysEqual(existingRow.benefits, hotel.benefits)
+                        || (supportsIsHiddenColumn && existingRow.isHidden !== Boolean(hotel.isHidden));
+                    if (!isChanged) continue;
                     const { error: updateErr } = await sbClient.from(TABLE_NAME).update(payload).eq("id", hotel.id);
                     if (updateErr) throw updateErr;
+                    updatedCount += 1;
                 } else {
                     const { error: insertErr } = await sbClient.from(TABLE_NAME).insert(payload);
                     if (insertErr) throw insertErr;
+                    insertedCount += 1;
                 }
             }
 
-            showToast(`Saved ${hotels.length} hotel(s) to "${TABLE_NAME}"`, false);
+            const totalChanges = insertedCount + updatedCount + deletedCount;
+            if (totalChanges === 0) {
+                showToast("No changes detected. Database is already up to date.", false);
+            } else {
+                showToast(
+                    `Saved changes - Added: ${insertedCount}, Updated: ${updatedCount}, Deleted: ${deletedCount}`,
+                    false
+                );
+            }
             await loadAndRenderHotels();
         } catch (err) {
             console.error(err);
@@ -675,6 +880,7 @@
         }
 
         const openAdminAccessBtn = document.getElementById("openAdminAccessBtn");
+        const openAllHotelsBtn = document.getElementById("openAllHotelsBtn");
         const adminAccessBox = document.getElementById("adminAccessBox");
         const applyAdminPasswordBtn = document.getElementById("applyAdminPasswordBtn");
         const adminPasswordInput = document.getElementById("adminPasswordInput");
@@ -691,6 +897,7 @@
             if (e.key === "Enter") applyAdminPasswordFromInput();
             if (e.key === "Escape") closeAdminAccessBox();
         });
+        openAllHotelsBtn?.addEventListener("click", openAllHotelsModal);
 
         document.getElementById("addHotelBtn").addEventListener("click", openAddHotelPicker);
         document.getElementById("saveAllBtn").addEventListener("click", saveAllToSupabase);
@@ -703,4 +910,14 @@
             });
         }
     });
+
+
+
+
+    const backToTopBtn = document.getElementById("backToTopBtn");
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
 })();
