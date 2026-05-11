@@ -560,13 +560,13 @@
 
             const bookingPeriodTitle = document.createElement("div");
             bookingPeriodTitle.className = "benefits-title booking-period-title";
-            bookingPeriodTitle.innerHTML = '<i class="fas fa-calendar-alt"></i> BOOKING PERIOD';
+            bookingPeriodTitle.innerHTML = '<i class="fas fa-calendar-alt"></i> STAY PERIOD';
             benefitsSection.appendChild(bookingPeriodTitle);
 
             const bookingPeriodInput = document.createElement("input");
             bookingPeriodInput.type = "text";
             bookingPeriodInput.className = "booking-period-input";
-            bookingPeriodInput.placeholder = "Booking Period";
+            bookingPeriodInput.placeholder = "Stay Period";
             bookingPeriodInput.value = bookingPeriodText;
             attachLiveTitleCase(bookingPeriodInput);
             benefitsSection.appendChild(bookingPeriodInput);
@@ -655,7 +655,7 @@
             });
             const bookingPeriodInput = card.querySelector(".booking-period-input");
             const bookingPeriodText = (bookingPeriodInput?.value || "").trim();
-            if (bookingPeriodText) benefits.push(`Booking Period: ${bookingPeriodText}`);
+            if (bookingPeriodText) benefits.push(`Stay Period: ${bookingPeriodText}`);
             const expiredInput = card.querySelector(".expired-info-input");
             const expiredText = (expiredInput?.value || "").trim();
             if (expiredText) benefits.push(`Expired: ${expiredText}`);
