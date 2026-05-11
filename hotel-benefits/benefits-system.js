@@ -152,7 +152,7 @@
         let expiredText = "";
 
         normalized.forEach(line => {
-            const bookingMatch = line.match(/^booking\s*period\s*:\s*(.+)$/i);
+            const bookingMatch = line.match(/^stay\s*period\s*:\s*(.+)$/i);
             if (bookingMatch) {
                 bookingPeriodText = bookingMatch[1].trim();
                 return;
