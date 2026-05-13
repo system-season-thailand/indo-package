@@ -447,15 +447,24 @@ adultPackagePersonAmountInputOptions.forEach(option => {
             adultPackagePersonAmountInput.value = '';
             document.getElementById('store_google_sheet_package_adult_amount_value').innerText = '';
             document.getElementById('sms_card_with_internet_amount_input_id').value = '';
-            document.getElementById('inner_flight_tickets_amount_input_id').value = '';
+            const kidsInputDel = document.getElementById('kids_package_person_amount_input_id');
+            const kidsCountDel = kidsInputDel ? extractNumberFromText(kidsInputDel.value || '') : 0;
+            const infantInputDel = document.getElementById('infant_package_person_amount_input_id');
+            const infantCountDel = infantInputDel ? extractNumberFromText(infantInputDel.value || '') : 0;
+            const totalAfterAdultDel = kidsCountDel + infantCountDel;
+            document.getElementById('inner_flight_tickets_amount_input_id').value = totalAfterAdultDel > 0
+                ? `تذاكر الطيران الداخلي ل${getArabicTextForPeopleCount(totalAfterAdultDel)}`
+                : '';
         } else {
             adultPackagePersonAmountInput.value = option.textContent;
 
             const adultCount = extractNumberFromText(adultPackagePersonAmountInput.value);
             const kidsInput = document.getElementById('kids_package_person_amount_input_id');
             const kidsCount = kidsInput ? extractNumberFromText(kidsInput.value) : 0;
+            const infantInput = document.getElementById('infant_package_person_amount_input_id');
+            const infantCount = infantInput ? extractNumberFromText(infantInput.value || '') : 0;
 
-            const totalPeople = adultCount + kidsCount;
+            const totalPeople = adultCount + kidsCount + infantCount;
             const wholePackagePersonAmountValue = getArabicTextForPeopleCount(totalPeople);
 
             // Update SMS card value with adult count only
@@ -501,8 +510,10 @@ kidsPackagePersonAmountInputOptions.forEach(option => {
         // Recalculate total people count
         const adultCount = extractNumberFromText(adultPackagePersonAmountInput.value || '');
         const kidsCount = extractNumberFromText(kidsPackagePersonAmountInput.value || '');
+        const infantInputKids = document.getElementById('infant_package_person_amount_input_id');
+        const infantCountKids = infantInputKids ? extractNumberFromText(infantInputKids.value || '') : 0;
 
-        const totalPeople = adultCount + kidsCount;
+        const totalPeople = adultCount + kidsCount + infantCountKids;
         const wholePackagePersonAmountValue = getArabicTextForPeopleCount(totalPeople);
 
         // Update SMS card value with adult count only
@@ -2696,6 +2707,15 @@ infantPackagePersonAmountInputOptions.forEach(option => {
             document.getElementById('store_google_sheet_package_infant_amount_value').innerText = option.textContent;
 
         }
+
+        const adultCountInf = extractNumberFromText(adultPackagePersonAmountInput.value || '');
+        const kidsCountInf = extractNumberFromText(kidsPackagePersonAmountInput.value || '');
+        const infantCountInf = extractNumberFromText(infantPackagePersonAmountInput.value || '');
+        const totalPeopleInf = adultCountInf + kidsCountInf + infantCountInf + 1;
+        document.getElementById('inner_flight_tickets_amount_input_id').value = totalPeopleInf > 0
+            ? `تذاكر الطيران الداخلي ل${getArabicTextForPeopleCount(totalPeopleInf)}`
+            : '';
+
         hideOverlay(); // Hide overlay after selection
     });
 });
@@ -3003,7 +3023,6 @@ hideAndShowClintMovementSectionFunction = function () {
 
     } else {
         document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'none';
-        document.getElementById('inserted_clint_movements_data_position_div').style.display = 'none';
     }
 }
 
