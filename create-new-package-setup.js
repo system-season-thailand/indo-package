@@ -2711,7 +2711,7 @@ infantPackagePersonAmountInputOptions.forEach(option => {
         const adultCountInf = extractNumberFromText(adultPackagePersonAmountInput.value || '');
         const kidsCountInf = extractNumberFromText(kidsPackagePersonAmountInput.value || '');
         const infantCountInf = extractNumberFromText(infantPackagePersonAmountInput.value || '');
-        const totalPeopleInf = adultCountInf + kidsCountInf + infantCountInf + 1;
+        const totalPeopleInf = adultCountInf + kidsCountInf + infantCountInf;
         document.getElementById('inner_flight_tickets_amount_input_id').value = totalPeopleInf > 0
             ? `تذاكر الطيران الداخلي ل${getArabicTextForPeopleCount(totalPeopleInf)}`
             : '';
