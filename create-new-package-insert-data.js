@@ -2227,14 +2227,16 @@ createHotelsDataFunction = function () {
         document.getElementById('hotel_name_input_id').readOnly = true;
         document.getElementById('hotel_arabic_room_type_description_input_id').readOnly = true;
         document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = true;
-        document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = true;
-        document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = true;
+        document.getElementById('hotel_english_room_type_description_input_id').readOnly = true;
+        document.getElementById('hotel_english_room_type_description_input_id_2').readOnly = true;
 
 
         // Set autocomplete to on
         document.getElementById('hotel_name_input_id').setAttribute('autocomplete', 'off');
         document.getElementById('hotel_arabic_room_type_description_input_id').setAttribute('autocomplete', 'off');
         document.getElementById('hotel_arabic_room_type_description_input_id_2').setAttribute('autocomplete', 'off');
+        document.getElementById('hotel_english_room_type_description_input_id').setAttribute('autocomplete', 'off');
+        document.getElementById('hotel_english_room_type_description_input_id_2').setAttribute('autocomplete', 'off');
 
 
         // Change the cursor to pointer and properly set the onclick event
@@ -2250,6 +2252,16 @@ createHotelsDataFunction = function () {
 
         document.getElementById('hotel_arabic_room_type_description_input_id_2').style.cursor = 'pointer';
         document.getElementById('hotel_arabic_room_type_description_input_id_2').onclick = function () {
+            createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
+        };
+
+        document.getElementById('hotel_english_room_type_description_input_id').style.cursor = 'pointer';
+        document.getElementById('hotel_english_room_type_description_input_id').onclick = function () {
+            createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
+        };
+
+        document.getElementById('hotel_english_room_type_description_input_id_2').style.cursor = 'pointer';
+        document.getElementById('hotel_english_room_type_description_input_id_2').onclick = function () {
             createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
         };
 
@@ -3384,6 +3396,8 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
         document.getElementById('hotel_name_input_id').readOnly = false;
         document.getElementById('hotel_arabic_room_type_description_input_id').readOnly = false;
         document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = false;
+        document.getElementById('hotel_english_room_type_description_input_id').readOnly = false;
+        document.getElementById('hotel_english_room_type_description_input_id_2').readOnly = false;
 
         // Change the cursor to text and remove the onclick event
         document.getElementById('hotel_name_input_id').style.cursor = 'text';
@@ -3391,14 +3405,21 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
 
         document.getElementById('hotel_arabic_room_type_description_input_id').style.cursor = 'text';
         document.getElementById('hotel_arabic_room_type_description_input_id').onclick = null;
-
         document.getElementById('hotel_arabic_room_type_description_input_id_2').style.cursor = 'text';
         document.getElementById('hotel_arabic_room_type_description_input_id_2').onclick = null;
+
+
+        document.getElementById('hotel_english_room_type_description_input_id').style.cursor = 'text';
+        document.getElementById('hotel_english_room_type_description_input_id').onclick = null;
+        document.getElementById('hotel_english_room_type_description_input_id_2').style.cursor = 'text';
+        document.getElementById('hotel_english_room_type_description_input_id_2').onclick = null;
 
         // Set autocomplete to on
         document.getElementById('hotel_name_input_id').setAttribute('autocomplete', 'on');
         document.getElementById('hotel_arabic_room_type_description_input_id').setAttribute('autocomplete', 'on');
         document.getElementById('hotel_arabic_room_type_description_input_id_2').setAttribute('autocomplete', 'on');
+        document.getElementById('hotel_english_room_type_description_input_id').setAttribute('autocomplete', 'on');
+        document.getElementById('hotel_english_room_type_description_input_id_2').setAttribute('autocomplete', 'on');
 
     }
 
@@ -3543,12 +3564,16 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
         document.getElementById('hotel_name_input_id').readOnly = true;
         document.getElementById('hotel_arabic_room_type_description_input_id').readOnly = true;
         document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = true;
+        document.getElementById('hotel_english_room_type_description_input_id').readOnly = true;
+        document.getElementById('hotel_english_room_type_description_input_id_2').readOnly = true;
 
 
         // Set autocomplete to on
         document.getElementById('hotel_name_input_id').setAttribute('autocomplete', 'off');
         document.getElementById('hotel_arabic_room_type_description_input_id').setAttribute('autocomplete', 'off');
         document.getElementById('hotel_arabic_room_type_description_input_id_2').setAttribute('autocomplete', 'off');
+        document.getElementById('hotel_english_room_type_description_input_id').setAttribute('autocomplete', 'off');
+        document.getElementById('hotel_english_room_type_description_input_id_2').setAttribute('autocomplete', 'off');
 
 
         // Change the cursor to pointer and properly set the onclick event
@@ -3562,9 +3587,18 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
         document.getElementById('hotel_arabic_room_type_description_input_id').onclick = function () {
             createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
         };
-
         document.getElementById('hotel_arabic_room_type_description_input_id_2').style.cursor = 'pointer';
         document.getElementById('hotel_arabic_room_type_description_input_id_2').onclick = function () {
+            createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
+        };
+
+
+        document.getElementById('hotel_english_room_type_description_input_id').style.cursor = 'pointer';
+        document.getElementById('hotel_english_room_type_description_input_id').onclick = function () {
+            createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
+        };
+        document.getElementById('hotel_english_room_type_description_input_id_2').style.cursor = 'pointer';
+        document.getElementById('hotel_english_room_type_description_input_id_2').onclick = function () {
             createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
         };
 
