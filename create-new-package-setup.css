@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap');
 
 
 /* Change the background color and text color of highlighted text */
@@ -1264,81 +1264,6 @@ input {
 
 
 
-/* Increase the size of the day cells and add more padding */
-.pika-single .pika-table td {
-    width: 3vw;
-    /* Adjust width for larger click area */
-    height: 3vw;
-    /* Adjust height for larger click area */
-    padding: 10px;
-    /* Add more padding */
-    text-align: center;
-    vertical-align: middle;
-    box-sizing: border-box;
-    /* Ensure padding is included in width/height */
-}
-
-/* Increase the clickable area for the header cells */
-.pika-single .pika-table th {
-    padding: 0px;
-    font-size: 1vw;
-    /* Increase font size for header */
-}
-
-/* Ensure the date picker container is wide enough */
-.pika-single .pika-lendar {
-    width: 100%;
-}
-
-/* Adjust the overall size of the date picker */
-.pika-single {
-    padding: 10px;
-    width: auto;
-    max-width: 100%;
-}
-
-/* Highlight the selected day */
-.pika-single .pika-table .is-selected {
-    color: white;
-    font-weight: bold;
-}
-
-/* Style for disabled days */
-.pika-single .pika-table .is-disabled {
-    background-color: #f0f0f0;
-    color: #bcbcbc;
-    cursor: not-allowed;
-}
-
-/* Style for month navigation icons */
-.pika-single .pika-prev,
-.pika-single .pika-next {
-    background-color: rgb(85, 127, 137);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 3vw;
-    height: 3vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.1s ease-in-out;
-}
-
-/* Hover effect for navigation icons */
-.pika-single .pika-prev:hover,
-.pika-single .pika-next:hover {
-    background-color: rgb(85, 127, 137);
-}
-
-
-
-.pika-select-year,
-.pika-label-year {
-    display: none !important;
-}
-
 
 
 
@@ -1604,18 +1529,6 @@ input {
 
 
 
-    /* Increase the clickable area for the header cells */
-    .pika-single .pika-table th {
-        font-size: 2vw;
-        /* Increase font size for header */
-    }
-
-    /* Style for month navigation icons */
-    .pika-single .pika-prev,
-    .pika-single .pika-next {
-        width: 5vw;
-        height: 5vw;
-    }
 }
 
 /* 850px */
@@ -1917,18 +1830,6 @@ input {
 
 
 
-    /* Increase the clickable area for the header cells */
-    .pika-single .pika-table th {
-        font-size: 3vw;
-        /* Increase font size for header */
-    }
-
-    /* Style for month navigation icons */
-    .pika-single .pika-prev,
-    .pika-single .pika-next {
-        width: 8vw;
-        height: 8vw;
-    }
 }
 
 
@@ -2179,43 +2080,276 @@ input {
 
 
 
-    /* Increase the size of day cells and add more space between them */
-    .pika-single .pika-table td {
-        padding: 2vw;
-        /* Center the text */
-        width: auto;
-        /* Increase the width of the cells */
-        height: 0px;
-        /* Increase the height of the cells */
-        line-height: 0px;
-    }
-
-    .pika-single {
-        padding: 0px;
-    }
-
-    .pika-single .pika-table th {
-        font-size: 4vw;
-        /* Increase font size for Arabic days names */
-    }
-
-    /* Ensure the date picker container is wide enough to fit the day buttons */
-    .pika-single .pika-lendar {
-        width: 95%;
-        /* Ensure the calendar takes full width */
-    }
-
-    /* Style for month navigation icons */
-    .pika-single .pika-prev,
-    .pika-single .pika-next {
-        width: 12vw;
-        height: 12vw;
-    }
 }
 
 /* 320px */
 @media(max-width:320px) {
     .package_info_input_div input {
         height: 35px;
+    }
+}
+
+
+/* ===== Custom Arabic Date Picker ===== */
+#custom_date_picker_backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.08s ease-in-out;
+}
+
+#custom_date_picker_backdrop.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#custom_date_picker_dropdown {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 90vw;
+    z-index: 1000;
+    padding: 0;
+    max-height: 85vh;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.08s ease-in-out, opacity 0.08s ease-in-out;
+}
+
+#custom_date_picker_dropdown.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: all;
+}
+
+#custom_date_picker_header_div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgb(4, 30, 52);
+    padding: 2.5vw 3vw;
+    direction: ltr;
+    flex-shrink: 0;
+}
+
+#custom_date_picker_month_year_span {
+    font-size: 4vw;
+    font-weight: bold;
+    color: #f5c518;
+    font-family: inherit;
+}
+
+.custom_date_picker_nav_btn_class {
+    background: rgb(0, 87, 116);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 10vw;
+    height: 10vw;
+    font-size: 4.5vw;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s ease-in-out;
+    flex-shrink: 0;
+}
+
+.custom_date_picker_nav_btn_class:hover {
+    background: rgb(0, 110, 148);
+}
+
+#custom_date_picker_calendar_div {
+    padding: 2vw 2vw 0 2vw;
+    background: white;
+}
+
+#custom_date_picker_weekdays_div {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    direction: rtl;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1.5vw;
+    margin-bottom: 1vw;
+}
+
+#custom_date_picker_weekdays_div div {
+    text-align: center;
+    font-size: 3vw;
+    font-weight: bold;
+    color: #444;
+    padding: 1vw 0;
+}
+
+#custom_date_picker_days_div {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    direction: rtl;
+    gap: 0.5vw;
+    padding-bottom: 2vw;
+}
+
+.custom_date_picker_day_class {
+    text-align: center;
+    font-size: 4vw;
+    padding: 2.5vw 0;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #1a1a1a;
+    transition: background 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+
+.custom_date_picker_day_class:hover {
+    background: rgb(0, 87, 116);
+    color: white;
+}
+
+.custom_date_picker_selected_day_class {
+    background: rgb(0, 87, 116);
+    color: white;
+    font-weight: bold;
+}
+
+.custom_date_picker_selected_day_class:hover {
+    background: rgb(0, 68, 92);
+}
+
+.custom_date_picker_today_class {
+    background: rgba(0, 87, 116, 0.15);
+    font-weight: bold;
+}
+
+.custom_date_picker_today_class:hover {
+    background: rgb(0, 87, 116);
+    color: white;
+}
+
+.custom_date_picker_start_ref_class {
+    background: rgba(245, 197, 24, 0.18);
+    color: #9a7200;
+    font-weight: bold;
+    border: 2px solid #f5c518;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+.custom_date_picker_disabled_day_class {
+    text-align: center;
+    font-size: 4vw;
+    padding: 2.5vw 0;
+    color: #ccc;
+    cursor: default;
+    border-radius: 50%;
+}
+
+#custom_date_picker_cancel_btn {
+    width: 100%;
+    padding: 4vw;
+    background: #f5f5f5;
+    border: none;
+    border-top: 1px solid #ddd;
+    font-size: 4vw;
+    cursor: pointer;
+    color: #333;
+    font-family: inherit;
+    transition: background 0.1s ease-in-out;
+    flex-shrink: 0;
+}
+
+#custom_date_picker_cancel_btn:hover {
+    background: #e8e8e8;
+}
+
+/* Custom Date Picker - Responsive Overrides */
+@media(max-width:950px) {
+    .custom_date_picker_nav_btn_class {
+        width: 7vw;
+        height: 7vw;
+        font-size: 5;
+    }
+
+    #custom_date_picker_month_year_span {
+        font-size: 3vw;
+    }
+
+    #custom_date_picker_weekdays_div div {
+        font-size: 2vw;
+    }
+
+    .custom_date_picker_day_class,
+    .custom_date_picker_disabled_day_class {
+        font-size: 2.5vw;
+        padding: 1.5vw 0;
+    }
+
+    #custom_date_picker_cancel_btn {
+        font-size: 2.5vw;
+        padding: 2vw;
+    }
+}
+
+@media(max-width:760px) {
+    .custom_date_picker_nav_btn_class {
+        width: 9vw;
+        height: 9vw;
+        font-size: 6vw;
+    }
+
+    #custom_date_picker_month_year_span {
+        font-size: 3.5vw;
+    }
+
+    #custom_date_picker_weekdays_div div {
+        font-size: 2.5vw;
+    }
+
+    .custom_date_picker_day_class,
+    .custom_date_picker_disabled_day_class {
+        font-size: 3vw;
+        padding: 2vw 0;
+    }
+
+    #custom_date_picker_cancel_btn {
+        font-size: 3vw;
+        padding: 3vw;
+    }
+}
+
+@media(max-width:400px) {
+    .custom_date_picker_nav_btn_class {
+        width: 11vw;
+        height: 11vw;
+        font-size: 7.5vw;
+    }
+
+    #custom_date_picker_month_year_span {
+        font-size: 4.5vw;
+    }
+
+    #custom_date_picker_weekdays_div div {
+        font-size: 3vw;
+    }
+
+    .custom_date_picker_day_class,
+    .custom_date_picker_disabled_day_class {
+        font-size: 4vw;
+        padding: 2.5vw 0;
+    }
+
+    #custom_date_picker_cancel_btn {
+        font-size: 4vw;
+        padding: 4vw;
     }
 }

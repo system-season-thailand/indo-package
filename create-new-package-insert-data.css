@@ -255,6 +255,24 @@
 
 
 
+/* ===== HOTEL DRAG & DROP ===== */
+.hotel_row_class.drag-placeholder {
+    opacity: 0.25;
+    background: #bbdefb !important;
+}
+
+.hotel_row_image_controller {
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.hotel_row_image_controller:active { cursor: grabbing; }
+
+body.is-dragging,
+body.is-dragging * { cursor: grabbing !important; user-select: none; -webkit-user-select: none; }
+
 /* Inserted hotel data position */
 .hotel_row_class,
 .all_hotel_row_data_divs_container {

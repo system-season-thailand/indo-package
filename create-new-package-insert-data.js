@@ -1,1 +1,7485 @@
-let insertedFlightDataDivUniqueId,insertedHotelDataDivUniqueId,currentFlightDataDivId,currentHotelDataDivId,currentClintMovementsDataDiv,insertedClintMovementsRowDivUniqueId=1;function handleClickEvent(e){let t,n,l,i=!1,o=!1;e.addEventListener("touchstart",e=>{let _=e.touches[0];t=_.clientX,n=_.clientY,l=(new Date).getTime(),i=!1,o=!0}),e.addEventListener("touchmove",()=>{i=!0}),e.addEventListener("touchend",e=>{o=!1}),e.addEventListener("mousedown",e=>{o||(t=e.clientX,n=e.clientY,l=(new Date).getTime(),i=!1)}),e.addEventListener("mousemove",()=>{i=!0}),e.addEventListener("mouseup",e=>{i||o||hotelRowImageControllerFunction(e)})}function hotelRowImageControllerFunction(e){let t=document.getElementById("ensure_delete_or_edit_hotel_data_div"),n=e.target.closest(".hotel_row_class");if(n){currentHotelDataDivId=n.id;let e=document.querySelector(".black_overlay");if(!e){e=document.createElement("div"),e.classList.add("black_overlay"),document.body.appendChild(e),setTimeout(()=>{e.style.opacity="1",t.style.transform="translate(-50%, -50%)"},50);let n=()=>{t.style.transform="translate(-50%, -130vh)",e.style.opacity="0",setTimeout(()=>{document.body.contains(e)&&document.body.removeChild(e)},300)};e.addEventListener("click",n),e.addEventListener("click",e=>{e.stopPropagation()})}runDeleteClickedHotelDataFunction=function(){deleteClickedHotelData(currentHotelDataDivId)},runEditClickedHotelDataFunction=function(){editClickedHotelDataFunction(currentHotelDataDivId),document.getElementById("header_navbar_links_clint_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_hotel_a").style.backgroundColor="rgb(0, 46, 57)",document.getElementById("header_navbar_links_flight_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_package_icluding_and_not_including_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_clint_movements_a").style.backgroundColor="rgb(85, 127, 137)"},runDuplicateClickedHotelDataFunction=function(){duplicateClickedHotelDataFunctio(currentHotelDataDivId)}}}function saveOriginalHotelDates(){originalHotelDates=[],document.querySelectorAll(".hotel_row_class_for_editing").forEach(e=>{let t=e.querySelector("h2").innerText,n=e.querySelector("h3").innerText,l=e.querySelector("h4").innerText;originalHotelDates.push({h2Date:t,h3Date:n,h4TotalNights:l,element:e})})}function updateHotelRowDates(){document.querySelectorAll(".hotel_row_class_for_editing").forEach((e,t)=>{let n=e.querySelector("h2"),l=e.querySelector("h3"),i=e.querySelector("h4");n&&l&&i&&originalHotelDates[t]&&(n.innerText=originalHotelDates[t].h2Date,l.innerText=originalHotelDates[t].h3Date,i.innerText=originalHotelDates[t].h4TotalNights)})}function handleDrop(){updateHotelRowDates()}function createHotelDragAndDropMood(){let e=document.getElementById("inserted_hotel_data_position_div");function t(e){if("img"===e.target.tagName.toLowerCase()){let t=e.target.closest(".hotel_row_class");t.classList.add("dragging"),t.dataset.startY=e.clientY,document.addEventListener("mousemove",l),document.addEventListener("mouseup",o),document.body.style.touchAction="none",document.body.style.userSelect="none"}}function n(e){let t=e.touches[0];if("img"===t.target.tagName.toLowerCase()){let e=t.target.closest(".hotel_row_class");e.classList.add("dragging"),e.dataset.startY=t.clientY,document.addEventListener("touchmove",i,{passive:!1}),document.addEventListener("touchend",_),document.body.style.touchAction="none",document.body.style.userSelect="none"}}function l(t){let n=document.querySelector(".dragging"),l=parseInt(n.dataset.startY||0),i=t.clientY-l;n.style.transform=`translateY(${i}px)`;let o=Array.from(e.children),_=o.indexOf(n),d=_;for(let e=0;e<o.length;e++){let n=o[e].getBoundingClientRect();if(e!==_&&t.clientY>n.top&&t.clientY<n.bottom){i>0&&t.clientY>n.bottom-20?d=e+1:i<0&&t.clientY<n.top+20&&(d=e);break}}d!==_&&e.insertBefore(n,o[d])}function i(t){t.preventDefault();let n=document.querySelector(".dragging"),l=t.touches[0],i=parseInt(n.dataset.startY||0),o=l.clientY-i;n.style.transform=`translateY(${o}px)`;let _=Array.from(e.children),d=_.indexOf(n),a=d;for(let e=0;e<_.length;e++){let t=_[e].getBoundingClientRect();if(e!==d&&l.clientY>t.top&&l.clientY<t.bottom){o>0&&l.clientY>t.bottom-20?a=e+1:o<0&&l.clientY<t.top+20&&(a=e);break}}a!==d&&e.insertBefore(n,_[a])}function o(e){let t=document.querySelector(".dragging");t&&(t.classList.remove("dragging"),t.style.transform="",t.removeAttribute("data-start-y"),handleDrop()),document.removeEventListener("mousemove",l),document.removeEventListener("mouseup",o),document.body.style.touchAction="",document.body.style.userSelect=""}function _(e){let t=document.querySelector(".dragging");t&&(t.classList.remove("dragging"),t.style.transform="",t.removeAttribute("data-start-y"),handleDrop()),document.removeEventListener("touchmove",i),document.removeEventListener("touchend",_),document.body.style.touchAction="",document.body.style.userSelect=""}document.querySelectorAll(".hotel_row_class").forEach(e=>{e.addEventListener("mousedown",t),e.addEventListener("touchstart",n)})}createWholePackageAndClintDataFunction=function(){let e=document.getElementById("package_clint_name_input_id").value,t=document.getElementById("package_clint_code_number_input_id").value,n=document.getElementById("adult_package_person_amount_input_id").value,l=document.getElementById("kids_package_person_amount_input_id").value,i=document.getElementById("infant_package_person_amount_input_id").value,o=document.getElementById("whole_package_start_date_input_id").value,_=document.getElementById("whole_package_end_date_input_id").value,d=document.getElementById("clint_company_name_input_id").value,a=document.getElementById("website_users_name_input_id").value;if(""===o||""===_||""===a)playSoundEffect("error"),clint_inputs_submit_icon.style.backgroundColor="red",setTimeout(()=>{clint_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500);else{if(void 0!==mostTopEmptyCellRowNumberValue&&null!==mostTopEmptyCellRowNumberValue&&NaN!==mostTopEmptyCellRowNumberValue||location.reload(),playSoundEffect("success"),clint_inputs_submit_icon.style.backgroundColor="rgb(0, 255, 0)",setTimeout(()=>{clint_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500),""!==d){let e=document.createElement("img"),t=d.replace(/\s+/g,"-");e.src=`خلفية-الشركات/${t}.jpg`,e.className="inserted_company_name_logo",e.id="inserted_company_name_logo_id",e.onclick=function(e){e.stopPropagation();let t=document.createElement("div");t.className="black_overlay",t.id="black_overlay_id",document.body.appendChild(t),setTimeout(()=>{t.style.opacity="1"},100);let n=document.getElementById("ensure_delete_company_logo_div");setTimeout(()=>{n.style.transform="translate(-50%, -50%)"},50),t.onclick=()=>{n.style.transform="translate(-50%, -130vh)",t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300)}},document.getElementById("inserted_company_name_image_position_div").innerHTML="",document.getElementById("inserted_company_name_image_position_div").appendChild(e),document.getElementById("welcome_pdf_first_page_image_id").src=`خلفية-الشركات/${t}.jpg`,document.getElementById("inserted_company_name_image_position_div").style.display="flex"}else document.getElementById("welcome_pdf_first_page_image_id").src="first-pdf-image.jpg",document.getElementById("inserted_company_name_image_position_div").style.display="none",document.getElementById("inserted_company_name_image_position_div").innerHTML="";let c=document.getElementById("package_price_type_h6_id");document.getElementById("store_google_sheet_clint_package_price_type_checkbox_value")&&(document.getElementById("economy_package_checkbox").checked?(c.innerHTML="  (بكج إقتصادي)",document.getElementById("store_google_sheet_clint_package_price_type_checkbox_value").innerText="بكج إقتصادي",document.getElementById("package_price_type_h6_id").style.display="block"):document.getElementById("medium_package_checkbox").checked?(c.innerHTML="  (بكج متوسط)",document.getElementById("store_google_sheet_clint_package_price_type_checkbox_value").innerText="بكج متوسط",document.getElementById("package_price_type_h6_id").style.display="block"):document.getElementById("vip_package_checkbox").checked?(c.innerHTML="  (بكج VIP)",document.getElementById("store_google_sheet_clint_package_price_type_checkbox_value").innerText="بكج VIP",document.getElementById("package_price_type_h6_id").style.display="block"):(document.getElementById("package_price_type_h6_id").innerText="",document.getElementById("package_price_type_h6_id").style.display="none"));let r,s=document.getElementById("clint_package_type_h6");if(document.getElementById("honeymoon_checkbox").checked?(s.innerHTML="بكج شهر عسل",document.getElementById("store_google_sheet_clint_package_type_checkbox_value").innerText="بكج شهل عسل",document.getElementById("package_emoji_p_id")&&(document.getElementById("package_emoji_p_id").innerText="👩🏻‍❤️‍👨🏻")):document.getElementById("guys_checkbox").checked?(s.innerHTML="بكج شباب",document.getElementById("store_google_sheet_clint_package_type_checkbox_value").innerText="بكج شباب",document.getElementById("package_emoji_p_id")&&(document.getElementById("package_emoji_p_id").innerText="🤵🏻‍♂️")):document.getElementById("family_checkbox").checked?(s.innerHTML="بكج عائلة",document.getElementById("store_google_sheet_clint_package_type_checkbox_value").innerText="بكج عائلة",document.getElementById("package_emoji_p_id")&&(document.getElementById("package_emoji_p_id").innerText="👨‍👩‍👧‍👦")):document.getElementById("two_people_checkbox").checked?(s.innerHTML="بكج شخصين",document.getElementById("store_google_sheet_clint_package_type_checkbox_value").innerText="بكج شخصين",document.getElementById("package_emoji_p_id")&&(document.getElementById("package_emoji_p_id").innerText="💫")):document.getElementById("group_of_people_checkbox").checked?(s.innerHTML="بكج قروب",document.getElementById("store_google_sheet_clint_package_type_checkbox_value").innerText="بكج قروب",document.getElementById("package_emoji_p_id")&&(document.getElementById("package_emoji_p_id").innerText="🤩")):(s.innerHTML="بكج جديد",document.getElementById("package_emoji_p_id")&&(document.getElementById("package_emoji_p_id").innerText="✨")),""!==e?(clint_full_name_p.innerText=`الأستاذ/ة : ${e}`,pdf_clint_info_section_title_div_id.style.borderBottom="0.5px solid black",clint_full_name_p.style.display="block",document.getElementById("store_google_sheet_clint_name_value").innerText=e):(clint_full_name_p.innerText="",pdf_clint_info_section_title_div_id.style.borderBottom="none",clint_full_name_p.style.display="none",document.getElementById("store_google_sheet_clint_name_value").innerText=""),document.getElementById("whole_package_first_date_p_id")&&document.getElementById("whole_package_first_date_p_id").innerText!==o){let e=document.getElementById("whole_package_first_date_p_id").innerText,t=parseArabicDate(e),n=parseArabicDate(o)-t,l=Math.round(n/864e5);if(document.querySelectorAll(".hotel_row_class_for_editing").length>0){let e=document.querySelectorAll(".hotel_check_in_date_for_matching_whole_package_date"),t=document.querySelectorAll(".hotel_check_out_date_for_matching_whole_package_date");e.forEach(e=>{let t=e.innerText,n=parseArabicDate(t),i=new Date(n);i.setDate(i.getDate()+l),e.innerText=`${i.getDate()} ${getArabicMonthName(i.getMonth())}`}),t.forEach(e=>{let t=e.innerText,n=parseArabicDate(t),i=new Date(n);i.setDate(i.getDate()+l),e.innerText=`${i.getDate()} ${getArabicMonthName(i.getMonth())}`}),saveOriginalHotelDates()}if(document.querySelectorAll(".flight_row_class_for_editing").length>0){document.querySelectorAll(".flight_date_for_matching_whole_package_date").forEach(e=>{let t=e.innerText,n=parseArabicDate(t),i=new Date(n);i.setDate(i.getDate()+l),e.innerText=`${i.getDate()} ${getArabicMonthName(i.getMonth())}`})}if(document.querySelectorAll(".clint_movements_row_class_for_editing").length>0){document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(e=>{let t=e.querySelector("h1");if(t){let e=t.innerText,n=parseArabicDate(e),i=new Date(n);i.setDate(i.getDate()+l),t.innerText=`${i.getDate()} ${getArabicMonthName(i.getMonth())}`}})}}0===document.querySelectorAll(".hotel_row_class_for_editing").length&&(document.getElementById("hotel_check_in_input_id").value=o,document.getElementById("hotel_check_out_input_id").value="",document.getElementById("hotel_total_nights_input_id").value="");let u=`${n}`;""!==l&&(u+=` + ${l}`),""!==i&&(u+=` ${i}`),r=`\n            <div>\n                <p>${u}</p>\n            </div>\n            <div>\n                <p id="whole_package_first_date_p_id">${o}</p>\n            </div>\n            <div>\n                <p id="whole_package_last_date_p_id">${_}</p>\n            </div>\n            <div>\n                <p>${storePackageTotalNights}</p>\n            </div>\n        `,document.getElementById("clint_data_row_main_div_id").style.display="flex";let m=document.createElement("div");m.className="clint_data_row_class clint_data_row_class_for_editing",m.innerHTML=r;let g,p=document.getElementById("inserted_clint_data_position_div");if(p.innerHTML="",p.appendChild(m),ensureAllPackageDatesHiddenOrNo(),document.getElementById("store_google_sheet_whole_package_first_date_value").innerText=o,document.getElementById("store_google_sheet_whole_package_last_date_value").innerText=_,document.getElementById("store_google_sheet_whole_package_total_nights_value").innerText=storePackageTotalNights,document.getElementById("store_google_sheet_package_user_name_value").innerText=a,!0!==document.getElementById("website_users_name_input_id").disabled&&(""===document.getElementById("package_user_code_name_for_later_import_reference_p_id").innerText||document.getElementById("website_users_name_input_id").value!==g)){let e;"بكج مستر سامي"===document.getElementById("website_users_name_input_id").value?e="ss":"بكج عبد الله"===document.getElementById("website_users_name_input_id").value?e="tt":"بكج معتز"===document.getElementById("website_users_name_input_id").value?e="mm":"بكج وائل"===document.getElementById("website_users_name_input_id").value?e="ww":"بكج عبد الرحمن"===document.getElementById("website_users_name_input_id").value?e="oo":"بكج علي"===document.getElementById("website_users_name_input_id").value?e="aa":"بكج ناصر"===document.getElementById("website_users_name_input_id").value?e="zz":"بكج محمد"===document.getElementById("website_users_name_input_id").value?e="hh":"بكج صبري"===document.getElementById("website_users_name_input_id").value?e="kk":"بكج جلال"===document.getElementById("website_users_name_input_id").value?e="jj":"بكج بندر للتجربة"===document.getElementById("website_users_name_input_id").value&&(e="bb");let t=(new Date).getFullYear()%100;document.getElementById("package_user_code_name_for_later_import_reference_p_id").innerText=`${e}_indo_${t}_${mostTopEmptyCellRowNumberValue}`,document.getElementById("store_google_sheet_package_raw_user_with_no_riv_for_later_reference_when_importing").innerText=`${e}_indo_${t}_${mostTopEmptyCellRowNumberValue}`,g=document.getElementById("package_user_code_name_for_later_import_reference_p_id").innerText}document.getElementById("package_clint_code_number_p_id").innerText=t,document.getElementById("store_google_sheet_package_clint_code_number_value").innerText=document.getElementById("package_clint_code_number_p_id").innerText,document.getElementById("downloaded_pdf_clint_data_page").style.display="block"}},deleteClickedCompanyLogo=function(){document.getElementById("inserted_company_name_image_position_div").innerHTML="";let e=document.getElementById("ensure_delete_company_logo_div");document.getElementById("welcome_pdf_first_page_image_id").src="first-pdf-image.jpg",e.style.transform="translate(-50%, -130vh)";let t=document.getElementById("black_overlay_id");t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300)},createAllPackageIncludingAndNotIncludingData=function(){let e=["privet_car_with_driver_to_welcome_and_etc_checkbox","hotel_booking_with_breakfast_for_2_people_checkbox","customer_service_24_hour_checkbox","welcome_goodbye_hotel_delivery_checkbox","welcome_with_flowers_checkbox","sms_card_with_internet_checkbox","special_oud_checkbox","inner_flight_tickets_checkbox","extra_car_for_carring_bags_checkbox","watersport_activity_checkbox","rafting_activity_checkbox","outer_flight_tickets_checkbox","placese_visiting_cost_checkbox","bali_taxes_not_covered_checkbox"];playSoundEffect("success");let t=document.getElementById("specific_car_type_input_id").value,n=document.getElementById("package_details_textarea_id").value,l=document.getElementById("sms_card_with_internet_amount_input_id").value,i=document.getElementById("inner_flight_tickets_amount_input_id").value,o=document.getElementById("package_totla_price_input_id").value;package_including_data_inputs_submit_icon.style.backgroundColor="rgb(0, 255, 0)",setTimeout(()=>{package_including_data_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500);let _=document.createElement("div");_.id="inserted_package_including_data_div",_.className="inserted_package_including_and_not_icluding_data_div_class";let d=document.createElement("div");d.id="inserted_package_not_including_data_div",d.className="inserted_package_including_and_not_icluding_data_div_class";let a=document.createElement("div");a.id="inserted_package_icluding_gift_data_div",a.className="inserted_package_including_and_not_icluding_data_div_class",""!==o?(document.getElementById("downloaded_pdf_total_price_data_page").style.display="block",document.getElementById("package_total_price_p_id").innerText=o,document.getElementById("store_google_sheet_package_total_price_value").innerText=o):(document.getElementById("downloaded_pdf_total_price_data_page").style.display="none",document.getElementById("store_google_sheet_package_total_price_value").innerText="");let c=document.getElementById("specific_car_type_input_id").value,r=document.getElementsByClassName("hotel_row_class_for_editing"),s=null;if(r.length>0){let e=r[0].querySelector("div:last-child");if(e){let t=e.children[0];t&&"H5"===t.tagName&&(s=t.innerText.trim())}}e.forEach(e=>{let n=document.getElementById(e),o=document.querySelector(`label[for="${e}"]`).innerHTML.split("<br>").map(e=>e.trim()),r=document.createElement("p"),u=document.createElement("ion-icon"),m=function(e){let t=e.nextElementSibling;return window.getComputedStyle(t,"::before").backgroundColor}(n);if("privet_car_with_driver_to_welcome_and_etc_checkbox"===e&&""!==c&&(o=[c],document.getElementById("store_google_sheet_package_specific_car_type_value").innerText=c),""===document.getElementById("specific_car_type_input_id").value&&(document.getElementById("store_google_sheet_package_specific_car_type_value").innerText=""),"watersport_activity_checkbox"!==e&&"rafting_activity_checkbox"!==e){if("special_oud_checkbox"===e&&("بالي"===s||"لومبوك"===s)){let t=document.createElement("p");return t.innerText=e,void document.getElementById("store_google_sheet_white_package_including_and_not_including_input_div").appendChild(t)}if("rgb(0, 255, 0)"===m){if("sms_card_with_internet_checkbox"===e||"welcome_with_flowers_checkbox"===e||"special_oud_checkbox"===e){if(u.setAttribute("name","checkmark-outline"),r.appendChild(u),"sms_card_with_internet_checkbox"===e){let e=""!==l?` ${l}`:" شرائح إنترنت عادية";r.appendChild(document.createTextNode(e)),r.style.padding="0 5px",document.getElementById("store_google_sheet_package_including_sms_value").innerText=""!==l?l:"",r.setAttribute("data-gift-order","3");let t=document.createElement("div");t.className="activity_icon_container";let n=document.createElement("img");n.src="activities/sms-cards.webp",n.className="activity_icon_img",t.appendChild(n),r.appendChild(t)}else if("welcome_with_flowers_checkbox"===e){o.forEach((e,t)=>{r.appendChild(document.createTextNode(` ${e}`)),t<o.length-1&&r.appendChild(document.createElement("br"))}),r.setAttribute("data-gift-order","4");let e=document.createElement("div");e.className="activity_icon_container";let t=document.createElement("img");t.src="activities/flower.webp",t.className="activity_icon_img",e.appendChild(t),r.appendChild(e)}else if("special_oud_checkbox"===e){o.forEach((e,t)=>{r.appendChild(document.createTextNode(` ${e}`)),t<o.length-1&&r.appendChild(document.createElement("br"))}),r.setAttribute("data-gift-order","5");let e=document.createElement("div");e.className="activity_icon_container";let t=document.createElement("img");t.src="activities/special-oud.webp",t.className="activity_icon_img",e.appendChild(t),r.appendChild(e)}return r.className="inserted_package_including_data_text",r.setAttribute("onclick","runDeleteThisPackageIncludingDataText(this)"),void a.appendChild(r)}if(u.setAttribute("name","checkmark-outline"),r.appendChild(u),"sms_card_with_internet_checkbox"===e){let e=""!==l?` ${l}`:" شرائح إنترنت عادية";r.appendChild(document.createTextNode(e)),r.style.padding="0 5px",document.getElementById("store_google_sheet_package_including_sms_value").innerText=""!==l?l:""}else if("inner_flight_tickets_checkbox"===e){let e=""!==i?` ${i}`:" تذاكر الطيران الداخلي";r.appendChild(document.createTextNode(e)),r.style.padding="0 5px",document.getElementById("store_google_sheet_package_including_inner_tickets_value").innerText=""!==i?i:""}else"privet_car_with_driver_to_welcome_and_etc_checkbox"===e&&""!==c?(r.appendChild(document.createTextNode(t)),r.style.fontWeight="bold"):o.forEach((e,t)=>{r.appendChild(document.createTextNode(` ${e}`)),t<o.length-1&&r.appendChild(document.createElement("br"))});r.className="inserted_package_including_data_text","welcome_goodbye_hotel_delivery_checkbox"!==e&&"sms_card_with_internet_checkbox"!==e&&"inner_flight_tickets_checkbox"!==e&&"extra_car_for_carring_bags_checkbox"!==e||(r.className="special_package_including_data_background_color_text"),r.setAttribute("onclick","runDeleteThisPackageIncludingDataText(this)"),_.appendChild(r)}else"rgb(255, 0, 0)"===m&&(u.setAttribute("name","close-outline"),r.appendChild(u),o.forEach((e,t)=>{r.appendChild(document.createTextNode(` ${e}`)),t<o.length-1&&r.appendChild(document.createElement("br"))}),r.className="inserted_package_not_including_data_text","welcome_goodbye_hotel_delivery_checkbox"!==e&&"sms_card_with_internet_checkbox"!==e&&"inner_flight_tickets_checkbox"!==e||(r.className="special_package_including_data_background_color_text",r.style.padding="0 5px"),r.setAttribute("onclick","runDeleteThisPackageIncludingDataText(this)"),d.appendChild(r))}else if("rgb(0, 255, 0)"===m){if(u.setAttribute("name","checkmark-outline"),u.style.color="#007bff",r.appendChild(u),"watersport_activity_checkbox"===e){r.innerHTML+=" 🌊استمتعوا ب 3 ألعاب بحرية ممتعة<br>كلها مشمولة بدون أي رسوم إضافية💙<br>",r.setAttribute("data-gift-order","1");let e=document.createElement("div");e.className="activity_icon_container",["activities/donat.webp","activities/panana.webp","activities/parasut.webp"].forEach(t=>{let n=document.createElement("img");n.src=t,n.className="activity_icon_img",e.appendChild(n)}),r.appendChild(e)}else if("rafting_activity_checkbox"===e){r.innerHTML+=" 🚣‍♂️اكتشف متعة التجديف<br>لحظات حماس وتجربة لاتُنسى هدية منا لكم💙<br>",r.setAttribute("data-gift-order","2");let e=document.createElement("div");e.className="activity_icon_container";let t=document.createElement("img");t.src="activities/rafting.webp",t.className="activity_icon_img",e.appendChild(t),r.appendChild(e)}r.className="inserted_package_including_data_text",r.setAttribute("onclick","runDeleteThisPackageIncludingDataText(this)"),a.appendChild(r)}else"rgb(255, 0, 0)"===m&&(u.setAttribute("name","close-outline"),r.appendChild(u),o.forEach((e,t)=>{r.appendChild(document.createTextNode(` ${e}`)),t<o.length-1&&r.appendChild(document.createElement("br"))}),r.className="inserted_package_not_including_data_text",r.setAttribute("onclick","runDeleteThisPackageIncludingDataText(this)"),d.appendChild(r))}),""!==n&&(n.split("\n").forEach(e=>{if(""!==e.trim()){let t=document.createElement("p"),n=document.createElement("ion-icon");n.setAttribute("name","checkmark-outline"),t.appendChild(n),t.appendChild(document.createTextNode(` ${e.trim()}`)),t.className="special_package_including_data_background_color_text",t.style.padding="0 5px",t.setAttribute("onclick","runDeleteThisPackageIncludingDataText(this)"),_.appendChild(t)}}),document.getElementById("store_google_sheet_package_details_textarea_value").innerText=n.replace(/\n/g,"\\n"));let u=document.getElementById("inserted_package_icluding_data_position_div"),m=document.getElementById("inserted_package_not_icluding_data_position_div"),g=document.getElementById("inserted_package_icluding_gift_data_position_div");if(u.innerHTML="",u.appendChild(_),m.innerHTML="",m.appendChild(d),g){let e=Array.from(a.children).sort((e,t)=>parseInt(e.getAttribute("data-gift-order")||"999",10)-parseInt(t.getAttribute("data-gift-order")||"999",10));a.innerHTML="",e.forEach(e=>a.appendChild(e)),g.innerHTML="",g.appendChild(a)}let p=document.getElementById("pdf_section_package_icluding_data_title_id"),y=document.getElementById("pdf_section_package_not_icluding_data_title_id"),h=document.getElementById("pdf_section_package_icluding_gift_data_title_id");p.style.display=_.children.length>0?"flex":"none",y.style.display=d.children.length>0?"flex":"none",h&&(h.style.display=a.children.length>0?"flex":"none"),document.getElementById("downloaded_pdf_package_including_data_page").style.display="block",document.getElementById("store_google_sheet_green_checked_package_including_and_not_including_input_div").innerHTML="",document.getElementById("store_google_sheet_red_checked_package_including_and_not_including_input_div").innerHTML="",document.getElementById("store_google_sheet_white_package_including_and_not_including_input_div").innerHTML="",e.forEach(e=>{let t=document.getElementById(e);if(!t)return;let n=t.nextElementSibling,l=window.getComputedStyle(n,"::before").backgroundColor,i=document.createElement("p");i.innerText=e,"special_oud_checkbox"===e&&"بالي"===s?document.getElementById("store_google_sheet_white_package_including_and_not_including_input_div").appendChild(i):"rgb(0, 255, 0)"===l?document.getElementById("store_google_sheet_green_checked_package_including_and_not_including_input_div").appendChild(i):"rgb(255, 0, 0)"===l?document.getElementById("store_google_sheet_red_checked_package_including_and_not_including_input_div").appendChild(i):document.getElementById("store_google_sheet_white_package_including_and_not_including_input_div").appendChild(i)})},runDeleteThisPackageIncludingDataText=function(e){let t=document.createElement("div");t.classList.add("black_overlay"),document.body.appendChild(t),deleteClickedPackageIncludingDataText=function(e){e.remove(),ensure_delete_package_including_data_text_div.style.transform="translate(-50%, -130vh)",t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300),0===document.querySelectorAll(".inserted_package_including_data_text").length&&(document.getElementById("downloaded_pdf_package_including_data_page").style.display="none")},setTimeout(()=>{t.style.opacity="1",ensure_delete_package_including_data_text_div.style.transform="translate(-50%, -50%)"},50),passClickedPackageIncludingDataText=function(){if("package_total_price_p_id"===e){return document.getElementById("downloaded_pdf_total_price_data_page").style.display="none",ensure_delete_package_including_data_text_div.style.transform="translate(-50%, -130vh)",t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300),void(0===document.querySelectorAll(".inserted_package_including_data_text").length&&(document.getElementById("downloaded_pdf_package_including_data_page").style.display="none"))}deleteClickedPackageIncludingDataText(e)},t.onclick=()=>{ensure_delete_package_including_data_text_div.style.transform="translate(-50%, -130vh)",t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300)},t.addEventListener("click",e=>{e.stopPropagation()})},createAllFlightDataFunction=function(){if("none"===document.getElementById("downloaded_pdf_hotel_data_page").style.display)playSoundEffect("error"),clint_flight_inputs_submit_icon.style.backgroundColor="red",setTimeout(()=>{clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500),document.getElementById("manually_add_flight_row_icon").style.display="block";else{document.getElementById("inserted_flight_data_position_div").innerHTML="",insertedFlightDataDivUniqueId=""!==document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText?document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText:1;let t=document.querySelectorAll(".hotel_row_class_for_editing"),n=null,l=null,i=["بالي","جاكرتا","باندونق","بونشاك","لومبوك"],o=document.getElementById("adult_package_person_amount_input_id").value,_=document.getElementById("kids_package_person_amount_input_id").value,d=document.getElementById("infant_package_person_amount_input_id").value;function e(e){let t=e.match(/\d+/);return t?parseInt(t[0]):0}let a=e(o)+e(_);t.forEach((e,t)=>{let o=e.querySelector("h5").innerText,_=e.querySelector("h2").innerText;if("جاكرتا"===n&&"باندونق"===o||"باندونق"===n&&"جاكرتا"===o)return n=o,void(l=_);if("جاكرتا"===n&&"بونشاك"===o)return n=o,void(l=_);if("بونشاك"===n&&"جاكرتا"===o)return n=o,void(l=_);if(i.includes(o)&&n&&n!==o&&i.includes(n)||"بونشاك"===n&&"بالي"===o||"بالي"===n&&"بونشاك"===o){let e=n,t=o;if("بونشاك"===n&&"بالي"===o||"باندونق"===n&&"بالي"===o?(e="جاكرتا",t="بالي"):("بالي"===n&&"بونشاك"===o||"بالي"===n&&"باندونق"===o)&&(e="بالي",t="جاكرتا"),"باندونق"===n&&"بونشاك"===o||"بونشاك"===n&&"باندونق"===o)return n=o,void(l=_);let i=document.createElement("div");i.id=`flight_row_id_${insertedFlightDataDivUniqueId}`,i.className="flight_row_class flight_row_class_for_editing";let c=`\n                    <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;">\n                        <p id='flight_air_line_${insertedFlightDataDivUniqueId}'></p>\n                    </div>\n                    <div>\n                        <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">\n                            ${1===a||a>10?`${a} بالغ`:0!==a?`${a} بالغين`:""}\n                        </p>\n                        ${d?`<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${d}</p>`:""}\n                    </div>\n                    <div><p>20Kg للشخص</p></div>\n                    <div><h2 id='flight_from_city_${insertedFlightDataDivUniqueId}'>${e}</h2></div>\n                    <div><h3 id='flight_to_city_${insertedFlightDataDivUniqueId}'>${t}</h3></div>\n                    <div><h1 id='flight_date_${insertedFlightDataDivUniqueId}' class="flight_date_for_matching_whole_package_date">${_}</h1></div>\n                    <div><p id='flight_fly_away_time_${insertedFlightDataDivUniqueId}'></p></div>\n                    <div><p id='flight_arrival_time_${insertedFlightDataDivUniqueId}'></p></div>\n                `;i.innerHTML=c,document.getElementById("inserted_flight_data_position_div").appendChild(i),insertedFlightDataDivUniqueId++}n=o,l=_}),document.getElementsByClassName("flight_row_class_for_editing").length>0?(playSoundEffect("success"),clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 255, 0)",setTimeout(()=>{clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500),document.getElementById("downloaded_pdf_flight_data_page").style.display="block",document.getElementById("manually_add_flight_row_icon").style.display="none",ensureAllPackageDatesHiddenOrNo()):(playSoundEffect("error"),clint_flight_inputs_submit_icon.style.backgroundColor="red",setTimeout(()=>{clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500),document.getElementById("downloaded_pdf_flight_data_page").style.display="none",document.getElementById("manually_add_flight_row_icon").style.display="block"),document.getElementById("flight_from_city_input_id").value=document.getElementById("flight_to_city_input_id").value,document.getElementById("flight_to_city_input_id").value="",document.getElementById("flight_date_input_id").value="",document.getElementById("flight_fly_away_time_input_id").value="",document.getElementById("flight_arrival_time_input_id").value="",document.querySelectorAll(".flight_row_flight_arrival_time_controller").forEach(function(e){e.onclick=function(t){flightRowAirLineControllerFunction(t,e)}}),document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText=insertedFlightDataDivUniqueId}},deleteClickedFlightData=function(e){let t=document.querySelector(".black_overlay"),n=document.getElementById(e);n&&n.remove(),document.getElementById("ensure_delete_or_edit_flight_data_div").style.transform="translate(-50%, -130vh)",t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300),0===document.querySelectorAll(".inserted_flight_data_row").length&&(document.getElementById("downloaded_pdf_flight_data_page").style.display="none",document.getElementById("manually_add_flight_row_icon").style.display="block")},editClickedFlightData=function(e){create_new_clint_data_section.style.display="none",create_new_hotel_package_section.style.display="none",create_new_flight_package_section.style.display="flex",create_new_package_including_and_not_including_data_section.style.display="none",create_new_clint_movements_plan_section.style.display="none",document.getElementById("clint_flight_inputs_submit_icon").style.display="none",document.getElementById("confirm_new_flight_data_row_icon").style.display="block",document.getElementById("cancel_new_flight_data_row_icon").style.display="block",document.getElementById("flight_content_section_title_text_id").innerText="تعديل تفاصيل الطيران",document.getElementById("toggle_flight_data_title_div_id").style.background="rgb(85, 127, 137)",document.getElementById("flight_data_dropdown_content").scrollIntoView({block:"center",inline:"center",behavior:"smooth"});let t=document.querySelector(".black_overlay");document.getElementById("ensure_delete_or_edit_flight_data_div").style.transform="translate(-50%, -130vh)",t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300),document.getElementById("all_editing_flight_row_data_inputs_div").style.display="flex";let n=document.getElementById(e),l=e.split("_").pop(),i=n.querySelector(`p[id^='flight_air_line_${l}']`)?.innerText||"",o=n.querySelector(`p[id^='flight_adult_person_amount_${l}']`)?.innerText||"",_=n.querySelector(`p[id^='flight_infant_person_amount_${l}']`)?.innerText||"",d=n.querySelector(`h2[id^='flight_from_city_${l}']`)?.innerText||"",a=n.querySelector(`h3[id^='flight_to_city_${l}']`)?.innerText||"",c=n.querySelector(`h1[id^='flight_date_${l}']`)?.innerText||"",r=n.querySelector(`p[id^='flight_fly_away_time_${l}']`)?.innerText||"",s=n.querySelector(`p[id^='flight_arrival_time_${l}']`)?.innerText||"",u=n.querySelector(`p[id^='flight_extra_bags_${l}']`)?.innerText||"";document.getElementById("flight_air_line_input_id").value=i,document.getElementById("flight_adult_person_amount_input_id").value=o,document.getElementById("flight_infant_person_amount_input_id").value=_,document.getElementById("flight_from_city_input_id").value=d,document.getElementById("flight_to_city_input_id").value=a,document.getElementById("flight_date_input_id").value=c,document.getElementById("flight_fly_away_time_input_id").value=r,document.getElementById("flight_arrival_time_input_id").value=s,document.getElementById("flight_extra_bags_input_id").value=u,cancelNewFlightDataRow=function(){document.getElementById("flight_air_line_input_id").value="",document.getElementById("flight_from_city_input_id").value="",document.getElementById("flight_to_city_input_id").value="",document.getElementById("flight_date_input_id").value="",document.getElementById("flight_fly_away_time_input_id").value="",document.getElementById("flight_arrival_time_input_id").value="",document.getElementById("flight_extra_bags_input_id").value="",document.getElementById("clint_flight_inputs_submit_icon").style.display="block",document.getElementById("confirm_new_flight_data_row_icon").style.display="none",document.getElementById("cancel_new_flight_data_row_icon").style.display="none",document.getElementById("flight_content_section_title_text_id").innerText="تفاصيل الطيران",document.getElementById("toggle_flight_data_title_div_id").style.background="rgb(131, 0, 148)",document.getElementById("all_editing_flight_row_data_inputs_div").style.display="none",ensureAllPackageDatesHiddenOrNo()},confirmNewFlightDataRow=function(){playSoundEffect("success");let t=document.getElementById(e);t.innerHTML="";let n=document.getElementById("flight_air_line_input_id").value,i=document.getElementById("flight_adult_person_amount_input_id").value,o=document.getElementById("flight_infant_person_amount_input_id").value,_=document.getElementById("flight_from_city_input_id").value,d=document.getElementById("flight_to_city_input_id").value,a=document.getElementById("flight_date_input_id").value,c=document.getElementById("flight_fly_away_time_input_id").value,r=document.getElementById("flight_arrival_time_input_id").value,s=document.getElementById("flight_extra_bags_input_id").value,u=`\n            <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;">\n                ${n?`<p id="flight_air_line_${l}">${n}</p>`:""}\n            </div>\n            <div>\n                <p id="flight_adult_person_amount_${l}">${i}</p>\n                ${o?`<p id="flight_infant_person_amount_${l}">${o}</p>`:""}\n            </div>\n            <div>\n                <p>20Kg للشخص</p>\n                ${s?`<p id="flight_extra_bags_${l}">${s}</p>`:""}\n            </div>\n            <div>\n                ${_?`<h2 id="flight_from_city_${l}">${_}</h2>`:""}\n            </div>\n            <div>\n                ${d?`<h3 id="flight_to_city_${l}">${d}</h3>`:""}\n            </div>\n            <div>\n                ${a?`<h1 id="flight_date_${l}" class="flight_date_for_matching_whole_package_date">${a}</h1>`:""}\n            </div>\n            <div>\n                ${c?`<p id="flight_fly_away_time_${l}">${c}</p>`:""}\n            </div>\n            <div>\n                ${r?`<p id="flight_arrival_time_${l}">${r}</p>`:""}\n            </div>\n        `;t.innerHTML=u,cancelNewFlightDataRow(),document.querySelectorAll(".flight_row_flight_arrival_time_controller").forEach(function(e){e.onclick=function(t){flightRowAirLineControllerFunction(t,e)}})}},flightRowAirLineControllerFunction=function(e){let t=document.getElementById("ensure_delete_or_edit_flight_data_div"),n=e.target.closest(".flight_row_class");if(n){currentFlightDataDivId=n.id;let e=document.querySelector(".black_overlay");if(!e){e=document.createElement("div"),e.classList.add("black_overlay"),document.body.appendChild(e),setTimeout(()=>{e.style.opacity="1",t.style.transform="translate(-50%, -50%)"},50);let n=()=>{t.style.transform="translate(-50%, -130vh)",e.style.opacity="0",setTimeout(()=>{document.body.contains(e)&&document.body.removeChild(e)},300)};e.addEventListener("click",n),e.addEventListener("click",e=>{e.stopPropagation()})}runDeleteClickedFlightDataFunction=function(){deleteClickedFlightData(currentFlightDataDivId)},runEditClickedFlightDataFunction=function(){editClickedFlightData(currentFlightDataDivId),document.getElementById("header_navbar_links_clint_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_hotel_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_flight_a").style.backgroundColor="rgb(0, 46, 57)",document.getElementById("header_navbar_links_package_icluding_and_not_including_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_clint_movements_a").style.backgroundColor="rgb(85, 127, 137)"}}},addMoreFlightRowTableDivFunction=function(e){let t=document.querySelectorAll(".flight_row_class_for_editing");if(0===t.length||!currentFlightDataDivId)return;let n=document.getElementById(currentFlightDataDivId);if(!n)return;insertedFlightDataDivUniqueId=document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText;let l=n.cloneNode(!0);l.id=`flight_row_id_${insertedFlightDataDivUniqueId}`,l.querySelectorAll("[id]").forEach(e=>{let t=e.id.split("_");t[t.length-1]=insertedFlightDataDivUniqueId,e.id=t.join("_")});let i=l.querySelector("h2"),o=l.querySelector("h3");if(i&&o){let e=i.innerText;i.innerText=o.innerText,o.innerText=e}if(insertedFlightDataDivUniqueId++,"up"===e){t[0].parentNode.insertBefore(l,t[0]);let e=document.querySelectorAll(".hotel_row_class_for_editing");if(e.length>0){let t=e[0],n=t.querySelector("h2")?.innerText,i=l.querySelector("h1");i&&n&&(i.innerText=n)}}else if("down"===e){t[t.length-1].parentNode.insertBefore(l,t[t.length-1].nextSibling);let e=document.querySelectorAll(".hotel_row_class_for_editing");if(e.length>0){let t=e[e.length-1],n=t.querySelector("h3")?.innerText,i=l.querySelector("h1");i&&n&&(i.innerText=n)}}let _=document.querySelector(".black_overlay");document.getElementById("ensure_delete_or_edit_flight_data_div").style.transform="translate(-50%, -130vh)",_.style.opacity="0",setTimeout(()=>{document.body.removeChild(_)},300),document.querySelectorAll(".flight_row_flight_arrival_time_controller").forEach(function(e){e.onclick=function(t){flightRowAirLineControllerFunction(t,e)}}),document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText=insertedFlightDataDivUniqueId,ensureAllPackageDatesHiddenOrNo()},manuallyCreateNewFlightRow=function(){document.getElementById("inserted_flight_data_position_div").innerHTML="",insertedFlightDataDivUniqueId=""!==document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText?document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText:1;let e=document.createElement("div");e.id=`flight_row_id_${insertedFlightDataDivUniqueId}`,e.className="flight_row_class flight_row_class_for_editing";let t=document.getElementById("adult_package_person_amount_input_id").value,n=document.getElementById("kids_package_person_amount_input_id").value,l=document.getElementById("infant_package_person_amount_input_id").value;function i(e){let t=e.match(/\d+/);return t?parseInt(t[0]):0}let o=i(t)+i(n),_=`\n        <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;"><p id='flight_air_line_${insertedFlightDataDivUniqueId}'></p></div>\n        <div>\n                        <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">\n                            ${1===o||o>10?`${o} بالغ`:0!==o?`${o} بالغين`:""}\n            </p>\n            ${l?`<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${l}</p>`:""}\n        </div>\n        <div><p>20Kg للشخص</p></div>\n        <div><h2 id='flight_from_city_${insertedFlightDataDivUniqueId}'></h2></div>\n        <div><h3 id='flight_to_city_${insertedFlightDataDivUniqueId}'></h3></div>\n        <div><h1 id='flight_date_${insertedFlightDataDivUniqueId}' class="flight_date_for_matching_whole_package_date"></h1></div>\n        <div><p id='flight_fly_away_time_${insertedFlightDataDivUniqueId}'></p></div>\n        <div><p id='flight_arrival_time_${insertedFlightDataDivUniqueId}'></p></div>\n    `;e.innerHTML=_,document.getElementById("inserted_flight_data_position_div").appendChild(e),document.getElementById("downloaded_pdf_flight_data_page").style.display="block";let d=document.querySelectorAll(".hotel_row_class_for_editing");if(d.length>0){let t=d[0],n=t.querySelector("h2")?.innerText,l=t.querySelector("h5")?.innerText,i=e.querySelector("h1");if(i&&n&&(i.innerText=n),"بالي"===l){let t=e.querySelector("h2"),n=e.querySelector("h3");t&&(t.innerText="جاكرتا"),n&&(n.innerText="بالي")}else{let t=e.querySelector("h2"),n=e.querySelector("h3");t&&(t.innerText="بالي"),n&&(n.innerText="جاكرتا")}}document.querySelectorAll(".flight_row_flight_arrival_time_controller").forEach(function(e){e.onclick=function(t){flightRowAirLineControllerFunction(t,e)}}),document.getElementById("manually_add_flight_row_icon").style.display="none",insertedFlightDataDivUniqueId++,document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText=insertedFlightDataDivUniqueId,ensureAllPackageDatesHiddenOrNo()},createHotelsDataFunction=function(){let e=document.getElementById("hotel_name_input_id").value,t=document.getElementById("hotel_location_input_id").value,n=document.getElementById("hotel_bali_area_input_id").value,l=document.getElementById("hotel_stars_rate_input_id").value,i=document.getElementById("hotel_check_in_input_id").value,o=document.getElementById("hotel_check_out_input_id").value,_=document.getElementById("hotel_room_type_description_input_id").value,d=document.getElementById("hotel_room_contain_pool_input_id").value,a=document.getElementById("hotel_room_view_input_id").value,c=document.getElementById("hotel_unit_amount_input_id").value,r=document.getElementById("hotel_breakfast_people_amount_input_id").value,s=document.getElementById("hotel_extra_bed_input_id").value,u=document.getElementById("hotel_special_room_request_input_id").value,m=document.getElementById("hotel_room_extra_info_textarea_id").value,g=document.getElementById("hotel_room_type_description_input_id_2").value,p=document.getElementById("hotel_room_contain_pool_input_id_2").value,y=document.getElementById("hotel_room_view_input_id_2").value,h=document.getElementById("hotel_unit_amount_input_id_2").value,v=document.getElementById("hotel_breakfast_people_amount_input_id_2").value,f=document.getElementById("hotel_extra_bed_input_id_2").value,E=document.getElementById("hotel_special_room_request_input_id_2").value,b=document.getElementById("hotel_room_extra_info_textarea_id_2").value;if(""===e||""===i||""===o||""===_||""===c||"none"===document.getElementById("downloaded_pdf_clint_data_page").style.display)return playSoundEffect("error"),hotel_inputs_submit_icon.style.backgroundColor="red",void setTimeout(()=>{hotel_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500);if("flex"===document.getElementById("hotel_second_room_data_input_div").style.display&&(""===g||""===h))return playSoundEffect("error"),hotel_inputs_submit_icon.style.backgroundColor="red",void setTimeout(()=>{hotel_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500);if("none"!==document.getElementById("hotel_location_input_id").style.display){if(""===document.getElementById("hotel_location_input_id").value)return playSoundEffect("error"),hotel_inputs_submit_icon.style.backgroundColor="red",void setTimeout(()=>{hotel_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500);if("بالي"===document.getElementById("hotel_location_input_id").value&&""===document.getElementById("hotel_bali_area_input_id").value)return playSoundEffect("error"),hotel_inputs_submit_icon.style.backgroundColor="red",void setTimeout(()=>{hotel_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500)}playSoundEffect("success"),hotel_inputs_submit_icon.style.backgroundColor="rgb(0, 255, 0)",setTimeout(()=>{hotel_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},2e3);let k=""!==document.getElementById("store_google_sheet_hotel_uniuqe_id_name_value").innerText?document.getElementById("store_google_sheet_hotel_uniuqe_id_name_value").innerText:1;if("none"!==document.getElementById("hotel_location_input_id").style.display){let x=null;x="5 نجوم"===l?"five":"4 نجوم"===l?"four":"3 نجوم"===l?"three":"no";let C=`\n            <div><h1 id='hotel_name_${k}'>${e}</h1></div>\n            <div><h2 id='hotel_check_in_${k}' class="hotel_check_in_date_for_matching_whole_package_date">${i}</h2></div>\n            <div><h3 style="color: red" id='hotel_check_out_${k}' class="hotel_check_out_date_for_matching_whole_package_date">${o}</h3></div>\n            <div><h4 id='hotel_total_nights_${k}'>${storeHotelTotalNights}</h4></div>\n            <div class="description_cell">\n                <span id='hotel_room_type_description_${k}'>${_}</span></div>\n            <div>\n                <p id='hotel_total_unit_${k}'>${storeHotelTotalUnitNumber}</p>\n                ${h&&"none"!==document.getElementById("hotel_second_room_data_input_div").style.display?`<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${k}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>`:""}\n            </div>\n            <div>\n                <h5 id='hotel_location_${k}'>${t}</h5>\n                ${n?`<br><h6 id='hotel_area_${k}'>${n}</h6>`:""}\n                <img src="صور-الفنادق/${x}-stars-hotel-image.jpg" id='hotel_image_${k}' class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">\n            </div>\n        `,T=document.createElement("div");if(T.id=`hotel_row_id_${k}`,T.className="hotel_row_class hotel_row_class_for_editing new_hotel_data_by_user_writing_class",T.innerHTML=C,""!==d){let q=document.createElement("span");q.id=`hotel_pool_span_id_${k}`,q.innerText=d,T.querySelector(".description_cell").appendChild(q)}if(""!==a){let S=document.createElement("span");S.id=`hotel_view_span_id_${k}`,S.innerText=a,T.querySelector(".description_cell").appendChild(S)}if(""!==r){let D=document.createElement("span");D.id=`hotel_breakfast_span_id_${k}`,D.innerText=r,T.querySelector(".description_cell").appendChild(D)}if(""!==s){let $=document.createElement("span");$.id=`hotel_extra_bed_span_id_${k}`,$.className="hotel_special_request_span_class",$.innerText=s,$.style.width="100%",$.style.background="rgb(85, 127, 137)",$.style.color="white",$.style.padding="0 5px",T.querySelector(".description_cell").appendChild($)}if(""!==u){let A=document.createElement("span");A.id=`hotel_special_request_span_id_${k}`,A.className="hotel_special_request_span_class",A.innerText=u,A.style.background="rgb(85, 127, 137)",A.style.color="white",A.style.padding="0 5px",T.querySelector(".description_cell").appendChild(A)}if(""!==m){let N=m.replace(/^\s*\++\s*/,""),M=document.createElement("span");M.id=`hotel_extra_info_span_id_${k}`,M.innerText=`+ ${N}`,M.style.width="100%",M.style.background="rgb(85, 127, 137)",M.style.color="white",M.style.padding="0 5px",T.querySelector(".description_cell").appendChild(M)}if("none"!==document.getElementById("hotel_second_room_data_input_div").style.display){if(""!==g){let H=document.createElement("span");H.id=`hotel_room_type_description_2_${k}`,H.innerText=g,H.style.width="100%",H.style.background="rgb(5, 17, 21)",H.style.color="white";let L=document.createElement("span");L.innerText="+ ",L.style.width="100%",L.style.background="rgb(5, 17, 21)",L.style.color="white",T.querySelector(".description_cell").appendChild(L),T.querySelector(".description_cell").appendChild(H)}if(""!==p){let F=document.createElement("span");F.id=`hotel_pool_span_id_2_${k}`,F.innerText=p,F.style.width="100%",F.style.background="rgb(5, 17, 21)",F.style.color="white",T.querySelector(".description_cell").appendChild(F)}if(""!==y){let P=document.createElement("span");P.id=`hotel_view_span_id_2_${k}`,P.style.width="100%",P.innerText=y,P.style.background="rgb(5, 17, 21)",P.style.color="white",T.querySelector(".description_cell").appendChild(P)}if(""!==v){let R=document.createElement("span");R.id=`hotel_breakfast_span_id_2_${k}`,R.innerText=v,R.style.width="100%",R.style.background="rgb(5, 17, 21)",R.style.color="white",T.querySelector(".description_cell").appendChild(R)}if(""!==f){let U=document.createElement("span");U.id=`hotel_extra_bed_span_id_2_${k}`,U.className="hotel_special_request_span_class",U.innerText=f,U.style.width="100%",U.style.background="rgb(5, 17, 21)",U.style.color="white",U.style.padding="0 5px",T.querySelector(".description_cell").appendChild(U)}if(""!==E){let j=document.createElement("span");j.id=`hotel_special_request_span_id_2_${k}`,j.className="hotel_special_request_span_class",j.innerText=E,j.style.width="100%",j.style.background="rgb(5, 17, 21)",j.style.color="white",j.style.padding="0 5px",T.querySelector(".description_cell").appendChild(j)}if(""!==b){let O=b.replace(/^\s*\++\s*/,""),V=document.createElement("span");V.id=`hotel_extra_info_span_id_2_${k}`,V.innerText=`+ ${O}`,V.style.width="100%",V.style.background="rgb(5, 17, 21)",V.style.color="white",V.style.padding="0 5px",T.querySelector(".description_cell").appendChild(V)}}document.getElementById("inserted_hotel_data_position_div").appendChild(T),T.querySelectorAll(".hotel_row_image_controller").forEach(e=>{handleClickEvent(e)}),document.getElementById("hotel_location_input_id").style.display="none",document.getElementById("hotel_location_input_id").value="",document.getElementById("hotel_bali_area_input_id").style.display="none",document.getElementById("hotel_bali_area_input_id").value="",document.getElementById("hotel_stars_rate_input_id").style.display="none",document.getElementById("hotel_stars_rate_input_id").value="",document.getElementById("hotel_name_input_id").readOnly=!0,document.getElementById("hotel_room_type_description_input_id").readOnly=!0,document.getElementById("hotel_room_type_description_input_id_2").readOnly=!0,document.getElementById("hotel_name_input_id").setAttribute("autocomplete","off"),document.getElementById("hotel_room_type_description_input_id").setAttribute("autocomplete","off"),document.getElementById("hotel_room_type_description_input_id_2").setAttribute("autocomplete","off"),document.getElementById("hotel_name_input_id").style.cursor="pointer",document.getElementById("hotel_name_input_id").onclick=function(){handleHotelNameInputClick()},document.getElementById("hotel_room_type_description_input_id").style.cursor="pointer",document.getElementById("hotel_room_type_description_input_id").onclick=function(){createRoomTypeDescripyionDropDown(),showOverlay("hotel_room_type_description_dropdown")},document.getElementById("hotel_room_type_description_input_id_2").style.cursor="pointer",document.getElementById("hotel_room_type_description_input_id_2").onclick=function(){createRoomTypeDescripyionDropDown(),showOverlay("hotel_room_type_description_dropdown")},document.getElementById("change_insert_hotel_data_system_icon").style.background="rgb(0, 87, 116)",document.getElementById("change_insert_hotel_data_system_icon").style.color="white"}else{let W=e.toLowerCase().replace(/\s+/g,"-"),Y="",K="";for(let z of allHotelDataArray)if(z.hotelName===e){Y=z.hotelLocation,z.hasOwnProperty("hotelArea")&&(K=z.hotelArea);break}let G=`\n            <div><h1 id='hotel_name_${k}'>${e}</h1></div>\n            <div><h2 id='hotel_check_in_${k}' class="hotel_check_in_date_for_matching_whole_package_date">${i}</h2></div>\n            <div><h3 style="color: red" id='hotel_check_out_${k}' class="hotel_check_out_date_for_matching_whole_package_date">${o}</h3></div>\n            <div><h4 id='hotel_total_nights_${k}'>${storeHotelTotalNights}</h4></div>\n            <div class="description_cell">\n                <span id='hotel_room_type_description_${k}'>${_}</span></div>\n            <div>\n                <p id='hotel_total_unit_${k}'>${storeHotelTotalUnitNumber}</p>\n                ${h&&"none"!==document.getElementById("hotel_second_room_data_input_div").style.display?`<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${k}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>`:""}\n            </div>\n            <div>\n                <h5 id='hotel_location_${k}'>${Y}</h5>\n                ${K?`<br><h6 id='hotel_area_${k}'>${K}</h6>`:""}\n                <img src="صور-الفنادق/${W}.jpg" class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">\n            </div>\n        `,J=document.createElement("div");if(J.id=`hotel_row_id_${k}`,J.className="hotel_row_class hotel_row_class_for_editing",J.innerHTML=G,""!==d){let X=document.createElement("span");X.id=`hotel_pool_span_id_${k}`,X.innerText=d,J.querySelector(".description_cell").appendChild(X)}if(""!==a){let Q=document.createElement("span");Q.id=`hotel_view_span_id_${k}`,Q.innerText=a,J.querySelector(".description_cell").appendChild(Q)}if(""!==r){let Z=document.createElement("span");Z.id=`hotel_breakfast_span_id_${k}`,Z.innerText=r,J.querySelector(".description_cell").appendChild(Z)}if(""!==s){let ee=document.createElement("span");ee.id=`hotel_extra_bed_span_id_${k}`,ee.className="hotel_special_request_span_class",ee.innerText=s,ee.style.width="100%",ee.style.background="rgb(85, 127, 137)",ee.style.color="white",ee.style.padding="0 5px",J.querySelector(".description_cell").appendChild(ee)}if(""!==u){let te=document.createElement("span");te.id=`hotel_special_request_span_id_${k}`,te.className="hotel_special_request_span_class",te.innerText=u,te.style.background="rgb(85, 127, 137)",te.style.color="white",te.style.padding="0 5px",J.querySelector(".description_cell").appendChild(te)}if(""!==m){let ne=m.replace(/^\s*\++\s*/,""),le=document.createElement("span");le.id=`hotel_extra_info_span_id_${k}`,le.innerText=`+ ${ne}`,le.style.width="100%",le.style.background="rgb(85, 127, 137)",le.style.color="white",le.style.padding="0 5px",J.querySelector(".description_cell").appendChild(le)}if("none"!==document.getElementById("hotel_second_room_data_input_div").style.display){if(""!==g){let ie=document.createElement("span");ie.id=`hotel_room_type_description_2_${k}`,ie.innerText=g,ie.style.width="100%",ie.style.background="rgb(5, 17, 21)",ie.style.color="white";let oe=document.createElement("span");oe.innerText="+ ",oe.style.width="100%",oe.style.background="rgb(5, 17, 21)",oe.style.color="white",J.querySelector(".description_cell").appendChild(oe),J.querySelector(".description_cell").appendChild(ie)}if(""!==p){let _e=document.createElement("span");_e.id=`hotel_pool_span_id_2_${k}`,_e.innerText=p,_e.style.width="100%",_e.style.background="rgb(5, 17, 21)",_e.style.color="white",J.querySelector(".description_cell").appendChild(_e)}if(""!==y){let de=document.createElement("span");de.id=`hotel_view_span_id_2_${k}`,de.style.width="100%",de.innerText=y,de.style.background="rgb(5, 17, 21)",de.style.color="white",J.querySelector(".description_cell").appendChild(de)}if(""!==v){let ae=document.createElement("span");ae.id=`hotel_breakfast_span_id_2_${k}`,ae.innerText=v,ae.style.width="100%",ae.style.background="rgb(5, 17, 21)",ae.style.color="white",J.querySelector(".description_cell").appendChild(ae)}if(""!==f){let ce=document.createElement("span");ce.id=`hotel_extra_bed_span_id_2_${k}`,ce.className="hotel_special_request_span_class",ce.innerText=f,ce.style.width="100%",ce.style.background="rgb(5, 17, 21)",ce.style.color="white",ce.style.padding="0 5px",J.querySelector(".description_cell").appendChild(ce)}if(""!==E){let re=document.createElement("span");re.id=`hotel_special_request_span_id_2_${k}`,re.className="hotel_special_request_span_class",re.innerText=E,re.style.width="100%",re.style.background="rgb(5, 17, 21)",re.style.color="white",re.style.padding="0 5px",J.querySelector(".description_cell").appendChild(re)}if(""!==b){let se=b.replace(/^\s*\++\s*/,""),ue=document.createElement("span");ue.id=`hotel_extra_info_span_id_2_${k}`,ue.innerText=`+ ${se}`,ue.style.width="100%",ue.style.background="rgb(5, 17, 21)",ue.style.color="white",ue.style.padding="0 5px",J.querySelector(".description_cell").appendChild(ue)}}document.getElementById("inserted_hotel_data_position_div").appendChild(J),J.querySelectorAll(".hotel_row_image_controller").forEach(e=>{handleClickEvent(e)})}if(k++,document.getElementById("store_google_sheet_hotel_uniuqe_id_name_value").innerText=k,document.getElementById("downloaded_pdf_hotel_data_page").style.display="block",ensureAllPackageDatesHiddenOrNo(),document.getElementById("hotel_name_input_id").value="",document.getElementById("hotel_location_input_id").value="",document.getElementById("hotel_stars_rate_input_id").value="",document.getElementById("hotel_check_in_input_id").value=document.getElementById("hotel_check_out_input_id").value,document.getElementById("store_google_sheet_hotel_last_stopped_check_out_date_value").innerText=document.getElementById("hotel_check_in_input_id").value,document.getElementById("hotel_check_out_input_id").value="",document.getElementById("hotel_total_nights_input_id").value="",document.getElementById("hotel_room_type_description_input_id").value="",document.getElementById("hotel_room_contain_pool_input_id").value="",document.getElementById("hotel_room_view_input_id").value="",document.getElementById("hotel_special_room_request_input_id").value="",document.getElementById("hotel_room_extra_info_textarea_id").value="",document.getElementById("hotel_room_type_description_input_id_2").value="",document.getElementById("hotel_room_contain_pool_input_id_2").value="",document.getElementById("hotel_room_view_input_id_2").value="",document.getElementById("hotel_special_room_request_input_id_2").value="",document.getElementById("hotel_room_extra_info_textarea_id_2").value="",createHotelDragAndDropMood(),saveOriginalHotelDates(),"none"!==document.getElementById("downloaded_pdf_flight_data_page").style.display){document.getElementById("inserted_flight_data_position_div").innerHTML="",insertedFlightDataDivUniqueId=""!==document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText?document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText:1;let me=document.querySelectorAll(".hotel_row_class_for_editing"),ge=null,pe=null,ye=["بالي","جاكرتا","باندونق","بونشاك","لومبوك"],he=document.getElementById("adult_package_person_amount_input_id").value,ve=document.getElementById("kids_package_person_amount_input_id").value,fe=document.getElementById("infant_package_person_amount_input_id").value;function w(e){let t=e.match(/\d+/);return t?parseInt(t[0]):0}let Ee=w(he)+w(ve);me.forEach((e,t)=>{let n=e.querySelector("h5").innerText,l=e.querySelector("h2").innerText;if("جاكرتا"===ge&&"باندونق"===n||"باندونق"===ge&&"جاكرتا"===n)return ge=n,void(pe=l);if("جاكرتا"===ge&&"بونشاك"===n)return ge=n,void(pe=l);if("بونشاك"===ge&&"جاكرتا"===n)return ge=n,void(pe=l);if(ye.includes(n)&&ge&&ge!==n&&ye.includes(ge)||"بونشاك"===ge&&"بالي"===n||"بالي"===ge&&"بونشاك"===n){let e=ge,t=n;if("بونشاك"===ge&&"بالي"===n||"باندونق"===ge&&"بالي"===n?(e="جاكرتا",t="بالي"):("بالي"===ge&&"بونشاك"===n||"بالي"===ge&&"باندونق"===n)&&(e="بالي",t="جاكرتا"),"باندونق"===ge&&"بونشاك"===n||"بونشاك"===ge&&"باندونق"===n)return ge=n,void(pe=l);let i=document.createElement("div");i.id=`flight_row_id_${insertedFlightDataDivUniqueId}`,i.className="flight_row_class flight_row_class_for_editing";let o=`\n                <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;"><p id='flight_air_line_${insertedFlightDataDivUniqueId}'></p></div>\n                <div>\n                    <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">\n                        ${1===Ee||Ee>10?`${Ee} بالغ`:0!==Ee?`${Ee} بالغين`:""}\n                    </p>\n                    ${fe?`<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${fe}</p>`:""}\n                </div>\n                <div><p>20Kg للشخص</p></div>\n                <div><h2 id='flight_from_city_${insertedFlightDataDivUniqueId}'>${e}</h2></div>\n                <div><h3 id='flight_to_city_${insertedFlightDataDivUniqueId}'>${t}</h3></div>\n                <div><h1 id='flight_date_${insertedFlightDataDivUniqueId}' class="flight_date_for_matching_whole_package_date">${l}</h1></div>\n                <div><p id='flight_fly_away_time_${insertedFlightDataDivUniqueId}'></p></div>\n                <div><p id='flight_arrival_time_${insertedFlightDataDivUniqueId}'></p></div>\n            `;i.innerHTML=o,document.getElementById("inserted_flight_data_position_div").appendChild(i),insertedFlightDataDivUniqueId++}ge=n,pe=l}),document.getElementsByClassName("flight_row_class_for_editing").length>0?(playSoundEffect("success"),clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 255, 0)",setTimeout(()=>{clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500),document.getElementById("downloaded_pdf_flight_data_page").style.display="block",document.getElementById("manually_add_flight_row_icon").style.display="none",ensureAllPackageDatesHiddenOrNo()):(playSoundEffect("error"),clint_flight_inputs_submit_icon.style.backgroundColor="red",setTimeout(()=>{clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500),document.getElementById("downloaded_pdf_flight_data_page").style.display="none"),document.getElementById("flight_from_city_input_id").value=document.getElementById("flight_to_city_input_id").value,document.getElementById("flight_to_city_input_id").value="",document.getElementById("flight_date_input_id").value="",document.getElementById("flight_fly_away_time_input_id").value="",document.getElementById("flight_arrival_time_input_id").value="",document.querySelectorAll(".flight_row_flight_arrival_time_controller").forEach(function(e){e.onclick=function(t){flightRowAirLineControllerFunction(t,e)}}),document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText=insertedFlightDataDivUniqueId}if("none"!==document.getElementById("downloaded_pdf_clint_movements_data_page").style.display){function I(e,t){let[n,l]=e.split(" "),i={"يناير":0,"فبراير":1,"مارس":2,"أبريل":3,"مايو":4,"يونيو":5,"يوليو":6,"أغسطس":7,"سبتمبر":8,"أكتوبر":9,"نوفمبر":10,"ديسمبر":11},o=Object.keys(i),_=new Date;return _.setDate(parseInt(n)),_.setMonth(i[l]),_.setDate(_.getDate()+t),`${_.getDate()} ${o[_.getMonth()]}`}function B(e){return e.replace(/\+\s*\+/g," + ").trim()}document.getElementById("inserted_clint_movements_data_position_div").innerHTML="";let be=document.getElementById("include_airport_welcome__checkbox").checked,ke=document.querySelectorAll(".hotel_row_class_for_editing"),we=ke.length,Ie={baliUbudKeramas:{},baliOthers:{},jakarta:{},puncak:{},bandung:{},lombok:{}},Be="",xe="",Ce=!1,Te=!1,qe=!1,Se=!1,De=ke[0].querySelector("h5").innerText,$e=ke[we-1].querySelector("h5").innerText,Ae="";ke.forEach((e,t)=>{let n,l,i=e.querySelector("h1").innerText,o=e.querySelector("h2").innerText,_=parseInt(e.querySelector("h4").innerText,10),d=e.querySelector("h5").innerText,a="بالي"===d?e.querySelector("h6").innerText:null,c={"بكج شهر عسل":"honeymoon","بكج شباب":"guys","بكج عائلة":"family","بكج شخصين":"twopeople","بكج قروب":"family","بكج جديد":"family"}[document.getElementById("clint_package_type_h6").innerText.trim()]||"family";"بالي"===d&&a?"اوبود"===a||"كيراماس"===a?(n=allClintVisitingPlacesArray[1][c],l=Ie.baliUbudKeramas):["كوتا","نوسا دوا","سيمنياك","جيمباران","اولواتو","ليجين","سانور","تابانان","تشانغو","Tampaksiring"].includes(a)&&(n=allClintVisitingPlacesArray[0][c],l=Ie.baliOthers):"جاكرتا"===d?(n=allClintVisitingPlacesArray[2][c],l=Ie.jakarta):"بونشاك"===d?(n=allClintVisitingPlacesArray[3][c],l=Ie.puncak):"باندونق"===d?(n=allClintVisitingPlacesArray[4][c],l=Ie.bandung):"لومبوك"===d&&(n=allClintVisitingPlacesArray[5][c],l=Ie.lombok),Ie[d]||(Ie[d]={});let r=!1,s=0;for(let e=0;e<_;e++){let a=document.createElement("div");a.className="clint_movements_row_class clint_movements_row_class_for_editing";let c=I(o,e),u="";if(n){for(;l[s]&&n["visitingPlaceNamesDay"+(s-1)];)s++;if(n["visitingPlaceNamesDay"+(s-1)]){let e=n["visitingPlaceNamesDay"+(s-1)];l[s]=!0,e&&e.length>0&&(u=`${e.join(" + ")} `),s++}}let m=0===e?`تسجيل الدخول في ${i}`:"",g=d;if(0===e&&t>0){Be=ke[t-1].querySelector("h5").innerText,xe=ke[t-1].querySelector("h1").innerText,d!==Be&&(g=`${Be}-${d}`,Ae=g);let e="";!be||"بالي"!==d&&"جاكرتا"!==d||d===Be||"بونشاك"===Be&&"جاكرتا"===d||"باندونق"===Be&&"جاكرتا"===d||(e=`الإستقبال في مطار ${d} + `),r||(m=`تسجيل الخروج من ${xe} `,Be!==d&&(m+=`+ الذهاب الى ${d} `),m+=`+ ${e}${u} + تسجيل الدخول في ${i}`,r=!0)}if("بالي"!==d&&"جاكرتا"!==d||Te||(m=m.replace(`تسجيل الدخول في ${i}`,`تسجيل الدخول في ${i} + التجول في السنتر`),Te=!0),Ce||"بالي"!==d&&"جاكرتا"!==d||!be||(m=`الإستقبال في مطار ${d} + ${m}`,Ce=!0),Ce||0!==t||!be||"بونشاك"!==De&&"باندونق"!==De||(m=`الإستقبال في مطار جاكرتا + الذهاب الى ${d} + تسجيل الدخول في ${i}`,Ce=!0),m=B(m),a.innerHTML=`\n                    <div><h1>${c}</h1></div>\n                    <div><h2>${m}</h2></div>\n                    <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${0===e?g:d}</h3></div>\n                `,!qe&&"جاكرتا"===d&&0===e&&0!==t){let e=a.querySelector("h2");e.innerText+=" + الذهاب لمطعم السدة للعشاء",e.innerText=B(e.innerText),qe=!0}if(n&&0===e){let e=1;for(;l[e]&&n["visitingPlaceNamesDay"+(e-1)];)e++;if(n["visitingPlaceNamesDay"+(e-1)]){let t=n["visitingPlaceNamesDay"+(e-1)];l[e]=!0,t&&t.length>0&&(u=`${t.join(" + ")} `)}}if(n){let t=e+1;for(;l[t]&&n["visitingPlaceNamesDay"+(t-1)];)t++;if(n["visitingPlaceNamesDay"+(t-1)]){let e=n["visitingPlaceNamesDay"+(t-1)];l[t]=!0,e&&e.length>0&&(u=`${e.join(" + ")} `)}}if(u&&(a.querySelector("h2").innerText+=`${u}`),document.getElementById("inserted_clint_movements_data_position_div").appendChild(a),t===we-1&&e===_-1)if(Se){a.querySelector("h3").innerText=$e}else Se=!0}if(t===we-1){let e=I(o,_),t=document.createElement("div");t.className="clint_movements_row_class clint_movements_row_class_for_editing",t.innerHTML=`\n            <div><h1>${e}</h1></div>\n            <div><h2>تسجيل الخروج من ${i} والتحرك للمطار للمغادرة</h2></div>\n            <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${d}-مغادرة</h3></div>\n        `,document.getElementById("inserted_clint_movements_data_position_div").appendChild(t)}}),document.getElementById("downloaded_pdf_clint_movements_data_page").style.display="block",filterUsedClintVisitingPlacesNames(),document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(e=>{e.querySelectorAll(".clint_movements_row_controller").forEach(function(e){e.onclick=function(t){clintMovementsRowCityNameControllerFunction(t,e)}})}),ensureAllPackageDatesHiddenOrNo(),highlightWeekendClintMovements()}},deleteClickedHotelData=function(e){let t=document.getElementById(e);t&&t.remove();let n=document.querySelector(".black_overlay");if(document.getElementById("ensure_delete_or_edit_hotel_data_div").style.transform="translate(-50%, -130vh)",n.style.opacity="0",setTimeout(()=>{document.body.removeChild(n)},300),updateHotelRowDates(),0===document.querySelectorAll(".inserted_hotel_data_row").length)document.getElementById("downloaded_pdf_hotel_data_page").style.display="none",saveOriginalHotelDates(),"none"!==document.getElementById("create_new_clint_data_section").style.display?document.getElementById("hotel_check_in_input_id").value=document.getElementById("whole_package_start_date_input_id").value:document.getElementById("hotel_check_in_input_id").value="";else{let e=document.querySelectorAll(".hotel_row_class_for_editing"),t=e[e.length-1].querySelector("h3"),n=t?t.innerText.trim():"";document.getElementById("hotel_check_in_input_id").value=n,document.getElementById("store_google_sheet_hotel_last_stopped_check_out_date_value").innerText=n}},editClickedHotelDataFunction=function(e){create_new_clint_data_section.style.display="none",create_new_hotel_package_section.style.display="flex",create_new_flight_package_section.style.display="none",create_new_package_including_and_not_including_data_section.style.display="none",create_new_clint_movements_plan_section.style.display="none",document.getElementById("hotel_inputs_submit_icon").style.display="none",document.getElementById("change_insert_hotel_data_system_icon").style.display="none",document.getElementById("show_or_hide_second_room_inputs_div_icon").style.display="none",document.getElementById("confirm_new_hotel_data_row_icon").style.display="block",document.getElementById("cancel_new_hotel_data_row_icon").style.display="block",document.getElementById("show_or_hide_second_room_inputs_div_icon_2").style.display="block",document.getElementById("change_insert_hotel_data_system_icon_2").style.display="block",document.getElementById("hotel_content_section_title_text_id").innerText="تعديل تفاصيل الفندق",document.getElementById("toggle_hotel_data_title_div_id").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("hotel_data_dropdown_content").scrollIntoView({block:"center",inline:"center",behavior:"smooth"});let t=document.querySelector(".black_overlay");document.getElementById("ensure_delete_or_edit_hotel_data_div").style.transform="translate(-50%, -130vh)",t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300);let n=document.getElementById(e),l=e.split("_").pop();document.getElementById("hotel_check_in_input_id").disabled=!1;let i=n.querySelector(`h1[id^='hotel_name_${l}']`)?.innerText||"",o=n.querySelector(`h5[id^='hotel_location_${l}']`)?.innerText||"",_=n.querySelector(`h6[id^='hotel_area_${l}']`)?.innerText||"",d=n.querySelector(`h2[id^='hotel_check_in_${l}']`)?.innerText||"",a=n.querySelector(`h3[id^='hotel_check_out_${l}']`)?.innerText||"";storeHotelTotalNights=n.querySelector(`h4[id^='hotel_total_nights_${l}']`)?.innerText||"";let c=n.querySelector(`span[id^='hotel_room_type_description_${l}']`)?.innerText||"",r=n.querySelector(`span[id^='hotel_pool_span_id_${l}']`)?.innerText||"",s=n.querySelector(`span[id^='hotel_view_span_id_${l}']`)?.innerText||"";storeHotelTotalUnitNumber=n.querySelector(`p[id^='hotel_total_unit_${l}']`)?.innerText||"";let u=n.querySelector(`span[id^='hotel_breakfast_span_id_${l}']`)?.innerText||"",m=n.querySelector(`span[id^='hotel_extra_bed_span_id_${l}']`)?.innerText||"",g=n.querySelector(`span[id^='hotel_special_request_span_id_${l}']`)?.innerText||"",p=n.querySelector(`span[id^='hotel_extra_info_span_id_${l}']`)?.innerText||"",y=document.querySelector(`img[id^='hotel_image_${l}']`)?.src||"";if(n.querySelector(`span[id^='hotel_room_type_description_2_${l}`)){let e=document.querySelectorAll("#hotel_two_room_data_input_divs_container input, #hotel_two_room_data_input_divs_container textarea");document.getElementById("hotel_second_room_data_input_div").style.display="flex",e.forEach(e=>{e.dataset.originalWidth||(e.dataset.originalWidth=e.style.width),e.style.width="100%"});let t=n.querySelector(`span[id^='hotel_room_type_description_2_${l}']`)?.innerText||"",i=n.querySelector(`span[id^='hotel_pool_span_id_2_${l}']`)?.innerText||"",o=n.querySelector(`span[id^='hotel_view_span_id_2_${l}']`)?.innerText||"";storeHotelTotalUnitNumber_2=n.querySelector(`p[id^='hotel_total_unit_2_${l}']`)?.innerText||"";let _=n.querySelector(`span[id^='hotel_breakfast_span_id_2_${l}']`)?.innerText||"",d=n.querySelector(`span[id^='hotel_extra_bed_span_id_2_${l}']`)?.innerText||"",a=n.querySelector(`span[id^='hotel_special_request_span_id_2_${l}']`)?.innerText||"",c=n.querySelector(`span[id^='hotel_extra_info_span_id_2_${l}']`)?.innerText||"";document.getElementById("hotel_room_type_description_input_id_2").value=t,document.getElementById("hotel_room_contain_pool_input_id_2").value=i,document.getElementById("hotel_room_view_input_id_2").value=o,document.getElementById("hotel_unit_amount_input_id_2").value=`عدد الوحدات ${storeHotelTotalUnitNumber_2}`,document.getElementById("hotel_breakfast_people_amount_input_id_2").value=_,document.getElementById("hotel_extra_bed_input_id_2").value=d,document.getElementById("hotel_special_room_request_input_id_2").value=a;let r=c.replace(/^\s*\++\s*/,"");document.getElementById("hotel_room_extra_info_textarea_id_2").value=r}else{let e=document.querySelectorAll("#hotel_two_room_data_input_divs_container input, #hotel_two_room_data_input_divs_container textarea");document.getElementById("hotel_second_room_data_input_div").style.display="none",e.forEach(e=>{e.style.width=e.dataset.originalWidth})}n.classList.contains("new_hotel_data_by_user_writing_class")&&(document.getElementById("hotel_location_input_id").value=o,document.getElementById("hotel_bali_area_input_id").value=_,document.getElementById("hotel_location_input_id").style.display="block",document.getElementById("hotel_stars_rate_input_id").style.display="block","بالي"===document.getElementById("hotel_location_input_id").value?document.getElementById("hotel_bali_area_input_id").style.display="block":document.getElementById("hotel_bali_area_input_id").style.display="none",document.getElementById("hotel_name_input_id").readOnly=!1,document.getElementById("hotel_room_type_description_input_id").readOnly=!1,document.getElementById("hotel_room_type_description_input_id_2").readOnly=!1,document.getElementById("hotel_name_input_id").style.cursor="text",document.getElementById("hotel_name_input_id").onclick=null,document.getElementById("hotel_room_type_description_input_id").style.cursor="text",document.getElementById("hotel_room_type_description_input_id").onclick=null,document.getElementById("hotel_room_type_description_input_id_2").style.cursor="text",document.getElementById("hotel_room_type_description_input_id_2").onclick=null,document.getElementById("hotel_name_input_id").setAttribute("autocomplete","on"),document.getElementById("hotel_room_type_description_input_id").setAttribute("autocomplete","on"),document.getElementById("hotel_room_type_description_input_id_2").setAttribute("autocomplete","on")),document.getElementById("hotel_name_input_id").value=i,document.getElementById("hotel_check_in_input_id").value=d,document.getElementById("hotel_check_out_input_id").value=a,document.getElementById("hotel_total_nights_input_id").value=`${storeHotelTotalNights} ليالي`,document.getElementById("hotel_room_type_description_input_id").value=c,document.getElementById("hotel_room_contain_pool_input_id").value=r,document.getElementById("hotel_room_view_input_id").value=s,document.getElementById("hotel_unit_amount_input_id").value=`عدد الوحدات ${storeHotelTotalUnitNumber}`,document.getElementById("hotel_breakfast_people_amount_input_id").value=u,document.getElementById("hotel_extra_bed_input_id").value=m,document.getElementById("hotel_special_room_request_input_id").value=g,y.includes("five-stars-hotel-image")?document.getElementById("hotel_stars_rate_input_id").value="5 نجوم":y.includes("four-stars-hotel-image")?document.getElementById("hotel_stars_rate_input_id").value="4 نجوم":y.includes("three-stars-hotel-image")?document.getElementById("hotel_stars_rate_input_id").value="3 نجوم":y.includes("no-stars-hotel-image")&&(document.getElementById("hotel_stars_rate_input_id").value="");let h=p.replace(/^\s*\++\s*/,"");document.getElementById("hotel_room_extra_info_textarea_id").value=h,fetchAllCloseSellDataFunction_Supabase(),cancelNewHotelDataRow=function(){let e=document.querySelectorAll(".hotel_row_class_for_editing"),t=e[e.length-1];null!==t.querySelector("h3")||void 0!==t.querySelector("h3")?(document.getElementById("hotel_check_in_input_id").value=t.querySelector("h3").innerText,document.getElementById("store_google_sheet_hotel_last_stopped_check_out_date_value").innerText=t.querySelector("h3").innerText):(document.getElementById("hotel_check_in_input_id").value=document.getElementById("hotel_check_out_input_id").value,document.getElementById("store_google_sheet_hotel_last_stopped_check_out_date_value").innerText=document.getElementById("hotel_check_out_input_id").value),document.getElementById("hotel_name_input_id").value="",document.getElementById("hotel_check_out_input_id").value="",document.getElementById("hotel_total_nights_input_id").value="",document.getElementById("hotel_room_type_description_input_id").value="",document.getElementById("hotel_room_contain_pool_input_id").value="",document.getElementById("hotel_room_view_input_id").value="",document.getElementById("hotel_special_room_request_input_id").value="",document.getElementById("hotel_room_extra_info_textarea_id").value="",document.getElementById("hotel_room_type_description_input_id_2").value="",document.getElementById("hotel_room_contain_pool_input_id_2").value="",document.getElementById("hotel_room_view_input_id_2").value="",document.getElementById("hotel_special_room_request_input_id_2").value="",document.getElementById("hotel_room_extra_info_textarea_id_2").value="",document.getElementById("hotel_inputs_submit_icon").style.display="block",document.getElementById("change_insert_hotel_data_system_icon").style.display="block",document.getElementById("show_or_hide_second_room_inputs_div_icon").style.display="block",document.getElementById("confirm_new_hotel_data_row_icon").style.display="none",document.getElementById("cancel_new_hotel_data_row_icon").style.display="none",document.getElementById("show_or_hide_second_room_inputs_div_icon_2").style.display="none",document.getElementById("change_insert_hotel_data_system_icon_2").style.display="none",document.getElementById("hotel_content_section_title_text_id").innerText="تفاصيل الفندق",document.getElementById("toggle_hotel_data_title_div_id").style.background="rgb(131, 0, 148)",saveOriginalHotelDates(),document.getElementById("hotel_check_in_input_id").disabled=!0,document.getElementById("hotel_location_input_id").style.display="none",document.getElementById("hotel_location_input_id").value="",document.getElementById("hotel_bali_area_input_id").style.display="none",document.getElementById("hotel_bali_area_input_id").value="",document.getElementById("hotel_stars_rate_input_id").style.display="none",document.getElementById("hotel_stars_rate_input_id").value="",document.getElementById("hotel_name_input_id").readOnly=!0,document.getElementById("hotel_room_type_description_input_id").readOnly=!0,document.getElementById("hotel_room_type_description_input_id_2").readOnly=!0,document.getElementById("hotel_name_input_id").setAttribute("autocomplete","off"),document.getElementById("hotel_room_type_description_input_id").setAttribute("autocomplete","off"),document.getElementById("hotel_room_type_description_input_id_2").setAttribute("autocomplete","off"),document.getElementById("hotel_name_input_id").style.cursor="pointer",document.getElementById("hotel_name_input_id").onclick=function(){handleHotelNameInputClick()},document.getElementById("hotel_room_type_description_input_id").style.cursor="pointer",document.getElementById("hotel_room_type_description_input_id").onclick=function(){createRoomTypeDescripyionDropDown(),showOverlay("hotel_room_type_description_dropdown")},document.getElementById("hotel_room_type_description_input_id_2").style.cursor="pointer",document.getElementById("hotel_room_type_description_input_id_2").onclick=function(){createRoomTypeDescripyionDropDown(),showOverlay("hotel_room_type_description_dropdown")},document.getElementById("change_insert_hotel_data_system_icon").style.background="rgb(0, 87, 116)",document.getElementById("change_insert_hotel_data_system_icon").style.color="white",ensureAllPackageDatesHiddenOrNo()},confirmNewHotelDataRow=function(){let t=document.getElementById(e);t.innerHTML="";let n=document.getElementById("hotel_name_input_id").value,i=document.getElementById("hotel_location_input_id").value,o=document.getElementById("hotel_bali_area_input_id").value,_=document.getElementById("hotel_stars_rate_input_id").value,d=document.getElementById("hotel_check_in_input_id").value,a=document.getElementById("hotel_check_out_input_id").value,c=document.getElementById("hotel_room_type_description_input_id").value,r=document.getElementById("hotel_room_contain_pool_input_id").value,s=document.getElementById("hotel_room_view_input_id").value,u=document.getElementById("hotel_breakfast_people_amount_input_id").value,m=document.getElementById("hotel_extra_bed_input_id").value,g=document.getElementById("hotel_special_room_request_input_id").value,p=document.getElementById("hotel_room_extra_info_textarea_id").value,y=document.getElementById("hotel_room_type_description_input_id_2").value,h=document.getElementById("hotel_room_contain_pool_input_id_2").value,v=document.getElementById("hotel_room_view_input_id_2").value,f=document.getElementById("hotel_unit_amount_input_id_2").value,E=document.getElementById("hotel_breakfast_people_amount_input_id_2").value,b=document.getElementById("hotel_extra_bed_input_id_2").value,k=document.getElementById("hotel_special_room_request_input_id_2").value,w=document.getElementById("hotel_room_extra_info_textarea_id_2").value;if(""===n||""===d||""===a||""===c)return playSoundEffect("error"),confirm_new_hotel_data_row_icon.style.backgroundColor="red",void setTimeout(()=>{confirm_new_hotel_data_row_icon.style.backgroundColor="rgb(0, 87, 116)"},500);if("flex"===document.getElementById("hotel_second_room_data_input_div").style.display&&(""===y||""===f))return playSoundEffect("error"),confirm_new_hotel_data_row_icon.style.backgroundColor="red",void setTimeout(()=>{confirm_new_hotel_data_row_icon.style.backgroundColor="rgb(0, 87, 116)"},500);if("none"!==document.getElementById("hotel_location_input_id").style.display){if(""===document.getElementById("hotel_location_input_id").value)return;if("بالي"===document.getElementById("hotel_location_input_id").value&&""===document.getElementById("hotel_bali_area_input_id").value)return playSoundEffect("error"),confirm_new_hotel_data_row_icon.style.backgroundColor="red",void setTimeout(()=>{confirm_new_hotel_data_row_icon.style.backgroundColor="rgb(0, 87, 116)"},500)}if(playSoundEffect("success"),"none"!==document.getElementById("hotel_location_input_id").style.display){t.classList.contains("new_hotel_data_by_user_writing_class")||t.classList.add("new_hotel_data_by_user_writing_class");let C=null;C="5 نجوم"===_?"five":"4 نجوم"===_?"four":"3 نجوم"===_?"three":"no";let T=`\n                <div><h1 id='hotel_name_${l}'>${n}</h1></div>\n                <div><h2 id='hotel_check_in_${l}' class="hotel_check_in_date_for_matching_whole_package_date">${d}</h2></div>\n                <div><h3 style="color: red" id='hotel_check_out_${l}' class="hotel_check_out_date_for_matching_whole_package_date">${a}</h3></div>\n                <div><h4 id='hotel_total_nights_${l}'>${storeHotelTotalNights}</h4></div>\n                <div class="description_cell">\n                    <span id='hotel_room_type_description_${l}'>${c}</span></div>\n                <div>\n                    <p id='hotel_total_unit_${l}'>${storeHotelTotalUnitNumber}</p>\n                    ${f&&"none"!==document.getElementById("hotel_second_room_data_input_div").style.display?`<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${l}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>`:""}\n                </div>\n                <div>\n                    <h5 id='hotel_location_${l}'>${i}</h5>\n                    ${o?`<br><h6 id='hotel_area_${l}'>${o}</h6>`:""}\n                    <img src="صور-الفنادق/${C}-stars-hotel-image.jpg" id='hotel_image_${l}' class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">\n                </div>\n            `;if(t.innerHTML=T,""!==r){let q=document.createElement("span");q.id=`hotel_pool_span_id_${l}`,q.innerText=r,t.querySelector(".description_cell").appendChild(q)}if(""!==s){let S=document.createElement("span");S.id=`hotel_view_span_id_${l}`,S.innerText=s,t.querySelector(".description_cell").appendChild(S)}if(""!==u){let D=document.createElement("span");D.id=`hotel_breakfast_span_id_${l}`,D.innerText=u,t.querySelector(".description_cell").appendChild(D)}if(""!==m){let $=document.createElement("span");$.id=`hotel_extra_bed_span_id_${l}`,$.className="hotel_special_request_span_class",$.innerText=m,$.style.width="100%",$.style.background="rgb(85, 127, 137)",$.style.color="white",$.style.padding="0 5px",t.querySelector(".description_cell").appendChild($)}if(""!==g){let A=document.createElement("span");A.id=`hotel_special_request_span_id_${l}`,A.className="hotel_special_request_span_class",A.innerText=g,A.style.background="rgb(85, 127, 137)",A.style.color="white",A.style.padding="0 5px",t.querySelector(".description_cell").appendChild(A)}if(""!==p){let N=p.replace(/^\s*\++\s*/,""),M=document.createElement("span");M.id=`hotel_extra_info_span_id_${l}`,M.innerText=`+ ${N}`,M.style.width="100%",M.style.background="rgb(85, 127, 137)",M.style.color="white",M.style.padding="0 5px",t.querySelector(".description_cell").appendChild(M)}if("none"!==document.getElementById("hotel_second_room_data_input_div").style.display){if(""!==y){let H=document.createElement("span");H.id=`hotel_room_type_description_2_${l}`,H.innerText=y,H.style.width="100%",H.style.background="rgb(5, 17, 21)",H.style.color="white";let L=document.createElement("span");L.innerText="+ ",L.style.width="100%",L.style.background="rgb(5, 17, 21)",L.style.color="white",t.querySelector(".description_cell").appendChild(L),t.querySelector(".description_cell").appendChild(H)}if(""!==h){let F=document.createElement("span");F.id=`hotel_pool_span_id_2_${l}`,F.innerText=h,F.style.width="100%",F.style.background="rgb(5, 17, 21)",F.style.color="white",t.querySelector(".description_cell").appendChild(F)}if(""!==v){let P=document.createElement("span");P.id=`hotel_view_span_id_2_${l}`,P.style.width="100%",P.innerText=v,P.style.background="rgb(5, 17, 21)",P.style.color="white",t.querySelector(".description_cell").appendChild(P)}if(""!==E){let R=document.createElement("span");R.id=`hotel_breakfast_span_id_2_${l}`,R.innerText=E,R.style.width="100%",R.style.background="rgb(5, 17, 21)",R.style.color="white",t.querySelector(".description_cell").appendChild(R)}if(""!==b){let U=document.createElement("span");U.id=`hotel_extra_bed_span_id_2_${l}`,U.className="hotel_special_request_span_class",U.innerText=b,U.style.width="100%",U.style.background="rgb(5, 17, 21)",U.style.color="white",U.style.padding="0 5px",t.querySelector(".description_cell").appendChild(U)}if(""!==k){let j=document.createElement("span");j.id=`hotel_special_request_span_id_2_${l}`,j.className="hotel_special_request_span_class",j.innerText=k,j.style.width="100%",j.style.background="rgb(5, 17, 21)",j.style.color="white",j.style.padding="0 5px",t.querySelector(".description_cell").appendChild(j)}if(""!==w){let O=w.replace(/^\s*\++\s*/,""),V=document.createElement("span");V.id=`hotel_extra_info_span_id_2_${l}`,V.innerText=`+ ${O}`,V.style.width="100%",V.style.background="rgb(5, 17, 21)",V.style.color="white",V.style.padding="0 5px",t.querySelector(".description_cell").appendChild(V)}}document.querySelectorAll(".hotel_row_image_controller").forEach(e=>{handleClickEvent(e)})}else{t.classList.contains("new_hotel_data_by_user_writing_class")&&t.classList.remove("new_hotel_data_by_user_writing_class");let W=n.toLowerCase().replace(/\s+/g,"-"),Y="",K="";for(let J of allHotelDataArray)if(J.hotelName===n){Y=J.hotelLocation,J.hasOwnProperty("hotelArea")&&(K=J.hotelArea);break}let G=`\n                <div><h1 id='hotel_name_${l}'>${n}</h1></div>\n                <div><h2 id='hotel_check_in_${l}' class="hotel_check_in_date_for_matching_whole_package_date">${d}</h2></div>\n                <div><h3 style="color: red" id='hotel_check_out_${l}' class="hotel_check_out_date_for_matching_whole_package_date">${a}</h3></div>\n                <div><h4 id='hotel_total_nights_${l}'>${storeHotelTotalNights}</h4></div>\n                <div class="description_cell">\n                    <span id='hotel_room_type_description_${l}'>${c}</span></div>\n                <div>\n                    <p id='hotel_total_unit_${l}'>${storeHotelTotalUnitNumber}</p>\n                    ${f&&"none"!==document.getElementById("hotel_second_room_data_input_div").style.display?`<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${l}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>`:""}\n                </div>\n                <div>\n                    <h5 id='hotel_location_${l}'>${Y}</h5>\n                    ${K?`<br><h6 id='hotel_area_${l}'>${K}</h6>`:""}\n                    <img src="صور-الفنادق/${W}.jpg" class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">\n                </div>\n            `;if(t.innerHTML=G,""!==r){let z=document.createElement("span");z.id=`hotel_pool_span_id_${l}`,z.innerText=r,t.querySelector(".description_cell").appendChild(z)}if(""!==s){let X=document.createElement("span");X.id=`hotel_view_span_id_${l}`,X.innerText=s,t.querySelector(".description_cell").appendChild(X)}if(""!==u){let Q=document.createElement("span");Q.id=`hotel_breakfast_span_id_${l}`,Q.innerText=u,t.querySelector(".description_cell").appendChild(Q)}if(""!==m){let Z=document.createElement("span");Z.id=`hotel_extra_bed_span_id_${l}`,Z.className="hotel_special_request_span_class",Z.innerText=m,Z.style.width="100%",Z.style.background="rgb(85, 127, 137)",Z.style.color="white",Z.style.padding="0 5px",t.querySelector(".description_cell").appendChild(Z)}if(""!==g){let ee=document.createElement("span");ee.id=`hotel_special_request_span_id_${l}`,ee.className="hotel_special_request_span_class",ee.innerText=g,ee.style.background="rgb(85, 127, 137)",ee.style.color="white",ee.style.padding="0 5px",t.querySelector(".description_cell").appendChild(ee)}if(""!==p){let te=p.replace(/^\s*\++\s*/,""),ne=document.createElement("span");ne.id=`hotel_extra_info_span_id_${l}`,ne.innerText=`+ ${te}`,ne.style.width="100%",ne.style.background="rgb(85, 127, 137)",ne.style.color="white",ne.style.padding="0 5px",t.querySelector(".description_cell").appendChild(ne)}if("none"!==document.getElementById("hotel_second_room_data_input_div").style.display){if(""!==y){let le=document.createElement("span");le.id=`hotel_room_type_description_2_${l}`,le.innerText=y,le.style.width="100%",le.style.background="rgb(5, 17, 21)",le.style.color="white";let ie=document.createElement("span");ie.innerText="+ ",ie.style.width="100%",ie.style.background="rgb(5, 17, 21)",ie.style.color="white",t.querySelector(".description_cell").appendChild(ie),t.querySelector(".description_cell").appendChild(le)}if(""!==h){let oe=document.createElement("span");oe.id=`hotel_pool_span_id_2_${l}`,oe.innerText=h,oe.style.width="100%",oe.style.background="rgb(5, 17, 21)",oe.style.color="white",t.querySelector(".description_cell").appendChild(oe)}if(""!==v){let _e=document.createElement("span");_e.id=`hotel_view_span_id_2_${l}`,_e.style.width="100%",_e.innerText=v,_e.style.background="rgb(5, 17, 21)",_e.style.color="white",t.querySelector(".description_cell").appendChild(_e)}if(""!==E){let de=document.createElement("span");de.id=`hotel_breakfast_span_id_2_${l}`,de.innerText=E,de.style.width="100%",de.style.background="rgb(5, 17, 21)",de.style.color="white",t.querySelector(".description_cell").appendChild(de)}if(""!==b){let ae=document.createElement("span");ae.id=`hotel_extra_bed_span_id_2_${l}`,ae.className="hotel_special_request_span_class",ae.innerText=b,ae.style.width="100%",ae.style.background="rgb(5, 17, 21)",ae.style.color="white",ae.style.padding="0 5px",t.querySelector(".description_cell").appendChild(ae)}if(""!==k){let ce=document.createElement("span");ce.id=`hotel_special_request_span_id_2_${l}`,ce.className="hotel_special_request_span_class",ce.innerText=k,ce.style.width="100%",ce.style.background="rgb(5, 17, 21)",ce.style.color="white",ce.style.padding="0 5px",t.querySelector(".description_cell").appendChild(ce)}if(""!==w){let re=w.replace(/^\s*\++\s*/,""),se=document.createElement("span");se.id=`hotel_extra_info_span_id_2_${l}`,se.innerText=`+ ${re}`,se.style.width="100%",se.style.background="rgb(5, 17, 21)",se.style.color="white",se.style.padding="0 5px",t.querySelector(".description_cell").appendChild(se)}}document.querySelectorAll(".hotel_row_image_controller").forEach(e=>{handleClickEvent(e)})}if("none"!==document.getElementById("downloaded_pdf_flight_data_page").style.display){document.getElementById("inserted_flight_data_position_div").innerHTML="",insertedFlightDataDivUniqueId=""!==document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText?document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText:1;let ue=document.querySelectorAll(".hotel_row_class_for_editing"),me=null,ge=null,pe=["بالي","جاكرتا","باندونق","بونشاك","لومبوك"],ye=document.getElementById("adult_package_person_amount_input_id").value,he=document.getElementById("kids_package_person_amount_input_id").value,ve=document.getElementById("infant_package_person_amount_input_id").value;function I(e){let t=e.match(/\d+/);return t?parseInt(t[0]):0}let fe=I(ye)+I(he);ue.forEach((e,t)=>{let n=e.querySelector("h5").innerText,l=e.querySelector("h2").innerText;if("جاكرتا"===me&&"باندونق"===n||"باندونق"===me&&"جاكرتا"===n)return me=n,void(ge=l);if("جاكرتا"===me&&"بونشاك"===n)return me=n,void(ge=l);if("بونشاك"===me&&"جاكرتا"===n)return me=n,void(ge=l);if(pe.includes(n)&&me&&me!==n&&pe.includes(me)||"بونشاك"===me&&"بالي"===n||"بالي"===me&&"بونشاك"===n){let e=me,t=n;if("بونشاك"===me&&"بالي"===n||"باندونق"===me&&"بالي"===n?(e="جاكرتا",t="بالي"):("بالي"===me&&"بونشاك"===n||"بالي"===me&&"باندونق"===n)&&(e="بالي",t="جاكرتا"),"باندونق"===me&&"بونشاك"===n||"بونشاك"===me&&"باندونق"===n)return me=n,void(ge=l);let i=document.createElement("div");i.id=`flight_row_id_${insertedFlightDataDivUniqueId}`,i.className="flight_row_class flight_row_class_for_editing";let o=`\n                    <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;"><p id='flight_air_line_${insertedFlightDataDivUniqueId}'></p></div>\n                    <div>\n                        <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">\n                            ${1===fe||fe>10?`${fe} بالغ`:0!==fe?`${fe} بالغين`:""}\n                        </p>\n                        ${ve?`<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${ve}</p>`:""}\n                    </div>\n                    <div><p>20Kg للشخص</p></div>\n                    <div><h2 id='flight_from_city_${insertedFlightDataDivUniqueId}'>${e}</h2></div>\n                    <div><h3 id='flight_to_city_${insertedFlightDataDivUniqueId}'>${t}</h3></div>\n                    <div><h1 id='flight_date_${insertedFlightDataDivUniqueId}' class="flight_date_for_matching_whole_package_date">${l}</h1></div>\n                    <div><p id='flight_fly_away_time_${insertedFlightDataDivUniqueId}'></p></div>\n                    <div><p id='flight_arrival_time_${insertedFlightDataDivUniqueId}'></p></div>\n                `;i.innerHTML=o,document.getElementById("inserted_flight_data_position_div").appendChild(i),insertedFlightDataDivUniqueId++}me=n,ge=l}),document.getElementsByClassName("flight_row_class_for_editing").length>0?(playSoundEffect("success"),clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 255, 0)",setTimeout(()=>{clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500),document.getElementById("downloaded_pdf_flight_data_page").style.display="block",document.getElementById("manually_add_flight_row_icon").style.display="none",ensureAllPackageDatesHiddenOrNo()):(playSoundEffect("error"),clint_flight_inputs_submit_icon.style.backgroundColor="red",setTimeout(()=>{clint_flight_inputs_submit_icon.style.backgroundColor="rgb(0, 87, 116)"},500),document.getElementById("downloaded_pdf_flight_data_page").style.display="none"),document.getElementById("flight_from_city_input_id").value=document.getElementById("flight_to_city_input_id").value,document.getElementById("flight_to_city_input_id").value="",document.getElementById("flight_date_input_id").value="",document.getElementById("flight_fly_away_time_input_id").value="",document.getElementById("flight_arrival_time_input_id").value="",document.querySelectorAll(".flight_row_flight_arrival_time_controller").forEach(function(e){e.onclick=function(t){flightRowAirLineControllerFunction(t,e)}}),document.getElementById("store_google_sheet_flight_uniuqe_id_name_value").innerText=insertedFlightDataDivUniqueId}if("none"!==document.getElementById("downloaded_pdf_clint_movements_data_page").style.display){function B(e,t){let[n,l]=e.split(" "),i={"يناير":0,"فبراير":1,"مارس":2,"أبريل":3,"مايو":4,"يونيو":5,"يوليو":6,"أغسطس":7,"سبتمبر":8,"أكتوبر":9,"نوفمبر":10,"ديسمبر":11},o=Object.keys(i),_=new Date;return _.setDate(parseInt(n)),_.setMonth(i[l]),_.setDate(_.getDate()+t),`${_.getDate()} ${o[_.getMonth()]}`}function x(e){return e.replace(/\+\s*\+/g," + ").trim()}document.getElementById("inserted_clint_movements_data_position_div").innerHTML="";let Ee=document.getElementById("include_airport_welcome__checkbox").checked,be=document.querySelectorAll(".hotel_row_class_for_editing"),ke=be.length,we={baliUbudKeramas:{},baliOthers:{},jakarta:{},puncak:{},bandung:{},lombok:{}},Ie="",Be="",xe=!1,Ce=!1,Te=!1,qe=!1,Se=be[0].querySelector("h5").innerText,De=be[ke-1].querySelector("h5").innerText,$e="";be.forEach((e,t)=>{let n,l,i=e.querySelector("h1").innerText,o=e.querySelector("h2").innerText,_=parseInt(e.querySelector("h4").innerText,10),d=e.querySelector("h5").innerText,a="بالي"===d?e.querySelector("h6").innerText:null,c={"بكج شهر عسل":"honeymoon","بكج شباب":"guys","بكج عائلة":"family","بكج شخصين":"twopeople","بكج قروب":"family","بكج جديد":"family"}[document.getElementById("clint_package_type_h6").innerText.trim()]||"family";"بالي"===d&&a?"اوبود"===a||"كيراماس"===a?(n=allClintVisitingPlacesArray[1][c],l=we.baliUbudKeramas):["كوتا","نوسا دوا","سيمنياك","جيمباران","اولواتو","ليجين","سانور","بيانجان","تشانغو","Tampaksiring"].includes(a)&&(n=allClintVisitingPlacesArray[0][c],l=we.baliOthers):"جاكرتا"===d?(n=allClintVisitingPlacesArray[2][c],l=we.jakarta):"بونشاك"===d?(n=allClintVisitingPlacesArray[3][c],l=we.puncak):"باندونق"===d?(n=allClintVisitingPlacesArray[4][c],l=we.bandung):"لومبوك"===d&&(n=allClintVisitingPlacesArray[5][c],l=we.lombok),we[d]||(we[d]={});let r=!1,s=0;for(let e=0;e<_;e++){let a=document.createElement("div");a.className="clint_movements_row_class clint_movements_row_class_for_editing";let c=B(o,e),u="";if(n){for(;l[s]&&n["visitingPlaceNamesDay"+(s-1)];)s++;if(n["visitingPlaceNamesDay"+(s-1)]){let e=n["visitingPlaceNamesDay"+(s-1)];l[s]=!0,e&&e.length>0&&(u=`${e.join(" + ")} `),s++}}let m=0===e?`تسجيل الدخول في ${i}`:"",g=d;if(0===e&&t>0){Ie=be[t-1].querySelector("h5").innerText,Be=be[t-1].querySelector("h1").innerText,d!==Ie&&(g=`${Ie}-${d}`,$e=g);let e="";!Ee||"بالي"!==d&&"جاكرتا"!==d||d===Ie||"بونشاك"===Ie&&"جاكرتا"===d||"باندونق"===Ie&&"جاكرتا"===d||(e=`الإستقبال في مطار ${d} + `),r||(m=`تسجيل الخروج من ${Be} `,Ie!==d&&(m+=`+ الذهاب الى ${d} `),m+=`+ ${e}${u} + تسجيل الدخول في ${i}`,r=!0)}if("بالي"!==d&&"جاكرتا"!==d||Ce||(m=m.replace(`تسجيل الدخول في ${i}`,`تسجيل الدخول في ${i} + التجول في السنتر`),Ce=!0),xe||"بالي"!==d&&"جاكرتا"!==d||!Ee||(m=`الإستقبال في مطار ${d} + ${m}`,xe=!0),xe||0!==t||!Ee||"بونشاك"!==Se&&"باندونق"!==Se||(m=`الإستقبال في مطار جاكرتا + الذهاب الى ${d} + تسجيل الدخول في ${i}`,xe=!0),m=x(m),a.innerHTML=`\n                        <div><h1>${c}</h1></div>\n                        <div><h2>${m}</h2></div>\n                        <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${0===e?g:d}</h3></div>\n                    `,!Te&&"جاكرتا"===d&&0===e&&0!==t){let e=a.querySelector("h2");e.innerText+=" + الذهاب لمطعم السدة للعشاء",e.innerText=x(e.innerText),Te=!0}if(n&&0===e){let e=1;for(;l[e]&&n["visitingPlaceNamesDay"+(e-1)];)e++;if(n["visitingPlaceNamesDay"+(e-1)]){let t=n["visitingPlaceNamesDay"+(e-1)];l[e]=!0,t&&t.length>0&&(u=`${t.join(" + ")} `)}}if(n){let t=e+1;for(;l[t]&&n["visitingPlaceNamesDay"+(t-1)];)t++;if(n["visitingPlaceNamesDay"+(t-1)]){let e=n["visitingPlaceNamesDay"+(t-1)];l[t]=!0,e&&e.length>0&&(u=`${e.join(" + ")} `)}}if(u&&(a.querySelector("h2").innerText+=`${u}`),document.getElementById("inserted_clint_movements_data_position_div").appendChild(a),t===ke-1&&e===_-1)if(qe){a.querySelector("h3").innerText=De}else qe=!0}if(t===ke-1){let e=B(o,_),t=document.createElement("div");t.className="clint_movements_row_class clint_movements_row_class_for_editing",t.innerHTML=`\n                <div><h1>${e}</h1></div>\n                <div><h2>تسجيل الخروج من ${i} والتحرك للمطار للمغادرة</h2></div>\n                <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${d}-مغادرة</h3></div>\n            `,document.getElementById("inserted_clint_movements_data_position_div").appendChild(t)}}),document.getElementById("downloaded_pdf_clint_movements_data_page").style.display="block",filterUsedClintVisitingPlacesNames(),document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(e=>{e.querySelectorAll(".clint_movements_row_controller").forEach(function(e){e.onclick=function(t){clintMovementsRowCityNameControllerFunction(t,e)}})}),ensureAllPackageDatesHiddenOrNo(),highlightWeekendClintMovements()}cancelNewHotelDataRow()}},duplicateClickedHotelDataFunctio=function(){let e=document.getElementById(currentHotelDataDivId),t=e.cloneNode(!0),n=currentHotelDataDivId+"_copy_"+(new Date).getTime();t.id=n,e.parentNode.insertBefore(t,e.nextSibling);let l=document.querySelector(".black_overlay");document.getElementById("ensure_delete_or_edit_hotel_data_div").style.transform="translate(-50%, -130vh)",l.style.opacity="0",setTimeout(()=>{document.body.removeChild(l)},300),saveOriginalHotelDates(),document.querySelectorAll(".hotel_row_image_controller").forEach(e=>{handleClickEvent(e)}),createHotelDragAndDropMood()},autoCreateALlClintMovementsData=function(){if("none"===document.getElementById("downloaded_pdf_clint_data_page").style.display||"none"===document.getElementById("downloaded_pdf_hotel_data_page").style.display)playSoundEffect("error"),clint_movements_auto_create_icon.style.backgroundColor="red",setTimeout(()=>{clint_movements_auto_create_icon.style.backgroundColor="rgb(0, 87, 116)"},500);else{function e(e,t){let[n,l]=e.split(" "),i={"يناير":0,"فبراير":1,"مارس":2,"أبريل":3,"مايو":4,"يونيو":5,"يوليو":6,"أغسطس":7,"سبتمبر":8,"أكتوبر":9,"نوفمبر":10,"ديسمبر":11},o=Object.keys(i),_=(new Date).getFullYear(),d=new Date(_,i[l],parseInt(n));return d.setDate(d.getDate()+t),`${d.getDate()} ${o[d.getMonth()]}`}function t(e){return e.replace(/\+\s*\+/g," + ").trim()}playSoundEffect("success"),clint_movements_auto_create_icon.style.backgroundColor="rgb(0, 255, 0)",setTimeout(()=>{clint_movements_auto_create_icon.style.backgroundColor="rgb(0, 87, 116)"},500),document.getElementById("inserted_clint_movements_data_position_div").innerHTML="";let n=document.getElementById("include_airport_welcome__checkbox").checked,l=document.querySelectorAll(".hotel_row_class_for_editing"),i=l.length,o={baliUbudKeramas:{},baliOthers:{},jakarta:{},puncak:{},bandung:{},lombok:{}},_="",d="",a=!1,c=!1,r=!1,s=!1,u=l[0].querySelector("h5").innerText,m=l[i-1].querySelector("h5").innerText,g="";l.forEach((p,y)=>{let h,v,f=p.querySelector("h1").innerText,E=p.querySelector("h2").innerText,b=parseInt(p.querySelector("h4").innerText,10),k=p.querySelector("h5").innerText,w="بالي"===k?p.querySelector("h6").innerText:null,I={"بكج شهر عسل":"honeymoon","بكج شباب":"guys","بكج عائلة":"family","بكج شخصين":"twopeople","بكج قروب":"family","بكج جديد":"family"}[document.getElementById("clint_package_type_h6").innerText.trim()]||"family";"بالي"===k&&w?"اوبود"===w||"كيراماس"===w?(h=allClintVisitingPlacesArray[1][I],v=o.baliUbudKeramas):["كوتا","نوسا دوا","سيمنياك","جيمباران","اولواتو","ليجين","سانور","بيانجان","تشانغو","Tampaksiring"].includes(w)&&(h=allClintVisitingPlacesArray[0][I],v=o.baliOthers):"جاكرتا"===k?(h=allClintVisitingPlacesArray[2][I],v=o.jakarta):"بونشاك"===k?(h=allClintVisitingPlacesArray[3][I],v=o.puncak):"باندونق"===k?(h=allClintVisitingPlacesArray[4][I],v=o.bandung):"لومبوك"===k&&(h=allClintVisitingPlacesArray[5][I],v=o.lombok),o[k]||(o[k]={});let B=!1,x=0;for(let o=0;o<b;o++){let p=document.createElement("div");p.className="clint_movements_row_class clint_movements_row_class_for_editing";let w=e(E,o),I="";if(h){for(;v[x]&&h["visitingPlaceNamesDay"+(x-1)];)x++;if(h["visitingPlaceNamesDay"+(x-1)]){let e=h["visitingPlaceNamesDay"+(x-1)];v[x]=!0,e&&e.length>0&&(I=`${e.join(" + ")} `),x++}}let C=0===o?`تسجيل الدخول في ${f}`:"",T=k;if(0===o&&y>0){_=l[y-1].querySelector("h5").innerText,d=l[y-1].querySelector("h1").innerText,k!==_&&(T=`${_}-${k}`,g=T);let e="";!n||"بالي"!==k&&"جاكرتا"!==k||k===_||"بونشاك"===_&&"جاكرتا"===k||"باندونق"===_&&"جاكرتا"===k||(e=`الإستقبال في مطار ${k} + `),B||(C=`تسجيل الخروج من ${d} `,_!==k&&(C+=`+ الذهاب الى ${k} `),C+=`+ ${e}${I} + تسجيل الدخول في ${f}`,B=!0)}if("بالي"!==k&&"جاكرتا"!==k||c||(C=C.replace(`تسجيل الدخول في ${f}`,`تسجيل الدخول في ${f} + التجول في السنتر`),c=!0),a||"بالي"!==k&&"جاكرتا"!==k||!n||(C=`الإستقبال في مطار ${k} + ${C}`,a=!0),a||0!==y||!n||"بونشاك"!==u&&"باندونق"!==u||(C=`الإستقبال في مطار جاكرتا + الذهاب الى ${k} + تسجيل الدخول في ${f}`,a=!0),C=t(C),p.innerHTML=`\n                    <div><h1>${w}</h1></div>\n                    <div><h2>${C}</h2></div>\n                    <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${0===o?T:k}</h3></div>\n                `,!r&&"جاكرتا"===k&&0===o&&0!==y){let e=p.querySelector("h2");e.innerText+=" + الذهاب لمطعم السدة للعشاء",e.innerText=t(e.innerText),r=!0}if(h&&0===o){let e=1;for(;v[e]&&h["visitingPlaceNamesDay"+(e-1)];)e++;if(h["visitingPlaceNamesDay"+(e-1)]){let t=h["visitingPlaceNamesDay"+(e-1)];v[e]=!0,t&&t.length>0&&(I=`${t.join(" + ")} `)}}if(h){let e=o+1;for(;v[e]&&h["visitingPlaceNamesDay"+(e-1)];)e++;if(h["visitingPlaceNamesDay"+(e-1)]){let t=h["visitingPlaceNamesDay"+(e-1)];v[e]=!0,t&&t.length>0&&(I=`${t.join(" + ")} `)}}if(I&&(p.querySelector("h2").innerText+=`${I}`),document.getElementById("inserted_clint_movements_data_position_div").appendChild(p),y===i-1&&o===b-1)if(s){p.querySelector("h3").innerText=m}else s=!0}if(y===i-1){let t=e(E,b),n=document.createElement("div");n.className="clint_movements_row_class clint_movements_row_class_for_editing",n.innerHTML=`\n                    <div><h1>${t}</h1></div>\n                    <div><h2>تسجيل الخروج من ${f} والتحرك للمطار للمغادرة</h2></div>\n                    <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${k}-مغادرة</h3></div>\n                `,document.getElementById("inserted_clint_movements_data_position_div").appendChild(n)}}),document.getElementById("downloaded_pdf_clint_movements_data_page").style.display="block",filterUsedClintVisitingPlacesNames(),document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(e=>{e.querySelectorAll(".clint_movements_row_controller").forEach(function(e){e.onclick=function(t){clintMovementsRowCityNameControllerFunction(t,e)}})}),ensureAllPackageDatesHiddenOrNo(),highlightWeekendClintMovements(),document.getElementById("inserted_clint_movements_data_position_div").style.display="block"}},deleteClickedClintMovementsData=function(e){let t=document.querySelectorAll(".clint_movements_row_class_for_editing");if(t.length>0){let n=Array.from(t).indexOf(e);0===n||n===t.length-1?(playSoundEffect("success"),e.remove()):playSoundEffect("error");let l=document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div"),i=document.querySelector(".black_overlay");l.style.transform="translate(-50%, -130vh)",i.style.opacity="0",setTimeout(()=>{document.body.contains(i)&&document.body.removeChild(i)},300),document.getElementById("clint_movements_whole_day_actions_details_textarea_id").value="",document.getElementById("clint_movements_current_city_name_input_id").value="",document.getElementById("clint_movements_auto_create_icon").style.display="block",document.getElementById("confirm_new_clint_movements_data_row_icon").style.display="none",document.getElementById("cancel_new_clint_movements_data_row_icon").style.display="none",document.getElementById("clint_movements_content_section_title_text_id").innerText="برنامج تحركات مقترح",document.getElementById("toggle_clint_movements_details_title_div_id").style.background="rgb(131, 0, 148)",filterUsedClintVisitingPlacesNames(),t.forEach((e,t)=>{let n=e.querySelector("h4");n&&(n.innerText=(t+1).toString())}),highlightWeekendClintMovements(),0===document.querySelectorAll(".clint_movements_row_class_for_editing").length&&(document.getElementById("downloaded_pdf_clint_movements_data_page").style.display="none")}},editClickedClintMovementsData=function(e){create_new_clint_data_section.style.display="none",create_new_hotel_package_section.style.display="none",create_new_flight_package_section.style.display="none",create_new_package_including_and_not_including_data_section.style.display="none",create_new_clint_movements_plan_section.style.display="block",document.getElementById("clint_movements_auto_create_icon").style.display="none",document.getElementById("confirm_new_clint_movements_data_row_icon").style.display="block",document.getElementById("cancel_new_clint_movements_data_row_icon").style.display="block",document.getElementById("clint_movements_content_section_title_text_id").innerText=`تعديل خط سير يوم ${e.querySelector("h1").innerText}`,document.getElementById("toggle_clint_movements_details_title_div_id").style.background="rgb(85, 127, 137)",document.getElementById("toggle_clint_movements_details_title_div_id").scrollIntoView({block:"center",inline:"center",behavior:"smooth"}),document.getElementById("whole_package_start_date_input_id").disabled=!0,document.getElementById("whole_package_end_date_input_id").disabled=!0;let t=document.querySelector(".black_overlay");document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div").style.transform="translate(-50%, -130vh)",t.style.opacity="0",setTimeout(()=>{document.body.removeChild(t)},300),document.getElementById("clint_movements_whole_day_actions_details_textarea_id").value=e.querySelector("h2").innerText,document.getElementById("clint_movements_current_city_name_input_id").value=e.querySelector("h3").innerText,filterUsedClintVisitingPlacesNames(),cancelNewClintMovementsDataRow=function(){document.getElementById("clint_movements_whole_day_actions_details_textarea_id").value="",document.getElementById("clint_movements_current_city_name_input_id").value="",document.getElementById("clint_movements_auto_create_icon").style.display="block",document.getElementById("confirm_new_clint_movements_data_row_icon").style.display="none",document.getElementById("cancel_new_clint_movements_data_row_icon").style.display="none",document.getElementById("clint_movements_content_section_title_text_id").innerText="برنامج تحركات مقترح",document.getElementById("toggle_clint_movements_details_title_div_id").style.background="rgb(131, 0, 148)",document.getElementById("whole_package_start_date_input_id").disabled=!1,document.getElementById("whole_package_end_date_input_id").disabled=!1,filterUsedClintVisitingPlacesNames();let e=document.querySelectorAll(".clint_movements_row_class_for_editing");e.length>0&&e.forEach((e,t)=>{let n=e.querySelector("h4");n&&(n.innerText=(t+1).toString())})},confirmNewClintMovementsDataRow=function(){e.querySelector("h2").innerText=document.getElementById("clint_movements_whole_day_actions_details_textarea_id").value,e.querySelector("h3").innerText=document.getElementById("clint_movements_current_city_name_input_id").value,document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(e=>{e.querySelectorAll(".clint_movements_row_controller").forEach(function(e){e.onclick=function(t){clintMovementsRowCityNameControllerFunction(t,e)}})}),cancelNewClintMovementsDataRow()}},clintMovementsRowCityNameControllerFunction=function(e){let t=document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div"),n=e.target.closest(".clint_movements_row_class");if(n){currentClintMovementsDataDiv=n,runDeleteClickedClintMovementsDataFunction=function(){deleteClickedClintMovementsData(currentClintMovementsDataDiv)},runEditClickedClintMovementsDataFunction=function(){editClickedClintMovementsData(currentClintMovementsDataDiv),document.getElementById("header_navbar_links_clint_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_hotel_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_flight_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_package_icluding_and_not_including_a").style.backgroundColor="rgb(85, 127, 137)",document.getElementById("header_navbar_links_clint_movements_a").style.backgroundColor="rgb(0, 46, 57)"},copyAndReplaceClintMovementsRowTableDivFunction=function(e){"copy"===e?runCopyClickedClintMovementH2TextFunction(currentClintMovementsDataDiv):runReplaceClickedClintMovementH2TextFunction(currentClintMovementsDataDiv)},splitAndPlaceClintMovementsRowTableDivFunction=function(e){"split"===e?runSplitAndPlaceClintMovementsRowTableDivFunction(currentClintMovementsDataDiv):runPlaceClintMovementsRowTableDivFunction(currentClintMovementsDataDiv)},addFreeTransportationDayWithoutDriverFunction=function(){runAddFreeTransportationDayWithoutDriverFunction(currentClintMovementsDataDiv)},addFreeTransportationDayWithDriverFunction=function(){runAddFreeTransportationDayWithDriverFunction(currentClintMovementsDataDiv)};let e=document.querySelector(".black_overlay");if(!e){e=document.createElement("div"),e.classList.add("black_overlay"),document.body.appendChild(e),setTimeout(()=>{e.style.opacity="1",t.style.transform="translate(-50%, -50%)"},50);let n=()=>{t.style.transform="translate(-50%, -130vh)",e.style.opacity="0",setTimeout(()=>{document.body.contains(e)&&document.body.removeChild(e)},300)};e.addEventListener("click",n),e.addEventListener("click",e=>{e.stopPropagation()})}}};let lastCopiedClintMovementRowDiv=null,lastCopiedClintMovementH2Text=null,lastClickedClintMovementRowDiv_for_replacing=null,lastClickedClintMovementH2Text_for_replacing=null;runCopyClickedClintMovementH2TextFunction=function(e){if(null!==lastCopiedClintMovementRowDiv){let e=lastCopiedClintMovementRowDiv.querySelectorAll("div")[0],t=lastCopiedClintMovementRowDiv.querySelectorAll("div")[1],n=lastCopiedClintMovementRowDiv.querySelectorAll("div")[2];e.style.backgroundColor="white",e.style.color="black",t.style.backgroundColor="white",t.style.color="black",n.style.backgroundColor="white",n.style.color="black"}lastCopiedClintMovementRowDiv=e,lastCopiedClintMovementH2Text=e.querySelector("h2").innerText;let t=document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div"),n=document.querySelector(".black_overlay");t.style.transform="translate(-50%, -130vh)",n.style.opacity="0",setTimeout(()=>{document.body.contains(n)&&document.body.removeChild(n)},300);let l=lastCopiedClintMovementRowDiv.querySelectorAll("div")[0],i=lastCopiedClintMovementRowDiv.querySelectorAll("div")[1],o=lastCopiedClintMovementRowDiv.querySelectorAll("div")[2];l.style.backgroundColor="rgb(0, 93, 119)",l.style.color="white",i.style.backgroundColor="rgb(0, 93, 119)",i.style.color="white",o.style.backgroundColor="rgb(0, 93, 119)",o.style.color="white",setTimeout(()=>{highlightWeekendClintMovements()},500)},runReplaceClickedClintMovementH2TextFunction=function(e){if(lastClickedClintMovementRowDiv_for_replacing=e,lastClickedClintMovementH2Text_for_replacing=e.querySelector("h2").innerText,null!==lastCopiedClintMovementRowDiv){playSoundEffect("success"),lastCopiedClintMovementRowDiv.querySelector("h2").innerText=lastClickedClintMovementH2Text_for_replacing,lastClickedClintMovementRowDiv_for_replacing.querySelector("h2").innerText=lastCopiedClintMovementH2Text;let e=lastCopiedClintMovementRowDiv.querySelectorAll("div")[0],t=lastCopiedClintMovementRowDiv.querySelectorAll("div")[1],n=lastCopiedClintMovementRowDiv.querySelectorAll("div")[2];e.style.backgroundColor="green",e.style.color="white",t.style.backgroundColor="green",t.style.color="white",n.style.backgroundColor="green",n.style.color="white";let l=lastClickedClintMovementRowDiv_for_replacing.querySelectorAll("div")[0],i=lastClickedClintMovementRowDiv_for_replacing.querySelectorAll("div")[1],o=lastClickedClintMovementRowDiv_for_replacing.querySelectorAll("div")[2];l.style.backgroundColor="green",l.style.color="white",i.style.backgroundColor="green",i.style.color="white",o.style.backgroundColor="green",o.style.color="white",setTimeout(()=>{e.style.backgroundColor="white",e.style.color="black",t.style.backgroundColor="white",t.style.color="black",n.style.backgroundColor="white",n.style.color="black",l.style.backgroundColor="white",l.style.color="black",i.style.backgroundColor="white",i.style.color="black",o.style.backgroundColor="white",o.style.color="black"},1e3),lastCopiedClintMovementRowDiv=null,lastCopiedClintMovementH2Text=null,lastClickedClintMovementRowDiv_for_replacing=null,lastClickedClintMovementH2Text_for_replacing=null}else playSoundEffect("error");let t=document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div"),n=document.querySelector(".black_overlay");t.style.transform="translate(-50%, -130vh)",n.style.opacity="0",setTimeout(()=>{document.body.contains(n)&&document.body.removeChild(n)},300),setTimeout(()=>{highlightWeekendClintMovements()},1e3)};let lastSplitClintMovementRowDiv=null,lastSplitClintMovementH2Text=null,lastClickedClintMovementRowDiv_for_placing=null;function decrementDate(e){let t=e.split(" "),n=parseInt(t[0],10),l=t[1],i=new Date;return i.setDate(n-1),`${i.getDate()} ${l}`}function incrementDate(e){let t=e.split(" "),n=parseInt(t[0],10),l=t[1],i=new Date;return i.setDate(n+1),`${i.getDate()} ${l}`}function filterUsedClintVisitingPlacesNames(){let e=document.querySelectorAll(".clint_movements_row_class_for_editing"),t=[];function n(e){return e.replace(/\s+/g," ").trim()}e.forEach(e=>{let n=e.querySelector("h2").innerText.split("+").map(e=>e.trim());t=t.concat(n)}),document.getElementById("all_clint_movements_places_page_divs_container").querySelectorAll("p").forEach(e=>{let l=n(e.innerText);t.some(e=>n(e)===l)?e.style.display="none":e.style.display="block"})}function highlightWeekendClintMovements(){let e={"يناير":0,"فبراير":1,"مارس":2,"أبريل":3,"مايو":4,"يونيو":5,"يوليو":6,"أغسطس":7,"سبتمبر":8,"أكتوبر":9,"نوفمبر":10,"ديسمبر":11};document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(t=>{let n=t.querySelector("h1"),l=t.querySelector("h3");if(n&&l){let i=n.innerText.trim(),[o,_]=i.split(" "),d=parseInt(o,10),a=e[_];if(!isNaN(d)&&void 0!==a){let e=new Date;e.setDate(d),e.setMonth(a);let n=e.getDay();if((0===n||6===n)&&l.innerText.includes("بونشاك")){let e=t.querySelector("div:first-child");e&&(e.style.backgroundColor="rgb(190, 0, 0)",e.style.color="white")}}}})}function isVisible(e){return e.offsetWidth>0&&e.offsetHeight>0}runSplitAndPlaceClintMovementsRowTableDivFunction=function(e){if(null!==lastSplitClintMovementRowDiv){let e=lastSplitClintMovementRowDiv.querySelectorAll("div")[0],t=lastSplitClintMovementRowDiv.querySelectorAll("div")[1],n=lastSplitClintMovementRowDiv.querySelectorAll("div")[2];e.style.backgroundColor="white",e.style.color="black",t.style.backgroundColor="white",t.style.color="black",n.style.backgroundColor="white",n.style.color="black"}lastSplitClintMovementRowDiv=e,lastSplitClintMovementH2Text=e.querySelector("h2").innerText;let t=document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div"),n=document.querySelector(".black_overlay");t.style.transform="translate(-50%, -130vh)",n.style.opacity="0",setTimeout(()=>{document.body.contains(n)&&document.body.removeChild(n)},300);let l=lastSplitClintMovementRowDiv.querySelectorAll("div")[0],i=lastSplitClintMovementRowDiv.querySelectorAll("div")[1],o=lastSplitClintMovementRowDiv.querySelectorAll("div")[2];l.style.backgroundColor="rgb(0, 93, 119)",l.style.color="white",i.style.backgroundColor="rgb(0, 93, 119)",i.style.color="white",o.style.backgroundColor="rgb(0, 93, 119)",o.style.color="white",setTimeout(()=>{highlightWeekendClintMovements()},500)},runAddFreeTransportationDayWithoutDriverFunction=function(e){playSoundEffect("success"),e.querySelector("h2").innerText="يوم مفتوح بدون سائق";let t=e.querySelectorAll("div")[0],n=e.querySelectorAll("div")[1],l=e.querySelectorAll("div")[2];t.style.backgroundColor="green",t.style.color="white",n.style.backgroundColor="green",n.style.color="white",l.style.backgroundColor="green",l.style.color="white",setTimeout(()=>{t.style.backgroundColor="white",t.style.color="black",n.style.backgroundColor="white",n.style.color="black",l.style.backgroundColor="white",l.style.color="black"},1e3);let i=document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div"),o=document.querySelector(".black_overlay");i.style.transform="translate(-50%, -130vh)",o.style.opacity="0",setTimeout(()=>{document.body.contains(o)&&document.body.removeChild(o)},300),setTimeout(()=>{highlightWeekendClintMovements()},1e3)},runAddFreeTransportationDayWithDriverFunction=function(e){playSoundEffect("success"),e.querySelector("h2").innerText="جولة مع سائق خاص لمدة 8 ساعات";let t=e.querySelectorAll("div")[0],n=e.querySelectorAll("div")[1],l=e.querySelectorAll("div")[2];t.style.backgroundColor="green",t.style.color="white",n.style.backgroundColor="green",n.style.color="white",l.style.backgroundColor="green",l.style.color="white",setTimeout(()=>{t.style.backgroundColor="white",t.style.color="black",n.style.backgroundColor="white",n.style.color="black",l.style.backgroundColor="white",l.style.color="black"},1e3);let i=document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div"),o=document.querySelector(".black_overlay");i.style.transform="translate(-50%, -130vh)",o.style.opacity="0",setTimeout(()=>{document.body.contains(o)&&document.body.removeChild(o)},300),setTimeout(()=>{highlightWeekendClintMovements()},1e3)},runPlaceClintMovementsRowTableDivFunction=function(e){if(lastClickedClintMovementRowDiv_for_placing=e,""===e.querySelector("h2").innerText){if(null!==lastSplitClintMovementRowDiv){playSoundEffect("success");let t=lastSplitClintMovementH2Text.split("+").map(e=>e.trim());if(t.length>1){let n=Math.ceil(t.length/2),l=t.slice(0,n).join(" + "),i=t.slice(n).join(" + ");lastSplitClintMovementRowDiv.querySelector("h2").innerText=l,e.querySelector("h2").innerText=i}let n=lastSplitClintMovementRowDiv.querySelectorAll("div")[0],l=lastSplitClintMovementRowDiv.querySelectorAll("div")[1],i=lastSplitClintMovementRowDiv.querySelectorAll("div")[2];n.style.backgroundColor="green",n.style.color="white",l.style.backgroundColor="green",l.style.color="white",i.style.backgroundColor="green",i.style.color="white";let o=lastClickedClintMovementRowDiv_for_placing.querySelectorAll("div")[0],_=lastClickedClintMovementRowDiv_for_placing.querySelectorAll("div")[1],d=lastClickedClintMovementRowDiv_for_placing.querySelectorAll("div")[2];o.style.backgroundColor="green",o.style.color="white",_.style.backgroundColor="green",_.style.color="white",d.style.backgroundColor="green",d.style.color="white",setTimeout(()=>{n.style.backgroundColor="white",n.style.color="black",l.style.backgroundColor="white",l.style.color="black",i.style.backgroundColor="white",i.style.color="black",o.style.backgroundColor="white",o.style.color="black",_.style.backgroundColor="white",_.style.color="black",d.style.backgroundColor="white",d.style.color="black"},1e3),lastSplitClintMovementRowDiv=null,lastSplitClintMovementH2Text=null,lastClickedClintMovementRowDiv_for_placing=null}}else playSoundEffect("error");let t=document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div"),n=document.querySelector(".black_overlay");t.style.transform="translate(-50%, -130vh)",n.style.opacity="0",setTimeout(()=>{document.body.contains(n)&&document.body.removeChild(n)},300),setTimeout(()=>{highlightWeekendClintMovements()},1e3)},addMoreClintMovementsRowTableDivFunction=function(e){let t=document.querySelectorAll(".clint_movements_row_class_for_editing");if(t.length>0){let n,l;if("up"===e){n=t[0],l=decrementDate(n.querySelector("h1").innerText)}else if("down"===e){n=t[t.length-1],l=incrementDate(n.querySelector("h1").innerText)}let i=document.createElement("div");i.className="clint_movements_row_class clint_movements_row_class_for_editing",i.innerHTML=`\n            <div><h1>${l}</h1></div>\n            <div><h2></h2></div>\n            <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${n.querySelector("h3").innerText}</h3></div>\n        `,"up"===e?n.parentNode.insertBefore(i,n):"down"===e&&n.parentNode.insertBefore(i,n.nextSibling);let o=document.querySelector(".black_overlay");document.getElementById("ensure_delete_or_edit_clint_movemnt_data_div").style.transform="translate(-50%, -130vh)",o.style.opacity="0",setTimeout(()=>{document.body.removeChild(o)},300),document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(e=>{e.querySelectorAll(".clint_movements_row_controller").forEach(function(e){e.onclick=function(t){clintMovementsRowCityNameControllerFunction(t,e)}})}),ensureAllPackageDatesHiddenOrNo(),t.forEach((e,t)=>{let n=e.querySelector("h4");n&&(n.innerText=(t+1).toString())}),highlightWeekendClintMovements()}},openPdfDownloadBox=function(){if(""!==document.getElementById("package_user_code_name_for_later_import_reference_p_id").innerText&&"none"!==document.getElementById("downloaded_pdf_clint_data_page").style.display){let e=document.getElementById("package_user_code_name_for_later_import_reference_p_id").innerText;document.getElementById("use_website_user_code_name_as_downloaded_pdf_file_name_p_id").innerText=`استخدم كود صاحب البكج ${e}`,document.getElementById("use_website_user_code_name_as_downloaded_pdf_file_name_p_id").style.backgroundColor="rgb(85, 127, 137)"}else document.getElementById("use_website_user_code_name_as_downloaded_pdf_file_name_p_id").innerText="تأكد من إدخال معلومات العميل",document.getElementById("use_website_user_code_name_as_downloaded_pdf_file_name_p_id").style.backgroundColor="rgb(190, 0, 0)";let e=document.createElement("div");e.className="black_overlay",document.body.appendChild(e),setTimeout(()=>{e.style.opacity="1",document.getElementById("name_pdf_file_div").style.transform="translate(-50%, -50%)"},100),e.onclick=()=>{document.getElementById("name_pdf_file_div").style.transform="translate(-50%, -130vh)",e.style.opacity="0",setTimeout(()=>{document.body.removeChild(e)},300)}},downloadPdfWithCurrentUserCodeName=function(){if("rgb(190, 0, 0)"!==document.getElementById("use_website_user_code_name_as_downloaded_pdf_file_name_p_id").style.backgroundColor){let e=Promise.resolve();"newUniqueNumber"===websiteUserUniqueNumber&&handleUserPackageUniqueNumber(document.getElementById("website_users_name_input_id").value,"insert"),playSoundEffect("success"),document.getElementById("use_website_user_code_name_as_downloaded_pdf_file_name_p_id").style.pointerEvents="none",document.getElementById("use_website_user_code_name_as_downloaded_pdf_file_name_p_id").innerText="جاري التحميل..",document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(e=>{e.querySelectorAll("div").forEach(e=>{"rgb(190, 0, 0)"!==e.style.backgroundColor&&(e.style.backgroundColor="white",e.style.color="black")})}),e.then(()=>{sendDataToSupabase()}).then(()=>{const e=document.getElementById("package_user_code_name_for_later_import_reference_p_id").innerText;downloadPdfWithCustomName(e)})}},downloadPdfWithCustomName=async function(e){let{jsPDF:t}=window.jspdf,n=async function(e,t){try{return await new Promise(e=>setTimeout(e,500)),await html2canvas(e,{scale:t,backgroundColor:"white",scrollY:0,useCORS:!0,logging:!1})}catch(e){}},l=document.querySelectorAll(".inserted_package_data_section_page_image_class");l.forEach(e=>{e.style.display="inline"}),document.getElementById("downloaded_pdf_important_notes_data_page").style.display="block",document.getElementById("inserted_company_name_image_position_div").style.display="none";const i=document.querySelectorAll(".Important_notes_for_each_pdf_section_div_class");i.forEach(e=>{e.style.display="block"});const o=document.getElementById("clint_company_name_input_id");if(o){const e=o.value.trim(),t=document.querySelectorAll(".hide_for_sky_global");"سكاي جلوبال"===e?t.forEach(e=>{e.style.display="none"}):(t.forEach(e=>{e.style.display="block"}),document.getElementById("pdf_section_title_div_usuful_notes_id").style.display="flex")}const _=document.querySelectorAll(".pdf_section_title_div_class h6"),d=document.querySelectorAll(".inserted_main_row_color_class"),a=document.querySelectorAll(".inserted_package_data_section_page_image_class");"مغادر"===document.getElementById("clint_company_name_input_id").value?(_.forEach(e=>{e.style.backgroundColor="rgb(214, 156, 57)",e.style.color="white"}),d.forEach(e=>{e.style.backgroundColor="rgb(5, 52, 90)",e.style.color="white"}),document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_h6_class")}),document.querySelectorAll(".inserted_main_row_color_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_div_class")}),document.querySelectorAll(".special_package_including_data_background_color_text").forEach(e=>{e.style.background="rgb(85, 127, 137)"}),document.getElementById("package_clint_code_number_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("welcome_pdf_first_page_image_id")?.classList.remove("no_right_padding_for_vid_design_img_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.textAlign="left",document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.float="left",document.getElementById("package_clint_code_number_p_id").style.textAlign="right",document.getElementById("package_clint_code_number_p_id").style.float="right",document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.querySelectorAll("ion-icon").forEach(e=>{e.style.display=""})}),document.getElementById("vid_clint_deposit_note_p_id")&&(document.getElementById("vid_clint_deposit_note_p_id").style.display="none"),a.forEach(e=>{e.src="moghader-middle-pdf-image.jpg"}),document.getElementById("welcome_pdf_first_page_image_id").src="خلفية-الشركات/مغادر.jpg",document.getElementById("package_clint_code_number_p_id").style.display="block"):"فيد"===document.getElementById("clint_company_name_input_id").value?(document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.classList.add("no_right_padding_for_vid_design_h6_class")}),document.querySelectorAll(".inserted_main_row_color_class").forEach(e=>{e.classList.add("no_right_padding_for_vid_design_div_class")}),document.querySelectorAll(".special_package_including_data_background_color_text").forEach(e=>{e.style.background="rgb(99, 37, 35)"}),document.getElementById("package_clint_code_number_p_id")?.classList.add("no_right_padding_for_vid_design_p_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id")?.classList.add("no_right_padding_for_vid_design_p_class"),document.getElementById("welcome_pdf_first_page_image_id")?.classList.add("no_right_padding_for_vid_design_img_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.textAlign="right",document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.float="right",document.getElementById("package_clint_code_number_p_id").style.textAlign="left",document.getElementById("package_clint_code_number_p_id").style.float="left",document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.querySelectorAll("ion-icon").forEach(e=>{e.style.display=""})}),document.getElementById("vid_clint_deposit_note_p_id")&&(document.getElementById("vid_clint_deposit_note_p_id").style.display="block"),a.forEach(e=>{e.src="vid-middle-pdf-image.jpg"}),document.getElementById("welcome_pdf_first_page_image_id").src="خلفية-الشركات/فيد.jpg",document.getElementById("package_clint_code_number_p_id").style.display="block"):"سكاي جلوبال"===document.getElementById("clint_company_name_input_id").value?(_.forEach(e=>{e.style.backgroundColor="rgb(4, 52, 90)",e.style.color="white"}),d.forEach(e=>{e.style.backgroundColor="rgb(120, 202, 223)",e.style.color="black"}),document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_h6_class")}),document.querySelectorAll(".inserted_main_row_color_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_div_class")}),document.querySelectorAll(".special_package_including_data_background_color_text").forEach(e=>{e.style.background="rgb(4, 52, 90)"}),document.getElementById("package_clint_code_number_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("welcome_pdf_first_page_image_id")?.classList.remove("no_right_padding_for_vid_design_img_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.textAlign="left",document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.float="left",document.getElementById("package_clint_code_number_p_id").style.textAlign="right",document.getElementById("package_clint_code_number_p_id").style.float="right",document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.querySelectorAll("ion-icon").forEach(e=>{e.style.display="none"})}),document.getElementById("vid_clint_deposit_note_p_id")&&(document.getElementById("vid_clint_deposit_note_p_id").style.display="none"),a.forEach(e=>{e.src="sky-global-middle-pdf-image.jpg"}),document.getElementById("welcome_pdf_first_page_image_id").src="خلفية-الشركات/سكاي-جلوبال.jpg",document.getElementById("package_clint_code_number_p_id").style.display="block"):"ترافل جت"===document.getElementById("clint_company_name_input_id").value?(_.forEach(e=>{e.style.backgroundColor="rgb(232, 107, 41)",e.style.color="white"}),d.forEach(e=>{e.style.backgroundColor="rgb(5, 150, 152)",e.style.color="white"}),document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_h6_class")}),document.querySelectorAll(".inserted_main_row_color_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_div_class")}),document.querySelectorAll(".special_package_including_data_background_color_text").forEach(e=>{e.style.background="rgb(5, 150, 152)"}),document.getElementById("package_clint_code_number_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("welcome_pdf_first_page_image_id")?.classList.remove("no_right_padding_for_vid_design_img_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.textAlign="left",document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.float="left",document.getElementById("package_clint_code_number_p_id").style.textAlign="right",document.getElementById("package_clint_code_number_p_id").style.float="right",document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.querySelectorAll("ion-icon").forEach(e=>{e.style.display=""})}),document.getElementById("vid_clint_deposit_note_p_id")&&(document.getElementById("vid_clint_deposit_note_p_id").style.display="none"),a.forEach(e=>{e.src="travel-gate-middle-pdf-image.jpg"}),document.getElementById("welcome_pdf_first_page_image_id").src="خلفية-الشركات/ترافل-جت.jpg",document.getElementById("package_clint_code_number_p_id").style.display="block"):"الهدف"===document.getElementById("clint_company_name_input_id").value?(_.forEach(e=>{e.style.backgroundColor="rgb(196, 17, 47)",e.style.color="white"}),d.forEach(e=>{e.style.backgroundColor="rgb(13, 63, 46)",e.style.color="white"}),document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_h6_class")}),document.querySelectorAll(".inserted_main_row_color_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_div_class")}),document.querySelectorAll(".special_package_including_data_background_color_text").forEach(e=>{e.style.background="rgb(196, 17, 47)"}),document.getElementById("package_clint_code_number_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("welcome_pdf_first_page_image_id")?.classList.remove("no_right_padding_for_vid_design_img_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.textAlign="left",document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.float="left",document.getElementById("package_clint_code_number_p_id").style.textAlign="right",document.getElementById("package_clint_code_number_p_id").style.float="right",document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.querySelectorAll("ion-icon").forEach(e=>{e.style.display=""})}),document.getElementById("vid_clint_deposit_note_p_id")&&(document.getElementById("vid_clint_deposit_note_p_id").style.display="none"),a.forEach(e=>{e.src="alhadf-middle-pdf-image.jpg"}),document.getElementById("welcome_pdf_first_page_image_id").src="خلفية-الشركات/الهدف.jpg",document.getElementById("package_clint_code_number_p_id").style.display="block"):""===document.getElementById("clint_company_name_input_id").value?(_.forEach(e=>{e.style.backgroundColor="rgb(161, 45, 10)",e.style.color="white"}),d.forEach(e=>{e.style.backgroundColor="rgb(207, 83, 21)",e.style.color="white"}),document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_h6_class")}),document.querySelectorAll(".inserted_main_row_color_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_div_class")}),document.querySelectorAll(".special_package_including_data_background_color_text").forEach(e=>{e.style.background="rgb(85, 127, 137)"}),document.getElementById("package_clint_code_number_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("welcome_pdf_first_page_image_id")?.classList.remove("no_right_padding_for_vid_design_img_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.textAlign="left",document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.float="left",document.getElementById("package_clint_code_number_p_id").style.textAlign="right",document.getElementById("package_clint_code_number_p_id").style.float="right",document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.querySelectorAll("ion-icon").forEach(e=>{e.style.display=""})}),document.getElementById("vid_clint_deposit_note_p_id")&&(document.getElementById("vid_clint_deposit_note_p_id").style.display="none"),a.forEach(e=>{e.src="middle-pdf-image.jpg"}),document.getElementById("welcome_pdf_first_page_image_id").src="first-pdf-image.jpg",document.getElementById("package_clint_code_number_p_id").style.display="none"):(_.forEach(e=>{e.style.backgroundColor="rgb(161, 45, 10)"}),d.forEach(e=>{e.style.backgroundColor="rgb(207, 83, 21)"}),document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_h6_class")}),document.querySelectorAll(".inserted_main_row_color_class").forEach(e=>{e.classList.remove("no_right_padding_for_vid_design_div_class")}),document.querySelectorAll(".special_package_including_data_background_color_text").forEach(e=>{e.style.background="rgb(85, 127, 137)"}),document.getElementById("package_clint_code_number_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id")?.classList.remove("no_right_padding_for_vid_design_p_class"),document.getElementById("welcome_pdf_first_page_image_id")?.classList.remove("no_right_padding_for_vid_design_img_class"),document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.textAlign="left",document.getElementById("package_user_code_name_for_later_import_reference_p_id").style.float="left",document.getElementById("package_clint_code_number_p_id").style.textAlign="right",document.getElementById("package_clint_code_number_p_id").style.float="right",document.querySelectorAll(".pdf_section_title_div_class").forEach(e=>{e.querySelectorAll("ion-icon").forEach(e=>{e.style.display=""})}),document.getElementById("vid_clint_deposit_note_p_id")&&(document.getElementById("vid_clint_deposit_note_p_id").style.display="none"),a.forEach(e=>{e.src="middle-pdf-image.jpg"}),document.getElementById("welcome_pdf_first_page_image_id").src=`خلفية-الشركات/${document.getElementById("clint_company_name_input_id").value.replace(/\s+/g,"-")}.jpg`,document.getElementById("package_clint_code_number_p_id").style.display="none");let c=[];if(["downloaded_pdf_clint_data_page","downloaded_pdf_flight_data_page","downloaded_pdf_hotel_data_page","downloaded_pdf_package_including_data_page","downloaded_pdf_clint_movements_data_page","downloaded_pdf_important_notes_data_page"].forEach(e=>{let t=document.getElementById(e);t&&isVisible(t)&&c.push(t)}),0===c.length)return;let r=(/Mobi|Android|iPhone/i.test(navigator.userAgent),3.3),s=null,u=210,m=c.find(e=>"downloaded_pdf_important_notes_data_page"===e.id),g=c.find(e=>"downloaded_pdf_clint_movements_data_page"===e.id),p=c.filter(e=>"downloaded_pdf_important_notes_data_page"!==e.id&&"downloaded_pdf_clint_movements_data_page"!==e.id),y=function(e,t){let n=Math.max(e.width,t?t.width:0),l=e.height+(t?t.height:0),i=document.createElement("canvas");i.width=n,i.height=l;let o=i.getContext("2d");o.fillStyle="#ffffff",o.fillRect(0,0,i.width,i.height);let _=Math.floor((n-e.width)/2);if(o.drawImage(e,_,0),t){let l=Math.floor((n-t.width)/2);o.drawImage(t,l,e.height)}return i};for(let e=0;e<p.length;e+=2){let l=p[e],i=p[e+1],o=await n(l,r);if(!o)continue;let _=null;i&&(_=await n(i,r));let d=y(o,_),a=d.height*u/d.width;s?s.addPage([u,a]):s=new t("p","mm",[u,a]);let c=d.toDataURL("image/jpeg",.9);s.addImage(c,"JPEG",0,0,u,a,"","FAST")}if(g){let e=await n(g,r);if(e){e=function(e){let t=e.width/210*297;if(e.height<t){let n=document.createElement("canvas");n.width=e.width,n.height=t;let l=n.getContext("2d");return l.fillStyle="#ffffff",l.fillRect(0,0,n.width,n.height),l.drawImage(e,0,0),n}return e}(e);let n=e.height*u/e.width;s?s.addPage([u,n]):s=new t("p","mm",[u,n]);let l=e.toDataURL("image/jpeg",.9);s.addImage(l,"JPEG",0,0,u,n,"","FAST")}}if(m){let e=await n(m,r);if(e){let n=e.height*u/e.width;s?s.addPage([u,n]):s=new t("p","mm",[u,n]);let l=e.toDataURL("image/jpeg",.9);s.addImage(l,"JPEG",0,0,u,n,"","FAST")}}s&&s.save(e),l.forEach(e=>{e.style.display="none"}),i.forEach(e=>{e.style.display="none"}),document.getElementById("downloaded_pdf_important_notes_data_page").style.display="none",document.getElementById("inserted_company_name_image_position_div").style.display="flex",playSoundEffect("success");let h=document.getElementById("package_user_code_name_for_later_import_reference_p_id").innerText;document.getElementById("use_website_user_code_name_as_downloaded_pdf_file_name_p_id").innerText=`استخدم كود صاحب البكج ${h}`,highlightWeekendClintMovements()},downloadOnlyClintMovementsDataFunction=function(){if("none"!==document.getElementById("downloaded_pdf_clint_movements_data_page").style.display){let e=Promise.resolve();"newUniqueNumber"===websiteUserUniqueNumber&&handleUserPackageUniqueNumber(document.getElementById("website_users_name_input_id").value,"insert"),playSoundEffect("success"),document.getElementById("download_clint_movements_data_p_id").style.backgroundColor="rgb(0, 46, 57)",document.getElementById("download_clint_movements_data_p_id").innerText="جاري التحميل..",e.then(()=>{sendDataToSupabase()}).then(()=>{runDownloadOnlyClintMovementsDataFunction()})}else playSoundEffect("error"),document.getElementById("download_clint_movements_data_p_id").style.backgroundColor="red",setTimeout(()=>{document.getElementById("download_clint_movements_data_p_id").style.backgroundColor="rgb(0, 87, 116)"},500)},runDownloadOnlyClintMovementsDataFunction=async function(){document.querySelectorAll(".clint_movements_row_class_for_editing").forEach(e=>{e.querySelectorAll("div").forEach(e=>{e.style.backgroundColor="white",e.style.color="black"})});let{jsPDF:e}=window.jspdf,t="";if(""!==document.getElementById("clint_company_name_input_id").value){let e=document.getElementById("clint_company_name_input_id").value.replace(/\s+/g,"-");document.getElementById("downloaded_pdf_clint_movements_data_page").querySelector("img").src=`خلفية-الشركات/${e}.jpg`,t=`جدول تحركات ${document.getElementById("clint_company_name_input_id").value} ${document.getElementById("store_google_sheet_package_raw_user_with_no_riv_for_later_reference_when_importing").innerText}`}else document.getElementById("downloaded_pdf_clint_movements_data_page").querySelector("img").src="first-pdf-image.jpg",t=`جدول تحركات بكج ${document.getElementById("store_google_sheet_package_raw_user_with_no_riv_for_later_reference_when_importing").innerText}`;document.getElementById("downloaded_pdf_clint_movements_data_page").querySelector("img").style.display="inline",document.getElementById("downloaded_pdf_clint_movements_data_page").querySelectorAll("img")[1].src="last-pdf-image.jpg",document.getElementById("downloaded_pdf_clint_movements_data_page").querySelectorAll("img")[1].style.display="inline";const n=document.querySelectorAll(".Important_notes_for_each_pdf_section_div_class");n.forEach(e=>{e.style.display="block"});let l=document.getElementById("downloaded_pdf_clint_movements_data_page");if(!l||!isVisible(l))return;let i=(/Mobi|Android|iPhone/i.test(navigator.userAgent),3.3),o=await async function(e,t){try{return await new Promise(e=>setTimeout(e,500)),await html2canvas(e,{scale:t,backgroundColor:"white",scrollY:0,useCORS:!0,logging:!1})}catch(e){}}(l,i);if(!o)return;o=function(e){let t=297*(e.width/210);if(e.height<t){let n=document.createElement("canvas");n.width=e.width,n.height=t;let l=n.getContext("2d");return l.fillStyle="#ffffff",l.fillRect(0,0,n.width,n.height),l.drawImage(e,0,0),n}return e}(o);let _=new e("p","mm","a4"),d=210*o.height/o.width;_=new e("p","mm",[210,d]);let a=o.toDataURL("image/jpeg",.9);_.addImage(a,"JPEG",0,0,210,d,"","FAST"),_.save(t),n.forEach(e=>{e.style.display="none"}),playSoundEffect("success"),highlightWeekendClintMovements(),document.getElementById("download_clint_movements_data_p_id").style.backgroundColor="rgb(0, 87, 116)",document.getElementById("download_clint_movements_data_p_id").innerText="تحميل التحركات",document.getElementById("downloaded_pdf_clint_movements_data_page").querySelector("img").style.display="none",document.getElementById("downloaded_pdf_clint_movements_data_page").querySelectorAll("img")[1].style.display="none",document.getElementById("downloaded_pdf_clint_movements_data_page").querySelector("img").src="middle-pdf-image.jpg",document.getElementById("downloaded_pdf_clint_movements_data_page").querySelectorAll("img")[1].src="middle-pdf-image.jpg"};
+/* Variable to save a number for counting functionality (Ex: hotel row table unique id..?) */
+let insertedFlightDataDivUniqueId;
+let insertedHotelDataDivUniqueId;
+let insertedClintMovementsRowDivUniqueId = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Down All Functions For Clint Data Down */
+
+/* Function to create the clint data row */
+createWholePackageAndClintDataFunction = function () {
+    // Get references to all input elements for later use
+    let packageClintNameInput = document.getElementById('package_clint_name_input_id').value;
+    let packageClintCodeNumberInput = document.getElementById('package_clint_code_number_input_id').value;
+    let adultPackagePersonAmountInput = document.getElementById('adult_package_person_amount_input_id').value;
+    let kidsPackagePersonAmountInput = document.getElementById('kids_package_person_amount_input_id').value;
+    let infantPackagePersonAmountInput = document.getElementById('infant_package_person_amount_input_id').value;
+    let wholePackageStartDateInput = document.getElementById('whole_package_start_date_input_id').value;
+    let wholePackageEndDateInput = document.getElementById('whole_package_end_date_input_id').value;
+    let clintCompanyNameInput = document.getElementById('clint_company_name_input_id').value;
+    let websiteUsersNameInput = document.getElementById('website_users_name_input_id').value;
+
+
+    if (wholePackageStartDateInput === '' || wholePackageEndDateInput === '' || websiteUsersNameInput === '') {
+
+        // Play a sound effect
+        playSoundEffect('error');
+
+
+
+        // Change the submit icon color to green to indicate success
+        clint_inputs_submit_icon.style.backgroundColor = 'red';
+        // Set the background color of the submit icon back to default color
+        setTimeout(() => {
+            clint_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+        }, 500);
+
+
+    } else {
+
+
+        /* in case if field getting the vlaue of the mostTopEmptyCellRowNumberValue from the google sheet then stop the process */
+        if (mostTopEmptyCellRowNumberValue === undefined || mostTopEmptyCellRowNumberValue === null || mostTopEmptyCellRowNumberValue === NaN) {
+
+            /* Refresh the page */
+            location.reload();
+        }
+
+
+
+
+        // Play a sound effect
+        playSoundEffect('success');
+
+
+        // Change the submit icon color to green to indicate success
+        clint_inputs_submit_icon.style.backgroundColor = 'rgb(0, 255, 0)';
+        // Set the background color of the submit icon back to default color
+        setTimeout(() => {
+            clint_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+        }, 500);
+
+
+
+
+
+        if (clintCompanyNameInput !== '') {
+            // Create a new image element for the company logo
+            let insertedCompanyNameLogoImage = document.createElement('img');
+            // Replace spaces with dashes in the company name
+            let companyNameWithoutSpaces = clintCompanyNameInput.replace(/\s+/g, '-');
+            insertedCompanyNameLogoImage.src = `خلفية-الشركات/${companyNameWithoutSpaces}.jpg`; // Assuming this path is correct
+            insertedCompanyNameLogoImage.className = 'inserted_company_name_logo';
+            insertedCompanyNameLogoImage.id = 'inserted_company_name_logo_id';
+            insertedCompanyNameLogoImage.onclick = function (event) {
+                event.stopPropagation(); // Stop the event from propagating further
+
+                // Create overlay layer
+                let overlayLayer = document.createElement('div');
+                overlayLayer.className = 'black_overlay';
+                overlayLayer.id = 'black_overlay_id';
+                document.body.appendChild(overlayLayer);
+
+                // Show overlay layer with smooth opacity transition
+                setTimeout(() => {
+                    overlayLayer.style.opacity = '1'; // Delayed opacity transition for smooth appearance
+                }, 100);
+
+                // Slide in delete box options div
+                let deleteHotelCardDiv = document.getElementById('ensure_delete_company_logo_div');
+
+                // Smoothly slide to the middle of the screen
+                setTimeout(() => {
+                    deleteHotelCardDiv.style.transform = 'translate(-50%, -50%)'; // Slide to the center of the screen
+                }, 50); // Adjust timing as needed
+
+                // Event listener to close overlay and delete box div on click outside
+                overlayLayer.onclick = () => {
+                    // Hide delete box options div
+                    deleteHotelCardDiv.style.transform = 'translate(-50%, -130vh)';
+
+                    // Hide overlay layer with opacity transition
+                    overlayLayer.style.opacity = '0';
+
+                    // Remove overlay and delete box div from DOM after transition
+                    setTimeout(() => {
+                        document.body.removeChild(overlayLayer);
+                    }, 300); // Match transition duration in CSS
+                };
+            };
+
+            // Delete any existing company image inside the 'inserted_company_name_image_position_div'
+            document.getElementById('inserted_company_name_image_position_div').innerHTML = '';
+
+
+            // Set the inner 'inserted_company_name_image_position_div' image just for website image
+            document.getElementById('inserted_company_name_image_position_div').appendChild(insertedCompanyNameLogoImage);
+
+
+            // Set the 'welcome_pdf_first_page_image_id' src to the clicked company logo name for pdf image
+            document.getElementById('welcome_pdf_first_page_image_id').src = `خلفية-الشركات/${companyNameWithoutSpaces}.jpg`;
+
+
+            /* Show the company logo from the website */
+            document.getElementById('inserted_company_name_image_position_div').style.display = 'flex';
+
+
+        } else {
+            // Reset the 'welcome_pdf_first_page_image_id' src to the default image
+            document.getElementById('welcome_pdf_first_page_image_id').src = 'first-pdf-image.jpg';
+
+            /* Hide the company logo from the website */
+            document.getElementById('inserted_company_name_image_position_div').style.display = 'none';
+
+            /* Delete any existing logo */
+            document.getElementById('inserted_company_name_image_position_div').innerHTML = '';
+        }
+
+
+
+
+
+
+
+        /* Get the h6 element to set the package type text */
+        let clintPackagePriceTypeH6 = document.getElementById('package_price_type_h6_id');
+
+        /* Check which checkbox is checked then include the text in the content */
+        /* on 10 Mar 2025 delete the following if "store_google_sheet_clint_package_price_type_checkbox_value" exist or no condition (I used it to avoid error in old saved packages) */
+        if (document.getElementById('store_google_sheet_clint_package_price_type_checkbox_value')) {
+
+            if (document.getElementById('economy_package_checkbox').checked) {
+                clintPackagePriceTypeH6.innerHTML = `  (بكج إقتصادي)`;
+                document.getElementById('store_google_sheet_clint_package_price_type_checkbox_value').innerText = 'بكج إقتصادي';
+
+                /* Make sure to show the element */
+                document.getElementById('package_price_type_h6_id').style.display = 'block';
+
+
+            } else if (document.getElementById('medium_package_checkbox').checked) {
+                clintPackagePriceTypeH6.innerHTML = `  (بكج متوسط)`;
+                document.getElementById('store_google_sheet_clint_package_price_type_checkbox_value').innerText = 'بكج متوسط';
+
+                /* Make sure to show the element */
+                document.getElementById('package_price_type_h6_id').style.display = 'block';
+
+
+            } else if (document.getElementById('vip_package_checkbox').checked) {
+                clintPackagePriceTypeH6.innerHTML = `  (بكج VIP)`;
+                document.getElementById('store_google_sheet_clint_package_price_type_checkbox_value').innerText = 'بكج VIP';
+
+                /* Make sure to show the element */
+                document.getElementById('package_price_type_h6_id').style.display = 'block';
+
+
+
+
+                /* If no checkbox is checked then reset the value of the h6 and hide it */
+            } else {
+                document.getElementById('package_price_type_h6_id').innerText = '';
+                document.getElementById('package_price_type_h6_id').style.display = 'none';
+
+            }
+
+        }
+
+
+
+
+        /* Get the h6 element to set the package type text */
+        let clintPackageTypeH6 = document.getElementById('clint_package_type_h6');
+
+        /* Check which checkbox is checked then include the text in the content */
+        if (document.getElementById('honeymoon_checkbox').checked) {
+            clintPackageTypeH6.innerHTML = 'بكج شهر عسل';
+            document.getElementById('store_google_sheet_clint_package_type_checkbox_value').innerText = 'بكج شهل عسل';
+
+            if (document.getElementById('package_emoji_p_id')) {
+                document.getElementById('package_emoji_p_id').innerText = '👩🏻‍❤️‍👨🏻';
+            }
+
+
+        } else if (document.getElementById('guys_checkbox').checked) {
+            clintPackageTypeH6.innerHTML = 'بكج شباب';
+            document.getElementById('store_google_sheet_clint_package_type_checkbox_value').innerText = 'بكج شباب';
+
+
+            if (document.getElementById('package_emoji_p_id')) {
+                document.getElementById('package_emoji_p_id').innerText = '🤵🏻‍♂️';
+            }
+
+        } else if (document.getElementById('family_checkbox').checked) {
+            clintPackageTypeH6.innerHTML = 'بكج عائلة';
+            document.getElementById('store_google_sheet_clint_package_type_checkbox_value').innerText = 'بكج عائلة';
+
+
+            if (document.getElementById('package_emoji_p_id')) {
+                document.getElementById('package_emoji_p_id').innerText = '👨‍👩‍👧‍👦';
+            }
+
+        } else if (document.getElementById('two_people_checkbox').checked) {
+            clintPackageTypeH6.innerHTML = 'بكج شخصين';
+            document.getElementById('store_google_sheet_clint_package_type_checkbox_value').innerText = 'بكج شخصين';
+
+
+            if (document.getElementById('package_emoji_p_id')) {
+                document.getElementById('package_emoji_p_id').innerText = '💫';
+            }
+
+        } else if (document.getElementById('group_of_people_checkbox').checked) {
+            clintPackageTypeH6.innerHTML = 'بكج قروب';
+            document.getElementById('store_google_sheet_clint_package_type_checkbox_value').innerText = 'بكج قروب';
+
+
+            if (document.getElementById('package_emoji_p_id')) {
+                document.getElementById('package_emoji_p_id').innerText = '🤩';
+            }
+
+        } else {
+            clintPackageTypeH6.innerHTML = 'بكج جديد';
+
+            if (document.getElementById('package_emoji_p_id')) {
+                document.getElementById('package_emoji_p_id').innerText = '✨';
+            }
+        }
+
+
+
+
+
+        /* if there is any value in the 'packageClintNameInput' then change the border styling and set the innerText of the p element */
+        if (packageClintNameInput !== '') {
+
+            /* Set the innerText of the p element */
+            clint_full_name_p.innerText = `الأستاذ/ة : ${packageClintNameInput}`;
+
+            /* Change the border styling for better looking */
+            pdf_clint_info_section_title_div_id.style.borderBottom = '0.5px solid black';
+
+            /* Show the p element if it was hidden */
+            clint_full_name_p.style.display = 'block';
+
+
+            /* Store the inserted clint name in the stored p elements for later use (when importing) */
+            document.getElementById('store_google_sheet_clint_name_value').innerText = packageClintNameInput;
+
+
+            /* But if there is no any value in the 'packageClintNameInput' then do the following code */
+        } else {
+            clint_full_name_p.innerText = '';
+
+            pdf_clint_info_section_title_div_id.style.borderBottom = 'none';
+
+            clint_full_name_p.style.display = 'none';
+
+            document.getElementById('store_google_sheet_clint_name_value').innerText = '';
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* Match the whole website dates based on the changes of the 'whole_package_first_date_p_id' */
+        if (document.getElementById('whole_package_first_date_p_id') && document.getElementById('whole_package_first_date_p_id').innerText !== wholePackageStartDateInput) {
+
+            // Get the current date from the 'whole_package_first_date_p_id' element
+            let currentStartDate = document.getElementById('whole_package_first_date_p_id').innerText;
+
+            // Parse the current date and the new start date to Date objects
+            let parsedCurrentStartDate = parseArabicDate(currentStartDate);
+            let parsedNewStartDate = parseArabicDate(wholePackageStartDateInput);
+
+            // Calculate the difference in days
+            let timeDifference = parsedNewStartDate - parsedCurrentStartDate;
+            let dayDifference = Math.round(timeDifference / (1000 * 3600 * 24));
+
+            // Adjust hotel dates if there are any hotel rows for editing
+            if (document.querySelectorAll('.hotel_row_class_for_editing').length > 0) {
+
+                // Adjust the dates of elements with the specified class names
+                let checkInElements = document.querySelectorAll('.hotel_check_in_date_for_matching_whole_package_date');
+                let checkOutElements = document.querySelectorAll('.hotel_check_out_date_for_matching_whole_package_date');
+
+                checkInElements.forEach(element => {
+                    let checkInDate = element.innerText;
+                    let parsedCheckInDate = parseArabicDate(checkInDate);
+                    let newCheckInDate = new Date(parsedCheckInDate);
+                    newCheckInDate.setDate(newCheckInDate.getDate() + dayDifference);
+                    element.innerText = `${newCheckInDate.getDate()} ${getArabicMonthName(newCheckInDate.getMonth())}`;
+                });
+
+                checkOutElements.forEach(element => {
+                    let checkOutDate = element.innerText;
+                    let parsedCheckOutDate = parseArabicDate(checkOutDate);
+                    let newCheckOutDate = new Date(parsedCheckOutDate);
+                    newCheckOutDate.setDate(newCheckOutDate.getDate() + dayDifference);
+                    element.innerText = `${newCheckOutDate.getDate()} ${getArabicMonthName(newCheckOutDate.getMonth())}`;
+                });
+
+
+                // Call a function to save the current dates of all hotels for later Re-arranging use (when drag and drop)
+                saveOriginalHotelDates();
+            }
+
+
+            // Adjust flight dates if there are any flight rows for editing
+            if (document.querySelectorAll('.flight_row_class_for_editing').length > 0) {
+
+                let flyDates = document.querySelectorAll('.flight_date_for_matching_whole_package_date');
+
+                flyDates.forEach(element => {
+                    let flightDate = element.innerText;
+                    let parsedFlightDate = parseArabicDate(flightDate);
+                    let newFlightDate = new Date(parsedFlightDate);
+                    newFlightDate.setDate(newFlightDate.getDate() + dayDifference);
+                    element.innerText = `${newFlightDate.getDate()} ${getArabicMonthName(newFlightDate.getMonth())}`;
+                });
+
+            }
+
+            // Adjust client movement dates if there are any client movement rows for editing
+            if (document.querySelectorAll('.clint_movements_row_class_for_editing').length > 0) {
+
+                // Target all divs with the class 'clint_movements_row_class_for_editing'
+                let movementRows = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+                movementRows.forEach(div => {
+                    // Get the h1 element within the div
+                    let dateElement = div.querySelector('h1');
+
+                    // Check if h1 exists within the div
+                    if (dateElement) {
+                        // Get the date in Arabic format from the h1 element
+                        let arabicDate = dateElement.innerText;
+
+                        // Parse the Arabic date to a Date object
+                        let parsedDate = parseArabicDate(arabicDate);
+
+                        // Create a new date object and adjust it by the day difference
+                        let newDate = new Date(parsedDate);
+                        newDate.setDate(newDate.getDate() + dayDifference);
+
+                        // Update the h1 element with the new date in Arabic format
+                        dateElement.innerText = `${newDate.getDate()} ${getArabicMonthName(newDate.getMonth())}`;
+                    }
+                });
+            }
+        }
+
+
+
+
+
+
+
+        // Adjust hotel dates if there are any hotel rows for editing
+        if (document.querySelectorAll('.hotel_row_class_for_editing').length === 0) {
+
+            document.getElementById('hotel_check_in_input_id').value = wholePackageStartDateInput;
+
+            /* Reset the following input to start creating the hotels dates properly */
+            document.getElementById('hotel_check_out_input_id').value = '';
+            document.getElementById('hotel_total_nights_input_id').value = '';
+
+        }
+
+
+
+
+
+        /* Create a new variable to build all the clint info content */
+        let insertedClintDataRowDivContent;
+
+        /* Check if there is any data in the 'kidsPackagePersonAmountInput' then combine adult and kids amounts values */
+        let combinedPersonAmount = `${adultPackagePersonAmountInput}`;
+        if (kidsPackagePersonAmountInput !== '') {
+            combinedPersonAmount += ` + ${kidsPackagePersonAmountInput}`;
+        }
+
+
+        /* Check if there is any data in the 'infantPackagePersonAmountInput' then combine adult and infant amounts values */
+        if (infantPackagePersonAmountInput !== '') {
+            combinedPersonAmount += ` ${infantPackagePersonAmountInput}`;
+        }
+
+
+
+        insertedClintDataRowDivContent = `
+            <div>
+                <p>${combinedPersonAmount}</p>
+            </div>
+            <div>
+                <p id="whole_package_first_date_p_id">${wholePackageStartDateInput}</p>
+            </div>
+            <div>
+                <p id="whole_package_last_date_p_id">${wholePackageEndDateInput}</p>
+            </div>
+            <div>
+                <p>${storePackageTotalNights}</p>
+            </div>
+        `;
+
+
+
+
+
+
+        /* Show the 'clint_data_row_main_div_id' if there is any data is inserted */
+        document.getElementById('clint_data_row_main_div_id').style.display = 'flex';
+
+        let insertedClintDataRowDiv = document.createElement('div');
+        insertedClintDataRowDiv.className = 'clint_data_row_class clint_data_row_class_for_editing';
+        insertedClintDataRowDiv.innerHTML = insertedClintDataRowDivContent;
+
+
+        // Clear previous client data and insert the new data div
+        let insertedClintDataPositionDiv = document.getElementById('inserted_clint_data_position_div');
+        insertedClintDataPositionDiv.innerHTML = ''; // Clear the existing content
+        insertedClintDataPositionDiv.appendChild(insertedClintDataRowDiv);
+
+
+
+
+        /* Call a function to make sure if all package dates should be hidden or no */
+        ensureAllPackageDatesHiddenOrNo();
+
+
+
+        /* Store the inserted values in the stored p elements for later use (when importing) */
+        document.getElementById('store_google_sheet_whole_package_first_date_value').innerText = wholePackageStartDateInput;
+        document.getElementById('store_google_sheet_whole_package_last_date_value').innerText = wholePackageEndDateInput;
+        document.getElementById('store_google_sheet_whole_package_total_nights_value').innerText = storePackageTotalNights;
+        document.getElementById('store_google_sheet_package_user_name_value').innerText = websiteUsersNameInput;
+
+
+
+
+
+        /* Create variable for stoing the last clicked website user name */
+        let lastCLickedWebsiteUserNameVariable;
+
+
+
+        if (document.getElementById('website_users_name_input_id').disabled !== true) {
+
+
+            if (document.getElementById('package_user_code_name_for_later_import_reference_p_id').innerText === '' || document.getElementById('website_users_name_input_id').value !== lastCLickedWebsiteUserNameVariable) {
+                /* Set the package code text based on the website user name & current year & saved packages amount */
+                let websiteUsersNameInput;
+                if (document.getElementById('website_users_name_input_id').value === 'بكج مستر سامي') {
+                    websiteUsersNameInput = 'ss';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج عبد الله') {
+                    websiteUsersNameInput = 'tt';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج معتز') {
+                    websiteUsersNameInput = 'mm';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج وائل') {
+                    websiteUsersNameInput = 'ww';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج عبد الرحمن') {
+                    websiteUsersNameInput = 'oo';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج علي') {
+                    websiteUsersNameInput = 'aa';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج ناصر') {
+                    websiteUsersNameInput = 'zz';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج محمد') {
+                    websiteUsersNameInput = 'hh';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج صبري') {
+                    websiteUsersNameInput = 'kk';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج جلال') {
+                    websiteUsersNameInput = 'jj';
+
+                } else if (document.getElementById('website_users_name_input_id').value === 'بكج بندر للتجربة') {
+                    websiteUsersNameInput = 'bb';
+
+                }
+
+
+                // Get the current year as a four-digit number
+                let currentYear = new Date().getFullYear();
+                // Extract the last two digits of the year
+                let lastTwoNumbersOfTheCurrentYear = currentYear % 100;
+
+
+                /* Store the package user name code for displaying in the pdf file */
+                document.getElementById('package_user_code_name_for_later_import_reference_p_id').innerText = `${websiteUsersNameInput}_indo_${lastTwoNumbersOfTheCurrentYear}_${mostTopEmptyCellRowNumberValue}`;
+
+
+
+                /* Store the package user name code with no year for later use when importing data */
+                document.getElementById('store_google_sheet_package_raw_user_with_no_riv_for_later_reference_when_importing').innerText = `${websiteUsersNameInput}_indo_${lastTwoNumbersOfTheCurrentYear}_${mostTopEmptyCellRowNumberValue}`;
+
+
+                /* Store the last clicked website user name for later refrence if it got changed */
+                lastCLickedWebsiteUserNameVariable = document.getElementById('package_user_code_name_for_later_import_reference_p_id').innerText;
+            }
+        }
+
+
+
+
+
+
+        /* Set the inserted clint code number inside the 'package_clint_code_number_p_id' */
+        document.getElementById('package_clint_code_number_p_id').innerText = packageClintCodeNumberInput;
+
+
+        /* Also store the clint code number in the google sheet for later use (when importing data) */
+        document.getElementById('store_google_sheet_package_clint_code_number_value').innerText = document.getElementById('package_clint_code_number_p_id').innerText;
+
+
+        /* Show up the 'downloaded_pdf_clint_data_page' section */
+        document.getElementById('downloaded_pdf_clint_data_page').style.display = 'block';
+    }
+}
+
+/* Function to delete company logo */
+deleteClickedCompanyLogo = function () {
+    document.getElementById('inserted_company_name_image_position_div').innerHTML = '';
+
+    // Slide in delete box options div
+    let deleteHotelCardDiv = document.getElementById('ensure_delete_company_logo_div');
+
+
+    // Reset the 'welcome_pdf_first_page_image_id' src to the default image
+    document.getElementById('welcome_pdf_first_page_image_id').src = 'first-pdf-image.jpg';
+
+
+    // Event listener to close overlay and delete box div on click outside
+    // Hide delete box div
+    deleteHotelCardDiv.style.transform = 'translate(-50%, -130vh)';
+
+    // Hide overlay layer with opacity transition
+    let overlayLayer = document.getElementById('black_overlay_id')
+
+    overlayLayer.style.opacity = '0';
+
+    // Remove overlay and delete box div from DOM after transition
+    setTimeout(() => {
+        document.body.removeChild(overlayLayer);
+    }, 300); // Match transition duration in CSS
+}
+
+/* Up All Functions For Clint Data Up */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Down All Funtions For Package Include And Not Include Down */
+
+createAllPackageIncludingAndNotIncludingData = function () {
+    let checkboxIds = [
+        'privet_car_with_driver_to_welcome_and_etc_checkbox',
+        'hotel_booking_with_breakfast_for_2_people_checkbox',
+        'customer_service_24_hour_checkbox',
+        'welcome_goodbye_hotel_delivery_checkbox',
+        'welcome_with_flowers_checkbox',
+        'sms_card_with_internet_checkbox',
+        'special_oud_checkbox',
+        'inner_flight_tickets_checkbox',
+        'extra_car_for_carring_bags_checkbox',
+        'watersport_activity_checkbox',
+        'rafting_activity_checkbox',
+        'outer_flight_tickets_checkbox',
+        'placese_visiting_cost_checkbox',
+        'bali_taxes_not_covered_checkbox'
+    ];
+
+    playSoundEffect('success');
+
+    let privetCarWithDriverToWelcomeAndEtc = document.getElementById('specific_car_type_input_id').value;
+    let packageIncludingDataTextArea = document.getElementById('package_details_textarea_id').value;
+    let smsCardWithInternetAmountInputReayText = document.getElementById('sms_card_with_internet_amount_input_id').value;
+    let innerFlightTicketsAmountInputReayText = document.getElementById('inner_flight_tickets_amount_input_id').value;
+    let packageTotlaPriceInput = document.getElementById('package_totla_price_input_id').value;
+
+    package_including_data_inputs_submit_icon.style.backgroundColor = 'rgb(0, 255, 0)';
+    setTimeout(() => {
+        package_including_data_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+    }, 500);
+
+    let insertedPackageIncludingDataDiv = document.createElement('div');
+    insertedPackageIncludingDataDiv.id = 'inserted_package_including_data_div';
+    insertedPackageIncludingDataDiv.className = 'inserted_package_including_and_not_icluding_data_div_class';
+
+    let insertedPackageNotIncludingDataDiv = document.createElement('div');
+    insertedPackageNotIncludingDataDiv.id = 'inserted_package_not_including_data_div';
+    insertedPackageNotIncludingDataDiv.className = 'inserted_package_including_and_not_icluding_data_div_class';
+
+    let insertedPackageGiftDataDiv = document.createElement('div');
+    insertedPackageGiftDataDiv.id = 'inserted_package_icluding_gift_data_div';
+    insertedPackageGiftDataDiv.className = 'inserted_package_including_and_not_icluding_data_div_class';
+
+    if (packageTotlaPriceInput !== '') {
+        document.getElementById('downloaded_pdf_total_price_data_page').style.display = 'block';
+        document.getElementById('package_total_price_p_id').innerText = packageTotlaPriceInput;
+        document.getElementById('store_google_sheet_package_total_price_value').innerText = packageTotlaPriceInput;
+    } else {
+        document.getElementById('downloaded_pdf_total_price_data_page').style.display = 'none';
+        document.getElementById('store_google_sheet_package_total_price_value').innerText = '';
+    }
+
+    function getCheckboxColor(checkbox) {
+        let label = checkbox.nextElementSibling;
+        return window.getComputedStyle(label, '::before').backgroundColor;
+    }
+
+    let specificCarTypeInputValue = document.getElementById('specific_car_type_input_id').value;
+
+    // Get first hotel_row_class_for_editing and its last div's first child (usually h5)
+    let hotelRows = document.getElementsByClassName('hotel_row_class_for_editing');
+    let firstHotelCityText = null;
+    if (hotelRows.length > 0) {
+        let firstHotelRow = hotelRows[0];
+        let lastDiv = firstHotelRow.querySelector('div:last-child');
+        if (lastDiv) {
+            let firstChild = lastDiv.children[0];
+            if (firstChild && firstChild.tagName === 'H5') {
+                firstHotelCityText = firstChild.innerText.trim();
+            }
+        }
+    }
+
+    checkboxIds.forEach(id => {
+        let checkbox = document.getElementById(id);
+        let label = document.querySelector(`label[for="${id}"]`);
+        let labelText = label.innerHTML.split('<br>').map(text => text.trim());
+        let p = document.createElement('p');
+        let icon = document.createElement('ion-icon');
+        let color = getCheckboxColor(checkbox);
+
+        if (id === 'privet_car_with_driver_to_welcome_and_etc_checkbox' && specificCarTypeInputValue !== '') {
+            labelText = [specificCarTypeInputValue];
+            document.getElementById('store_google_sheet_package_specific_car_type_value').innerText = specificCarTypeInputValue;
+        }
+        if (document.getElementById('specific_car_type_input_id').value === '') {
+            document.getElementById('store_google_sheet_package_specific_car_type_value').innerText = '';
+        }
+
+        // Watersport/Rafting special logic
+        if (id === 'watersport_activity_checkbox' || id === 'rafting_activity_checkbox') {
+            if (color === 'rgb(0, 255, 0)') {
+                icon.setAttribute('name', 'checkmark-outline');
+                icon.style.color = '#007bff';
+                p.appendChild(icon);
+
+                if (id === 'watersport_activity_checkbox') {
+                    p.innerHTML += " 🌊استمتعوا ب 3 ألعاب بحرية ممتعة<br>كلها مشمولة بدون أي رسوم إضافية💙<br>";
+                    p.setAttribute('data-gift-order', '1');
+                    let container = document.createElement('div');
+                    container.className = 'activity_icon_container';
+                    ['activities/donat.webp', 'activities/panana.webp', 'activities/parasut.webp'].forEach(src => {
+                        let img = document.createElement('img');
+                        img.src = src;
+                        img.className = 'activity_icon_img';
+                        container.appendChild(img);
+                    });
+                    p.appendChild(container);
+                } else if (id === 'rafting_activity_checkbox') {
+                    p.innerHTML += " 🚣‍♂️اكتشف متعة التجديف<br>لحظات حماس وتجربة لاتُنسى هدية منا لكم💙<br>";
+                    p.setAttribute('data-gift-order', '2');
+                    let container = document.createElement('div');
+                    container.className = 'activity_icon_container';
+                    let img = document.createElement('img');
+                    img.src = 'activities/rafting.webp';
+                    img.className = 'activity_icon_img';
+                    container.appendChild(img);
+                    p.appendChild(container);
+                }
+
+                p.className = 'inserted_package_including_data_text';
+                p.setAttribute('onclick', 'runDeleteThisPackageIncludingDataText(this)');
+                insertedPackageGiftDataDiv.appendChild(p);
+            } else if (color === 'rgb(255, 0, 0)') {
+                icon.setAttribute('name', 'close-outline');
+                p.appendChild(icon);
+                labelText.forEach((text, index) => {
+                    p.appendChild(document.createTextNode(` ${text}`));
+                    if (index < labelText.length - 1) p.appendChild(document.createElement('br'));
+                });
+                p.className = 'inserted_package_not_including_data_text';
+                p.setAttribute('onclick', 'runDeleteThisPackageIncludingDataText(this)');
+                insertedPackageNotIncludingDataDiv.appendChild(p);
+            }
+            return;
+        }
+
+        // Special logic for special_oud_checkbox if first hotel city is "بالي"
+        if (id === 'special_oud_checkbox' && (firstHotelCityText === 'بالي' || firstHotelCityText === 'لومبوك')) {
+            // Treat as white (do not add to including/gift/not including)
+            let pElement = document.createElement('p');
+            pElement.innerText = id;
+            document.getElementById('store_google_sheet_white_package_including_and_not_including_input_div').appendChild(pElement);
+            return;
+        }
+
+        // Normal logic for other checkboxes
+        if (color === 'rgb(0, 255, 0)') {
+            if (id === 'sms_card_with_internet_checkbox' || id === 'welcome_with_flowers_checkbox' || id === 'special_oud_checkbox') {
+                icon.setAttribute('name', 'checkmark-outline');
+                p.appendChild(icon);
+
+                if (id === 'sms_card_with_internet_checkbox') {
+                    let textContent = smsCardWithInternetAmountInputReayText !== ''
+                        ? ` ${smsCardWithInternetAmountInputReayText}`
+                        : ' شرائح إنترنت عادية';
+                    p.appendChild(document.createTextNode(textContent));
+                    p.style.padding = '0 5px';
+                    document.getElementById('store_google_sheet_package_including_sms_value').innerText = smsCardWithInternetAmountInputReayText !== '' ? smsCardWithInternetAmountInputReayText : '';
+                    p.setAttribute('data-gift-order', '3');
+                    let container = document.createElement('div');
+                    container.className = 'activity_icon_container';
+                    let img = document.createElement('img');
+                    img.src = 'activities/sms-cards.webp';
+                    img.className = 'activity_icon_img';
+                    container.appendChild(img);
+                    p.appendChild(container);
+                } else if (id === 'welcome_with_flowers_checkbox') {
+                    labelText.forEach((text, index) => {
+                        p.appendChild(document.createTextNode(` ${text}`));
+                        if (index < labelText.length - 1) p.appendChild(document.createElement('br'));
+                    });
+                    p.setAttribute('data-gift-order', '4');
+                    let container = document.createElement('div');
+                    container.className = 'activity_icon_container';
+                    let img = document.createElement('img');
+                    img.src = 'activities/flower.webp';
+                    img.className = 'activity_icon_img';
+                    container.appendChild(img);
+                    p.appendChild(container);
+                } else if (id === 'special_oud_checkbox') {
+                    labelText.forEach((text, index) => {
+                        p.appendChild(document.createTextNode(` ${text}`));
+                        if (index < labelText.length - 1) p.appendChild(document.createElement('br'));
+                    });
+                    p.setAttribute('data-gift-order', '5');
+                    let container = document.createElement('div');
+                    container.className = 'activity_icon_container';
+                    let img = document.createElement('img');
+                    img.src = 'activities/special-oud.webp';
+                    img.className = 'activity_icon_img';
+                    container.appendChild(img);
+                    p.appendChild(container);
+                }
+
+                p.className = 'inserted_package_including_data_text';
+                p.setAttribute('onclick', 'runDeleteThisPackageIncludingDataText(this)');
+                insertedPackageGiftDataDiv.appendChild(p);
+                return;
+            }
+            icon.setAttribute('name', 'checkmark-outline');
+            p.appendChild(icon);
+            if (id === 'sms_card_with_internet_checkbox') {
+                let textContent = smsCardWithInternetAmountInputReayText !== ''
+                    ? ` ${smsCardWithInternetAmountInputReayText}`
+                    : ' شرائح إنترنت عادية';
+                p.appendChild(document.createTextNode(textContent));
+                p.style.padding = '0 5px';
+                document.getElementById('store_google_sheet_package_including_sms_value').innerText = smsCardWithInternetAmountInputReayText !== '' ? smsCardWithInternetAmountInputReayText : '';
+            } else if (id === 'inner_flight_tickets_checkbox') {
+                let textContent = innerFlightTicketsAmountInputReayText !== ''
+                    ? ` ${innerFlightTicketsAmountInputReayText}`
+                    : ' تذاكر الطيران الداخلي';
+                p.appendChild(document.createTextNode(textContent));
+                p.style.padding = '0 5px';
+                document.getElementById('store_google_sheet_package_including_inner_tickets_value').innerText = innerFlightTicketsAmountInputReayText !== '' ? innerFlightTicketsAmountInputReayText : '';
+            } else if (id === 'privet_car_with_driver_to_welcome_and_etc_checkbox' && specificCarTypeInputValue !== '') {
+                p.appendChild(document.createTextNode(privetCarWithDriverToWelcomeAndEtc));
+                p.style.fontWeight = 'bold';
+            } else {
+                labelText.forEach((text, index) => {
+                    p.appendChild(document.createTextNode(` ${text}`));
+                    if (index < labelText.length - 1) p.appendChild(document.createElement('br'));
+                });
+            }
+            p.className = 'inserted_package_including_data_text';
+            if (id === 'welcome_goodbye_hotel_delivery_checkbox' || id === 'sms_card_with_internet_checkbox' || id === 'inner_flight_tickets_checkbox' || id === 'extra_car_for_carring_bags_checkbox') {
+                p.className = 'special_package_including_data_background_color_text';
+            }
+            p.setAttribute('onclick', 'runDeleteThisPackageIncludingDataText(this)');
+            insertedPackageIncludingDataDiv.appendChild(p);
+        } else if (color === 'rgb(255, 0, 0)') {
+            icon.setAttribute('name', 'close-outline');
+            p.appendChild(icon);
+            labelText.forEach((text, index) => {
+                p.appendChild(document.createTextNode(` ${text}`));
+                if (index < labelText.length - 1) p.appendChild(document.createElement('br'));
+            });
+            p.className = 'inserted_package_not_including_data_text';
+            if (id === 'welcome_goodbye_hotel_delivery_checkbox' || id === 'sms_card_with_internet_checkbox' || id === 'inner_flight_tickets_checkbox') {
+                p.className = 'special_package_including_data_background_color_text';
+                p.style.padding = '0 5px';
+            }
+            p.setAttribute('onclick', 'runDeleteThisPackageIncludingDataText(this)');
+            insertedPackageNotIncludingDataDiv.appendChild(p);
+        }
+    });
+
+    if (packageIncludingDataTextArea !== '') {
+        packageIncludingDataTextArea.split('\n').forEach(text => {
+            if (text.trim() !== '') {
+                let p = document.createElement('p');
+                let icon = document.createElement('ion-icon');
+                icon.setAttribute('name', 'checkmark-outline');
+                p.appendChild(icon);
+                p.appendChild(document.createTextNode(` ${text.trim()}`));
+                p.className = 'special_package_including_data_background_color_text';
+                p.style.padding = '0 5px';
+                p.setAttribute('onclick', 'runDeleteThisPackageIncludingDataText(this)');
+                insertedPackageIncludingDataDiv.appendChild(p);
+            }
+        });
+        document.getElementById('store_google_sheet_package_details_textarea_value').innerText = packageIncludingDataTextArea.replace(/\n/g, '\\n');
+    }
+
+    let insertedPackageIncludingDataPositionDiv = document.getElementById('inserted_package_icluding_data_position_div');
+    let insertedPackageNotIncludingDataPositionDiv = document.getElementById('inserted_package_not_icluding_data_position_div');
+    let insertedPackageGiftDataPositionDiv = document.getElementById('inserted_package_icluding_gift_data_position_div');
+
+    insertedPackageIncludingDataPositionDiv.innerHTML = '';
+    insertedPackageIncludingDataPositionDiv.appendChild(insertedPackageIncludingDataDiv);
+
+    insertedPackageNotIncludingDataPositionDiv.innerHTML = '';
+    insertedPackageNotIncludingDataPositionDiv.appendChild(insertedPackageNotIncludingDataDiv);
+
+    if (insertedPackageGiftDataPositionDiv) {
+        let ordered = Array.from(insertedPackageGiftDataDiv.children)
+            .sort((a, b) => {
+                let ao = parseInt(a.getAttribute('data-gift-order') || '999', 10);
+                let bo = parseInt(b.getAttribute('data-gift-order') || '999', 10);
+                return ao - bo;
+            });
+        insertedPackageGiftDataDiv.innerHTML = '';
+        ordered.forEach(child => insertedPackageGiftDataDiv.appendChild(child));
+        insertedPackageGiftDataPositionDiv.innerHTML = '';
+        insertedPackageGiftDataPositionDiv.appendChild(insertedPackageGiftDataDiv);
+    }
+
+    let pdfSectionPackageIncludingDataTitle = document.getElementById('pdf_section_package_icluding_data_title_id');
+    let pdfSectionPackageNotIncludingDataTitle = document.getElementById('pdf_section_package_not_icluding_data_title_id');
+    let pdfSectionPackageGiftDataTitle = document.getElementById('pdf_section_package_icluding_gift_data_title_id');
+
+    pdfSectionPackageIncludingDataTitle.style.display = insertedPackageIncludingDataDiv.children.length > 0 ? 'flex' : 'none';
+    pdfSectionPackageNotIncludingDataTitle.style.display = insertedPackageNotIncludingDataDiv.children.length > 0 ? 'flex' : 'none';
+    if (pdfSectionPackageGiftDataTitle) {
+        pdfSectionPackageGiftDataTitle.style.display = insertedPackageGiftDataDiv.children.length > 0 ? 'flex' : 'none';
+    }
+
+    document.getElementById('downloaded_pdf_package_including_data_page').style.display = 'block';
+
+    document.getElementById('store_google_sheet_green_checked_package_including_and_not_including_input_div').innerHTML = '';
+    document.getElementById('store_google_sheet_red_checked_package_including_and_not_including_input_div').innerHTML = '';
+    document.getElementById('store_google_sheet_white_package_including_and_not_including_input_div').innerHTML = '';
+
+    checkboxIds.forEach(id => {
+        let checkbox = document.getElementById(id);
+        if (!checkbox) return;
+        let label = checkbox.nextElementSibling;
+        let currentColor = window.getComputedStyle(label, '::before').backgroundColor;
+        let pElement = document.createElement('p');
+        pElement.innerText = id;
+
+        // Special logic for special_oud_checkbox if first hotel city is "بالي"
+        if (id === 'special_oud_checkbox' && firstHotelCityText === 'بالي') {
+            document.getElementById('store_google_sheet_white_package_including_and_not_including_input_div').appendChild(pElement);
+        } else if (currentColor === 'rgb(0, 255, 0)') {
+            document.getElementById('store_google_sheet_green_checked_package_including_and_not_including_input_div').appendChild(pElement);
+        } else if (currentColor === 'rgb(255, 0, 0)') {
+            document.getElementById('store_google_sheet_red_checked_package_including_and_not_including_input_div').appendChild(pElement);
+        } else {
+            document.getElementById('store_google_sheet_white_package_including_and_not_including_input_div').appendChild(pElement);
+        }
+    });
+}
+
+
+/* Function to handel clicked clint movements rule element */
+runDeleteThisPackageIncludingDataText = function (clickedPackageIncludingDataText) {
+
+    // Create an overlay layer for better visual effect
+    let overlayLayer = document.createElement('div');
+    overlayLayer.classList.add('black_overlay');
+    document.body.appendChild(overlayLayer);
+
+
+    /* Function to delete the clint movements rule */
+    deleteClickedPackageIncludingDataText = function (clickedPackageIncludingDataText) {
+        clickedPackageIncludingDataText.remove();
+
+        ensure_delete_package_including_data_text_div.style.transform = 'translate(-50%, -130vh)'; // Slide out
+        overlayLayer.style.opacity = '0'; // Hide overlay
+
+        // Remove overlay and delete box div from DOM after transition
+        setTimeout(() => {
+            document.body.removeChild(overlayLayer);
+        }, 300); // Match transition duration in CSS
+
+
+        // Check if there are any remaining inserted package including data (Searching by the second class name)
+        let remainingPackageIncludingDataText = document.querySelectorAll('.inserted_package_including_data_text');
+        if (remainingPackageIncludingDataText.length === 0) {
+            // Hide section with id 'downloaded_pdf_package_including_data_page'
+            document.getElementById('downloaded_pdf_package_including_data_page').style.display = 'none';
+        }
+    }
+
+
+    // Delayed opacity transition for smooth appearance
+    setTimeout(() => {
+        overlayLayer.style.opacity = '1';
+        ensure_delete_package_including_data_text_div.style.transform = 'translate(-50%, -50%)'; // Center div
+    }, 50);
+
+    /* Function to pass the clicked clint movements rule element */
+    passClickedPackageIncludingDataText = function () {
+
+        if (clickedPackageIncludingDataText === 'package_total_price_p_id') {
+            document.getElementById('downloaded_pdf_total_price_data_page').style.display = 'none';
+
+
+            ensure_delete_package_including_data_text_div.style.transform = 'translate(-50%, -130vh)'; // Slide out
+            overlayLayer.style.opacity = '0'; // Hide overlay
+
+            // Remove overlay and delete box div from DOM after transition
+            setTimeout(() => {
+                document.body.removeChild(overlayLayer);
+            }, 300); // Match transition duration in CSS
+
+
+            // Check if there are any remaining inserted package including data (Searching by the second class name)
+            let remainingPackageIncludingDataText = document.querySelectorAll('.inserted_package_including_data_text');
+            if (remainingPackageIncludingDataText.length === 0) {
+                // Hide section with id 'downloaded_pdf_package_including_data_page'
+                document.getElementById('downloaded_pdf_package_including_data_page').style.display = 'none';
+            }
+
+
+            return
+        }
+
+        deleteClickedPackageIncludingDataText(clickedPackageIncludingDataText);
+    }
+
+    // Click handler to close overlay and delete box div on click outside
+    overlayLayer.onclick = () => {
+        ensure_delete_package_including_data_text_div.style.transform = 'translate(-50%, -130vh)'; // Slide out
+        overlayLayer.style.opacity = '0'; // Hide overlay
+
+        // Remove overlay and delete box div from DOM after transition
+        setTimeout(() => {
+            document.body.removeChild(overlayLayer);
+        }, 300); // Match transition duration in CSS
+    };
+
+    // Prevent overlayLayer click propagation to avoid immediate closure
+    overlayLayer.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevent immediate closure of overlay on click
+    });
+}
+
+/* Up All Funtions For Package Include And Not Include Up */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Down All Functions For Flights Data Down */
+
+/* Function To Automaticlly Create Flights Data */
+createAllFlightDataFunction = function () {
+    if (document.getElementById('downloaded_pdf_hotel_data_page').style.display === 'none') {
+
+        // Play a sound effect
+        playSoundEffect('error');
+
+
+        /* Change the 'تم' button color */
+        clint_flight_inputs_submit_icon.style.backgroundColor = 'red';
+        // Set the background color of the submit icon back to default color
+        setTimeout(() => {
+            clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+        }, 500);
+
+
+        /* Show the icon button if there is no any created flight row */
+        document.getElementById('manually_add_flight_row_icon').style.display = 'block';
+
+    } else {
+
+
+
+
+        // First delete all old flights row data'
+        document.getElementById('inserted_flight_data_position_div').innerHTML = '';
+
+
+
+
+
+        /* Set the 'insertedHotelDataDivUniqueId' value based on the following condition */
+        if (document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText !== '') {
+            insertedFlightDataDivUniqueId = document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText;
+        } else {
+            insertedFlightDataDivUniqueId = 1;
+        }
+
+
+
+        // Get all divs with the class name 'hotel_row_class_for_editing'
+        let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+
+        let lastCity = null;  // Variable to store the last valid city encountered
+        let lastDate = null;  // Variable to store the date associated with the last valid city
+        let validCities = ["بالي", "جاكرتا", "باندونق", "بونشاك", "لومبوك"];  // Array of valid cities to check against
+
+
+
+        // Get the values of the adult and kids inputs
+        let adultAmount = document.getElementById('adult_package_person_amount_input_id').value;
+        let kidsAmount = document.getElementById('kids_package_person_amount_input_id').value;
+        let infantAmount = document.getElementById('infant_package_person_amount_input_id').value;
+
+        // Function to extract numbers from the string
+        function extractNumberFromString(str) {
+            let match = str.match(/\d+/);  // Use regex to find the number
+            return match ? parseInt(match[0]) : 0;  // Return the number or 0 if no number found
+        }
+
+        // Extract numbers from adult and kids input values
+        let adultNumber = extractNumberFromString(adultAmount);
+        let kidsNumber = extractNumberFromString(kidsAmount);
+
+        // Calculate total people (adults + kids)
+        let totalPeople = adultNumber + kidsNumber;
+
+
+
+
+        // Iterate through all found hotel rows
+        allHotelRows.forEach((hotelRow, index) => {
+            let currentCity = hotelRow.querySelector('h5').innerText;  // Get the city name from the current hotel row's h5 element
+            let currentDate = hotelRow.querySelector('h2').innerText;  // Get the date from the current hotel row's h2 element
+
+            // Check if transition between Jakarta and Bandung (in either order) and skip
+            if ((lastCity === "جاكرتا" && currentCity === "باندونق") || (lastCity === "باندونق" && currentCity === "جاكرتا")) {
+                lastCity = currentCity;
+                lastDate = currentDate;
+                return; // Skip this iteration without creating a flightRowTableDiv
+            }
+
+            // Check if transition between Jakarta and Puncak and skip
+            if (lastCity === "جاكرتا" && currentCity === "بونشاك") {
+                lastCity = currentCity;
+                lastDate = currentDate;
+                return; // Skip this iteration without creating a flightRowTableDiv
+            }
+
+            // Check if transition between Puncak and Jakarta and skip
+            if (lastCity === "بونشاك" && currentCity === "جاكرتا") {
+                lastCity = currentCity;
+                lastDate = currentDate;
+                return; // Skip this iteration without creating a flightRowTableDiv
+            }
+
+            // Check if the current and last city are valid and different
+            if ((validCities.includes(currentCity) && lastCity && lastCity !== currentCity && validCities.includes(lastCity)) ||
+                (lastCity === "بونشاك" && currentCity === "بالي") || (lastCity === "بالي" && currentCity === "بونشاك")) {
+
+                let fromCity = lastCity;
+                let toCity = currentCity;
+
+
+                /* check the 'lastCity' and the 'currentCity' value and based on the below conditions set the value of the 'fromCity' and the 'toCity' */
+                if ((lastCity === "بونشاك" && currentCity === "بالي") || (lastCity === "باندونق" && currentCity === "بالي")) {
+                    fromCity = "جاكرتا";
+                    toCity = "بالي";
+                } else if ((lastCity === "بالي" && currentCity === "بونشاك") || (lastCity === "بالي" && currentCity === "باندونق")) {
+                    fromCity = "بالي";
+                    toCity = "جاكرتا";
+                }
+
+
+
+                // Check if transition between Bandung and Puncak (in either order) and skip
+                if ((lastCity === "باندونق" && currentCity === "بونشاك") || (lastCity === "بونشاك" && currentCity === "باندونق")) {
+                    lastCity = currentCity;
+                    lastDate = currentDate;
+                    return; // Skip this iteration without creating a flightRowTableDiv
+                }
+
+
+                // Create a new div with flight details
+                let flightRowTableDiv = document.createElement('div');
+                flightRowTableDiv.id = `flight_row_id_${insertedFlightDataDivUniqueId}`;  // Set a unique ID for the new div
+                flightRowTableDiv.className = 'flight_row_class flight_row_class_for_editing';  // Assign class names to the new div
+
+                // Create the HTML content for the new flight row div
+                let flightRowTableDivContent = `
+                    <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;">
+                        <p id='flight_air_line_${insertedFlightDataDivUniqueId}'></p>
+                    </div>
+                    <div>
+                        <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">
+                            ${totalPeople === 1
+                        ? `${totalPeople} بالغ`
+                        : totalPeople > 10
+                            ? `${totalPeople} بالغ`
+                            : totalPeople !== 0
+                                ? `${totalPeople} بالغين`
+                                : ''
+                    }
+                        </p>
+                        ${infantAmount ? `<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${infantAmount}</p>` : ''}
+                    </div>
+                    <div><p>20Kg للشخص</p></div>
+                    <div><h2 id='flight_from_city_${insertedFlightDataDivUniqueId}'>${fromCity}</h2></div>
+                    <div><h3 id='flight_to_city_${insertedFlightDataDivUniqueId}'>${toCity}</h3></div>
+                    <div><h1 id='flight_date_${insertedFlightDataDivUniqueId}' class="flight_date_for_matching_whole_package_date">${currentDate}</h1></div>
+                    <div><p id='flight_fly_away_time_${insertedFlightDataDivUniqueId}'></p></div>
+                    <div><p id='flight_arrival_time_${insertedFlightDataDivUniqueId}'></p></div>
+                `;
+
+
+
+                flightRowTableDiv.innerHTML = flightRowTableDivContent;  // Insert the generated HTML content into the new div
+
+                // Append the new div to the container with id 'inserted_flight_data_position_div'
+                document.getElementById('inserted_flight_data_position_div').appendChild(flightRowTableDiv);
+
+                // Increment the unique ID for the next div
+                insertedFlightDataDivUniqueId++;
+            }
+
+            // Update the lastCity and lastDate for the next iteration
+            lastCity = currentCity;
+            lastDate = currentDate;
+        });
+
+
+
+
+
+
+
+
+
+
+        // Check if there is any element with the class 'flight_row_class_for_editing'
+        let allFlightRowdivs = document.getElementsByClassName('flight_row_class_for_editing');
+
+        /* if there is found created flights row data */
+        if (allFlightRowdivs.length > 0) {
+
+            // Play a sound effect
+            playSoundEffect('success');
+
+            /* Change the 'تم' button color */
+            clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 255, 0)';
+            // Set the background color of the submit icon back to default color
+            setTimeout(() => {
+                clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+            }, 500);
+
+
+            // If any element is found, set the display style of the 'downloaded_pdf_flight_data_page' to 'block'
+            document.getElementById('downloaded_pdf_flight_data_page').style.display = 'block';
+
+
+
+            /* Hide the icon button if there is created flight row */
+            document.getElementById('manually_add_flight_row_icon').style.display = 'none';
+
+
+
+            /* Call a function to make sure if all package dates should be hidden or no */
+            ensureAllPackageDatesHiddenOrNo();
+
+
+
+            /* if there is no any found created flights row data */
+        } else {
+
+            // Play a sound effect
+            playSoundEffect('error');
+
+
+            /* Change the 'تم' button color */
+            clint_flight_inputs_submit_icon.style.backgroundColor = 'red';
+            // Set the background color of the submit icon back to default color
+            setTimeout(() => {
+                clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+            }, 500);
+
+
+            // If there is no found element, set the display style of the 'downloaded_pdf_flight_data_page' to 'none'
+            document.getElementById('downloaded_pdf_flight_data_page').style.display = 'none';
+
+
+            /* Show the icon button if there is no any created flight row */
+            document.getElementById('manually_add_flight_row_icon').style.display = 'block';
+        }
+
+
+
+        // Get references to all input elements and reset their values thier
+        document.getElementById('flight_from_city_input_id').value = document.getElementById('flight_to_city_input_id').value;
+        document.getElementById('flight_to_city_input_id').value = '';
+        document.getElementById('flight_date_input_id').value = '';
+        document.getElementById('flight_fly_away_time_input_id').value = '';
+        document.getElementById('flight_arrival_time_input_id').value = '';
+
+
+
+
+        // Get all dynamically created elements with the class 'flight_row_flight_arrival_time_controller'
+        document.querySelectorAll('.flight_row_flight_arrival_time_controller').forEach(function (element) {
+            element.onclick = function (event) {
+                flightRowAirLineControllerFunction(event, element);
+            };
+        });
+
+
+        /* Store the last saved flight unique id name */
+        document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText = insertedFlightDataDivUniqueId;
+    }
+}
+
+// Define a global variable to store the reference
+let currentFlightDataDivId;
+
+// Function to handle delete clicked hotel data
+deleteClickedFlightData = function (clickedFlightDataDivId) {
+
+    let overlayLayer = document.querySelector('.black_overlay');
+    let clickedFlightDataElement = document.getElementById(clickedFlightDataDivId);
+
+    if (clickedFlightDataElement) {
+        clickedFlightDataElement.remove();
+    }
+
+    // Hide edit/delete options div
+    let deleteFlightRowDiv = document.getElementById('ensure_delete_or_edit_flight_data_div');
+    deleteFlightRowDiv.style.transform = 'translate(-50%, -130vh)';
+
+    // Hide overlay layer with opacity transition
+    overlayLayer.style.opacity = '0';
+
+    // Remove overlay and edit/delete div from DOM after transition
+    setTimeout(() => {
+        document.body.removeChild(overlayLayer);
+    }, 300); // Match transition duration in CSS
+
+    // Check if there are any remaining inserted flight data div (Searching by the second image class name)
+    let remainingFlightDataDivs = document.querySelectorAll('.inserted_flight_data_row');
+    if (remainingFlightDataDivs.length === 0) {
+        // Hide section with id 'downloaded_pdf_flight_data_page'
+        document.getElementById('downloaded_pdf_flight_data_page').style.display = 'none';
+
+        /* Show the icon button after creating a flight row */
+        document.getElementById('manually_add_flight_row_icon').style.display = 'block';
+    }
+}
+
+/* Function to edit the clicked flight row data */
+editClickedFlightData = function (clickedFlightDataDivIdName) {
+
+    /* Make sure the correct section is the one that is visible */
+    create_new_clint_data_section.style.display = 'none';
+    create_new_hotel_package_section.style.display = 'none';
+    create_new_flight_package_section.style.display = 'flex';
+    create_new_package_including_and_not_including_data_section.style.display = 'none';
+    create_new_clint_movements_plan_section.style.display = 'none';
+
+    document.getElementById('clint_flight_inputs_submit_icon').style.display = 'none';
+    document.getElementById('confirm_new_flight_data_row_icon').style.display = 'block';
+    document.getElementById('cancel_new_flight_data_row_icon').style.display = 'block';
+
+    document.getElementById('flight_content_section_title_text_id').innerText = 'تعديل تفاصيل الطيران';
+    document.getElementById('toggle_flight_data_title_div_id').style.background = 'rgb(85, 127, 137)';
+
+    document.getElementById('flight_data_dropdown_content').scrollIntoView({
+        block: 'center',
+        inline: 'center',
+        behavior: 'smooth',
+    });
+
+    // Hide delete button div
+    let overlayLayer = document.querySelector('.black_overlay');
+    let deleteFlightRowDiv = document.getElementById('ensure_delete_or_edit_flight_data_div');
+    deleteFlightRowDiv.style.transform = 'translate(-50%, -130vh)';
+
+    // Hide overlay layer with opacity transition
+    overlayLayer.style.opacity = '0';
+
+    // Remove overlay and edit/delete div from DOM after transition
+    setTimeout(() => {
+        document.body.removeChild(overlayLayer);
+    }, 300); // Match transition duration in CSS
+
+    /* Show all inputs for editing the flight data */
+    document.getElementById('all_editing_flight_row_data_inputs_div').style.display = 'flex';
+
+    // Get the clicked flight data row
+    let clickedFlightDataDiv = document.getElementById(clickedFlightDataDivIdName);
+    let insertedFlightDataDivUniqueId = clickedFlightDataDivIdName.split('_').pop(); // Extract the unique ID from the clicked row ID
+
+    // Extract data using IDs
+    let flightAirLineInput = clickedFlightDataDiv.querySelector(`p[id^='flight_air_line_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+    let flightAdultPersonAmountInput = clickedFlightDataDiv.querySelector(`p[id^='flight_adult_person_amount_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+    let flightInfantPersonAmountInput = clickedFlightDataDiv.querySelector(`p[id^='flight_infant_person_amount_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+    let flightFromCityInput = clickedFlightDataDiv.querySelector(`h2[id^='flight_from_city_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+    let flightToCityInput = clickedFlightDataDiv.querySelector(`h3[id^='flight_to_city_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+    let flightDateInput = clickedFlightDataDiv.querySelector(`h1[id^='flight_date_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+    let flightFlyAwayTimeInput = clickedFlightDataDiv.querySelector(`p[id^='flight_fly_away_time_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+    let flightArrivalTimeInput = clickedFlightDataDiv.querySelector(`p[id^='flight_arrival_time_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+    let flightExtraBagsInput = clickedFlightDataDiv.querySelector(`p[id^='flight_extra_bags_${insertedFlightDataDivUniqueId}']`)?.innerText || '';
+
+    // Assign values to inputs
+    document.getElementById('flight_air_line_input_id').value = flightAirLineInput;
+    document.getElementById('flight_adult_person_amount_input_id').value = flightAdultPersonAmountInput;
+    document.getElementById('flight_infant_person_amount_input_id').value = flightInfantPersonAmountInput;
+    document.getElementById('flight_from_city_input_id').value = flightFromCityInput;
+    document.getElementById('flight_to_city_input_id').value = flightToCityInput;
+    document.getElementById('flight_date_input_id').value = flightDateInput;
+    document.getElementById('flight_fly_away_time_input_id').value = flightFlyAwayTimeInput;
+    document.getElementById('flight_arrival_time_input_id').value = flightArrivalTimeInput;
+    document.getElementById('flight_extra_bags_input_id').value = flightExtraBagsInput;
+
+    /* Function to cancel the flight row data editing process */
+    cancelNewFlightDataRow = function () {
+        // Get references to all input elements and delete their values
+        document.getElementById('flight_air_line_input_id').value = '';
+        document.getElementById('flight_from_city_input_id').value = '';
+        document.getElementById('flight_to_city_input_id').value = '';
+        document.getElementById('flight_date_input_id').value = '';
+        document.getElementById('flight_fly_away_time_input_id').value = '';
+        document.getElementById('flight_arrival_time_input_id').value = '';
+        document.getElementById('flight_extra_bags_input_id').value = '';
+
+        /* Hide and show different icons */
+        document.getElementById('clint_flight_inputs_submit_icon').style.display = 'block';
+        document.getElementById('confirm_new_flight_data_row_icon').style.display = 'none';
+        document.getElementById('cancel_new_flight_data_row_icon').style.display = 'none';
+
+        /* Reset the innerText and styling to default */
+        document.getElementById('flight_content_section_title_text_id').innerText = 'تفاصيل الطيران';
+        document.getElementById('toggle_flight_data_title_div_id').style.background = 'rgb(131, 0, 148)';
+
+        /* Hide all inputs for editing the flight data */
+        document.getElementById('all_editing_flight_row_data_inputs_div').style.display = 'none';
+
+
+        /* Call a function to make sure if all package dates should be hidden or no */
+        ensureAllPackageDatesHiddenOrNo();
+    }
+
+    /* Function to confirm the new flight row data */
+    confirmNewFlightDataRow = function () {
+
+        // Play a sound effect
+        playSoundEffect('success');
+
+        // Get the clicked flight data row
+        let clickedFlightDataDiv = document.getElementById(clickedFlightDataDivIdName);
+
+        // Clear the old data
+        clickedFlightDataDiv.innerHTML = '';
+
+        // Extract the new data from the input fields
+        let flightAirLineInput = document.getElementById('flight_air_line_input_id').value;
+        let flightAdultPersonAmountInput = document.getElementById('flight_adult_person_amount_input_id').value;
+        let flightInfantPersonAmountInput = document.getElementById('flight_infant_person_amount_input_id').value;
+        let flightFromCityInput = document.getElementById('flight_from_city_input_id').value;
+        let flightToCityInput = document.getElementById('flight_to_city_input_id').value;
+        let flightDateInput = document.getElementById('flight_date_input_id').value;
+        let flightFlyAwayTimeInput = document.getElementById('flight_fly_away_time_input_id').value;
+        let flightArrivalTimeInput = document.getElementById('flight_arrival_time_input_id').value;
+        let flightExtraBagsInput = document.getElementById('flight_extra_bags_input_id').value;
+
+        // Create the HTML content for a new flight row, only including non-empty values
+        let flightRowTableDivContent = `
+            <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;">
+                ${flightAirLineInput ? `<p id="flight_air_line_${insertedFlightDataDivUniqueId}">${flightAirLineInput}</p>` : ''}
+            </div>
+            <div>
+                <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">${flightAdultPersonAmountInput}</p>
+                ${flightInfantPersonAmountInput ? `<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${flightInfantPersonAmountInput}</p>` : ''}
+            </div>
+            <div>
+                <p>20Kg للشخص</p>
+                ${flightExtraBagsInput ? `<p id="flight_extra_bags_${insertedFlightDataDivUniqueId}">${flightExtraBagsInput}</p>` : ''}
+            </div>
+            <div>
+                ${flightFromCityInput ? `<h2 id="flight_from_city_${insertedFlightDataDivUniqueId}">${flightFromCityInput}</h2>` : ''}
+            </div>
+            <div>
+                ${flightToCityInput ? `<h3 id="flight_to_city_${insertedFlightDataDivUniqueId}">${flightToCityInput}</h3>` : ''}
+            </div>
+            <div>
+                ${flightDateInput ? `<h1 id="flight_date_${insertedFlightDataDivUniqueId}" class="flight_date_for_matching_whole_package_date">${flightDateInput}</h1>` : ''}
+            </div>
+            <div>
+                ${flightFlyAwayTimeInput ? `<p id="flight_fly_away_time_${insertedFlightDataDivUniqueId}">${flightFlyAwayTimeInput}</p>` : ''}
+            </div>
+            <div>
+                ${flightArrivalTimeInput ? `<p id="flight_arrival_time_${insertedFlightDataDivUniqueId}">${flightArrivalTimeInput}</p>` : ''}
+            </div>
+        `;
+
+
+        // Insert the new data into the clicked flight data div
+        clickedFlightDataDiv.innerHTML = flightRowTableDivContent;
+
+
+        /* Run a function to exit the editing flight data mood */
+        cancelNewFlightDataRow();
+
+
+        // Get all dynamically created elements with the class 'flight_row_flight_arrival_time_controller'
+        document.querySelectorAll('.flight_row_flight_arrival_time_controller').forEach(function (element) {
+            element.onclick = function (event) {
+                flightRowAirLineControllerFunction(event, element);
+            };
+        });
+    }
+}
+
+// Function to handle flight row div click or touch
+flightRowAirLineControllerFunction = function (event) {
+    let deleteFlightRowDiv = document.getElementById('ensure_delete_or_edit_flight_data_div');
+    let clickedFlightDataDiv = event.target.closest('.flight_row_class');
+
+    if (clickedFlightDataDiv) {
+        currentFlightDataDivId = clickedFlightDataDiv.id;
+
+
+        // Check if the overlay already exists
+        let overlayLayer = document.querySelector('.black_overlay');
+        if (!overlayLayer) {
+            overlayLayer = document.createElement('div');
+            overlayLayer.classList.add('black_overlay');
+            document.body.appendChild(overlayLayer);
+
+            setTimeout(() => {
+                overlayLayer.style.opacity = '1';
+                deleteFlightRowDiv.style.transform = 'translate(-50%, -50%)';
+            }, 50);
+
+            // Handle both click and touch events on overlay for consistency
+            let handleOverlayClick = () => {
+                deleteFlightRowDiv.style.transform = 'translate(-50%, -130vh)';
+                overlayLayer.style.opacity = '0';
+                setTimeout(() => {
+                    // Only remove the overlay if it is still a child of the body
+                    if (document.body.contains(overlayLayer)) {
+                        document.body.removeChild(overlayLayer);
+                    }
+                }, 300);
+            };
+
+            overlayLayer.addEventListener('click', handleOverlayClick);
+
+            overlayLayer.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+        }
+
+
+        /* Function to run delete clicked flight row data */
+        runDeleteClickedFlightDataFunction = function () {
+            deleteClickedFlightData(currentFlightDataDivId);
+        }
+
+        /* Function to run delete clicked flight row data */
+        runEditClickedFlightDataFunction = function () {
+            editClickedFlightData(currentFlightDataDivId);
+
+            /* Make sure hotel package type text is colored in rgb(0, 46, 57) */
+            document.getElementById('header_navbar_links_clint_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_hotel_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_flight_a').style.backgroundColor = 'rgb(0, 46, 57)';
+            document.getElementById('header_navbar_links_package_icluding_and_not_including_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_clint_movements_a').style.backgroundColor = 'rgb(85, 127, 137)';
+        }
+    }
+};
+
+/* Function to add more flights row data */
+addMoreFlightRowTableDivFunction = function (position) {
+    // Get all divs with the class name 'flight_row_class_for_editing'
+    let allFlightRows = document.querySelectorAll('.flight_row_class_for_editing');
+
+    if (allFlightRows.length === 0 || !currentFlightDataDivId) return; // If no flight rows exist or no div was clicked, exit the function
+
+    // Find the clicked flight data div
+    let clickedFlightDataDiv = document.getElementById(currentFlightDataDivId);
+    if (!clickedFlightDataDiv) return; // If the clicked div is not found, exit the function
+
+
+
+    /* Set the 'insertedFlightDataDivUniqueId' value based on the 'store_google_sheet_flight_uniuqe_id_name_value' innerText */
+    insertedFlightDataDivUniqueId = document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText;
+
+
+
+    // Clone the clicked flight row
+    let clonedRow = clickedFlightDataDiv.cloneNode(true);
+
+    // Update the cloned row's ID using the unique ID counter
+    clonedRow.id = `flight_row_id_${insertedFlightDataDivUniqueId}`;
+
+    // Update all IDs within the cloned row to maintain uniqueness
+    clonedRow.querySelectorAll('[id]').forEach((element) => {
+        let idParts = element.id.split('_');
+        idParts[idParts.length - 1] = insertedFlightDataDivUniqueId;
+        element.id = idParts.join('_');
+    });
+
+
+    // Swap the innerText of h2 and h3 elements in the cloned row
+    let h2Element = clonedRow.querySelector('h2');
+    let h3Element = clonedRow.querySelector('h3');
+
+    if (h2Element && h3Element) {
+        let tempText = h2Element.innerText;
+        h2Element.innerText = h3Element.innerText;
+        h3Element.innerText = tempText;
+    }
+
+
+    // Increment the unique ID for the next row
+    insertedFlightDataDivUniqueId++;
+
+    if (position === 'up') {
+        // Insert the cloned div above the first found div
+        allFlightRows[0].parentNode.insertBefore(clonedRow, allFlightRows[0]);
+
+
+        // Get all divs with the class name 'hotel_row_class_for_editing'
+        let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+        if (allHotelRows.length > 0) {
+            // Target the first found hotel_row_class_for_editing
+            let firstHotelRow = allHotelRows[0];
+
+            // Get the innerText of the h2 element of the first hotel row
+            let firstHotelRowH2Text = firstHotelRow.querySelector('h2')?.innerText;
+
+            // Clear the innerText of the h1 element inside the cloned row and set it to the first hotel's h2 text
+            let h1Element = clonedRow.querySelector('h1');
+            if (h1Element && firstHotelRowH2Text) {
+                h1Element.innerText = firstHotelRowH2Text;
+            }
+        }
+
+
+    } else if (position === 'down') {
+        // Insert the cloned div after the last found div
+        allFlightRows[allFlightRows.length - 1].parentNode.insertBefore(clonedRow, allFlightRows[allFlightRows.length - 1].nextSibling);
+
+
+        // Get all divs with the class name 'hotel_row_class_for_editing'
+        let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+        if (allHotelRows.length > 0) {
+            // Target the last found hotel_row_class_for_editing
+            let lastHotelRow = allHotelRows[allHotelRows.length - 1];
+
+            // Get the innerText of the h3 element of the last hotel row
+            let lastHotelRowH3Text = lastHotelRow.querySelector('h3')?.innerText;
+
+            // Clear the innerText of the h1 element inside the cloned row and set it to the last hotel's h3 text
+            let h1Element = clonedRow.querySelector('h1');
+            if (h1Element && lastHotelRowH3Text) {
+                h1Element.innerText = lastHotelRowH3Text;
+            }
+        }
+    }
+
+
+
+
+    // Hide delete button div
+    let overlayLayer = document.querySelector('.black_overlay');
+    let deleteFlightRowDiv = document.getElementById('ensure_delete_or_edit_flight_data_div');
+    deleteFlightRowDiv.style.transform = 'translate(-50%, -130vh)';
+
+    // Hide overlay layer with opacity transition
+    overlayLayer.style.opacity = '0';
+
+    // Remove overlay and edit/delete div from DOM after transition
+    setTimeout(() => {
+        document.body.removeChild(overlayLayer);
+    }, 300); // Match transition duration in CSS
+
+
+
+
+    // Get all dynamically created elements with the class 'flight_row_flight_arrival_time_controller'
+    document.querySelectorAll('.flight_row_flight_arrival_time_controller').forEach(function (element) {
+        element.onclick = function (event) {
+            flightRowAirLineControllerFunction(event, element);
+        };
+    });
+
+
+
+    /* Store the last saved flight unique number */
+    document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText = insertedFlightDataDivUniqueId;
+
+
+
+    /* Call a function to make sure if all package dates should be hidden or no */
+    ensureAllPackageDatesHiddenOrNo();
+};
+
+/* Function to manually create a flight row data */
+manuallyCreateNewFlightRow = function () {
+
+
+    // First delete all old flights row data'
+    document.getElementById('inserted_flight_data_position_div').innerHTML = '';
+
+
+    /* Set the 'insertedHotelDataDivUniqueId' value based on the following condition */
+    if (document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText !== '') {
+        insertedFlightDataDivUniqueId = document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText;
+    } else {
+        insertedFlightDataDivUniqueId = 1;
+    }
+
+
+    // Create a new div with flight details
+    let flightRowTableDiv = document.createElement('div');
+    flightRowTableDiv.id = `flight_row_id_${insertedFlightDataDivUniqueId}`;  // Set a unique ID for the new div
+    flightRowTableDiv.className = 'flight_row_class flight_row_class_for_editing';  // Assign class names to the new div
+
+
+
+
+    // Get the values of the adult and kids inputs
+    let adultAmount = document.getElementById('adult_package_person_amount_input_id').value;
+    let kidsAmount = document.getElementById('kids_package_person_amount_input_id').value;
+    let infantAmount = document.getElementById('infant_package_person_amount_input_id').value;
+
+    // Function to extract numbers from the string
+    function extractNumberFromString(str) {
+        let match = str.match(/\d+/);  // Use regex to find the number
+        return match ? parseInt(match[0]) : 0;  // Return the number or 0 if no number found
+    }
+
+    // Extract numbers from adult and kids input values
+    let adultNumber = extractNumberFromString(adultAmount);
+    let kidsNumber = extractNumberFromString(kidsAmount);
+
+    // Calculate total people (adults + kids)
+    let totalPeople = adultNumber + kidsNumber;
+
+
+    // Create the HTML content for the new flight row div
+    let flightRowTableDivContent = `
+        <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;"><p id='flight_air_line_${insertedFlightDataDivUniqueId}'></p></div>
+        <div>
+                        <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">
+                            ${totalPeople === 1
+            ? `${totalPeople} بالغ`
+            : totalPeople > 10
+                ? `${totalPeople} بالغ`
+                : totalPeople !== 0
+                    ? `${totalPeople} بالغين`
+                    : ''
+        }
+            </p>
+            ${infantAmount ? `<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${infantAmount}</p>` : ''}
+        </div>
+        <div><p>20Kg للشخص</p></div>
+        <div><h2 id='flight_from_city_${insertedFlightDataDivUniqueId}'></h2></div>
+        <div><h3 id='flight_to_city_${insertedFlightDataDivUniqueId}'></h3></div>
+        <div><h1 id='flight_date_${insertedFlightDataDivUniqueId}' class="flight_date_for_matching_whole_package_date"></h1></div>
+        <div><p id='flight_fly_away_time_${insertedFlightDataDivUniqueId}'></p></div>
+        <div><p id='flight_arrival_time_${insertedFlightDataDivUniqueId}'></p></div>
+    `;
+
+    flightRowTableDiv.innerHTML = flightRowTableDivContent;  // Insert the generated HTML content into the new div
+
+    // Append the new div to the container with id 'inserted_flight_data_position_div'
+    document.getElementById('inserted_flight_data_position_div').appendChild(flightRowTableDiv);
+    document.getElementById('downloaded_pdf_flight_data_page').style.display = 'block';
+
+
+    // Get all divs with the class name 'hotel_row_class_for_editing'
+    let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+    if (allHotelRows.length > 0) {
+        // Target the first found hotel_row_class_for_editing
+        let firstHotelRow = allHotelRows[0];
+
+        // Get the innerText of the h2 and h5 elements of the first hotel row
+        let firstHotelRowH2Text = firstHotelRow.querySelector('h2')?.innerText;
+        let firstHotelRowH5Text = firstHotelRow.querySelector('h5')?.innerText;
+
+        // Clear the innerText of the h1 element inside the cloned row and set it to the first hotel's h2 text
+        let h1Element = flightRowTableDiv.querySelector('h1');
+        if (h1Element && firstHotelRowH2Text) {
+            h1Element.innerText = firstHotelRowH2Text;
+        }
+
+        // Additional condition: If the h5 innerText is "بالي"
+        if (firstHotelRowH5Text === "بالي") {
+            let h2Element = flightRowTableDiv.querySelector('h2');
+            let h3Element = flightRowTableDiv.querySelector('h3');
+
+            if (h2Element) {
+                h2Element.innerText = "جاكرتا";  // Set h2 to "جاكرتا"
+            }
+
+            if (h3Element) {
+                h3Element.innerText = "بالي";  // Set h3 to "بالي"
+            }
+
+
+            /* But if the first found hotel row does not located "بالي" then reveres the contries */
+        } else {
+            let h2Element = flightRowTableDiv.querySelector('h2');
+            let h3Element = flightRowTableDiv.querySelector('h3');
+
+            if (h2Element) {
+                h2Element.innerText = "بالي";  // Set h2 to "جاكرتا"
+            }
+
+            if (h3Element) {
+                h3Element.innerText = "جاكرتا";  // Set h3 to "بالي"
+            }
+        }
+    }
+
+
+    // Get all dynamically created elements with the class 'flight_row_flight_arrival_time_controller'
+    document.querySelectorAll('.flight_row_flight_arrival_time_controller').forEach(function (element) {
+        element.onclick = function (event) {
+            flightRowAirLineControllerFunction(event, element);
+        };
+    });
+
+
+    /* Hide the icon button after creating a flight row */
+    document.getElementById('manually_add_flight_row_icon').style.display = 'none';
+
+
+    // Increment the unique ID for the next div
+    insertedFlightDataDivUniqueId++;
+
+    /* Store the last saved flight unique id name */
+    document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText = insertedFlightDataDivUniqueId;
+
+
+
+    /* Call a function to make sure if all package dates should be hidden or no */
+    ensureAllPackageDatesHiddenOrNo();
+}
+
+/* Up All Functions For Flights Data Up */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Down All Functions For Hotels Data Down */
+
+
+/* Function to create hotels data row */
+createHotelsDataFunction = function () {
+
+    // Get references to all input elements for later use
+    let hotelNameReadyText = document.getElementById('hotel_name_input_id').value;
+    let hotelLocationInput = document.getElementById('hotel_location_input_id').value;
+    let hotelBaliAreaInput = document.getElementById('hotel_bali_area_input_id').value;
+    let hotelStarsRateInput = document.getElementById('hotel_stars_rate_input_id').value;
+    let hotelCheckInReadyText = document.getElementById('hotel_check_in_input_id').value;
+    let hotelCheckOutReadyText = document.getElementById('hotel_check_out_input_id').value;
+    let hotelRoomTypeDescriptionInput = document.getElementById('hotel_english_room_type_description_input_id').value;
+    let hotelArabicRoomTypeDescriptionInput = document.getElementById('hotel_arabic_room_type_description_input_id').value;
+    let hotelUnitAmountInput = document.getElementById('hotel_unit_amount_input_id').value;
+    let hotelBreakfastPeopleAmountInput = document.getElementById('hotel_breakfast_people_amount_input_id').value;
+    let hotelExtraBedInput = document.getElementById('hotel_extra_bed_input_id').value;
+    let hotelSpecialRoomRequestInput = document.getElementById('hotel_special_room_request_input_id').value;
+    let hotelRoomExtraInfoReadyText = document.getElementById('hotel_room_extra_info_textarea_id').value;
+
+    /* Second hotel room data input values */
+    let hotelRoomTypeDescriptionInput_2 = document.getElementById('hotel_english_room_type_description_input_id_2').value;
+    let hotelArabicRoomTypeDescriptionInput_2 = document.getElementById('hotel_arabic_room_type_description_input_id_2').value;
+    let hotelUnitAmountInput_2 = document.getElementById('hotel_unit_amount_input_id_2').value;
+    let hotelBreakfastPeopleAmountInput_2 = document.getElementById('hotel_breakfast_people_amount_input_id_2').value;
+    let hotelExtraBedInput_2 = document.getElementById('hotel_extra_bed_input_id_2').value;
+    let hotelSpecialRoomRequestInput_2 = document.getElementById('hotel_special_room_request_input_id_2').value;
+    let hotelRoomExtraInfoReadyText_2 = document.getElementById('hotel_room_extra_info_textarea_id_2').value;
+
+
+    if (hotelNameReadyText === '' || hotelCheckInReadyText === '' || hotelCheckOutReadyText === '' || hotelRoomTypeDescriptionInput === '' || hotelUnitAmountInput === '' || document.getElementById('downloaded_pdf_clint_data_page').style.display === 'none') {
+
+        // Play a sound effect
+        playSoundEffect('error');
+
+        // Change the submit icon background color
+        hotel_inputs_submit_icon.style.backgroundColor = 'red';
+
+        // Set the background color of the submit icon back to default color
+        setTimeout(() => {
+            hotel_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+        }, 500);
+
+
+        /* Exit the function and stop the process */
+        return;
+    }
+
+
+
+    /* in case the second room data inputs div is visible and there are empty inputs then stop the process */
+    if (document.getElementById('hotel_second_room_data_input_div').style.display === 'flex') {
+
+        if (hotelRoomTypeDescriptionInput_2 === '' || hotelUnitAmountInput_2 === '') {
+
+            // Play a sound effect
+            playSoundEffect('error');
+
+            // Change the submit icon background color
+            hotel_inputs_submit_icon.style.backgroundColor = 'red';
+
+            // Set the background color of the submit icon back to default color
+            setTimeout(() => {
+                hotel_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+            }, 500);
+
+
+            /* Exit the function and stop the process */
+            return;
+        }
+    }
+
+
+
+
+
+
+
+    /* Stop the process if the 'hotel_location_input_id' is visible and it is empty */
+    if (document.getElementById('hotel_location_input_id').style.display !== 'none') {
+
+        if (document.getElementById('hotel_location_input_id').value === '') {
+
+            // Play a sound effect
+            playSoundEffect('error');
+
+            // Change the submit icon background color
+            hotel_inputs_submit_icon.style.backgroundColor = 'red';
+
+            // Set the background color of the submit icon back to default color
+            setTimeout(() => {
+                hotel_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+            }, 500);
+
+            return;
+        }
+
+
+        /* Stop the process if the hotel location is bali but the area is not selected */
+        if (document.getElementById('hotel_location_input_id').value === 'بالي' && document.getElementById('hotel_bali_area_input_id').value === '') {
+
+            // Play a sound effect
+            playSoundEffect('error');
+
+            // Change the submit icon background color
+            hotel_inputs_submit_icon.style.backgroundColor = 'red';
+
+            // Set the background color of the submit icon back to default color
+            setTimeout(() => {
+                hotel_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+            }, 500);
+
+            return;
+        }
+    }
+
+
+
+
+
+
+    // Play a sound effect
+    playSoundEffect('success');
+
+    /* Change the 'تم' button color */
+    hotel_inputs_submit_icon.style.backgroundColor = 'rgb(0, 255, 0)';
+    // Set the background color of the submit icon back to default color
+    setTimeout(() => {
+        hotel_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+    }, 2000);
+
+
+
+
+    /* Set the 'insertedHotelDataDivUniqueId' value based on the following condition */
+    let insertedHotelDataDivUniqueId = document.getElementById('store_google_sheet_hotel_uniuqe_id_name_value').innerText !== ''
+        ? document.getElementById('store_google_sheet_hotel_uniuqe_id_name_value').innerText
+        : 1;
+
+
+
+
+
+
+    /* Check the insert hotel data system is by picking or writing by checking the visibilaty of the 'hotel_location_input_id' input */
+    if (document.getElementById('hotel_location_input_id').style.display !== 'none') {
+
+
+        /* Check the amount of stars picked in the 'hotelStarsRateInput' input */
+        let starsAmount = null;
+        if (hotelStarsRateInput === '5 نجوم') {
+            starsAmount = 'five';
+
+        } else if (hotelStarsRateInput === '4 نجوم') {
+            starsAmount = 'four';
+
+        } else if (hotelStarsRateInput === '3 نجوم') {
+            starsAmount = 'three';
+
+        } else {
+            starsAmount = 'no';
+
+        }
+
+
+
+        // Create the HTML content for a new hotel row
+        let hotelRowTableDivContent = `
+            <div><h1 id='hotel_name_${insertedHotelDataDivUniqueId}'>${hotelNameReadyText}</h1></div>
+            <div><h2 id='hotel_check_in_${insertedHotelDataDivUniqueId}' class="hotel_check_in_date_for_matching_whole_package_date">${hotelCheckInReadyText}</h2></div>
+            <div><h3 style="color: red" id='hotel_check_out_${insertedHotelDataDivUniqueId}' class="hotel_check_out_date_for_matching_whole_package_date">${hotelCheckOutReadyText}</h3></div>
+            <div><h4 id='hotel_total_nights_${insertedHotelDataDivUniqueId}'>${storeHotelTotalNights}</h4></div>
+            <div class="description_cell">
+                <span id='hotel_room_arabic_type_description_${insertedHotelDataDivUniqueId}'>${hotelArabicRoomTypeDescriptionInput}</span><span id='hotel_room_type_description_${insertedHotelDataDivUniqueId}'>${hotelRoomTypeDescriptionInput}</span></div>
+            <div>
+                <p id='hotel_total_unit_${insertedHotelDataDivUniqueId}'>${storeHotelTotalUnitNumber}</p>
+                ${hotelUnitAmountInput_2 && document.getElementById('hotel_second_room_data_input_div').style.display !== "none" ? `<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${insertedHotelDataDivUniqueId}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>` : ''}
+            </div>
+            <div>
+                <h5 id='hotel_location_${insertedHotelDataDivUniqueId}'>${hotelLocationInput}</h5>
+                ${hotelBaliAreaInput ? `<br><h6 id='hotel_area_${insertedHotelDataDivUniqueId}'>${hotelBaliAreaInput}</h6>` : ''}
+                <img src="صور-الفنادق/${starsAmount}-stars-hotel-image.jpg" id='hotel_image_${insertedHotelDataDivUniqueId}' class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">
+            </div>
+        `;
+
+        // Create a new div element to hold the hotel row
+        let hotelRowTableDiv = document.createElement('div');
+        hotelRowTableDiv.id = `hotel_row_id_${insertedHotelDataDivUniqueId}`; // Set a unique ID for the hotel row div
+        hotelRowTableDiv.className = 'hotel_row_class hotel_row_class_for_editing new_hotel_data_by_user_writing_class'; // Add a class to the div for styling
+
+        // Insert the HTML content into the newly created div
+        hotelRowTableDiv.innerHTML = hotelRowTableDivContent;
+
+        // Append <span> elements for each input with text
+        if (hotelBreakfastPeopleAmountInput !== '') {
+            let breakfastSpan = document.createElement('span');
+            breakfastSpan.id = `hotel_breakfast_span_id_${insertedHotelDataDivUniqueId}`;
+            breakfastSpan.innerText = hotelBreakfastPeopleAmountInput;
+            const _bfDescCell = hotelRowTableDiv.querySelector('.description_cell');
+            _bfDescCell.insertBefore(breakfastSpan, _bfDescCell.querySelector(`#hotel_room_type_description_${insertedHotelDataDivUniqueId}`));
+        }
+        if (hotelExtraBedInput !== '') {
+            let extraBedSpan = document.createElement('span');
+            extraBedSpan.id = `hotel_extra_bed_span_id_${insertedHotelDataDivUniqueId}`;
+            extraBedSpan.className = 'hotel_special_request_span_class';
+            extraBedSpan.innerText = hotelExtraBedInput;
+            extraBedSpan.style.width = '100%';
+            extraBedSpan.style.background = 'rgb(85, 127, 137)';
+            extraBedSpan.style.color = 'white';
+            extraBedSpan.style.padding = '0 5px';
+            hotelRowTableDiv.querySelector('.description_cell').appendChild(extraBedSpan);
+        }
+        if (hotelSpecialRoomRequestInput !== '') {
+            let specialRequestSpan = document.createElement('span');
+            specialRequestSpan.id = `hotel_special_request_span_id_${insertedHotelDataDivUniqueId}`;
+            specialRequestSpan.className = 'hotel_special_request_span_class';
+            specialRequestSpan.innerText = hotelSpecialRoomRequestInput;
+            specialRequestSpan.style.background = 'rgb(85, 127, 137)';
+            specialRequestSpan.style.color = 'white';
+            specialRequestSpan.style.padding = '0 5px';
+            hotelRowTableDiv.querySelector('.description_cell').appendChild(specialRequestSpan);
+        }
+        if (hotelRoomExtraInfoReadyText !== '') {
+            // Remove duplicated + signs and any + signs at the beginning
+            let cleanedExtraInfoText = hotelRoomExtraInfoReadyText
+                .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+
+            let extraInfoSpan = document.createElement('span');
+            extraInfoSpan.id = `hotel_extra_info_span_id_${insertedHotelDataDivUniqueId}`;
+            extraInfoSpan.innerText = `+ ${cleanedExtraInfoText}`;
+            extraInfoSpan.style.width = '100%';
+            extraInfoSpan.style.background = 'rgb(85, 127, 137)';
+            extraInfoSpan.style.color = 'white';
+            extraInfoSpan.style.padding = '0 5px';
+
+            // Append the span to the description cell div
+            hotelRowTableDiv.querySelector('.description_cell').appendChild(extraInfoSpan);
+        }
+
+
+
+
+        // Handle the second room data if the second room div is visible
+        if (document.getElementById('hotel_second_room_data_input_div').style.display !== "none") {
+            if (hotelArabicRoomTypeDescriptionInput_2 !== '') {
+                let arabicRoomTypeDescriptionSpan_2 = document.createElement('span');
+                arabicRoomTypeDescriptionSpan_2.id = `hotel_room_arabic_type_description_2_${insertedHotelDataDivUniqueId}`;
+                arabicRoomTypeDescriptionSpan_2.innerText = hotelArabicRoomTypeDescriptionInput_2;
+                arabicRoomTypeDescriptionSpan_2.style.width = '100%';
+                arabicRoomTypeDescriptionSpan_2.style.background = 'rgb(5, 17, 21)';
+                arabicRoomTypeDescriptionSpan_2.style.color = 'white';
+
+
+                let plusSign = document.createElement('span');
+                plusSign.innerText = '+ ';
+                plusSign.style.width = '100%';
+                plusSign.style.background = 'rgb(5, 17, 21)';
+                plusSign.style.color = 'white';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(plusSign);
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(arabicRoomTypeDescriptionSpan_2);
+            }
+            if (hotelRoomTypeDescriptionInput_2 !== '') {
+                let roomTypeDescriptionSpan_2 = document.createElement('span');
+                roomTypeDescriptionSpan_2.id = `hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`;
+                roomTypeDescriptionSpan_2.innerText = hotelRoomTypeDescriptionInput_2;
+                roomTypeDescriptionSpan_2.style.width = '100%';
+                roomTypeDescriptionSpan_2.style.background = 'rgb(5, 17, 21)';
+                roomTypeDescriptionSpan_2.style.color = 'white';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(roomTypeDescriptionSpan_2);
+            }
+            if (hotelBreakfastPeopleAmountInput_2 !== '') {
+                let breakfastSpan_2 = document.createElement('span');
+                breakfastSpan_2.id = `hotel_breakfast_span_id_2_${insertedHotelDataDivUniqueId}`;
+                breakfastSpan_2.innerText = hotelBreakfastPeopleAmountInput_2;
+                breakfastSpan_2.style.width = '100%';
+                breakfastSpan_2.style.background = 'rgb(5, 17, 21)';
+                breakfastSpan_2.style.color = 'white';
+                const _bfDescCell2 = hotelRowTableDiv.querySelector('.description_cell');
+                _bfDescCell2.insertBefore(breakfastSpan_2, _bfDescCell2.querySelector(`#hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`));
+            }
+            if (hotelExtraBedInput_2 !== '') {
+                let extraBedSpan_2 = document.createElement('span');
+                extraBedSpan_2.id = `hotel_extra_bed_span_id_2_${insertedHotelDataDivUniqueId}`;
+                extraBedSpan_2.className = 'hotel_special_request_span_class';
+                extraBedSpan_2.innerText = hotelExtraBedInput_2;
+                extraBedSpan_2.style.width = '100%';
+                extraBedSpan_2.style.background = 'rgb(5, 17, 21)';
+                extraBedSpan_2.style.color = 'white';
+                extraBedSpan_2.style.padding = '0 5px';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(extraBedSpan_2);
+            }
+            if (hotelSpecialRoomRequestInput_2 !== '') {
+                let specialRequestSpan_2 = document.createElement('span');
+                specialRequestSpan_2.id = `hotel_special_request_span_id_2_${insertedHotelDataDivUniqueId}`;
+                specialRequestSpan_2.className = 'hotel_special_request_span_class';
+                specialRequestSpan_2.innerText = hotelSpecialRoomRequestInput_2;
+                specialRequestSpan_2.style.width = '100%';
+                specialRequestSpan_2.style.background = 'rgb(5, 17, 21)';
+                specialRequestSpan_2.style.color = 'white';
+                specialRequestSpan_2.style.padding = '0 5px';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(specialRequestSpan_2);
+            }
+            if (hotelRoomExtraInfoReadyText_2 !== '') {
+                // Remove duplicated + signs and any + signs at the beginning
+                let cleanedExtraInfoText = hotelRoomExtraInfoReadyText_2
+                    .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+                let extraInfoSpan_2 = document.createElement('span');
+                extraInfoSpan_2.id = `hotel_extra_info_span_id_2_${insertedHotelDataDivUniqueId}`;
+                extraInfoSpan_2.innerText = `+ ${cleanedExtraInfoText}`;
+                extraInfoSpan_2.style.width = '100%';
+                extraInfoSpan_2.style.background = 'rgb(5, 17, 21)';
+                extraInfoSpan_2.style.color = 'white';
+                extraInfoSpan_2.style.padding = '0 5px';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(extraInfoSpan_2);
+            }
+        }
+
+
+
+        // Append the new hotel row div to the parent div that holds all inserted hotel data
+        document.getElementById('inserted_hotel_data_position_div').appendChild(hotelRowTableDiv);
+
+
+
+        // Get the 'hotel_row_image_controller' elements inside each 'hotel_row_class' element
+        let hotelRowImageControllers = hotelRowTableDiv.querySelectorAll('.hotel_row_image_controller');
+
+
+        // Attach click and touch event listeners to each element
+        hotelRowImageControllers.forEach(element => {
+            handleClickEvent(element);
+        });
+
+
+
+
+        // Hide the hotel location input
+        document.getElementById('hotel_location_input_id').style.display = 'none';
+        document.getElementById('hotel_location_input_id').value = '';
+        document.getElementById('hotel_bali_area_input_id').style.display = 'none';
+        document.getElementById('hotel_bali_area_input_id').value = '';
+        document.getElementById('hotel_stars_rate_input_id').style.display = 'none';
+        document.getElementById('hotel_stars_rate_input_id').value = '';
+
+
+        // Make the following inputs readonly again
+        document.getElementById('hotel_name_input_id').readOnly = true;
+        document.getElementById('hotel_arabic_room_type_description_input_id').readOnly = true;
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = true;
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = true;
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = true;
+
+
+        // Set autocomplete to on
+        document.getElementById('hotel_name_input_id').setAttribute('autocomplete', 'off');
+        document.getElementById('hotel_arabic_room_type_description_input_id').setAttribute('autocomplete', 'off');
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').setAttribute('autocomplete', 'off');
+
+
+        // Change the cursor to pointer and properly set the onclick event
+        document.getElementById('hotel_name_input_id').style.cursor = 'pointer';
+        document.getElementById('hotel_name_input_id').onclick = function () {
+            handleHotelNameInputClick();
+        };
+
+        document.getElementById('hotel_arabic_room_type_description_input_id').style.cursor = 'pointer';
+        document.getElementById('hotel_arabic_room_type_description_input_id').onclick = function () {
+            createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
+        };
+
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').style.cursor = 'pointer';
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').onclick = function () {
+            createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
+        };
+
+
+        /* Chnage the color of the icon as a refernce you're in hotel writing system */
+        document.getElementById('change_insert_hotel_data_system_icon').style.background = 'rgb(0, 87, 116)';
+        document.getElementById('change_insert_hotel_data_system_icon').style.color = 'white';
+
+
+
+        /* in case the insert hotel data system is picking then do the following code */
+    } else {
+
+
+
+        // Convert the hotel name to lowercase and replace spaces with hyphens to create a suitable image filename
+        let hotelImgSrcReadyText = hotelNameReadyText.toLowerCase().replace(/\s+/g, '-');
+
+
+
+        let hotelLocationReadyText = '';
+        let hotelAreaReadyText = '';
+
+        if (_roomTypesDBCache) {
+            const row = _roomTypesDBCache.find(h => h.hotel_name === hotelNameReadyText);
+            if (row) {
+                hotelLocationReadyText = row.hotel_location || '';
+                hotelAreaReadyText = row.hotel_area || '';
+            }
+        }
+
+        // Create the HTML content for a new hotel row
+        let hotelRowTableDivContent = `
+            <div><h1 id='hotel_name_${insertedHotelDataDivUniqueId}'>${hotelNameReadyText}</h1></div>
+            <div><h2 id='hotel_check_in_${insertedHotelDataDivUniqueId}' class="hotel_check_in_date_for_matching_whole_package_date">${hotelCheckInReadyText}</h2></div>
+            <div><h3 style="color: red" id='hotel_check_out_${insertedHotelDataDivUniqueId}' class="hotel_check_out_date_for_matching_whole_package_date">${hotelCheckOutReadyText}</h3></div>
+            <div><h4 id='hotel_total_nights_${insertedHotelDataDivUniqueId}'>${storeHotelTotalNights}</h4></div>
+            <div class="description_cell">
+                <span id='hotel_room_arabic_type_description_${insertedHotelDataDivUniqueId}'>${hotelArabicRoomTypeDescriptionInput}</span><span id='hotel_room_type_description_${insertedHotelDataDivUniqueId}'>${hotelRoomTypeDescriptionInput}</span></div>
+            <div>
+                <p id='hotel_total_unit_${insertedHotelDataDivUniqueId}'>${storeHotelTotalUnitNumber}</p>
+                ${hotelUnitAmountInput_2 && document.getElementById('hotel_second_room_data_input_div').style.display !== "none" ? `<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${insertedHotelDataDivUniqueId}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>` : ''}
+            </div>
+            <div>
+                <h5 id='hotel_location_${insertedHotelDataDivUniqueId}'>${hotelLocationReadyText}</h5>
+                ${hotelAreaReadyText ? `<br><h6 id='hotel_area_${insertedHotelDataDivUniqueId}'>${hotelAreaReadyText}</h6>` : ''}
+                <img src="صور-الفنادق/${hotelImgSrcReadyText}.jpg" class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">
+            </div>
+        `;
+
+        // Create a new div element to hold the hotel row
+        let hotelRowTableDiv = document.createElement('div');
+        hotelRowTableDiv.id = `hotel_row_id_${insertedHotelDataDivUniqueId}`; // Set a unique ID for the hotel row div
+        hotelRowTableDiv.className = 'hotel_row_class hotel_row_class_for_editing'; // Add a class to the div for styling
+
+        // Insert the HTML content into the newly created div
+        hotelRowTableDiv.innerHTML = hotelRowTableDivContent;
+
+        // Append <span> elements for each input with text
+        if (hotelBreakfastPeopleAmountInput !== '') {
+            let breakfastSpan = document.createElement('span');
+            breakfastSpan.id = `hotel_breakfast_span_id_${insertedHotelDataDivUniqueId}`;
+            breakfastSpan.innerText = hotelBreakfastPeopleAmountInput;
+            const _bfDescCell = hotelRowTableDiv.querySelector('.description_cell');
+            _bfDescCell.insertBefore(breakfastSpan, _bfDescCell.querySelector(`#hotel_room_type_description_${insertedHotelDataDivUniqueId}`));
+        }
+        if (hotelExtraBedInput !== '') {
+            let extraBedSpan = document.createElement('span');
+            extraBedSpan.id = `hotel_extra_bed_span_id_${insertedHotelDataDivUniqueId}`;
+            extraBedSpan.className = 'hotel_special_request_span_class';
+            extraBedSpan.innerText = hotelExtraBedInput;
+            extraBedSpan.style.width = '100%';
+            extraBedSpan.style.background = 'rgb(85, 127, 137)';
+            extraBedSpan.style.color = 'white';
+            extraBedSpan.style.padding = '0 5px';
+            hotelRowTableDiv.querySelector('.description_cell').appendChild(extraBedSpan);
+        }
+        if (hotelSpecialRoomRequestInput !== '') {
+            let specialRequestSpan = document.createElement('span');
+            specialRequestSpan.id = `hotel_special_request_span_id_${insertedHotelDataDivUniqueId}`;
+            specialRequestSpan.className = 'hotel_special_request_span_class';
+            specialRequestSpan.innerText = hotelSpecialRoomRequestInput;
+            specialRequestSpan.style.background = 'rgb(85, 127, 137)';
+            specialRequestSpan.style.color = 'white';
+            specialRequestSpan.style.padding = '0 5px';
+            hotelRowTableDiv.querySelector('.description_cell').appendChild(specialRequestSpan);
+        }
+        if (hotelRoomExtraInfoReadyText !== '') {
+            // Remove duplicated + signs and any + signs at the beginning
+            let cleanedExtraInfoText = hotelRoomExtraInfoReadyText
+                .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+            let extraInfoSpan = document.createElement('span');
+            extraInfoSpan.id = `hotel_extra_info_span_id_${insertedHotelDataDivUniqueId}`;
+            extraInfoSpan.innerText = `+ ${cleanedExtraInfoText}`;
+            extraInfoSpan.style.width = '100%';
+            extraInfoSpan.style.background = 'rgb(85, 127, 137)';
+            extraInfoSpan.style.color = 'white';
+            extraInfoSpan.style.padding = '0 5px';
+            hotelRowTableDiv.querySelector('.description_cell').appendChild(extraInfoSpan);
+        }
+
+
+
+
+        // Handle the second room data if the second room div is visible
+        if (document.getElementById('hotel_second_room_data_input_div').style.display !== "none") {
+            if (hotelArabicRoomTypeDescriptionInput_2 !== '') {
+                let arabicRoomTypeDescriptionSpan_2 = document.createElement('span');
+                arabicRoomTypeDescriptionSpan_2.id = `hotel_room_arabic_type_description_2_${insertedHotelDataDivUniqueId}`;
+                arabicRoomTypeDescriptionSpan_2.innerText = hotelArabicRoomTypeDescriptionInput_2;
+                arabicRoomTypeDescriptionSpan_2.style.width = '100%';
+                arabicRoomTypeDescriptionSpan_2.style.background = 'rgb(5, 17, 21)';
+                arabicRoomTypeDescriptionSpan_2.style.color = 'white';
+
+
+                let plusSign = document.createElement('span');
+                plusSign.innerText = '+ ';
+                plusSign.style.width = '100%';
+                plusSign.style.background = 'rgb(5, 17, 21)';
+                plusSign.style.color = 'white';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(plusSign);
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(arabicRoomTypeDescriptionSpan_2);
+            }
+            if (hotelRoomTypeDescriptionInput_2 !== '') {
+                let roomTypeDescriptionSpan_2 = document.createElement('span');
+                roomTypeDescriptionSpan_2.id = `hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`;
+                roomTypeDescriptionSpan_2.innerText = hotelRoomTypeDescriptionInput_2;
+                roomTypeDescriptionSpan_2.style.width = '100%';
+                roomTypeDescriptionSpan_2.style.background = 'rgb(5, 17, 21)';
+                roomTypeDescriptionSpan_2.style.color = 'white';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(roomTypeDescriptionSpan_2);
+            }
+            if (hotelBreakfastPeopleAmountInput_2 !== '') {
+                let breakfastSpan_2 = document.createElement('span');
+                breakfastSpan_2.id = `hotel_breakfast_span_id_2_${insertedHotelDataDivUniqueId}`;
+                breakfastSpan_2.innerText = hotelBreakfastPeopleAmountInput_2;
+                breakfastSpan_2.style.width = '100%';
+                breakfastSpan_2.style.background = 'rgb(5, 17, 21)';
+                breakfastSpan_2.style.color = 'white';
+                const _bfDescCell2 = hotelRowTableDiv.querySelector('.description_cell');
+                _bfDescCell2.insertBefore(breakfastSpan_2, _bfDescCell2.querySelector(`#hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`));
+            }
+            if (hotelExtraBedInput_2 !== '') {
+                let extraBedSpan_2 = document.createElement('span');
+                extraBedSpan_2.id = `hotel_extra_bed_span_id_2_${insertedHotelDataDivUniqueId}`;
+                extraBedSpan_2.className = 'hotel_special_request_span_class';
+                extraBedSpan_2.innerText = hotelExtraBedInput_2;
+                extraBedSpan_2.style.width = '100%';
+                extraBedSpan_2.style.background = 'rgb(5, 17, 21)';
+                extraBedSpan_2.style.color = 'white';
+                extraBedSpan_2.style.padding = '0 5px';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(extraBedSpan_2);
+            }
+            if (hotelSpecialRoomRequestInput_2 !== '') {
+                let specialRequestSpan_2 = document.createElement('span');
+                specialRequestSpan_2.id = `hotel_special_request_span_id_2_${insertedHotelDataDivUniqueId}`;
+                specialRequestSpan_2.className = 'hotel_special_request_span_class';
+                specialRequestSpan_2.innerText = hotelSpecialRoomRequestInput_2;
+                specialRequestSpan_2.style.width = '100%';
+                specialRequestSpan_2.style.background = 'rgb(5, 17, 21)';
+                specialRequestSpan_2.style.color = 'white';
+                specialRequestSpan_2.style.padding = '0 5px';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(specialRequestSpan_2);
+            }
+            if (hotelRoomExtraInfoReadyText_2 !== '') {
+                // Remove duplicated + signs and any + signs at the beginning
+                let cleanedExtraInfoText = hotelRoomExtraInfoReadyText_2
+                    .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+                let extraInfoSpan_2 = document.createElement('span');
+                extraInfoSpan_2.id = `hotel_extra_info_span_id_2_${insertedHotelDataDivUniqueId}`;
+                extraInfoSpan_2.innerText = `+ ${cleanedExtraInfoText}`;
+                extraInfoSpan_2.style.width = '100%';
+                extraInfoSpan_2.style.background = 'rgb(5, 17, 21)';
+                extraInfoSpan_2.style.color = 'white';
+                extraInfoSpan_2.style.padding = '0 5px';
+                hotelRowTableDiv.querySelector('.description_cell').appendChild(extraInfoSpan_2);
+            }
+        }
+
+
+
+        // Append the new hotel row div to the parent div that holds all inserted hotel data
+        document.getElementById('inserted_hotel_data_position_div').appendChild(hotelRowTableDiv);
+
+
+
+
+        // Get all dynamically created elements with the class 'hotelRowImageController'
+        let hotelRowImageControllers = hotelRowTableDiv.querySelectorAll('.hotel_row_image_controller');
+
+
+        // Attach click and touch event listeners to each element
+        hotelRowImageControllers.forEach(element => {
+            handleClickEvent(element);
+        });
+    }
+
+
+
+
+
+
+    /* Add more number to the 'insertedHotelDataDivUniqueId' to keep a unique id name for each created 'hotelRowTableDiv' div */
+    insertedHotelDataDivUniqueId++;
+
+
+
+
+    /* Store the new unique id name 'insertedHotelDataDivUniqueId' for later refrence and use (when importing data) */
+    document.getElementById('store_google_sheet_hotel_uniuqe_id_name_value').innerText = insertedHotelDataDivUniqueId;
+
+
+
+    /* Show up the 'downloaded_pdf_hotel_data_page' section */
+    document.getElementById('downloaded_pdf_hotel_data_page').style.display = 'block';
+
+
+
+
+    /* Call a function to make sure if all package dates should be hidden or no */
+    ensureAllPackageDatesHiddenOrNo();
+
+
+
+
+    // Get references to all input elements and reset their values
+    document.getElementById('hotel_name_input_id').value = '';
+    document.getElementById('hotel_location_input_id').value = '';
+    document.getElementById('hotel_stars_rate_input_id').value = '';
+
+
+    document.getElementById('hotel_check_in_input_id').value = document.getElementById('hotel_check_out_input_id').value;
+
+    /* Store the last stooped hotel check out date for later use (when importing data) */
+    document.getElementById('store_google_sheet_hotel_last_stopped_check_out_date_value').innerText = document.getElementById('hotel_check_in_input_id').value;
+
+
+
+    document.getElementById('hotel_check_out_input_id').value = '';
+    document.getElementById('hotel_total_nights_input_id').value = '';
+    document.getElementById('hotel_arabic_room_type_description_input_id').value = '';
+    document.getElementById('hotel_english_room_type_description_input_id').value = '';
+    document.getElementById('hotel_special_room_request_input_id').value = '';
+    document.getElementById('hotel_room_extra_info_textarea_id').value = '';
+
+
+    document.getElementById('hotel_arabic_room_type_description_input_id_2').value = '';
+    document.getElementById('hotel_english_room_type_description_input_id_2').value = '';
+    document.getElementById('hotel_special_room_request_input_id_2').value = '';
+    document.getElementById('hotel_room_extra_info_textarea_id_2').value = '';
+
+
+
+
+    // Call the function to set up drag-and-drop functionality
+    createHotelDragAndDropMood();
+
+
+
+    // Call a function to save the current dates of all hotels for later Re-arranging use (when drag and drop)
+    saveOriginalHotelDates();
+
+
+
+
+    /* Re-Create the data of the flights details when submit new changes in the hotels data */
+    if (document.getElementById('downloaded_pdf_flight_data_page').style.display !== 'none') {
+        // First delete all old flights row data'
+        document.getElementById('inserted_flight_data_position_div').innerHTML = '';
+
+
+
+
+
+        /* Set the 'insertedHotelDataDivUniqueId' value based on the following condition */
+        if (document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText !== '') {
+            insertedFlightDataDivUniqueId = document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText;
+        } else {
+            insertedFlightDataDivUniqueId = 1;
+        }
+
+
+
+        // Get all divs with the class name 'hotel_row_class_for_editing'
+        let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+
+        let lastCity = null;  // Variable to store the last valid city encountered
+        let lastDate = null;  // Variable to store the date associated with the last valid city
+        let validCities = ["بالي", "جاكرتا", "باندونق", "بونشاك", "لومبوك"];  // Array of valid cities to check against
+
+
+
+        // Get the values of the adult and kids inputs
+        let adultAmount = document.getElementById('adult_package_person_amount_input_id').value;
+        let kidsAmount = document.getElementById('kids_package_person_amount_input_id').value;
+        let infantAmount = document.getElementById('infant_package_person_amount_input_id').value;
+
+        // Function to extract numbers from the string
+        function extractNumberFromString(str) {
+            let match = str.match(/\d+/);  // Use regex to find the number
+            return match ? parseInt(match[0]) : 0;  // Return the number or 0 if no number found
+        }
+
+        // Extract numbers from adult and kids input values
+        let adultNumber = extractNumberFromString(adultAmount);
+        let kidsNumber = extractNumberFromString(kidsAmount);
+
+        // Calculate total people (adults + kids)
+        let totalPeople = adultNumber + kidsNumber;
+
+
+
+
+        // Iterate through all found hotel rows
+        allHotelRows.forEach((hotelRow, index) => {
+            let currentCity = hotelRow.querySelector('h5').innerText;  // Get the city name from the current hotel row's h5 element
+            let currentDate = hotelRow.querySelector('h2').innerText;  // Get the date from the current hotel row's h2 element
+
+            // Check if transition between Jakarta and Bandung (in either order) and skip
+            if ((lastCity === "جاكرتا" && currentCity === "باندونق") || (lastCity === "باندونق" && currentCity === "جاكرتا")) {
+                lastCity = currentCity;
+                lastDate = currentDate;
+                return; // Skip this iteration without creating a flightRowTableDiv
+            }
+
+            // Check if transition between Jakarta and Puncak and skip
+            if (lastCity === "جاكرتا" && currentCity === "بونشاك") {
+                lastCity = currentCity;
+                lastDate = currentDate;
+                return; // Skip this iteration without creating a flightRowTableDiv
+            }
+
+            // Check if transition between Puncak and Jakarta and skip
+            if (lastCity === "بونشاك" && currentCity === "جاكرتا") {
+                lastCity = currentCity;
+                lastDate = currentDate;
+                return; // Skip this iteration without creating a flightRowTableDiv
+            }
+
+            // Check if the current and last city are valid and different
+            if ((validCities.includes(currentCity) && lastCity && lastCity !== currentCity && validCities.includes(lastCity)) ||
+                (lastCity === "بونشاك" && currentCity === "بالي") || (lastCity === "بالي" && currentCity === "بونشاك")) {
+
+                let fromCity = lastCity;
+                let toCity = currentCity;
+
+
+                /* check the 'lastCity' and the 'currentCity' value and based on the below conditions set the value of the 'fromCity' and the 'toCity' */
+                if ((lastCity === "بونشاك" && currentCity === "بالي") || (lastCity === "باندونق" && currentCity === "بالي")) {
+                    fromCity = "جاكرتا";
+                    toCity = "بالي";
+                } else if ((lastCity === "بالي" && currentCity === "بونشاك") || (lastCity === "بالي" && currentCity === "باندونق")) {
+                    fromCity = "بالي";
+                    toCity = "جاكرتا";
+                }
+
+
+
+                // Check if transition between Bandung and Puncak (in either order) and skip
+                if ((lastCity === "باندونق" && currentCity === "بونشاك") || (lastCity === "بونشاك" && currentCity === "باندونق")) {
+                    lastCity = currentCity;
+                    lastDate = currentDate;
+                    return; // Skip this iteration without creating a flightRowTableDiv
+                }
+
+
+                // Create a new div with flight details
+                let flightRowTableDiv = document.createElement('div');
+                flightRowTableDiv.id = `flight_row_id_${insertedFlightDataDivUniqueId}`;  // Set a unique ID for the new div
+                flightRowTableDiv.className = 'flight_row_class flight_row_class_for_editing';  // Assign class names to the new div
+
+                // Create the HTML content for the new flight row div
+                let flightRowTableDivContent = `
+                <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;"><p id='flight_air_line_${insertedFlightDataDivUniqueId}'></p></div>
+                <div>
+                    <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">
+                        ${totalPeople === 1
+                        ? `${totalPeople} بالغ`
+                        : totalPeople > 10
+                            ? `${totalPeople} بالغ`
+                            : totalPeople !== 0
+                                ? `${totalPeople} بالغين`
+                                : ''
+                    }
+                    </p>
+                    ${infantAmount ? `<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${infantAmount}</p>` : ''}
+                </div>
+                <div><p>20Kg للشخص</p></div>
+                <div><h2 id='flight_from_city_${insertedFlightDataDivUniqueId}'>${fromCity}</h2></div>
+                <div><h3 id='flight_to_city_${insertedFlightDataDivUniqueId}'>${toCity}</h3></div>
+                <div><h1 id='flight_date_${insertedFlightDataDivUniqueId}' class="flight_date_for_matching_whole_package_date">${currentDate}</h1></div>
+                <div><p id='flight_fly_away_time_${insertedFlightDataDivUniqueId}'></p></div>
+                <div><p id='flight_arrival_time_${insertedFlightDataDivUniqueId}'></p></div>
+            `;
+
+
+                flightRowTableDiv.innerHTML = flightRowTableDivContent;  // Insert the generated HTML content into the new div
+
+                // Append the new div to the container with id 'inserted_flight_data_position_div'
+                document.getElementById('inserted_flight_data_position_div').appendChild(flightRowTableDiv);
+
+                // Increment the unique ID for the next div
+                insertedFlightDataDivUniqueId++;
+            }
+
+            // Update the lastCity and lastDate for the next iteration
+            lastCity = currentCity;
+            lastDate = currentDate;
+        });
+
+
+
+
+
+
+
+
+
+
+        // Check if there is any element with the class 'flight_row_class_for_editing'
+        let allFlightRowdivs = document.getElementsByClassName('flight_row_class_for_editing');
+
+        /* if there is found created flights row data */
+        if (allFlightRowdivs.length > 0) {
+
+            // Play a sound effect
+            playSoundEffect('success');
+
+            /* Change the 'تم' button color */
+            clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 255, 0)';
+            // Set the background color of the submit icon back to default color
+            setTimeout(() => {
+                clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+            }, 500);
+
+
+            // If any element is found, set the display style of the 'downloaded_pdf_flight_data_page' to 'block'
+            document.getElementById('downloaded_pdf_flight_data_page').style.display = 'block';
+
+
+
+            /* Hide the icon button after creating a flight row */
+            document.getElementById('manually_add_flight_row_icon').style.display = 'none';
+
+
+
+            /* Call a function to make sure if all package dates should be hidden or no */
+            ensureAllPackageDatesHiddenOrNo();
+
+
+
+            /* if there is no any found created flights row data */
+        } else {
+
+            // Play a sound effect
+            playSoundEffect('error');
+
+
+            /* Change the 'تم' button color */
+            clint_flight_inputs_submit_icon.style.backgroundColor = 'red';
+            // Set the background color of the submit icon back to default color
+            setTimeout(() => {
+                clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+            }, 500);
+
+
+            // If there is no found element, set the display style of the 'downloaded_pdf_flight_data_page' to 'none'
+            document.getElementById('downloaded_pdf_flight_data_page').style.display = 'none';
+        }
+
+
+
+        // Get references to all input elements and reset their values thier
+        document.getElementById('flight_from_city_input_id').value = document.getElementById('flight_to_city_input_id').value;
+        document.getElementById('flight_to_city_input_id').value = '';
+        document.getElementById('flight_date_input_id').value = '';
+        document.getElementById('flight_fly_away_time_input_id').value = '';
+        document.getElementById('flight_arrival_time_input_id').value = '';
+
+
+
+
+        // Get all dynamically created elements with the class 'flight_row_flight_arrival_time_controller'
+        document.querySelectorAll('.flight_row_flight_arrival_time_controller').forEach(function (element) {
+            element.onclick = function (event) {
+                flightRowAirLineControllerFunction(event, element);
+            };
+        });
+
+
+        /* Store the last saved flight unique id name */
+        document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText = insertedFlightDataDivUniqueId;
+    }
+    /* Re-Create the data of the clint movements details when submit new changes in the hotels data */
+    if (document.getElementById('downloaded_pdf_clint_movements_data_page').style.display !== 'none') {
+
+        /* Delete all data inside the 'inserted_clint_movements_data_position_div' in every time the 'clint_movements_auto_create_icon' is clicked */
+        document.getElementById('inserted_clint_movements_data_position_div').innerHTML = '';
+
+
+        // Function to increment a date by a specified number of days
+        function incrementDate(dateString, days) {
+            let [day, month] = dateString.split(' '); // Split the date string into day and month
+            let arabicMonths = {
+                "يناير": 0, "فبراير": 1, "مارس": 2, "أبريل": 3,
+                "مايو": 4, "يونيو": 5, "يوليو": 6, "أغسطس": 7,
+                "سبتمبر": 8, "أكتوبر": 9, "نوفمبر": 10, "ديسمبر": 11
+            }; // Arabic month names mapped to their corresponding month index
+            let monthNames = Object.keys(arabicMonths); // Array of month names in Arabic
+
+            let date = new Date(); // Create a new date object
+            date.setDate(parseInt(day)); // Set the day of the date object
+            date.setMonth(arabicMonths[month]); // Set the month of the date object
+            date.setDate(date.getDate() + days); // Increment the date by the specified number of days
+
+            let newDay = date.getDate(); // Get the new day after incrementing
+            let newMonth = monthNames[date.getMonth()]; // Get the new month name in Arabic
+
+            return `${newDay} ${newMonth}`; // Return the new date in the same format (day month)
+        }
+
+
+
+
+
+        // Function to clean up text and ensure no duplicated '+'
+        function cleanUpText(text) {
+            return text.replace(/\+\s*\+/g, ' + ').trim();
+        }
+
+        // Get the state of the airport welcome checkbox
+        let isAirportWelcomeIncluded = document.getElementById('include_airport_welcome__checkbox').checked;
+        let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+        let totalHotels = allHotelRows.length;
+        let usedVisitingPlaces = {
+            baliUbudKeramas: {},
+            baliOthers: {},
+            jakarta: {},
+            puncak: {},
+            bandung: {},
+            lombok: {},
+        };
+
+        let previousCityName = '';
+        let previousHotelName = '';
+        let isFirstHotelRowCreated = false; // Flag to check the first created row
+        let hasCenterTourTextBeenAdded = false; // Flag to track if "التجول في السنتر" text has been added
+
+        let isFirstJakartaHotelFound = false; // Flag to track the first Jakarta hotel found
+
+        let firstCreatedClintMovementsRowDivForLastHotel = null; // Variable to store the first created div for the last hotel
+
+
+        let isFirstClintMovementsRowCreated = false; // Flag to track the first created clintMovementsRowTableDiv
+
+
+        /* Variable to store if the h5 inside the first found 'hotel_row_class_for_editing' is "بونشاك" or "باندونق" */
+        let firstHotelCityName = allHotelRows[0].querySelector('h5').innerText;
+
+
+        // Store the innerText of the h5 inside the last found hotel_row_class_for_editing
+        let lastHotelCityName = allHotelRows[totalHotels - 1].querySelector('h5').innerText;
+
+
+        // Variable to store the combined city names for the last found hotel row
+        let lastHotelRowCombinedCityName = '';
+
+        allHotelRows.forEach((hotelRow, index) => {
+            let hotelName = hotelRow.querySelector('h1').innerText;
+            let checkInDate = hotelRow.querySelector('h2').innerText;
+            let nights = parseInt(hotelRow.querySelector('h4').innerText, 10);
+            let cityName = hotelRow.querySelector('h5').innerText;
+            let areaName = cityName === "بالي" ? hotelRow.querySelector('h6').innerText : null;
+            let packageType = document.getElementById('clint_package_type_h6').innerText.trim();
+
+            let packageMapping = {
+                "بكج شهر عسل": "honeymoon",
+                "بكج شباب": "guys",
+                "بكج عائلة": "family",
+                "بكج شخصين": "twopeople",
+                "بكج قروب": "family",
+                "بكج جديد": "family"
+            };
+            let packageKey = packageMapping[packageType] || "family";
+
+            let targetObject;
+            let usedDays; // Declare usedDays to be assigned later
+
+            if (cityName === "بالي" && areaName) {
+                if (areaName === "اوبود" || areaName === "كيراماس") {
+                    targetObject = allClintVisitingPlacesArray[1][packageKey];
+                    usedDays = usedVisitingPlaces.baliUbudKeramas;
+                } else if (["كوتا", "نوسا دوا", "سيمنياك", "جيمباران", "اولواتو", "ليجين", "سانور", "تابانان", "تشانغو", "Tampaksiring"].includes(areaName)) {
+                    targetObject = allClintVisitingPlacesArray[0][packageKey];
+                    usedDays = usedVisitingPlaces.baliOthers;
+                }
+            } else if (cityName === 'جاكرتا') {
+                targetObject = allClintVisitingPlacesArray[2][packageKey];
+                usedDays = usedVisitingPlaces.jakarta;
+            } else if (cityName === 'بونشاك') {
+                targetObject = allClintVisitingPlacesArray[3][packageKey];
+                usedDays = usedVisitingPlaces.puncak;
+            } else if (cityName === 'باندونق') {
+                targetObject = allClintVisitingPlacesArray[4][packageKey];
+                usedDays = usedVisitingPlaces.bandung;
+            } else if (cityName === 'لومبوك') {
+                targetObject = allClintVisitingPlacesArray[5][packageKey];
+                usedDays = usedVisitingPlaces.lombok;
+            }
+
+            if (!usedVisitingPlaces[cityName]) {
+                usedVisitingPlaces[cityName] = {};
+            }
+
+            let isCheckOutTextAdded = false; // Flag to track if check-out text has been added for this hotel
+            let dayIndex = 0; // Initialize dayIndex separately for each hotel
+
+            for (let i = 0; i < nights; i++) {
+                let clintMovementsRowTableDiv = document.createElement('div');
+                clintMovementsRowTableDiv.className = 'clint_movements_row_class clint_movements_row_class_for_editing';
+
+                let newDate = incrementDate(checkInDate, i);
+
+                let visitingPlacesText = "";
+
+                // Skip appending text for the first created div
+                if (targetObject) {
+                    while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        dayIndex++;
+                    }
+                    if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                        usedDays[dayIndex] = true;
+                        if (textArray && textArray.length > 0) {
+                            visitingPlacesText = `${textArray.join(' + ')} `;
+                        }
+                        dayIndex++; // Increment dayIndex after appending text
+                    }
+                }
+
+                let checkInOutText = i === 0 ? `تسجيل الدخول في ${hotelName}` : '';
+                let combinedCityName = cityName;
+
+                // Logic for check-in/out text and combined city name based on previous city/hotel
+                if (i === 0 && index > 0) {
+                    previousCityName = allHotelRows[index - 1].querySelector('h5').innerText;
+                    previousHotelName = allHotelRows[index - 1].querySelector('h1').innerText;
+
+                    if (cityName !== previousCityName) {
+                        combinedCityName = `${previousCityName}-${cityName}`;
+                        lastHotelRowCombinedCityName = combinedCityName; // Update combined city name
+                    }
+
+                    let additionalText = "";
+                    if (isAirportWelcomeIncluded && (cityName === "بالي" || cityName === "جاكرتا") && cityName !== previousCityName) {
+                        if (!(previousCityName === "بونشاك" && cityName === "جاكرتا") && !(previousCityName === "باندونق" && cityName === "جاكرتا")) {
+                            additionalText = `الإستقبال في مطار ${cityName} + `;
+                        }
+                    }
+
+
+                    if (!isCheckOutTextAdded) {
+                        checkInOutText = `تسجيل الخروج من ${previousHotelName} `;
+
+                        if (previousCityName !== cityName) {
+                            checkInOutText += `+ الذهاب الى ${cityName} `;
+                        }
+
+                        checkInOutText += `+ ${additionalText}${visitingPlacesText} + تسجيل الدخول في ${hotelName}`;
+                        isCheckOutTextAdded = true;
+                    }
+                }
+
+                if ((cityName === "بالي" || cityName === "جاكرتا") && !hasCenterTourTextBeenAdded) {
+                    checkInOutText = checkInOutText.replace(`تسجيل الدخول في ${hotelName}`, `تسجيل الدخول في ${hotelName} + التجول في السنتر`);
+                    hasCenterTourTextBeenAdded = true;
+                }
+
+                if (!isFirstHotelRowCreated && (cityName === "بالي" || cityName === "جاكرتا") && isAirportWelcomeIncluded) {
+                    checkInOutText = `الإستقبال في مطار ${cityName} + ${checkInOutText}`;
+                    isFirstHotelRowCreated = true;
+                }
+
+                // Additional condition for the first hotel row
+                if (!isFirstHotelRowCreated && index === 0 && isAirportWelcomeIncluded && (firstHotelCityName === "بونشاك" || firstHotelCityName === "باندونق")) {
+                    checkInOutText = `الإستقبال في مطار جاكرتا + الذهاب الى ${cityName} + تسجيل الدخول في ${hotelName}`;
+                    isFirstHotelRowCreated = true; // Set the flag to avoid reapplying this condition
+                }
+
+                // Clean up text to ensure no duplicated '+'
+                checkInOutText = cleanUpText(checkInOutText);
+
+                clintMovementsRowTableDiv.innerHTML = `
+                    <div><h1>${newDate}</h1></div>
+                    <div><h2>${checkInOutText}</h2></div>
+                    <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${i === 0 ? combinedCityName : cityName}</h3></div>
+                `;
+
+                // Apply the new condition to append text if needed, but skip the first hotel row
+                if (!isFirstJakartaHotelFound && cityName === "جاكرتا" && i === 0 && index !== 0) {
+                    let currentH2 = clintMovementsRowTableDiv.querySelector('h2');
+                    currentH2.innerText += " + الذهاب لمطعم السدة للعشاء";
+                    currentH2.innerText = cleanUpText(currentH2.innerText); // Clean up text to ensure no duplicated '+'
+                    isFirstJakartaHotelFound = true;
+                }
+
+                if (targetObject && i === 0) {
+                    let dayIndex = 1;
+                    while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        dayIndex++;
+                    }
+                    if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                        usedDays[dayIndex] = true;
+                        if (textArray && textArray.length > 0) {
+                            visitingPlacesText = `${textArray.join(' + ')} `;
+                        }
+                    }
+                }
+
+                if (targetObject) {
+                    let dayIndex = i + 1;
+                    while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        dayIndex++;
+                    }
+                    if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                        usedDays[dayIndex] = true;
+                        if (textArray && textArray.length > 0) {
+                            visitingPlacesText = `${textArray.join(' + ')} `;
+                        }
+                    }
+                }
+
+                if (visitingPlacesText) {
+                    clintMovementsRowTableDiv.querySelector('h2').innerText += `${visitingPlacesText}`;
+                }
+
+                document.getElementById('inserted_clint_movements_data_position_div').appendChild(clintMovementsRowTableDiv);
+
+                if (index === totalHotels - 1 && i === nights - 1) {
+                    // Check if this is not the first created clintMovementsRowTableDiv
+                    if (isFirstClintMovementsRowCreated) {
+                        let lastH3 = clintMovementsRowTableDiv.querySelector('h3');
+                        lastH3.innerText = lastHotelCityName;
+                    } else {
+                        isFirstClintMovementsRowCreated = true; // Set the flag after the first creation
+                    }
+                }
+            }
+
+
+            if (index === totalHotels - 1) {
+                let extraDate = incrementDate(checkInDate, nights);
+                let extraClintMovementsRowTableDiv = document.createElement('div');
+
+                extraClintMovementsRowTableDiv.className = 'clint_movements_row_class clint_movements_row_class_for_editing';
+
+                extraClintMovementsRowTableDiv.innerHTML = `
+            <div><h1>${extraDate}</h1></div>
+            <div><h2>تسجيل الخروج من ${hotelName} والتحرك للمطار للمغادرة</h2></div>
+            <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${cityName}-مغادرة</h3></div>
+        `;
+
+                document.getElementById('inserted_clint_movements_data_position_div').appendChild(extraClintMovementsRowTableDiv);
+            }
+        });
+
+
+        /* Show up the 'downloaded_pdf_clint_movements_data_page' section */
+        document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'block';
+
+
+        /* Update the available clint visiting places based on the current existing visiting places */
+        filterUsedClintVisitingPlacesNames();
+
+
+
+        // Get all elements with the class name 'flight_row_class'
+        let clintMovementsRowTableDiv = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+        // Loop through each 'flight_row_class' element
+        clintMovementsRowTableDiv.forEach(clintMovementsRowTableDiv => {
+
+            // Get all dynamically created elements with the class 'clint_movements_row_controller'
+            clintMovementsRowTableDiv.querySelectorAll('.clint_movements_row_controller').forEach(function (element) {
+                element.onclick = function (event) {
+                    clintMovementsRowCityNameControllerFunction(event, element);
+                };
+            });
+
+        });
+
+
+
+        /* Call a function to make sure if all package dates should be hidden or no */
+        ensureAllPackageDatesHiddenOrNo();
+
+
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }
+}
+
+
+const HOTEL_ROW_IMAGE_CLICK_DRAG_THRESHOLD_PX = 8;
+const HOTEL_ROW_IMAGE_TRIGGER_DEDUP_MS = 250;
+let hotelRowImageGlobalClickBound = false;
+let lastHotelRowImageTriggerAt = 0;
+let lastHotelRowImageTriggerRowId = '';
+
+function getClosestHotelImageFromEvent(event) {
+    if (!event) return null;
+    if (event.target && event.target.closest) {
+        const byClosest = event.target.closest('.hotel_row_image_controller');
+        if (byClosest) return byClosest;
+    }
+    if (event.composedPath) {
+        const path = event.composedPath();
+        for (const node of path) {
+            if (node && node.classList && node.classList.contains('hotel_row_image_controller')) {
+                return node;
+            }
+        }
+    }
+    return null;
+}
+
+function triggerHotelRowImageController(target) {
+    const clickedImage = target && target.closest ? target.closest('.hotel_row_image_controller') : null;
+    if (!clickedImage) return;
+
+    const row = clickedImage.closest('.hotel_row_class');
+    if (!row) return;
+
+    const now = Date.now();
+    if (
+        row.id &&
+        row.id === lastHotelRowImageTriggerRowId &&
+        (now - lastHotelRowImageTriggerAt) < HOTEL_ROW_IMAGE_TRIGGER_DEDUP_MS
+    ) {
+        return;
+    }
+
+    lastHotelRowImageTriggerAt = now;
+    lastHotelRowImageTriggerRowId = row.id || '';
+
+    hotelRowImageControllerFunction({ target: clickedImage });
+}
+
+function ensureHotelRowImageGlobalClickListener() {
+    if (hotelRowImageGlobalClickBound) return;
+    hotelRowImageGlobalClickBound = true;
+
+    document.addEventListener('click', (event) => {
+        const clickedImage = getClosestHotelImageFromEvent(event);
+        if (!clickedImage) return;
+        triggerHotelRowImageController(clickedImage);
+    }, true);
+}
+
+ensureHotelRowImageGlobalClickListener();
+
+function hotelRowImageMovementExceededDragThreshold(startX, startY, clientX, clientY) {
+    const dx = clientX - startX;
+    const dy = clientY - startY;
+    return Math.hypot(dx, dy) >= HOTEL_ROW_IMAGE_CLICK_DRAG_THRESHOLD_PX;
+}
+
+// Click vs drag is handled on #inserted_hotel_data_position_div (pointer events). No per-image listeners.
+function handleClickEvent(element) {
+    if (element.dataset.hotelImageUsesPointerHandler === 'true') return;
+    element.dataset.hotelImageUsesPointerHandler = 'true';
+}
+
+// Define a global variable to store the reference
+let currentHotelDataDivId;
+
+// Function to handle delete clicked hotel data
+deleteClickedHotelData = function (clickedHotelRowIdName) {
+
+    let clickedHotelCardElement = document.getElementById(clickedHotelRowIdName);
+    if (clickedHotelCardElement) {
+        clickedHotelCardElement.remove();
+    }
+
+    // Hide delete button div
+    let overlayLayer = document.querySelector('.black_overlay');
+    let deleteHotelRowDiv = document.getElementById('ensure_delete_or_edit_hotel_data_div');
+    deleteHotelRowDiv.style.transform = 'translate(-50%, -130vh)';
+
+    // Hide overlay layer with opacity transition
+    overlayLayer.style.opacity = '0';
+
+    // Remove overlay and edit/delete div from DOM after transition
+    setTimeout(() => {
+        document.body.removeChild(overlayLayer);
+    }, 300); // Match transition duration in CSS
+
+
+
+    // Call a function to update dates inside 'hotel_row_class_for_editing' divs based on their order in the DOM
+    updateHotelRowDates();
+
+
+
+    // Check if there are any remaining inserted hotel data divs (Searching by the second image class name)
+    let remainingHotelDataDivs = document.querySelectorAll('.inserted_hotel_data_row');
+    if (remainingHotelDataDivs.length === 0) {
+        // Hide section with id 'downloaded_pdf_hotel_data_page'
+        document.getElementById('downloaded_pdf_hotel_data_page').style.display = 'none';
+
+
+        /* Reset the value of the saved hotel dates for later Re-arranging */
+        saveOriginalHotelDates();
+
+
+        /* in case if there is no remaaining 'inserted_hotel_data_row' then check if the 'create_new_clint_data_section' is visible */
+        if (document.getElementById('create_new_clint_data_section').style.display !== 'none') {
+
+            /* Set the date of the 'hotel_check_in_input_id' as the the date in the 'whole_package_start_date_input_id' */
+            document.getElementById('hotel_check_in_input_id').value = document.getElementById('whole_package_start_date_input_id').value;
+
+        } else {
+
+            document.getElementById('hotel_check_in_input_id').value = '';
+        }
+
+
+    } else {
+
+        // Get all divs with the class name 'hotel_row_class_for_editing'
+        let allFoundHotelRowDivs = document.querySelectorAll('.hotel_row_class_for_editing');
+
+        // Get the last found div with the class name "hotel_row_class_for_editing"
+        let lastHotelRowDiv = allFoundHotelRowDivs[allFoundHotelRowDivs.length - 1];
+
+        // Get the date value from the h3 element inside the lastHotelRowDiv
+        let dateElement = lastHotelRowDiv.querySelector('h3');
+        let dateValue = dateElement ? dateElement.innerText.trim() : '';
+
+        // Set the value of the hotel_check_in_input_id to the extracted date value
+        document.getElementById('hotel_check_in_input_id').value = dateValue;
+
+        // Store the last stopped hotel check-out date for later use (when importing data)
+        document.getElementById('store_google_sheet_hotel_last_stopped_check_out_date_value').innerText = dateValue;
+
+    }
+};
+
+/* Function to edit the clicked hotel row data */
+editClickedHotelDataFunction = function (clickedHotelRowIdName) {
+
+
+
+
+    /* Make sure the correct section is the one that is visiable */
+    create_new_clint_data_section.style.display = 'none';
+    create_new_hotel_package_section.style.display = 'flex';
+    create_new_flight_package_section.style.display = 'none';
+    create_new_package_including_and_not_including_data_section.style.display = 'none';
+    create_new_clint_movements_plan_section.style.display = 'none';
+
+
+    /* Hide and show different icons */
+    document.getElementById('hotel_inputs_submit_icon').style.display = 'none';
+    document.getElementById('change_insert_hotel_data_system_icon').style.display = 'none';
+    document.getElementById('show_or_hide_second_room_inputs_div_icon').style.display = 'none';
+
+    document.getElementById('confirm_new_hotel_data_row_icon').style.display = 'block';
+    document.getElementById('cancel_new_hotel_data_row_icon').style.display = 'block';
+    document.getElementById('show_or_hide_second_room_inputs_div_icon_2').style.display = 'block';
+    document.getElementById('change_insert_hotel_data_system_icon_2').style.display = 'block';
+
+
+    /* Change the innerText and the background color of the 'hotel_content_section_title_text_id' */
+    document.getElementById('hotel_content_section_title_text_id').innerText = 'تعديل تفاصيل الفندق';
+    document.getElementById('toggle_hotel_data_title_div_id').style.backgroundColor = 'rgb(85, 127, 137)';
+
+
+    /* Scroll up to the middle of the 'hotel_data_dropdown_content' */
+    document.getElementById('hotel_data_dropdown_content').scrollIntoView({
+        block: 'center',
+        inline: 'center',
+        behavior: 'smooth',
+    });
+
+
+    // Hide delete button div
+    let overlayLayer = document.querySelector('.black_overlay');
+    let deleteHotelRowDiv = document.getElementById('ensure_delete_or_edit_hotel_data_div');
+    deleteHotelRowDiv.style.transform = 'translate(-50%, -130vh)';
+
+    // Hide overlay layer with opacity transition
+    overlayLayer.style.opacity = '0';
+
+    // Remove overlay and edit/delete div from DOM after transition
+    setTimeout(() => {
+        document.body.removeChild(overlayLayer);
+    }, 300); // Match transition duration in CSS
+
+    // Get the clicked hotel data row
+    let clickedHotelDataDiv = document.getElementById(clickedHotelRowIdName);
+    let insertedHotelDataDivUniqueId = clickedHotelRowIdName.split('_').pop(); // Extract the unique ID from the clicked row ID
+
+
+    /* Make the 'hotel_check_in_input_id' clickable for users to change the date */
+    document.getElementById('hotel_check_in_input_id').disabled = false;
+
+
+    /* Get all the values from the clicked hotel row */
+    let hotelNameText = clickedHotelDataDiv.querySelector(`h1[id^='hotel_name_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+    let hotelLocationText = clickedHotelDataDiv.querySelector(`h5[id^='hotel_location_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+    let hotelBaliAreaInput = clickedHotelDataDiv.querySelector(`h6[id^='hotel_area_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+    let hotelCheckInText = clickedHotelDataDiv.querySelector(`h2[id^='hotel_check_in_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+    let hotelCheckOutText = clickedHotelDataDiv.querySelector(`h3[id^='hotel_check_out_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+
+
+    /* Store the extracted number form the hotel total night just (as a number) */
+    storeHotelTotalNights = clickedHotelDataDiv.querySelector(`h4[id^='hotel_total_nights_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+
+
+    let hotelRoomTypeDescriptionText = clickedHotelDataDiv.querySelector(`span[id^='hotel_room_type_description_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+    let hotelArabicRoomTypeDescriptionText = clickedHotelDataDiv.querySelector(`span[id^='hotel_room_arabic_type_description_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+
+
+    /* Store the extracted number form the hotel total unit just (as a number) */
+    storeHotelTotalUnitNumber = clickedHotelDataDiv.querySelector(`p[id^='hotel_total_unit_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+
+
+    let hotelBreakfastPeopleAmountText = clickedHotelDataDiv.querySelector(`span[id^='hotel_breakfast_span_id_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+    let hotelExtraBedText = clickedHotelDataDiv.querySelector(`span[id^='hotel_extra_bed_span_id_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+    let hotelSpecialRoomRequestText = clickedHotelDataDiv.querySelector(`span[id^='hotel_special_request_span_id_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+    let hotelRoomExtraInfoText = clickedHotelDataDiv.querySelector(`span[id^='hotel_extra_info_span_id_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+
+
+    /* Get the image src name to check the stars amount */
+    let hotelImage = document.querySelector(`img[id^='hotel_image_${insertedHotelDataDivUniqueId}']`)?.src || '';
+
+
+
+    /* in case if there was a second room data in the clicked hotel row then target those data */
+    if (clickedHotelDataDiv.querySelector(`span[id^='hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`)) {
+
+        // Get all hotel first and second room data inputs for width styling
+        let inputsAndTextareas = document.querySelectorAll('#hotel_two_room_data_input_divs_container input, #hotel_two_room_data_input_divs_container textarea');
+        document.getElementById('hotel_second_room_data_input_div').style.display = 'flex';
+
+        // Save the current width before changing it to 100%
+        inputsAndTextareas.forEach(element => {
+            if (!element.dataset.originalWidth) {
+                element.dataset.originalWidth = element.style.width; // Save the original width
+            }
+            element.style.width = '100%'; // Set width to 100%
+        });
+
+
+        let hotelRoomTypeDescriptionText_2 = clickedHotelDataDiv.querySelector(`span[id^='hotel_room_type_description_2_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+        let hotelArabicRoomTypeDescriptionText_2 = clickedHotelDataDiv.querySelector(`span[id^='hotel_room_arabic_type_description_2_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+
+        /* Store the extracted number form the hotel total unit just (as a number) */
+        storeHotelTotalUnitNumber_2 = clickedHotelDataDiv.querySelector(`p[id^='hotel_total_unit_2_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+
+
+        let hotelBreakfastPeopleAmountText_2 = clickedHotelDataDiv.querySelector(`span[id^='hotel_breakfast_span_id_2_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+        let hotelExtraBedText_2 = clickedHotelDataDiv.querySelector(`span[id^='hotel_extra_bed_span_id_2_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+        let hotelSpecialRoomRequestText_2 = clickedHotelDataDiv.querySelector(`span[id^='hotel_special_request_span_id_2_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+        let hotelRoomExtraInfoText_2 = clickedHotelDataDiv.querySelector(`span[id^='hotel_extra_info_span_id_2_${insertedHotelDataDivUniqueId}']`)?.innerText || '';
+
+
+
+
+
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').value = hotelArabicRoomTypeDescriptionText_2;
+        document.getElementById('hotel_english_room_type_description_input_id_2').value = hotelRoomTypeDescriptionText_2;
+        document.getElementById('hotel_unit_amount_input_id_2').value = `عدد الوحدات ${storeHotelTotalUnitNumber_2}`;
+        document.getElementById('hotel_breakfast_people_amount_input_id_2').value = hotelBreakfastPeopleAmountText_2;
+        document.getElementById('hotel_extra_bed_input_id_2').value = hotelExtraBedText_2;
+        document.getElementById('hotel_special_room_request_input_id_2').value = hotelSpecialRoomRequestText_2;
+
+
+        // Remove duplicated + signs and any + signs at the beginning
+        let cleanedExtraInfoText = hotelRoomExtraInfoText_2
+            .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+        document.getElementById('hotel_room_extra_info_textarea_id_2').value = cleanedExtraInfoText;
+
+
+        /* In case if the clicked hotel row data does not have a second room type data then hide the second room inputs div */
+    } else {
+        // Get all hotel first and second room data inputs for width styling
+        let inputsAndTextareas = document.querySelectorAll('#hotel_two_room_data_input_divs_container input, #hotel_two_room_data_input_divs_container textarea');
+        document.getElementById('hotel_second_room_data_input_div').style.display = 'none';
+
+        // Set width back to the original saved width value
+        inputsAndTextareas.forEach(element => {
+            element.style.width = element.dataset.originalWidth; // Use the saved width value
+        });
+
+    }
+
+
+
+    /* Check if the clicked hotel row has a class name of 'new_hotel_data_by_user_writing_class' or no (hotel inserted by picking or writing) */
+    if (clickedHotelDataDiv.classList.contains('new_hotel_data_by_user_writing_class')) {
+        // Enter the values of the clicked hotel row div to inputs
+        document.getElementById('hotel_location_input_id').value = hotelLocationText;
+        document.getElementById('hotel_bali_area_input_id').value = hotelBaliAreaInput;
+
+
+        // Show the hotel location & stars input
+        document.getElementById('hotel_location_input_id').style.display = 'block';
+        document.getElementById('hotel_stars_rate_input_id').style.display = 'block';
+
+
+        /* Show the 'hotel_bali_area_input_id' if the value of the 'hotel_location_input_id' is 'بالي' */
+        if (document.getElementById('hotel_location_input_id').value === 'بالي') {
+            // Show the hotel bali area input
+            document.getElementById('hotel_bali_area_input_id').style.display = 'block';
+
+
+        } else {
+            // Hide the hotel bali area input
+            document.getElementById('hotel_bali_area_input_id').style.display = 'none';
+        }
+
+
+
+        // Make the following inputs editable and remove the readonly attribute
+        document.getElementById('hotel_name_input_id').readOnly = false;
+        document.getElementById('hotel_arabic_room_type_description_input_id').readOnly = false;
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = false;
+
+        // Change the cursor to text and remove the onclick event
+        document.getElementById('hotel_name_input_id').style.cursor = 'text';
+        document.getElementById('hotel_name_input_id').onclick = null;
+
+        document.getElementById('hotel_arabic_room_type_description_input_id').style.cursor = 'text';
+        document.getElementById('hotel_arabic_room_type_description_input_id').onclick = null;
+
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').style.cursor = 'text';
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').onclick = null;
+
+        // Set autocomplete to on
+        document.getElementById('hotel_name_input_id').setAttribute('autocomplete', 'on');
+        document.getElementById('hotel_arabic_room_type_description_input_id').setAttribute('autocomplete', 'on');
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').setAttribute('autocomplete', 'on');
+
+    }
+
+
+
+
+    // Enter the values of the clicked hotel row div to inputs for the first room data
+    document.getElementById('hotel_name_input_id').value = hotelNameText;
+    document.getElementById('hotel_check_in_input_id').value = hotelCheckInText;
+    document.getElementById('hotel_check_out_input_id').value = hotelCheckOutText;
+    document.getElementById('hotel_total_nights_input_id').value = `${storeHotelTotalNights} ليالي`;
+    document.getElementById('hotel_arabic_room_type_description_input_id').value = hotelArabicRoomTypeDescriptionText;
+    document.getElementById('hotel_english_room_type_description_input_id').value = hotelRoomTypeDescriptionText;
+    document.getElementById('hotel_unit_amount_input_id').value = `عدد الوحدات ${storeHotelTotalUnitNumber}`;
+    document.getElementById('hotel_breakfast_people_amount_input_id').value = hotelBreakfastPeopleAmountText;
+    document.getElementById('hotel_extra_bed_input_id').value = hotelExtraBedText;
+    document.getElementById('hotel_special_room_request_input_id').value = hotelSpecialRoomRequestText;
+
+
+
+    /* Check the value of the 'hotelImage' to get the correct value for the 'hotel_stars_rate_input_id' input */
+    if (hotelImage.includes('five-stars-hotel-image')) {
+        document.getElementById('hotel_stars_rate_input_id').value = '5 نجوم';
+
+    } else if (hotelImage.includes('four-stars-hotel-image')) {
+        document.getElementById('hotel_stars_rate_input_id').value = '4 نجوم';
+
+    } else if (hotelImage.includes('three-stars-hotel-image')) {
+        document.getElementById('hotel_stars_rate_input_id').value = '3 نجوم';
+
+    } else if (hotelImage.includes('no-stars-hotel-image')) {
+        document.getElementById('hotel_stars_rate_input_id').value = '';
+
+    }
+
+
+    // Remove duplicated + signs and any + signs at the beginning
+    let cleanedExtraInfoText = hotelRoomExtraInfoText
+        .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+    document.getElementById('hotel_room_extra_info_textarea_id').value = cleanedExtraInfoText;
+
+
+
+
+
+
+
+    /* Make sure to get the close sell data by running the 'handleHotelNameInputClick */
+    fetchAllCloseSellDataFunction_Supabase();
+
+
+
+
+
+
+
+
+    /* Function to cancel the hotel row data editing process */
+    cancelNewHotelDataRow = function () {
+
+        // Get all divs with the class name 'hotel_row_class_for_editing' to compare its id name
+        let allFoundHotelRowDivs = document.querySelectorAll('.hotel_row_class_for_editing');
+
+        // Get the last found div with the class name "hotel_row_class_for_editing"
+        let lastHotelRowDiv = allFoundHotelRowDivs[allFoundHotelRowDivs.length - 1];
+
+
+
+        /* if the last found div is the one that got clicked then make sure to set the value of the check in as the value of the check out */
+        if (lastHotelRowDiv.querySelector('h3') !== null || lastHotelRowDiv.querySelector('h3') !== undefined) {
+
+            document.getElementById('hotel_check_in_input_id').value = lastHotelRowDiv.querySelector('h3').innerText;
+
+            /* Store the last stooped hotel check out date for later use (when importing data) */
+            document.getElementById('store_google_sheet_hotel_last_stopped_check_out_date_value').innerText = lastHotelRowDiv.querySelector('h3').innerText;
+
+
+        } else {
+            document.getElementById('hotel_check_in_input_id').value = document.getElementById('hotel_check_out_input_id').value;
+            /* Store the last stooped hotel check out date for later use (when importing data) */
+            document.getElementById('store_google_sheet_hotel_last_stopped_check_out_date_value').innerText = document.getElementById('hotel_check_out_input_id').value;
+        }
+
+
+
+
+
+
+
+        // Get references to all input elements and reset their values
+        document.getElementById('hotel_name_input_id').value = '';
+        document.getElementById('hotel_check_out_input_id').value = '';
+        document.getElementById('hotel_total_nights_input_id').value = '';
+        document.getElementById('hotel_arabic_room_type_description_input_id').value = '';
+        document.getElementById('hotel_english_room_type_description_input_id').value = '';
+        document.getElementById('hotel_special_room_request_input_id').value = '';
+        document.getElementById('hotel_room_extra_info_textarea_id').value = '';
+
+
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').value = '';
+        document.getElementById('hotel_english_room_type_description_input_id_2').value = '';
+        document.getElementById('hotel_special_room_request_input_id_2').value = '';
+        document.getElementById('hotel_room_extra_info_textarea_id_2').value = '';
+
+
+        /* Hide and show different icons */
+        document.getElementById('hotel_inputs_submit_icon').style.display = 'block';
+        document.getElementById('change_insert_hotel_data_system_icon').style.display = 'block';
+        document.getElementById('show_or_hide_second_room_inputs_div_icon').style.display = 'block';
+
+        document.getElementById('confirm_new_hotel_data_row_icon').style.display = 'none';
+        document.getElementById('cancel_new_hotel_data_row_icon').style.display = 'none';
+        document.getElementById('show_or_hide_second_room_inputs_div_icon_2').style.display = 'none';
+        document.getElementById('change_insert_hotel_data_system_icon_2').style.display = 'none';
+
+
+
+        /* Reset the innerText and styling to defualt */
+        document.getElementById('hotel_content_section_title_text_id').innerText = 'تفاصيل الفندق';
+        document.getElementById('toggle_hotel_data_title_div_id').style.background = 'rgb(131, 0, 148)';
+
+
+        // Call a function to save the current dates of all hotels for later Re-arranging use (when drag and drop)
+        saveOriginalHotelDates();
+
+
+        /* Make sure to Re-set the 'hotel_check_in_input_id' to unclickable */
+        document.getElementById('hotel_check_in_input_id').disabled = true;
+
+
+
+        // Hide the hotel location input
+        document.getElementById('hotel_location_input_id').style.display = 'none';
+        document.getElementById('hotel_location_input_id').value = '';
+        document.getElementById('hotel_bali_area_input_id').style.display = 'none';
+        document.getElementById('hotel_bali_area_input_id').value = '';
+        document.getElementById('hotel_stars_rate_input_id').style.display = 'none';
+        document.getElementById('hotel_stars_rate_input_id').value = '';
+
+        // Make the following inputs readonly again
+        document.getElementById('hotel_name_input_id').readOnly = true;
+        document.getElementById('hotel_arabic_room_type_description_input_id').readOnly = true;
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').readOnly = true;
+
+
+        // Set autocomplete to on
+        document.getElementById('hotel_name_input_id').setAttribute('autocomplete', 'off');
+        document.getElementById('hotel_arabic_room_type_description_input_id').setAttribute('autocomplete', 'off');
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').setAttribute('autocomplete', 'off');
+
+
+        // Change the cursor to pointer and properly set the onclick event
+        document.getElementById('hotel_name_input_id').style.cursor = 'pointer';
+        document.getElementById('hotel_name_input_id').onclick = function () {
+            handleHotelNameInputClick();
+        };
+
+
+        document.getElementById('hotel_arabic_room_type_description_input_id').style.cursor = 'pointer';
+        document.getElementById('hotel_arabic_room_type_description_input_id').onclick = function () {
+            createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
+        };
+
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').style.cursor = 'pointer';
+        document.getElementById('hotel_arabic_room_type_description_input_id_2').onclick = function () {
+            createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
+        };
+
+
+        /* Chnage the color of the icon as a refernce you're in hotel writing system */
+        document.getElementById('change_insert_hotel_data_system_icon').style.background = 'rgb(0, 87, 116)';
+        document.getElementById('change_insert_hotel_data_system_icon').style.color = 'white';
+
+
+
+        /* Call a function to make sure if all package dates should be hidden or no */
+        ensureAllPackageDatesHiddenOrNo();
+    };
+
+
+
+    // Function to confirm the new hotel row data
+    confirmNewHotelDataRow = function () {
+
+
+        // Get the clicked hotel data row
+        let clickedHotelDataDiv = document.getElementById(clickedHotelRowIdName);
+
+        // Clear the old data
+        clickedHotelDataDiv.innerHTML = '';
+
+        // Extract the new data from the input fields
+        let hotelNameReadyText = document.getElementById('hotel_name_input_id').value;
+        let hotelLocationInput = document.getElementById('hotel_location_input_id').value;
+        let hotelBaliAreaInput = document.getElementById('hotel_bali_area_input_id').value;
+        let hotelStarsRateInput = document.getElementById('hotel_stars_rate_input_id').value;
+        let hotelCheckInReadyText = document.getElementById('hotel_check_in_input_id').value;
+        let hotelCheckOutReadyText = document.getElementById('hotel_check_out_input_id').value;
+        let hotelRoomTypeDescriptionInput = document.getElementById('hotel_english_room_type_description_input_id').value;
+        let hotelArabicRoomTypeDescriptionInput = document.getElementById('hotel_arabic_room_type_description_input_id').value;
+        let hotelBreakfastPeopleAmountInput = document.getElementById('hotel_breakfast_people_amount_input_id').value;
+        let hotelExtraBedInput = document.getElementById('hotel_extra_bed_input_id').value;
+        let hotelSpecialRoomRequestInput = document.getElementById('hotel_special_room_request_input_id').value;
+        let hotelRoomExtraInfoReadyText = document.getElementById('hotel_room_extra_info_textarea_id').value;
+
+
+        /* Second hotel room data input values */
+        let hotelRoomTypeDescriptionInput_2 = document.getElementById('hotel_english_room_type_description_input_id_2').value;
+        let hotelArabicRoomTypeDescriptionInput_2 = document.getElementById('hotel_arabic_room_type_description_input_id_2').value;
+        let hotelUnitAmountInput_2 = document.getElementById('hotel_unit_amount_input_id_2').value;
+        let hotelBreakfastPeopleAmountInput_2 = document.getElementById('hotel_breakfast_people_amount_input_id_2').value;
+        let hotelExtraBedInput_2 = document.getElementById('hotel_extra_bed_input_id_2').value;
+        let hotelSpecialRoomRequestInput_2 = document.getElementById('hotel_special_room_request_input_id_2').value;
+        let hotelRoomExtraInfoReadyText_2 = document.getElementById('hotel_room_extra_info_textarea_id_2').value;
+
+
+
+        if (hotelNameReadyText === '' || hotelCheckInReadyText === '' || hotelCheckOutReadyText === '' || hotelRoomTypeDescriptionInput === '') {
+
+            // Play a sound effect
+            playSoundEffect('error');
+
+            // Change the submit icon background color
+            confirm_new_hotel_data_row_icon.style.backgroundColor = 'red';
+
+            // Set the background color of the submit icon back to default color
+            setTimeout(() => {
+                confirm_new_hotel_data_row_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+            }, 500);
+
+
+            /* Exit the function and stop the process */
+            return;
+        }
+
+
+
+        /* in case the second room data inputs div is visible and there are empty inputs then stop the process */
+        if (document.getElementById('hotel_second_room_data_input_div').style.display === 'flex') {
+
+            if (hotelRoomTypeDescriptionInput_2 === '' || hotelUnitAmountInput_2 === '') {
+
+                // Play a sound effect
+                playSoundEffect('error');
+
+                // Change the submit icon background color
+                confirm_new_hotel_data_row_icon.style.backgroundColor = 'red';
+
+                // Set the background color of the submit icon back to default color
+                setTimeout(() => {
+                    confirm_new_hotel_data_row_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+                }, 500);
+
+
+                /* Exit the function and stop the process */
+                return;
+            }
+        }
+
+
+
+
+
+        /* Stop the process if the 'hotel_location_input_id' is visible and it is empty */
+        if (document.getElementById('hotel_location_input_id').style.display !== 'none') {
+
+            if (document.getElementById('hotel_location_input_id').value === '') {
+                return;
+
+            }
+
+
+            /* Stop the process if the hotel location is bali but the area is not selected */
+            if (document.getElementById('hotel_location_input_id').value === 'بالي' && document.getElementById('hotel_bali_area_input_id').value === '') {
+
+                // Play a sound effect
+                playSoundEffect('error');
+
+                // Change the submit icon background color
+                confirm_new_hotel_data_row_icon.style.backgroundColor = 'red';
+
+                // Set the background color of the submit icon back to default color
+                setTimeout(() => {
+                    confirm_new_hotel_data_row_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+                }, 500);
+
+                return;
+            }
+        }
+
+
+
+        // Play a sound effect
+        playSoundEffect('success');
+
+
+
+        /* Check the insert hotel data system is by picking or writing by checking the visibilaty of the 'hotel_location_input_id' input */
+        if (document.getElementById('hotel_location_input_id').style.display !== 'none') {
+
+
+            // Check if the element has the class 'new_hotel_data_by_user_writing_class'
+            if (!clickedHotelDataDiv.classList.contains('new_hotel_data_by_user_writing_class')) {
+                // Remove the class
+                clickedHotelDataDiv.classList.add('new_hotel_data_by_user_writing_class');
+            }
+
+
+            /* Check the amount of stars picked in the 'hotelStarsRateInput' input */
+            let starsAmount = null;
+            if (hotelStarsRateInput === '5 نجوم') {
+                starsAmount = 'five';
+
+            } else if (hotelStarsRateInput === '4 نجوم') {
+                starsAmount = 'four';
+
+            } else if (hotelStarsRateInput === '3 نجوم') {
+                starsAmount = 'three';
+
+            } else {
+                starsAmount = 'no';
+
+            }
+
+            // Create the HTML content for a new hotel row
+            let hotelRowTableDivContent = `
+                <div><h1 id='hotel_name_${insertedHotelDataDivUniqueId}'>${hotelNameReadyText}</h1></div>
+                <div><h2 id='hotel_check_in_${insertedHotelDataDivUniqueId}' class="hotel_check_in_date_for_matching_whole_package_date">${hotelCheckInReadyText}</h2></div>
+                <div><h3 style="color: red" id='hotel_check_out_${insertedHotelDataDivUniqueId}' class="hotel_check_out_date_for_matching_whole_package_date">${hotelCheckOutReadyText}</h3></div>
+                <div><h4 id='hotel_total_nights_${insertedHotelDataDivUniqueId}'>${storeHotelTotalNights}</h4></div>
+                <div class="description_cell">
+                    <span id='hotel_room_arabic_type_description_${insertedHotelDataDivUniqueId}'>${hotelArabicRoomTypeDescriptionInput}</span><span id='hotel_room_type_description_${insertedHotelDataDivUniqueId}'>${hotelRoomTypeDescriptionInput}</span></div>
+                <div>
+                    <p id='hotel_total_unit_${insertedHotelDataDivUniqueId}'>${storeHotelTotalUnitNumber}</p>
+                    ${hotelUnitAmountInput_2 && document.getElementById('hotel_second_room_data_input_div').style.display !== "none" ? `<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${insertedHotelDataDivUniqueId}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>` : ''}
+                </div>
+                <div>
+                    <h5 id='hotel_location_${insertedHotelDataDivUniqueId}'>${hotelLocationInput}</h5>
+                    ${hotelBaliAreaInput ? `<br><h6 id='hotel_area_${insertedHotelDataDivUniqueId}'>${hotelBaliAreaInput}</h6>` : ''}
+                    <img src="صور-الفنادق/${starsAmount}-stars-hotel-image.jpg" id='hotel_image_${insertedHotelDataDivUniqueId}' class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">
+                </div>
+            `;
+
+
+
+
+            // Insert the new HTML content into the clicked hotel data div
+            clickedHotelDataDiv.innerHTML = hotelRowTableDivContent;
+
+
+            // Append <span> elements for each input with text
+            if (hotelBreakfastPeopleAmountInput !== '') {
+                let breakfastSpan = document.createElement('span');
+                breakfastSpan.id = `hotel_breakfast_span_id_${insertedHotelDataDivUniqueId}`;
+                breakfastSpan.innerText = hotelBreakfastPeopleAmountInput;
+                const _bfDescCell = clickedHotelDataDiv.querySelector('.description_cell');
+                _bfDescCell.insertBefore(breakfastSpan, _bfDescCell.querySelector(`#hotel_room_type_description_${insertedHotelDataDivUniqueId}`));
+            }
+            if (hotelExtraBedInput !== '') {
+                let extraBedSpan = document.createElement('span');
+                extraBedSpan.id = `hotel_extra_bed_span_id_${insertedHotelDataDivUniqueId}`;
+                extraBedSpan.className = 'hotel_special_request_span_class';
+                extraBedSpan.innerText = hotelExtraBedInput;
+                extraBedSpan.style.width = '100%';
+                extraBedSpan.style.background = 'rgb(85, 127, 137)';
+                extraBedSpan.style.color = 'white';
+                extraBedSpan.style.padding = '0 5px';
+                clickedHotelDataDiv.querySelector('.description_cell').appendChild(extraBedSpan);
+            }
+            if (hotelSpecialRoomRequestInput !== '') {
+                let specialRequestSpan = document.createElement('span');
+                specialRequestSpan.id = `hotel_special_request_span_id_${insertedHotelDataDivUniqueId}`;
+                specialRequestSpan.className = 'hotel_special_request_span_class';
+                specialRequestSpan.innerText = hotelSpecialRoomRequestInput;
+                specialRequestSpan.style.background = 'rgb(85, 127, 137)';
+                specialRequestSpan.style.color = 'white';
+                specialRequestSpan.style.padding = '0 5px';
+                clickedHotelDataDiv.querySelector('.description_cell').appendChild(specialRequestSpan);
+            }
+            if (hotelRoomExtraInfoReadyText !== '') {
+                // Remove duplicated + signs and any + signs at the beginning
+                let cleanedExtraInfoText = hotelRoomExtraInfoReadyText
+                    .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+                let extraInfoSpan = document.createElement('span');
+                extraInfoSpan.id = `hotel_extra_info_span_id_${insertedHotelDataDivUniqueId}`;
+                extraInfoSpan.innerText = `+ ${cleanedExtraInfoText}`;
+                extraInfoSpan.style.width = '100%';
+                extraInfoSpan.style.background = 'rgb(85, 127, 137)';
+                extraInfoSpan.style.color = 'white';
+                extraInfoSpan.style.padding = '0 5px';
+                clickedHotelDataDiv.querySelector('.description_cell').appendChild(extraInfoSpan);
+            }
+
+
+
+
+            // Handle the second room data if the second room div is visible
+            if (document.getElementById('hotel_second_room_data_input_div').style.display !== "none") {
+                if (hotelArabicRoomTypeDescriptionInput_2 !== '') {
+                    let arabicRoomTypeDescriptionSpan_2 = document.createElement('span');
+                    arabicRoomTypeDescriptionSpan_2.id = `hotel_room_arabic_type_description_2_${insertedHotelDataDivUniqueId}`;
+                    arabicRoomTypeDescriptionSpan_2.innerText = hotelArabicRoomTypeDescriptionInput_2;
+                    arabicRoomTypeDescriptionSpan_2.style.width = '100%';
+                    arabicRoomTypeDescriptionSpan_2.style.background = 'rgb(5, 17, 21)';
+                    arabicRoomTypeDescriptionSpan_2.style.color = 'white';
+
+
+                    let plusSign = document.createElement('span');
+                    plusSign.innerText = '+ ';
+                    plusSign.style.width = '100%';
+                    plusSign.style.background = 'rgb(5, 17, 21)';
+                    plusSign.style.color = 'white';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(plusSign);
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(arabicRoomTypeDescriptionSpan_2);
+                }
+                if (hotelRoomTypeDescriptionInput_2 !== '') {
+                    let roomTypeDescriptionSpan_2 = document.createElement('span');
+                    roomTypeDescriptionSpan_2.id = `hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`;
+                    roomTypeDescriptionSpan_2.innerText = hotelRoomTypeDescriptionInput_2;
+                    roomTypeDescriptionSpan_2.style.width = '100%';
+                    roomTypeDescriptionSpan_2.style.background = 'rgb(5, 17, 21)';
+                    roomTypeDescriptionSpan_2.style.color = 'white';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(roomTypeDescriptionSpan_2);
+                }
+                if (hotelBreakfastPeopleAmountInput_2 !== '') {
+                    let breakfastSpan_2 = document.createElement('span');
+                    breakfastSpan_2.id = `hotel_breakfast_span_id_2_${insertedHotelDataDivUniqueId}`;
+                    breakfastSpan_2.innerText = hotelBreakfastPeopleAmountInput_2;
+                    breakfastSpan_2.style.width = '100%';
+                    breakfastSpan_2.style.background = 'rgb(5, 17, 21)';
+                    breakfastSpan_2.style.color = 'white';
+                    const _bfDescCell2 = clickedHotelDataDiv.querySelector('.description_cell');
+                    _bfDescCell2.insertBefore(breakfastSpan_2, _bfDescCell2.querySelector(`#hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`));
+                }
+                if (hotelExtraBedInput_2 !== '') {
+                    let extraBedSpan_2 = document.createElement('span');
+                    extraBedSpan_2.id = `hotel_extra_bed_span_id_2_${insertedHotelDataDivUniqueId}`;
+                    extraBedSpan_2.className = 'hotel_special_request_span_class';
+                    extraBedSpan_2.innerText = hotelExtraBedInput_2;
+                    extraBedSpan_2.style.width = '100%';
+                    extraBedSpan_2.style.background = 'rgb(5, 17, 21)';
+                    extraBedSpan_2.style.color = 'white';
+                    extraBedSpan_2.style.padding = '0 5px';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(extraBedSpan_2);
+                }
+                if (hotelSpecialRoomRequestInput_2 !== '') {
+                    let specialRequestSpan_2 = document.createElement('span');
+                    specialRequestSpan_2.id = `hotel_special_request_span_id_2_${insertedHotelDataDivUniqueId}`;
+                    specialRequestSpan_2.className = 'hotel_special_request_span_class';
+                    specialRequestSpan_2.innerText = hotelSpecialRoomRequestInput_2;
+                    specialRequestSpan_2.style.width = '100%';
+                    specialRequestSpan_2.style.background = 'rgb(5, 17, 21)';
+                    specialRequestSpan_2.style.color = 'white';
+                    specialRequestSpan_2.style.padding = '0 5px';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(specialRequestSpan_2);
+                }
+                if (hotelRoomExtraInfoReadyText_2 !== '') {
+                    // Remove duplicated + signs and any + signs at the beginning
+                    let cleanedExtraInfoText = hotelRoomExtraInfoReadyText_2
+                        .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+                    let extraInfoSpan_2 = document.createElement('span');
+                    extraInfoSpan_2.id = `hotel_extra_info_span_id_2_${insertedHotelDataDivUniqueId}`;
+                    extraInfoSpan_2.innerText = `+ ${cleanedExtraInfoText}`;
+                    extraInfoSpan_2.style.width = '100%';
+                    extraInfoSpan_2.style.background = 'rgb(5, 17, 21)';
+                    extraInfoSpan_2.style.color = 'white';
+                    extraInfoSpan_2.style.padding = '0 5px';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(extraInfoSpan_2);
+                }
+            }
+
+
+            // Get the 'hotel_row_image_controller' elements inside each 'hotel_row_class' element
+            let hotelRowImageControllers = document.querySelectorAll('.hotel_row_image_controller');
+
+
+            // Attach click and touch event listeners to each element
+            hotelRowImageControllers.forEach(element => {
+                handleClickEvent(element);
+            });
+
+
+
+
+
+
+
+            /* But in case the 'hotel_location_input_id' input is hidden then do the following code */
+        } else {
+
+
+            // Check if the element has the class 'new_hotel_data_by_user_writing_class'
+            if (clickedHotelDataDiv.classList.contains('new_hotel_data_by_user_writing_class')) {
+                // Remove the class
+                clickedHotelDataDiv.classList.remove('new_hotel_data_by_user_writing_class');
+            }
+
+
+            // Convert the hotel name to lowercase and replace spaces with hyphens to create a suitable image filename
+            let hotelImgSrcReadyText = hotelNameReadyText.toLowerCase().replace(/\s+/g, '-');
+
+            let hotelLocationReadyText = '';
+            let hotelAreaReadyText = '';
+
+            if (_roomTypesDBCache) {
+                const row = _roomTypesDBCache.find(h => h.hotel_name === hotelNameReadyText);
+                if (row) {
+                    hotelLocationReadyText = row.hotel_location || '';
+                    hotelAreaReadyText = row.hotel_area || '';
+                }
+            }
+
+            // Create the HTML content for a new hotel row
+            let hotelRowTableDivContent = `
+                <div><h1 id='hotel_name_${insertedHotelDataDivUniqueId}'>${hotelNameReadyText}</h1></div>
+                <div><h2 id='hotel_check_in_${insertedHotelDataDivUniqueId}' class="hotel_check_in_date_for_matching_whole_package_date">${hotelCheckInReadyText}</h2></div>
+                <div><h3 style="color: red" id='hotel_check_out_${insertedHotelDataDivUniqueId}' class="hotel_check_out_date_for_matching_whole_package_date">${hotelCheckOutReadyText}</h3></div>
+                <div><h4 id='hotel_total_nights_${insertedHotelDataDivUniqueId}'>${storeHotelTotalNights}</h4></div>
+                <div class="description_cell">
+                    <span id='hotel_room_arabic_type_description_${insertedHotelDataDivUniqueId}'>${hotelArabicRoomTypeDescriptionInput}</span><span id='hotel_room_type_description_${insertedHotelDataDivUniqueId}'>${hotelRoomTypeDescriptionInput}</span></div>
+                <div>
+                    <p id='hotel_total_unit_${insertedHotelDataDivUniqueId}'>${storeHotelTotalUnitNumber}</p>
+                    ${hotelUnitAmountInput_2 && document.getElementById('hotel_second_room_data_input_div').style.display !== "none" ? `<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${insertedHotelDataDivUniqueId}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>` : ''}
+                </div>
+                <div>
+                    <h5 id='hotel_location_${insertedHotelDataDivUniqueId}'>${hotelLocationReadyText}</h5>
+                    ${hotelAreaReadyText ? `<br><h6 id='hotel_area_${insertedHotelDataDivUniqueId}'>${hotelAreaReadyText}</h6>` : ''}
+                    <img src="صور-الفنادق/${hotelImgSrcReadyText}.jpg" class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">
+                </div>
+            `;
+
+
+            // Insert the new HTML content into the clicked hotel data div
+            clickedHotelDataDiv.innerHTML = hotelRowTableDivContent;
+
+
+            // Append <span> elements for each input with text
+            if (hotelBreakfastPeopleAmountInput !== '') {
+                let breakfastSpan = document.createElement('span');
+                breakfastSpan.id = `hotel_breakfast_span_id_${insertedHotelDataDivUniqueId}`;
+                breakfastSpan.innerText = hotelBreakfastPeopleAmountInput;
+                const _bfDescCell = clickedHotelDataDiv.querySelector('.description_cell');
+                _bfDescCell.insertBefore(breakfastSpan, _bfDescCell.querySelector(`#hotel_room_type_description_${insertedHotelDataDivUniqueId}`));
+            }
+            if (hotelExtraBedInput !== '') {
+                let extraBedSpan = document.createElement('span');
+                extraBedSpan.id = `hotel_extra_bed_span_id_${insertedHotelDataDivUniqueId}`;
+                extraBedSpan.className = 'hotel_special_request_span_class';
+                extraBedSpan.innerText = hotelExtraBedInput;
+                extraBedSpan.style.width = '100%';
+                extraBedSpan.style.background = 'rgb(85, 127, 137)';
+                extraBedSpan.style.color = 'white';
+                extraBedSpan.style.padding = '0 5px';
+                clickedHotelDataDiv.querySelector('.description_cell').appendChild(extraBedSpan);
+            }
+            if (hotelSpecialRoomRequestInput !== '') {
+                let specialRequestSpan = document.createElement('span');
+                specialRequestSpan.id = `hotel_special_request_span_id_${insertedHotelDataDivUniqueId}`;
+                specialRequestSpan.className = 'hotel_special_request_span_class';
+                specialRequestSpan.innerText = hotelSpecialRoomRequestInput;
+                specialRequestSpan.style.background = 'rgb(85, 127, 137)';
+                specialRequestSpan.style.color = 'white';
+                specialRequestSpan.style.padding = '0 5px';
+                clickedHotelDataDiv.querySelector('.description_cell').appendChild(specialRequestSpan);
+            }
+            if (hotelRoomExtraInfoReadyText !== '') {
+                // Remove duplicated + signs and any + signs at the beginning
+                let cleanedExtraInfoText = hotelRoomExtraInfoReadyText
+                    .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+                let extraInfoSpan = document.createElement('span');
+                extraInfoSpan.id = `hotel_extra_info_span_id_${insertedHotelDataDivUniqueId}`;
+                extraInfoSpan.innerText = `+ ${cleanedExtraInfoText}`;
+                extraInfoSpan.style.width = '100%';
+                extraInfoSpan.style.background = 'rgb(85, 127, 137)';
+                extraInfoSpan.style.color = 'white';
+                extraInfoSpan.style.padding = '0 5px';
+                clickedHotelDataDiv.querySelector('.description_cell').appendChild(extraInfoSpan);
+            }
+
+
+
+
+            // Handle the second room data if the second room div is visible
+            if (document.getElementById('hotel_second_room_data_input_div').style.display !== "none") {
+                if (hotelArabicRoomTypeDescriptionInput_2 !== '') {
+                    let arabicRoomTypeDescriptionSpan_2 = document.createElement('span');
+                    arabicRoomTypeDescriptionSpan_2.id = `hotel_room_arabic_type_description_2_${insertedHotelDataDivUniqueId}`;
+                    arabicRoomTypeDescriptionSpan_2.innerText = hotelArabicRoomTypeDescriptionInput_2;
+                    arabicRoomTypeDescriptionSpan_2.style.width = '100%';
+                    arabicRoomTypeDescriptionSpan_2.style.background = 'rgb(5, 17, 21)';
+                    arabicRoomTypeDescriptionSpan_2.style.color = 'white';
+
+
+                    let plusSign = document.createElement('span');
+                    plusSign.innerText = '+ ';
+                    plusSign.style.width = '100%';
+                    plusSign.style.background = 'rgb(5, 17, 21)';
+                    plusSign.style.color = 'white';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(plusSign);
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(arabicRoomTypeDescriptionSpan_2);
+                }
+                if (hotelRoomTypeDescriptionInput_2 !== '') {
+                    let roomTypeDescriptionSpan_2 = document.createElement('span');
+                    roomTypeDescriptionSpan_2.id = `hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`;
+                    roomTypeDescriptionSpan_2.innerText = hotelRoomTypeDescriptionInput_2;
+                    roomTypeDescriptionSpan_2.style.width = '100%';
+                    roomTypeDescriptionSpan_2.style.background = 'rgb(5, 17, 21)';
+                    roomTypeDescriptionSpan_2.style.color = 'white';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(roomTypeDescriptionSpan_2);
+                }
+                if (hotelBreakfastPeopleAmountInput_2 !== '') {
+                    let breakfastSpan_2 = document.createElement('span');
+                    breakfastSpan_2.id = `hotel_breakfast_span_id_2_${insertedHotelDataDivUniqueId}`;
+                    breakfastSpan_2.innerText = hotelBreakfastPeopleAmountInput_2;
+                    breakfastSpan_2.style.width = '100%';
+                    breakfastSpan_2.style.background = 'rgb(5, 17, 21)';
+                    breakfastSpan_2.style.color = 'white';
+                    const _bfDescCell2 = clickedHotelDataDiv.querySelector('.description_cell');
+                    _bfDescCell2.insertBefore(breakfastSpan_2, _bfDescCell2.querySelector(`#hotel_room_type_description_2_${insertedHotelDataDivUniqueId}`));
+                }
+                if (hotelExtraBedInput_2 !== '') {
+                    let extraBedSpan_2 = document.createElement('span');
+                    extraBedSpan_2.id = `hotel_extra_bed_span_id_2_${insertedHotelDataDivUniqueId}`;
+                    extraBedSpan_2.className = 'hotel_special_request_span_class';
+                    extraBedSpan_2.innerText = hotelExtraBedInput_2;
+                    extraBedSpan_2.style.width = '100%';
+                    extraBedSpan_2.style.background = 'rgb(5, 17, 21)';
+                    extraBedSpan_2.style.color = 'white';
+                    extraBedSpan_2.style.padding = '0 5px';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(extraBedSpan_2);
+                }
+                if (hotelSpecialRoomRequestInput_2 !== '') {
+                    let specialRequestSpan_2 = document.createElement('span');
+                    specialRequestSpan_2.id = `hotel_special_request_span_id_2_${insertedHotelDataDivUniqueId}`;
+                    specialRequestSpan_2.className = 'hotel_special_request_span_class';
+                    specialRequestSpan_2.innerText = hotelSpecialRoomRequestInput_2;
+                    specialRequestSpan_2.style.width = '100%';
+                    specialRequestSpan_2.style.background = 'rgb(5, 17, 21)';
+                    specialRequestSpan_2.style.color = 'white';
+                    specialRequestSpan_2.style.padding = '0 5px';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(specialRequestSpan_2);
+                }
+                if (hotelRoomExtraInfoReadyText_2 !== '') {
+                    // Remove duplicated + signs and any + signs at the beginning
+                    let cleanedExtraInfoText = hotelRoomExtraInfoReadyText_2
+                        .replace(/^\s*\++\s*/, '')  // Remove leading + signs with optional spaces
+
+                    let extraInfoSpan_2 = document.createElement('span');
+                    extraInfoSpan_2.id = `hotel_extra_info_span_id_2_${insertedHotelDataDivUniqueId}`;
+                    extraInfoSpan_2.innerText = `+ ${cleanedExtraInfoText}`;
+                    extraInfoSpan_2.style.width = '100%';
+                    extraInfoSpan_2.style.background = 'rgb(5, 17, 21)';
+                    extraInfoSpan_2.style.color = 'white';
+                    extraInfoSpan_2.style.padding = '0 5px';
+                    clickedHotelDataDiv.querySelector('.description_cell').appendChild(extraInfoSpan_2);
+                }
+            }
+
+
+            // Get the 'hotel_row_image_controller' elements inside each 'hotel_row_class' element
+            let hotelRowImageControllers = document.querySelectorAll('.hotel_row_image_controller');
+
+
+            // Attach click and touch event listeners to each element
+            hotelRowImageControllers.forEach(element => {
+                handleClickEvent(element);
+            });
+
+        }
+
+
+
+
+
+
+
+        /* Re-Create the data of the flights details when submit new changes in the hotels data */
+        if (document.getElementById('downloaded_pdf_flight_data_page').style.display !== 'none') {
+            // First delete all old flights row data'
+            document.getElementById('inserted_flight_data_position_div').innerHTML = '';
+
+
+
+
+
+            /* Set the 'insertedHotelDataDivUniqueId' value based on the following condition */
+            if (document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText !== '') {
+                insertedFlightDataDivUniqueId = document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText;
+            } else {
+                insertedFlightDataDivUniqueId = 1;
+            }
+
+
+
+            // Get all divs with the class name 'hotel_row_class_for_editing'
+            let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+
+            let lastCity = null;  // Variable to store the last valid city encountered
+            let lastDate = null;  // Variable to store the date associated with the last valid city
+            let validCities = ["بالي", "جاكرتا", "باندونق", "بونشاك", "لومبوك"];  // Array of valid cities to check against
+
+
+
+            // Get the values of the adult and kids inputs
+            let adultAmount = document.getElementById('adult_package_person_amount_input_id').value;
+            let kidsAmount = document.getElementById('kids_package_person_amount_input_id').value;
+            let infantAmount = document.getElementById('infant_package_person_amount_input_id').value;
+
+            // Function to extract numbers from the string
+            function extractNumberFromString(str) {
+                let match = str.match(/\d+/);  // Use regex to find the number
+                return match ? parseInt(match[0]) : 0;  // Return the number or 0 if no number found
+            }
+
+            // Extract numbers from adult and kids input values
+            let adultNumber = extractNumberFromString(adultAmount);
+            let kidsNumber = extractNumberFromString(kidsAmount);
+
+            // Calculate total people (adults + kids)
+            let totalPeople = adultNumber + kidsNumber;
+
+
+
+
+            // Iterate through all found hotel rows
+            allHotelRows.forEach((hotelRow, index) => {
+                let currentCity = hotelRow.querySelector('h5').innerText;  // Get the city name from the current hotel row's h5 element
+                let currentDate = hotelRow.querySelector('h2').innerText;  // Get the date from the current hotel row's h2 element
+
+                // Check if transition between Jakarta and Bandung (in either order) and skip
+                if ((lastCity === "جاكرتا" && currentCity === "باندونق") || (lastCity === "باندونق" && currentCity === "جاكرتا")) {
+                    lastCity = currentCity;
+                    lastDate = currentDate;
+                    return; // Skip this iteration without creating a flightRowTableDiv
+                }
+
+                // Check if transition between Jakarta and Puncak and skip
+                if (lastCity === "جاكرتا" && currentCity === "بونشاك") {
+                    lastCity = currentCity;
+                    lastDate = currentDate;
+                    return; // Skip this iteration without creating a flightRowTableDiv
+                }
+
+                // Check if transition between Puncak and Jakarta and skip
+                if (lastCity === "بونشاك" && currentCity === "جاكرتا") {
+                    lastCity = currentCity;
+                    lastDate = currentDate;
+                    return; // Skip this iteration without creating a flightRowTableDiv
+                }
+
+                // Check if the current and last city are valid and different
+                if ((validCities.includes(currentCity) && lastCity && lastCity !== currentCity && validCities.includes(lastCity)) ||
+                    (lastCity === "بونشاك" && currentCity === "بالي") || (lastCity === "بالي" && currentCity === "بونشاك")) {
+
+                    let fromCity = lastCity;
+                    let toCity = currentCity;
+
+
+                    /* check the 'lastCity' and the 'currentCity' value and based on the below conditions set the value of the 'fromCity' and the 'toCity' */
+                    if ((lastCity === "بونشاك" && currentCity === "بالي") || (lastCity === "باندونق" && currentCity === "بالي")) {
+                        fromCity = "جاكرتا";
+                        toCity = "بالي";
+                    } else if ((lastCity === "بالي" && currentCity === "بونشاك") || (lastCity === "بالي" && currentCity === "باندونق")) {
+                        fromCity = "بالي";
+                        toCity = "جاكرتا";
+                    }
+
+
+
+                    // Check if transition between Bandung and Puncak (in either order) and skip
+                    if ((lastCity === "باندونق" && currentCity === "بونشاك") || (lastCity === "بونشاك" && currentCity === "باندونق")) {
+                        lastCity = currentCity;
+                        lastDate = currentDate;
+                        return; // Skip this iteration without creating a flightRowTableDiv
+                    }
+
+
+                    // Create a new div with flight details
+                    let flightRowTableDiv = document.createElement('div');
+                    flightRowTableDiv.id = `flight_row_id_${insertedFlightDataDivUniqueId}`;  // Set a unique ID for the new div
+                    flightRowTableDiv.className = 'flight_row_class flight_row_class_for_editing';  // Assign class names to the new div
+
+                    // Create the HTML content for the new flight row div
+                    let flightRowTableDivContent = `
+                    <div class="flight_row_flight_arrival_time_controller inserted_flight_data_row" style="cursor: pointer;"><p id='flight_air_line_${insertedFlightDataDivUniqueId}'></p></div>
+                    <div>
+                        <p id="flight_adult_person_amount_${insertedFlightDataDivUniqueId}">
+                            ${totalPeople === 1
+                            ? `${totalPeople} بالغ`
+                            : totalPeople > 10
+                                ? `${totalPeople} بالغ`
+                                : totalPeople !== 0
+                                    ? `${totalPeople} بالغين`
+                                    : ''
+                        }
+                        </p>
+                        ${infantAmount ? `<p id="flight_infant_person_amount_${insertedFlightDataDivUniqueId}">${infantAmount}</p>` : ''}
+                    </div>
+                    <div><p>20Kg للشخص</p></div>
+                    <div><h2 id='flight_from_city_${insertedFlightDataDivUniqueId}'>${fromCity}</h2></div>
+                    <div><h3 id='flight_to_city_${insertedFlightDataDivUniqueId}'>${toCity}</h3></div>
+                    <div><h1 id='flight_date_${insertedFlightDataDivUniqueId}' class="flight_date_for_matching_whole_package_date">${currentDate}</h1></div>
+                    <div><p id='flight_fly_away_time_${insertedFlightDataDivUniqueId}'></p></div>
+                    <div><p id='flight_arrival_time_${insertedFlightDataDivUniqueId}'></p></div>
+                `;
+
+
+                    flightRowTableDiv.innerHTML = flightRowTableDivContent;  // Insert the generated HTML content into the new div
+
+                    // Append the new div to the container with id 'inserted_flight_data_position_div'
+                    document.getElementById('inserted_flight_data_position_div').appendChild(flightRowTableDiv);
+
+                    // Increment the unique ID for the next div
+                    insertedFlightDataDivUniqueId++;
+                }
+
+                // Update the lastCity and lastDate for the next iteration
+                lastCity = currentCity;
+                lastDate = currentDate;
+            });
+
+
+
+
+
+
+
+
+
+
+            // Check if there is any element with the class 'flight_row_class_for_editing'
+            let allFlightRowdivs = document.getElementsByClassName('flight_row_class_for_editing');
+
+            /* if there is found created flights row data */
+            if (allFlightRowdivs.length > 0) {
+
+                // Play a sound effect
+                playSoundEffect('success');
+
+                /* Change the 'تم' button color */
+                clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 255, 0)';
+                // Set the background color of the submit icon back to default color
+                setTimeout(() => {
+                    clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+                }, 500);
+
+
+                // If any element is found, set the display style of the 'downloaded_pdf_flight_data_page' to 'block'
+                document.getElementById('downloaded_pdf_flight_data_page').style.display = 'block';
+
+
+
+                /* Hide the icon button after creating a flight row */
+                document.getElementById('manually_add_flight_row_icon').style.display = 'none';
+
+
+
+                /* Call a function to make sure if all package dates should be hidden or no */
+                ensureAllPackageDatesHiddenOrNo();
+
+
+
+                /* if there is no any found created flights row data */
+            } else {
+
+                // Play a sound effect
+                playSoundEffect('error');
+
+
+                /* Change the 'تم' button color */
+                clint_flight_inputs_submit_icon.style.backgroundColor = 'red';
+                // Set the background color of the submit icon back to default color
+                setTimeout(() => {
+                    clint_flight_inputs_submit_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+                }, 500);
+
+
+                // If there is no found element, set the display style of the 'downloaded_pdf_flight_data_page' to 'none'
+                document.getElementById('downloaded_pdf_flight_data_page').style.display = 'none';
+            }
+
+
+
+            // Get references to all input elements and reset their values thier
+            document.getElementById('flight_from_city_input_id').value = document.getElementById('flight_to_city_input_id').value;
+            document.getElementById('flight_to_city_input_id').value = '';
+            document.getElementById('flight_date_input_id').value = '';
+            document.getElementById('flight_fly_away_time_input_id').value = '';
+            document.getElementById('flight_arrival_time_input_id').value = '';
+
+
+
+
+            // Get all dynamically created elements with the class 'flight_row_flight_arrival_time_controller'
+            document.querySelectorAll('.flight_row_flight_arrival_time_controller').forEach(function (element) {
+                element.onclick = function (event) {
+                    flightRowAirLineControllerFunction(event, element);
+                };
+            });
+
+
+            /* Store the last saved flight unique id name */
+            document.getElementById('store_google_sheet_flight_uniuqe_id_name_value').innerText = insertedFlightDataDivUniqueId;
+        }
+        /* Re-Create the data of the clint movements details when submit new changes in the hotels data */
+        if (document.getElementById('downloaded_pdf_clint_movements_data_page').style.display !== 'none') {
+
+            /* Delete all data inside the 'inserted_clint_movements_data_position_div' in every time the 'clint_movements_auto_create_icon' is clicked */
+            document.getElementById('inserted_clint_movements_data_position_div').innerHTML = '';
+
+
+            // Function to increment a date by a specified number of days
+            function incrementDate(dateString, days) {
+                let [day, month] = dateString.split(' '); // Split the date string into day and month
+                let arabicMonths = {
+                    "يناير": 0, "فبراير": 1, "مارس": 2, "أبريل": 3,
+                    "مايو": 4, "يونيو": 5, "يوليو": 6, "أغسطس": 7,
+                    "سبتمبر": 8, "أكتوبر": 9, "نوفمبر": 10, "ديسمبر": 11
+                }; // Arabic month names mapped to their corresponding month index
+                let monthNames = Object.keys(arabicMonths); // Array of month names in Arabic
+
+                let date = new Date(); // Create a new date object
+                date.setDate(parseInt(day)); // Set the day of the date object
+                date.setMonth(arabicMonths[month]); // Set the month of the date object
+                date.setDate(date.getDate() + days); // Increment the date by the specified number of days
+
+                let newDay = date.getDate(); // Get the new day after incrementing
+                let newMonth = monthNames[date.getMonth()]; // Get the new month name in Arabic
+
+                return `${newDay} ${newMonth}`; // Return the new date in the same format (day month)
+            }
+
+
+
+
+
+            // Function to clean up text and ensure no duplicated '+'
+            function cleanUpText(text) {
+                return text.replace(/\+\s*\+/g, ' + ').trim();
+            }
+
+            // Get the state of the airport welcome checkbox
+            let isAirportWelcomeIncluded = document.getElementById('include_airport_welcome__checkbox').checked;
+            let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+            let totalHotels = allHotelRows.length;
+            let usedVisitingPlaces = {
+                baliUbudKeramas: {},
+                baliOthers: {},
+                jakarta: {},
+                puncak: {},
+                bandung: {},
+                lombok: {},
+            };
+
+            let previousCityName = '';
+            let previousHotelName = '';
+            let isFirstHotelRowCreated = false; // Flag to check the first created row
+            let hasCenterTourTextBeenAdded = false; // Flag to track if "التجول في السنتر" text has been added
+
+            let isFirstJakartaHotelFound = false; // Flag to track the first Jakarta hotel found
+
+            let firstCreatedClintMovementsRowDivForLastHotel = null; // Variable to store the first created div for the last hotel
+
+
+            let isFirstClintMovementsRowCreated = false; // Flag to track the first created clintMovementsRowTableDiv
+
+
+            /* Variable to store if the h5 inside the first found 'hotel_row_class_for_editing' is "بونشاك" or "باندونق" */
+            let firstHotelCityName = allHotelRows[0].querySelector('h5').innerText;
+
+
+            // Store the innerText of the h5 inside the last found hotel_row_class_for_editing
+            let lastHotelCityName = allHotelRows[totalHotels - 1].querySelector('h5').innerText;
+
+
+            // Variable to store the combined city names for the last found hotel row
+            let lastHotelRowCombinedCityName = '';
+
+            allHotelRows.forEach((hotelRow, index) => {
+                let hotelName = hotelRow.querySelector('h1').innerText;
+                let checkInDate = hotelRow.querySelector('h2').innerText;
+                let nights = parseInt(hotelRow.querySelector('h4').innerText, 10);
+                let cityName = hotelRow.querySelector('h5').innerText;
+                let areaName = cityName === "بالي" ? hotelRow.querySelector('h6').innerText : null;
+                let packageType = document.getElementById('clint_package_type_h6').innerText.trim();
+
+                let packageMapping = {
+                    "بكج شهر عسل": "honeymoon",
+                    "بكج شباب": "guys",
+                    "بكج عائلة": "family",
+                    "بكج شخصين": "twopeople",
+                    "بكج قروب": "family",
+                    "بكج جديد": "family"
+                };
+                let packageKey = packageMapping[packageType] || "family";
+
+                let targetObject;
+                let usedDays; // Declare usedDays to be assigned later
+
+                if (cityName === "بالي" && areaName) {
+                    if (areaName === "اوبود" || areaName === "كيراماس") {
+                        targetObject = allClintVisitingPlacesArray[1][packageKey];
+                        usedDays = usedVisitingPlaces.baliUbudKeramas;
+                    } else if (["كوتا", "نوسا دوا", "سيمنياك", "جيمباران", "اولواتو", "ليجين", "سانور", "بيانجان", "تشانغو", "Tampaksiring"].includes(areaName)) {
+                        targetObject = allClintVisitingPlacesArray[0][packageKey];
+                        usedDays = usedVisitingPlaces.baliOthers;
+                    }
+                } else if (cityName === 'جاكرتا') {
+                    targetObject = allClintVisitingPlacesArray[2][packageKey];
+                    usedDays = usedVisitingPlaces.jakarta;
+                } else if (cityName === 'بونشاك') {
+                    targetObject = allClintVisitingPlacesArray[3][packageKey];
+                    usedDays = usedVisitingPlaces.puncak;
+                } else if (cityName === 'باندونق') {
+                    targetObject = allClintVisitingPlacesArray[4][packageKey];
+                    usedDays = usedVisitingPlaces.bandung;
+                } else if (cityName === 'لومبوك') {
+                    targetObject = allClintVisitingPlacesArray[5][packageKey];
+                    usedDays = usedVisitingPlaces.lombok;
+                }
+
+                if (!usedVisitingPlaces[cityName]) {
+                    usedVisitingPlaces[cityName] = {};
+                }
+
+                let isCheckOutTextAdded = false; // Flag to track if check-out text has been added for this hotel
+                let dayIndex = 0; // Initialize dayIndex separately for each hotel
+
+                for (let i = 0; i < nights; i++) {
+                    let clintMovementsRowTableDiv = document.createElement('div');
+                    clintMovementsRowTableDiv.className = 'clint_movements_row_class clint_movements_row_class_for_editing';
+
+                    let newDate = incrementDate(checkInDate, i);
+
+                    let visitingPlacesText = "";
+
+                    // Skip appending text for the first created div
+                    if (targetObject) {
+                        while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                            dayIndex++;
+                        }
+                        if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                            let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                            usedDays[dayIndex] = true;
+                            if (textArray && textArray.length > 0) {
+                                visitingPlacesText = `${textArray.join(' + ')} `;
+                            }
+                            dayIndex++; // Increment dayIndex after appending text
+                        }
+                    }
+
+                    let checkInOutText = i === 0 ? `تسجيل الدخول في ${hotelName}` : '';
+                    let combinedCityName = cityName;
+
+                    // Logic for check-in/out text and combined city name based on previous city/hotel
+                    if (i === 0 && index > 0) {
+                        previousCityName = allHotelRows[index - 1].querySelector('h5').innerText;
+                        previousHotelName = allHotelRows[index - 1].querySelector('h1').innerText;
+
+                        if (cityName !== previousCityName) {
+                            combinedCityName = `${previousCityName}-${cityName}`;
+                            lastHotelRowCombinedCityName = combinedCityName; // Update combined city name
+                        }
+
+                        let additionalText = "";
+                        if (isAirportWelcomeIncluded && (cityName === "بالي" || cityName === "جاكرتا") && cityName !== previousCityName) {
+                            if (!(previousCityName === "بونشاك" && cityName === "جاكرتا") && !(previousCityName === "باندونق" && cityName === "جاكرتا")) {
+                                additionalText = `الإستقبال في مطار ${cityName} + `;
+                            }
+                        }
+
+
+                        if (!isCheckOutTextAdded) {
+                            checkInOutText = `تسجيل الخروج من ${previousHotelName} `;
+
+                            if (previousCityName !== cityName) {
+                                checkInOutText += `+ الذهاب الى ${cityName} `;
+                            }
+
+                            checkInOutText += `+ ${additionalText}${visitingPlacesText} + تسجيل الدخول في ${hotelName}`;
+                            isCheckOutTextAdded = true;
+                        }
+                    }
+
+                    if ((cityName === "بالي" || cityName === "جاكرتا") && !hasCenterTourTextBeenAdded) {
+                        checkInOutText = checkInOutText.replace(`تسجيل الدخول في ${hotelName}`, `تسجيل الدخول في ${hotelName} + التجول في السنتر`);
+                        hasCenterTourTextBeenAdded = true;
+                    }
+
+                    if (!isFirstHotelRowCreated && (cityName === "بالي" || cityName === "جاكرتا") && isAirportWelcomeIncluded) {
+                        checkInOutText = `الإستقبال في مطار ${cityName} + ${checkInOutText}`;
+                        isFirstHotelRowCreated = true;
+                    }
+
+                    // Additional condition for the first hotel row
+                    if (!isFirstHotelRowCreated && index === 0 && isAirportWelcomeIncluded && (firstHotelCityName === "بونشاك" || firstHotelCityName === "باندونق")) {
+                        checkInOutText = `الإستقبال في مطار جاكرتا + الذهاب الى ${cityName} + تسجيل الدخول في ${hotelName}`;
+                        isFirstHotelRowCreated = true; // Set the flag to avoid reapplying this condition
+                    }
+
+                    // Clean up text to ensure no duplicated '+'
+                    checkInOutText = cleanUpText(checkInOutText);
+
+                    clintMovementsRowTableDiv.innerHTML = `
+                        <div><h1>${newDate}</h1></div>
+                        <div><h2>${checkInOutText}</h2></div>
+                        <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${i === 0 ? combinedCityName : cityName}</h3></div>
+                    `;
+
+                    // Apply the new condition to append text if needed, but skip the first hotel row
+                    if (!isFirstJakartaHotelFound && cityName === "جاكرتا" && i === 0 && index !== 0) {
+                        let currentH2 = clintMovementsRowTableDiv.querySelector('h2');
+                        currentH2.innerText += " + الذهاب لمطعم السدة للعشاء";
+                        currentH2.innerText = cleanUpText(currentH2.innerText); // Clean up text to ensure no duplicated '+'
+                        isFirstJakartaHotelFound = true;
+                    }
+
+                    if (targetObject && i === 0) {
+                        let dayIndex = 1;
+                        while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                            dayIndex++;
+                        }
+                        if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                            let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                            usedDays[dayIndex] = true;
+                            if (textArray && textArray.length > 0) {
+                                visitingPlacesText = `${textArray.join(' + ')} `;
+                            }
+                        }
+                    }
+
+                    if (targetObject) {
+                        let dayIndex = i + 1;
+                        while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                            dayIndex++;
+                        }
+                        if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                            let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                            usedDays[dayIndex] = true;
+                            if (textArray && textArray.length > 0) {
+                                visitingPlacesText = `${textArray.join(' + ')} `;
+                            }
+                        }
+                    }
+
+                    if (visitingPlacesText) {
+                        clintMovementsRowTableDiv.querySelector('h2').innerText += `${visitingPlacesText}`;
+                    }
+
+                    document.getElementById('inserted_clint_movements_data_position_div').appendChild(clintMovementsRowTableDiv);
+
+                    if (index === totalHotels - 1 && i === nights - 1) {
+                        // Check if this is not the first created clintMovementsRowTableDiv
+                        if (isFirstClintMovementsRowCreated) {
+                            let lastH3 = clintMovementsRowTableDiv.querySelector('h3');
+                            lastH3.innerText = lastHotelCityName;
+                        } else {
+                            isFirstClintMovementsRowCreated = true; // Set the flag after the first creation
+                        }
+                    }
+                }
+
+
+                if (index === totalHotels - 1) {
+                    let extraDate = incrementDate(checkInDate, nights);
+                    let extraClintMovementsRowTableDiv = document.createElement('div');
+
+                    extraClintMovementsRowTableDiv.className = 'clint_movements_row_class clint_movements_row_class_for_editing';
+
+                    extraClintMovementsRowTableDiv.innerHTML = `
+                <div><h1>${extraDate}</h1></div>
+                <div><h2>تسجيل الخروج من ${hotelName} والتحرك للمطار للمغادرة</h2></div>
+                <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${cityName}-مغادرة</h3></div>
+            `;
+
+                    document.getElementById('inserted_clint_movements_data_position_div').appendChild(extraClintMovementsRowTableDiv);
+                }
+            });
+
+
+            /* Show up the 'downloaded_pdf_clint_movements_data_page' section */
+            document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'block';
+
+
+            /* Update the available clint visiting places based on the current existing visiting places */
+            filterUsedClintVisitingPlacesNames();
+
+
+
+            // Get all elements with the class name 'flight_row_class'
+            let clintMovementsRowTableDiv = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+            // Loop through each 'flight_row_class' element
+            clintMovementsRowTableDiv.forEach(clintMovementsRowTableDiv => {
+
+                // Get all dynamically created elements with the class 'clint_movements_row_controller'
+                clintMovementsRowTableDiv.querySelectorAll('.clint_movements_row_controller').forEach(function (element) {
+                    element.onclick = function (event) {
+                        clintMovementsRowCityNameControllerFunction(event, element);
+                    };
+                });
+
+            });
+
+
+
+            /* Call a function to make sure if all package dates should be hidden or no */
+            ensureAllPackageDatesHiddenOrNo();
+
+
+            /* Call a function to highlight the Saturday and Sanday days */
+            highlightWeekendClintMovements();
+        }
+
+
+
+
+
+
+
+        // Clear the input after confirm the new hotel data
+        cancelNewHotelDataRow();
+    };
+
+};
+
+
+
+
+
+
+/* Function to split the clicked hotel row div inner info */
+duplicateClickedHotelDataFunctio = function () {
+
+    // Get the original div element
+    let originalDiv = document.getElementById(currentHotelDataDivId);
+
+
+    // Clone the original div
+    let clonedDiv = originalDiv.cloneNode(true);
+
+    // Generate a unique ID for the new cloned div
+    let newDivId = currentHotelDataDivId + "_copy_" + new Date().getTime();
+    clonedDiv.id = newDivId;
+
+    // Insert the cloned div right after the original div
+    originalDiv.parentNode.insertBefore(clonedDiv, originalDiv.nextSibling);
+
+
+
+    // Hide delete button div
+    let overlayLayer = document.querySelector('.black_overlay');
+    let deleteHotelRowDiv = document.getElementById('ensure_delete_or_edit_hotel_data_div');
+    deleteHotelRowDiv.style.transform = 'translate(-50%, -130vh)';
+
+    // Hide overlay layer with opacity transition
+    overlayLayer.style.opacity = '0';
+
+    // Remove overlay and edit/delete div from DOM after transition
+    setTimeout(() => {
+        document.body.removeChild(overlayLayer);
+    }, 300); // Match transition duration in CSS
+
+
+
+
+
+
+    /* Reset the value of the saved hotel dates for later Re-arranging */
+    saveOriginalHotelDates();
+
+
+    // Get all dynamically created elements with the class 'hotelRowImageController'
+    let hotelRowImageControllers = document.querySelectorAll('.hotel_row_image_controller');
+
+    // Attach click and touch event listeners to each element
+    hotelRowImageControllers.forEach(element => {
+        handleClickEvent(element);
+    });
+
+
+    /* Call a function to apply drag and drop functionality to all hotels rows */
+    createHotelDragAndDropMood();
+}
+
+
+
+
+
+
+// Function to show delete or edit the inserted hotel data
+function hotelRowImageControllerFunction(event) {
+    let deleteHotelRowDiv = document.getElementById('ensure_delete_or_edit_hotel_data_div');
+    let clickedHotelDataDiv = event.target.closest('.hotel_row_class');
+
+    if (clickedHotelDataDiv) {
+        currentHotelDataDivId = clickedHotelDataDiv.id;
+
+
+
+        let overlayLayer = document.querySelector('.black_overlay');
+        if (!overlayLayer) {
+            overlayLayer = document.createElement('div');
+            overlayLayer.classList.add('black_overlay');
+            overlayLayer.style.pointerEvents = 'none';
+            document.body.appendChild(overlayLayer);
+
+            overlayLayer.addEventListener('click', (overlayEvent) => {
+                overlayEvent.stopPropagation();
+                if (overlayLayer.dataset.ignoreCloseClick === 'true') return;
+
+                deleteHotelRowDiv.style.transform = 'translate(-50%, -130vh)';
+                overlayLayer.style.opacity = '0';
+                setTimeout(() => {
+                    if (document.body.contains(overlayLayer)) {
+                        document.body.removeChild(overlayLayer);
+                    }
+                }, 300);
+            });
+
+            setTimeout(() => {
+                overlayLayer.style.opacity = '1';
+                overlayLayer.style.pointerEvents = 'auto';
+                deleteHotelRowDiv.style.transform = 'translate(-50%, -50%)';
+            }, 50);
+
+            overlayLayer.dataset.ignoreCloseClick = 'true';
+            setTimeout(() => {
+                delete overlayLayer.dataset.ignoreCloseClick;
+            }, 400);
+        } else {
+            overlayLayer.style.opacity = '1';
+            overlayLayer.style.pointerEvents = 'auto';
+            deleteHotelRowDiv.style.transform = 'translate(-50%, -50%)';
+
+            overlayLayer.dataset.ignoreCloseClick = 'true';
+            setTimeout(() => {
+                delete overlayLayer.dataset.ignoreCloseClick;
+            }, 400);
+        }
+
+
+
+        /* Function to run delete clikced hotel row data */
+        runDeleteClickedHotelDataFunction = function () {
+            deleteClickedHotelData(currentHotelDataDivId);
+        }
+
+
+        /* Function to run edit clikced hotel row data */
+        runEditClickedHotelDataFunction = function () {
+            editClickedHotelDataFunction(currentHotelDataDivId);
+
+            /* Make sure hotel package type text is colored in rgb(0, 46, 57) */
+            document.getElementById('header_navbar_links_clint_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_hotel_a').style.backgroundColor = 'rgb(0, 46, 57)';
+            document.getElementById('header_navbar_links_flight_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_package_icluding_and_not_including_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_clint_movements_a').style.backgroundColor = 'rgb(85, 127, 137)';
+        }
+
+
+        /* Function to run duplicate clikced hotel row data */
+        runDuplicateClickedHotelDataFunction = function () {
+            duplicateClickedHotelDataFunctio(currentHotelDataDivId);
+        }
+    }
+};
+
+// Function to save the current dates of all hotels for later Re-arranging use (when drag and drop)
+function saveOriginalHotelDates() {
+    originalHotelDates = [];
+    let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+
+    allHotelRows.forEach(row => {
+        let h2Date = row.querySelector('h2').innerText;
+        let h3Date = row.querySelector('h3').innerText;
+        let h4TotalNights = row.querySelector('h4').innerText;
+        originalHotelDates.push({ h2Date, h3Date, h4TotalNights, element: row });
+    });
+}
+
+// Function to update dates inside 'hotel_row_class_for_editing' divs based on their order in the DOM
+function updateHotelRowDates() {
+    let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+
+    allHotelRows.forEach((row, index) => {
+        let h2Element = row.querySelector('h2');
+        let h3Element = row.querySelector('h3');
+        let h4Element = row.querySelector('h4');
+
+        if (h2Element && h3Element && h4Element && originalHotelDates[index]) {
+            // Update the dates based on the new order of elements
+            h2Element.innerText = originalHotelDates[index].h2Date; // Or any date calculation logic here
+            h3Element.innerText = originalHotelDates[index].h3Date; // Or any date calculation logic here
+            h4Element.innerText = originalHotelDates[index].h4TotalNights; // Or any date calculation logic here
+        }
+    });
+}
+
+// Function to handle the drop and reapply the dates
+function handleDrop() {
+    // After dropping, reapply the dates based on the current DOM order
+    updateHotelRowDates(); // Call the update function here
+}
+
+// Function to prepare drag and drop functionality
+function createHotelDragAndDropMood() {
+    const dropZone = document.getElementById('inserted_hotel_data_position_div');
+    if (!dropZone) return;
+    if (dropZone.dataset.hotelDragDropReady === 'true') return;
+    dropZone.dataset.hotelDragDropReady = 'true';
+
+    let _hotelDrag = null;
+    let _pointerSession = null;
+
+    function startHotelRowDrag(event, sourceRow) {
+        const rect = sourceRow.getBoundingClientRect();
+        const handle = event.target.closest('.hotel_row_image_controller');
+
+        const ghost = sourceRow.cloneNode(true);
+        ghost.style.cssText =
+            `position:fixed;top:${rect.top}px;left:${rect.left}px;` +
+            `width:${rect.width}px;height:${rect.height}px;` +
+            `z-index:1000;pointer-events:none;` +
+            `box-shadow:0 6px 20px rgba(0,0,0,0.22);` +
+            `transform:scale(1.02);opacity:0.92;transition:none;`;
+        document.body.appendChild(ghost);
+
+        sourceRow.classList.add('drag-placeholder');
+        document.body.classList.add('is-dragging');
+
+        if (handle && handle.setPointerCapture) {
+            try {
+                handle.setPointerCapture(event.pointerId);
+            } catch (_) { /* ignore if capture not allowed */ }
+        }
+
+        _hotelDrag = {
+            ghost,
+            sourceRow,
+            startY: event.clientY,
+            ghostInitialTop: rect.top,
+        };
+    }
+
+    function finishHotelRowDrag() {
+        if (!_hotelDrag) return;
+
+        const { ghost, sourceRow } = _hotelDrag;
+        _hotelDrag = null;
+
+        ghost.remove();
+        sourceRow.classList.remove('drag-placeholder');
+        document.body.classList.remove('is-dragging');
+
+        handleDrop();
+    }
+
+    function clearPointerSessionListeners() {
+        document.removeEventListener('pointermove', onPointerMove);
+        document.removeEventListener('pointerup', onPointerUp);
+        document.removeEventListener('pointercancel', onPointerUp);
+    }
+
+    function onPointerDown(event) {
+        if (!event.target.closest('.hotel_row_image_controller')) return;
+
+        const sourceRow = event.target.closest('.hotel_row_class');
+        if (!sourceRow) return;
+
+        _pointerSession = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startY: event.clientY,
+            sourceRow,
+            target: event.target,
+            dragStarted: false,
+        };
+
+        document.addEventListener('pointermove', onPointerMove, { passive: false });
+        document.addEventListener('pointerup', onPointerUp);
+        document.addEventListener('pointercancel', onPointerUp);
+    }
+
+    function onPointerMove(event) {
+        if (!_pointerSession || event.pointerId !== _pointerSession.pointerId) return;
+
+        if (!_pointerSession.dragStarted) {
+            if (!hotelRowImageMovementExceededDragThreshold(
+                _pointerSession.startX,
+                _pointerSession.startY,
+                event.clientX,
+                event.clientY
+            )) {
+                return;
+            }
+            _pointerSession.dragStarted = true;
+            event.preventDefault();
+            startHotelRowDrag(event, _pointerSession.sourceRow);
+        }
+
+        if (!_hotelDrag) return;
+        event.preventDefault();
+
+        _hotelDrag.ghost.style.top =
+            (_hotelDrag.ghostInitialTop + (event.clientY - _hotelDrag.startY)) + 'px';
+
+        const otherRows = [...dropZone.querySelectorAll('.hotel_row_class')]
+            .filter(el => el !== _hotelDrag.sourceRow);
+
+        let insertBefore = null;
+        for (const row of otherRows) {
+            const r = row.getBoundingClientRect();
+            if (event.clientY < r.top + r.height / 2) { insertBefore = row; break; }
+        }
+
+        if (insertBefore) {
+            dropZone.insertBefore(_hotelDrag.sourceRow, insertBefore);
+        } else {
+            dropZone.appendChild(_hotelDrag.sourceRow);
+        }
+    }
+
+    function onPointerUp(event) {
+        if (!_pointerSession || event.pointerId !== _pointerSession.pointerId) return;
+
+        clearPointerSessionListeners();
+
+        const session = _pointerSession;
+        _pointerSession = null;
+
+        if (session.dragStarted) {
+            finishHotelRowDrag();
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        triggerHotelRowImageController(session.target);
+    }
+
+    dropZone.addEventListener('pointerdown', onPointerDown);
+}
+
+/* Up All Functions For Hotels Data Up */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Down All Functions For Clint Movements Data Down */
+
+/* Function to automaticlly create all clint movements data */
+autoCreateALlClintMovementsData = function () {
+    /* if one of the clint data or hotel data sections is hidden then stop the process */
+    if (document.getElementById('downloaded_pdf_clint_data_page').style.display === 'none' || document.getElementById('downloaded_pdf_hotel_data_page').style.display === 'none') {
+
+        // Play a sound effect
+        playSoundEffect('error');
+
+        // Change the submit icon background color
+        clint_movements_auto_create_icon.style.backgroundColor = 'red';
+
+        // Set the background color of the submit icon back to default color
+        setTimeout(() => {
+            clint_movements_auto_create_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+        }, 500);
+
+    } else {
+
+        // Play a sound effect
+        playSoundEffect('success');
+
+
+        // Change the submit icon background color
+        clint_movements_auto_create_icon.style.backgroundColor = 'rgb(0, 255, 0)';
+
+        // Set the background color of the submit icon back to default color
+        setTimeout(() => {
+            clint_movements_auto_create_icon.style.backgroundColor = 'rgb(0, 87, 116)';
+        }, 500);
+
+
+        /* Delete all data inside the 'inserted_clint_movements_data_position_div' in every time the 'clint_movements_auto_create_icon' is clicked */
+        document.getElementById('inserted_clint_movements_data_position_div').innerHTML = '';
+
+
+        // Function to increment a date by a specified number of days
+        function incrementDate(dateString, days) {
+            let [day, month] = dateString.split(' '); // Split the date string into day and month
+            let arabicMonths = {
+                "يناير": 0, "فبراير": 1, "مارس": 2, "أبريل": 3,
+                "مايو": 4, "يونيو": 5, "يوليو": 6, "أغسطس": 7,
+                "سبتمبر": 8, "أكتوبر": 9, "نوفمبر": 10, "ديسمبر": 11
+            }; // Arabic month names mapped to their corresponding month index
+            let monthNames = Object.keys(arabicMonths); // Array of month names in Arabic
+
+            let currentYear = new Date().getFullYear(); // Get the current year
+
+            // Set the full date including the correct month and year
+            let date = new Date(currentYear, arabicMonths[month], parseInt(day));
+
+            date.setDate(date.getDate() + days); // Increment the date by the specified number of days
+
+            let newDay = date.getDate(); // Get the new day after incrementing
+            let newMonth = monthNames[date.getMonth()]; // Get the new month name in Arabic
+
+            return `${newDay} ${newMonth}`; // Return the new date in the same format (day month)
+        }
+
+
+
+
+
+
+        // Function to clean up text and ensure no duplicated '+'
+        function cleanUpText(text) {
+            return text.replace(/\+\s*\+/g, ' + ').trim();
+        }
+
+        // Get the state of the airport welcome checkbox
+        let isAirportWelcomeIncluded = document.getElementById('include_airport_welcome__checkbox').checked;
+        let allHotelRows = document.querySelectorAll('.hotel_row_class_for_editing');
+        let totalHotels = allHotelRows.length;
+        let usedVisitingPlaces = {
+            baliUbudKeramas: {},
+            baliOthers: {},
+            jakarta: {},
+            puncak: {},
+            bandung: {},
+            lombok: {},
+        };
+
+        let previousCityName = '';
+        let previousHotelName = '';
+        let isFirstHotelRowCreated = false; // Flag to check the first created row
+        let hasCenterTourTextBeenAdded = false; // Flag to track if "التجول في السنتر" text has been added
+
+        let isFirstJakartaHotelFound = false; // Flag to track the first Jakarta hotel found
+
+        let firstCreatedClintMovementsRowDivForLastHotel = null; // Variable to store the first created div for the last hotel
+
+
+        let isFirstClintMovementsRowCreated = false; // Flag to track the first created clintMovementsRowTableDiv
+
+
+        /* Variable to store if the h5 inside the first found 'hotel_row_class_for_editing' is "بونشاك" or "باندونق" */
+        let firstHotelCityName = allHotelRows[0].querySelector('h5').innerText;
+
+
+        // Store the innerText of the h5 inside the last found hotel_row_class_for_editing
+        let lastHotelCityName = allHotelRows[totalHotels - 1].querySelector('h5').innerText;
+
+
+        // Variable to store the combined city names for the last found hotel row
+        let lastHotelRowCombinedCityName = '';
+
+        allHotelRows.forEach((hotelRow, index) => {
+            let hotelName = hotelRow.querySelector('h1').innerText;
+            let checkInDate = hotelRow.querySelector('h2').innerText;
+            let nights = parseInt(hotelRow.querySelector('h4').innerText, 10);
+            let cityName = hotelRow.querySelector('h5').innerText;
+            let areaName = cityName === "بالي" ? hotelRow.querySelector('h6').innerText : null;
+            let packageType = document.getElementById('clint_package_type_h6').innerText.trim();
+
+            let packageMapping = {
+                "بكج شهر عسل": "honeymoon",
+                "بكج شباب": "guys",
+                "بكج عائلة": "family",
+                "بكج شخصين": "twopeople",
+                "بكج قروب": "family",
+                "بكج جديد": "family"
+            };
+
+            let packageKey = packageMapping[packageType] || "family";
+
+            let targetObject;
+            let usedDays; // Declare usedDays to be assigned later
+
+            if (cityName === "بالي" && areaName) {
+                if (areaName === "اوبود" || areaName === "كيراماس") {
+                    targetObject = allClintVisitingPlacesArray[1][packageKey];
+                    usedDays = usedVisitingPlaces.baliUbudKeramas;
+                } else if (["كوتا", "نوسا دوا", "سيمنياك", "جيمباران", "اولواتو", "ليجين", "سانور", "بيانجان", "تشانغو", "Tampaksiring"].includes(areaName)) {
+                    targetObject = allClintVisitingPlacesArray[0][packageKey];
+                    usedDays = usedVisitingPlaces.baliOthers;
+                }
+            } else if (cityName === 'جاكرتا') {
+                targetObject = allClintVisitingPlacesArray[2][packageKey];
+                usedDays = usedVisitingPlaces.jakarta;
+            } else if (cityName === 'بونشاك') {
+                targetObject = allClintVisitingPlacesArray[3][packageKey];
+                usedDays = usedVisitingPlaces.puncak;
+            } else if (cityName === 'باندونق') {
+                targetObject = allClintVisitingPlacesArray[4][packageKey];
+                usedDays = usedVisitingPlaces.bandung;
+            } else if (cityName === 'لومبوك') {
+                targetObject = allClintVisitingPlacesArray[5][packageKey];
+                usedDays = usedVisitingPlaces.lombok;
+            }
+
+            if (!usedVisitingPlaces[cityName]) {
+                usedVisitingPlaces[cityName] = {};
+            }
+
+            let isCheckOutTextAdded = false; // Flag to track if check-out text has been added for this hotel
+            let dayIndex = 0; // Initialize dayIndex separately for each hotel
+
+            for (let i = 0; i < nights; i++) {
+                let clintMovementsRowTableDiv = document.createElement('div');
+                clintMovementsRowTableDiv.className = 'clint_movements_row_class clint_movements_row_class_for_editing';
+
+                let newDate = incrementDate(checkInDate, i);
+
+                let visitingPlacesText = "";
+
+                // Skip appending text for the first created div
+                if (targetObject) {
+                    while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        dayIndex++;
+                    }
+                    if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                        usedDays[dayIndex] = true;
+                        if (textArray && textArray.length > 0) {
+                            visitingPlacesText = `${textArray.join(' + ')} `;
+                        }
+                        dayIndex++; // Increment dayIndex after appending text
+                    }
+                }
+
+                let checkInOutText = i === 0 ? `تسجيل الدخول في ${hotelName}` : '';
+                let combinedCityName = cityName;
+
+                // Logic for check-in/out text and combined city name based on previous city/hotel
+                if (i === 0 && index > 0) {
+                    previousCityName = allHotelRows[index - 1].querySelector('h5').innerText;
+                    previousHotelName = allHotelRows[index - 1].querySelector('h1').innerText;
+
+                    if (cityName !== previousCityName) {
+                        combinedCityName = `${previousCityName}-${cityName}`;
+                        lastHotelRowCombinedCityName = combinedCityName; // Update combined city name
+                    }
+
+                    let additionalText = "";
+                    if (isAirportWelcomeIncluded && (cityName === "بالي" || cityName === "جاكرتا") && cityName !== previousCityName) {
+                        if (!(previousCityName === "بونشاك" && cityName === "جاكرتا") && !(previousCityName === "باندونق" && cityName === "جاكرتا")) {
+                            additionalText = `الإستقبال في مطار ${cityName} + `;
+                        }
+                    }
+
+
+                    if (!isCheckOutTextAdded) {
+                        checkInOutText = `تسجيل الخروج من ${previousHotelName} `;
+
+                        if (previousCityName !== cityName) {
+                            checkInOutText += `+ الذهاب الى ${cityName} `;
+                        }
+
+                        checkInOutText += `+ ${additionalText}${visitingPlacesText} + تسجيل الدخول في ${hotelName}`;
+                        isCheckOutTextAdded = true;
+                    }
+                }
+
+                if ((cityName === "بالي" || cityName === "جاكرتا") && !hasCenterTourTextBeenAdded) {
+                    checkInOutText = checkInOutText.replace(`تسجيل الدخول في ${hotelName}`, `تسجيل الدخول في ${hotelName} + التجول في السنتر`);
+                    hasCenterTourTextBeenAdded = true;
+                }
+
+                if (!isFirstHotelRowCreated && (cityName === "بالي" || cityName === "جاكرتا") && isAirportWelcomeIncluded) {
+                    checkInOutText = `الإستقبال في مطار ${cityName} + ${checkInOutText}`;
+                    isFirstHotelRowCreated = true;
+                }
+
+                // Additional condition for the first hotel row
+                if (!isFirstHotelRowCreated && index === 0 && isAirportWelcomeIncluded && (firstHotelCityName === "بونشاك" || firstHotelCityName === "باندونق")) {
+                    checkInOutText = `الإستقبال في مطار جاكرتا + الذهاب الى ${cityName} + تسجيل الدخول في ${hotelName}`;
+                    isFirstHotelRowCreated = true; // Set the flag to avoid reapplying this condition
+                }
+
+                // Clean up text to ensure no duplicated '+'
+                checkInOutText = cleanUpText(checkInOutText);
+
+                clintMovementsRowTableDiv.innerHTML = `
+                    <div><h1>${newDate}</h1></div>
+                    <div><h2>${checkInOutText}</h2></div>
+                    <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${i === 0 ? combinedCityName : cityName}</h3></div>
+                `;
+
+                // Apply the new condition to append text if needed, but skip the first hotel row
+                if (!isFirstJakartaHotelFound && cityName === "جاكرتا" && i === 0 && index !== 0) {
+                    let currentH2 = clintMovementsRowTableDiv.querySelector('h2');
+                    currentH2.innerText += " + الذهاب لمطعم السدة للعشاء";
+                    currentH2.innerText = cleanUpText(currentH2.innerText); // Clean up text to ensure no duplicated '+'
+                    isFirstJakartaHotelFound = true;
+                }
+
+                if (targetObject && i === 0) {
+                    let dayIndex = 1;
+                    while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        dayIndex++;
+                    }
+                    if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                        usedDays[dayIndex] = true;
+                        if (textArray && textArray.length > 0) {
+                            visitingPlacesText = `${textArray.join(' + ')} `;
+                        }
+                    }
+                }
+
+                if (targetObject) {
+                    let dayIndex = i + 1;
+                    while (usedDays[dayIndex] && targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        dayIndex++;
+                    }
+                    if (targetObject[`visitingPlaceNamesDay${dayIndex - 1}`]) {
+                        let textArray = targetObject[`visitingPlaceNamesDay${dayIndex - 1}`];
+                        usedDays[dayIndex] = true;
+                        if (textArray && textArray.length > 0) {
+                            visitingPlacesText = `${textArray.join(' + ')} `;
+                        }
+                    }
+                }
+
+                if (visitingPlacesText) {
+                    clintMovementsRowTableDiv.querySelector('h2').innerText += `${visitingPlacesText}`;
+                }
+
+                document.getElementById('inserted_clint_movements_data_position_div').appendChild(clintMovementsRowTableDiv);
+
+                if (index === totalHotels - 1 && i === nights - 1) {
+                    // Check if this is not the first created clintMovementsRowTableDiv
+                    if (isFirstClintMovementsRowCreated) {
+                        let lastH3 = clintMovementsRowTableDiv.querySelector('h3');
+                        lastH3.innerText = lastHotelCityName;
+                    } else {
+                        isFirstClintMovementsRowCreated = true; // Set the flag after the first creation
+                    }
+                }
+            }
+
+
+            if (index === totalHotels - 1) {
+                let extraDate = incrementDate(checkInDate, nights);
+                let extraClintMovementsRowTableDiv = document.createElement('div');
+
+                extraClintMovementsRowTableDiv.className = 'clint_movements_row_class clint_movements_row_class_for_editing';
+
+                extraClintMovementsRowTableDiv.innerHTML = `
+                    <div><h1>${extraDate}</h1></div>
+                    <div><h2>تسجيل الخروج من ${hotelName} والتحرك للمطار للمغادرة</h2></div>
+                    <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${cityName}-مغادرة</h3></div>
+                `;
+
+                document.getElementById('inserted_clint_movements_data_position_div').appendChild(extraClintMovementsRowTableDiv);
+            }
+        });
+
+
+        /* Show up the 'downloaded_pdf_clint_movements_data_page' section */
+        document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'block';
+
+
+        /* Update the available clint visiting places based on the current existing visiting places */
+        filterUsedClintVisitingPlacesNames();
+
+
+
+        // Get all elements with the class name 'flight_row_class'
+        let clintMovementsRowTableDiv = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+        // Loop through each 'flight_row_class' element
+        clintMovementsRowTableDiv.forEach(clintMovementsRowTableDiv => {
+
+            // Get all dynamically created elements with the class 'clint_movements_row_controller'
+            clintMovementsRowTableDiv.querySelectorAll('.clint_movements_row_controller').forEach(function (element) {
+                element.onclick = function (event) {
+                    clintMovementsRowCityNameControllerFunction(event, element);
+                };
+            });
+
+        });
+
+
+
+        /* Call a function to make sure if all package dates should be hidden or no */
+        ensureAllPackageDatesHiddenOrNo();
+
+
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }
+}
+
+// Define a global variable to store the reference
+let currentClintMovementsDataDiv;
+
+
+
+/* Function to delete the clicked clint movement row data */
+deleteClickedClintMovementsData = function (currentClintMovementsDataDiv) {
+
+    // Find all divs with the class name "clint_movements_row_class_for_editing"
+    let allClintMovementsRows = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+    // Check if there are any divs found
+    if (allClintMovementsRows.length > 0) {
+        // Get the index of the passed currentClintMovementsDataDiv in the NodeList
+        let divIndex = Array.from(allClintMovementsRows).indexOf(currentClintMovementsDataDiv);
+
+        // Check if the passed div is the first or the last div in the list
+        if (divIndex === 0 || divIndex === allClintMovementsRows.length - 1) {
+
+            // Play a sound effect
+            playSoundEffect('success');
+
+
+            /* Delete the clicked 'currentClintMovementsDataDiv' from the document */
+            currentClintMovementsDataDiv.remove();
+
+        } else {
+            // Play a sound effect
+            playSoundEffect('error');
+        }
+
+
+        // Get the following element to hide them
+        let deleteclintMovementsRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+        let overlayLayer = document.querySelector('.black_overlay');
+
+        deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -130vh)';
+        overlayLayer.style.opacity = '0';
+        setTimeout(() => {
+            // Only remove the overlay if it is still a child of the body
+            if (document.body.contains(overlayLayer)) {
+                document.body.removeChild(overlayLayer);
+            }
+        }, 300);
+
+        // Get references to all input elements and reset their values
+        document.getElementById('clint_movements_whole_day_actions_details_textarea_id').value = '';
+        document.getElementById('clint_movements_current_city_name_input_id').value = '';
+
+        /* Hide and show different icons */
+        document.getElementById('clint_movements_auto_create_icon').style.display = 'block';
+        document.getElementById('confirm_new_clint_movements_data_row_icon').style.display = 'none';
+        document.getElementById('cancel_new_clint_movements_data_row_icon').style.display = 'none';
+
+        /* Reset the innerText and styling to default */
+        document.getElementById('clint_movements_content_section_title_text_id').innerText = 'برنامج تحركات مقترح';
+        document.getElementById('toggle_clint_movements_details_title_div_id').style.background = 'rgb(131, 0, 148)';
+
+        /* Update the available clint visiting places based on the current existing visiting places */
+        filterUsedClintVisitingPlacesNames();
+
+        // Loop through each found div to reset the serial number in h4 elements
+        allClintMovementsRows.forEach((clintMovementRow, index) => {
+            let h4Element = clintMovementRow.querySelector('h4');
+            if (h4Element) {
+                // Reset the innerText of the h4 element with a serial number starting from 1
+                h4Element.innerText = (index + 1).toString();
+            }
+        });
+
+        /* Call a function to highlight the Saturday and Sunday days */
+        highlightWeekendClintMovements();
+
+
+        // Check if there are any remaining inserted clint movements data div (Searching by the unique class name)
+        let remainingFlightDataDivs = document.querySelectorAll('.clint_movements_row_class_for_editing');
+        if (remainingFlightDataDivs.length === 0) {
+            // Hide section with id 'downloaded_pdf_clint_movements_data_page'
+            document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'none';
+        }
+    }
+};
+
+
+// Function to handle edit clicked clint movements data
+editClickedClintMovementsData = function (currentClintMovementsDataDiv) {
+    // Make sure the correct section is the one that is visible
+    create_new_clint_data_section.style.display = 'none';
+    create_new_hotel_package_section.style.display = 'none';
+    create_new_flight_package_section.style.display = 'none';
+    create_new_package_including_and_not_including_data_section.style.display = 'none';
+    create_new_clint_movements_plan_section.style.display = 'block';
+
+    // Show and hide different icons
+    document.getElementById('clint_movements_auto_create_icon').style.display = 'none';
+    document.getElementById('confirm_new_clint_movements_data_row_icon').style.display = 'block';
+    document.getElementById('cancel_new_clint_movements_data_row_icon').style.display = 'block';
+
+    // Change the innerText and styling to default
+    document.getElementById('clint_movements_content_section_title_text_id').innerText = `تعديل خط سير يوم ${currentClintMovementsDataDiv.querySelector('h1').innerText}`;
+    document.getElementById('toggle_clint_movements_details_title_div_id').style.background = 'rgb(85, 127, 137)';
+
+    // Scroll up to the middle of the 'toggle_clint_movements_details_title_div_id'
+    document.getElementById('toggle_clint_movements_details_title_div_id').scrollIntoView({
+        block: 'center',
+        inline: 'center',
+        behavior: 'smooth',
+    });
+
+    // Disable the clint movements dates when editing
+    document.getElementById('whole_package_start_date_input_id').disabled = true;
+    document.getElementById('whole_package_end_date_input_id').disabled = true;
+
+    // Hide delete button div
+    let overlayLayer = document.querySelector('.black_overlay');
+    let deleteHotelRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+    deleteHotelRowDiv.style.transform = 'translate(-50%, -130vh)';
+
+    // Hide overlay layer with opacity transition
+    overlayLayer.style.opacity = '0';
+
+    // Remove overlay and edit/delete div from DOM after transition
+    setTimeout(() => {
+        document.body.removeChild(overlayLayer);
+    }, 300); // Match transition duration in CSS
+
+
+
+
+    /* Set the clicked clint movemenet row h2 innerText inside the input to start editing */
+    document.getElementById('clint_movements_whole_day_actions_details_textarea_id').value = currentClintMovementsDataDiv.querySelector('h2').innerText;
+
+
+    /* Set the clicked clint movemenet row h2 innerText inside the input to start editing */
+    document.getElementById('clint_movements_current_city_name_input_id').value = currentClintMovementsDataDiv.querySelector('h3').innerText;
+
+
+    /* Update the available clint visiting places based on the current existing visiting places */
+    filterUsedClintVisitingPlacesNames();
+
+
+
+    /* Function to cancel the clint movements row data editing process */
+    cancelNewClintMovementsDataRow = function () {
+        // Get references to all input elements and reset their values
+        document.getElementById('clint_movements_whole_day_actions_details_textarea_id').value = '';
+        document.getElementById('clint_movements_current_city_name_input_id').value = '';
+
+
+
+        /* Hide and show different icons */
+        document.getElementById('clint_movements_auto_create_icon').style.display = 'block';
+        document.getElementById('confirm_new_clint_movements_data_row_icon').style.display = 'none';
+        document.getElementById('cancel_new_clint_movements_data_row_icon').style.display = 'none';
+
+
+        /* Reset the innerText and styling to defualt */
+        document.getElementById('clint_movements_content_section_title_text_id').innerText = 'برنامج تحركات مقترح';
+        document.getElementById('toggle_clint_movements_details_title_div_id').style.background = 'rgb(131, 0, 148)';
+
+
+        /* Re-enable the clint movements dates when editing */
+        document.getElementById('whole_package_start_date_input_id').disabled = false;
+        document.getElementById('whole_package_end_date_input_id').disabled = false;
+
+
+        /* Update the available clint visiting places based on the current existing visiting places */
+        filterUsedClintVisitingPlacesNames();
+
+
+
+        // Find all divs with the class name "clint_movements_row_class_for_editing"
+        let allClintMovementsRows = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+        // Check if there are any divs found
+        if (allClintMovementsRows.length > 0) {
+            // Loop through each found div
+            allClintMovementsRows.forEach((clintMovementRow, index) => {
+                // Target the h4 element inside each found div
+                let h4Element = clintMovementRow.querySelector('h4');
+
+                // Check if the h4 element exists
+                if (h4Element) {
+                    // Reset the innerText of the h4 element with a serial number starting from 1
+                    h4Element.innerText = (index + 1).toString();
+                }
+            });
+        }
+    }
+
+
+
+
+    /* Function to confirm the new clint movements row data */
+    confirmNewClintMovementsDataRow = function () {
+
+        // Get references to all input elements for later use
+        currentClintMovementsDataDiv.querySelector('h2').innerText = document.getElementById('clint_movements_whole_day_actions_details_textarea_id').value;
+
+        // Get references to all input elements for later use
+        currentClintMovementsDataDiv.querySelector('h3').innerText = document.getElementById('clint_movements_current_city_name_input_id').value;
+
+
+        // Get all elements with the class name 'flight_row_class'
+        let clintMovementsRowTableDiv = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+        // Loop through each 'flight_row_class' element
+        clintMovementsRowTableDiv.forEach(clintMovementsRowTableDiv => {
+
+            // Get all dynamically created elements with the class 'clint_movements_row_controller'
+            clintMovementsRowTableDiv.querySelectorAll('.clint_movements_row_controller').forEach(function (element) {
+                element.onclick = function (event) {
+                    clintMovementsRowCityNameControllerFunction(event, element);
+                };
+            });
+
+        });
+
+
+        // Clear the input after confirm the new flight data
+        cancelNewClintMovementsDataRow()
+    }
+}
+
+// Function to handle clint movements row div click or touch
+clintMovementsRowCityNameControllerFunction = function (event) {
+    let deleteclintMovementsRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+    let clickedclintMovementsDataDiv = event.target.closest('.clint_movements_row_class');
+
+    // Ensure the target is a clint_movements_row_class div
+    if (clickedclintMovementsDataDiv) {
+        currentClintMovementsDataDiv = clickedclintMovementsDataDiv;
+
+        /* Function to run edit the clicked client movements row data */
+        runDeleteClickedClintMovementsDataFunction = function () {
+            deleteClickedClintMovementsData(currentClintMovementsDataDiv);
+
+        }
+
+
+        /* Function to run edit the clicked client movements row data */
+        runEditClickedClintMovementsDataFunction = function () {
+            editClickedClintMovementsData(currentClintMovementsDataDiv);
+
+            /* Make sure hotel package type text is colored in rgb(0, 46, 57) */
+            document.getElementById('header_navbar_links_clint_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_hotel_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_flight_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_package_icluding_and_not_including_a').style.backgroundColor = 'rgb(85, 127, 137)';
+            document.getElementById('header_navbar_links_clint_movements_a').style.backgroundColor = 'rgb(0, 46, 57)';
+        }
+
+
+
+
+
+        /* Run a function to copy or paste the clicked clint movement row h2 text */
+        copyAndReplaceClintMovementsRowTableDivFunction = function (clickedMethod) {
+
+            if (clickedMethod === 'copy') {
+
+                runCopyClickedClintMovementH2TextFunction(currentClintMovementsDataDiv);
+
+            } else {
+
+                runReplaceClickedClintMovementH2TextFunction(currentClintMovementsDataDiv);
+
+            }
+
+        }
+
+
+
+
+
+        /* Run a function to split and place the clint visiting places */
+        splitAndPlaceClintMovementsRowTableDivFunction = function (clickedMethod) {
+
+            if (clickedMethod === 'split') {
+
+                runSplitAndPlaceClintMovementsRowTableDivFunction(currentClintMovementsDataDiv);
+
+            } else {
+
+                runPlaceClintMovementsRowTableDivFunction(currentClintMovementsDataDiv);
+
+            }
+
+        }
+
+
+
+
+
+
+        /* Run  function to add "يوم مفتوح بدون سائق" text in the clicked div */
+        addFreeTransportationDayWithoutDriverFunction = function () {
+
+            runAddFreeTransportationDayWithoutDriverFunction(currentClintMovementsDataDiv);
+
+        }
+
+
+        /* Run  function to add "يوم مفتوح بدون سائق" text in the clicked div */
+        addFreeTransportationDayWithDriverFunction = function () {
+
+            runAddFreeTransportationDayWithDriverFunction(currentClintMovementsDataDiv);
+
+        }
+
+
+
+
+        // Check if the overlay already exists
+        let overlayLayer = document.querySelector('.black_overlay');
+        if (!overlayLayer) {
+            overlayLayer = document.createElement('div');
+            overlayLayer.classList.add('black_overlay');
+            document.body.appendChild(overlayLayer);
+
+            setTimeout(() => {
+                overlayLayer.style.opacity = '1';
+                deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -50%)';
+            }, 50);
+
+            // Handle both click and touch events on overlay for consistency
+            let handleOverlayClick = () => {
+                deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -130vh)';
+                overlayLayer.style.opacity = '0';
+                setTimeout(() => {
+                    // Only remove the overlay if it is still a child of the body
+                    if (document.body.contains(overlayLayer)) {
+                        document.body.removeChild(overlayLayer);
+                    }
+                }, 300);
+            };
+
+            overlayLayer.addEventListener('click', handleOverlayClick);
+
+            overlayLayer.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+        }
+    }
+};
+
+let lastCopiedClintMovementRowDiv = null;
+let lastCopiedClintMovementH2Text = null;
+
+let lastClickedClintMovementRowDiv_for_replacing = null;
+let lastClickedClintMovementH2Text_for_replacing = null;
+
+/* Function to copy the clicked clint movement h2 text */
+runCopyClickedClintMovementH2TextFunction = function (currentClintMovementsDataDiv) {
+
+    /* Reset the old clicked clint movement row div for copping if exist */
+    if (lastCopiedClintMovementRowDiv !== null) {
+
+        // Apply the background and text color changes to only the two divs
+        let firstDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[0];
+        let secondDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[1];
+        let thirdDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[2];
+        firstDiv_1.style.backgroundColor = 'white';
+        firstDiv_1.style.color = 'black';
+        secondDiv_1.style.backgroundColor = 'white';
+        secondDiv_1.style.color = 'black';
+        thirdDiv_1.style.backgroundColor = 'white';
+        thirdDiv_1.style.color = 'black';
+    }
+
+
+    /* Store the second clicked clint movement row div for copping */
+    lastCopiedClintMovementRowDiv = currentClintMovementsDataDiv;
+    lastCopiedClintMovementH2Text = currentClintMovementsDataDiv.querySelector('h2').innerText;
+
+    // Get the following element to hide them
+    let deleteclintMovementsRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+    let overlayLayer = document.querySelector('.black_overlay');
+
+    deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -130vh)';
+    overlayLayer.style.opacity = '0';
+    setTimeout(() => {
+        // Only remove the overlay if it is still a child of the body
+        if (document.body.contains(overlayLayer)) {
+            document.body.removeChild(overlayLayer);
+        }
+    }, 300);
+
+
+    // Apply the background and text color changes to all three divs
+    let firstDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[0];
+    let secondDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[1];
+    let thirdDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[2];
+    firstDiv_1.style.backgroundColor = 'rgb(0, 93, 119)';
+    firstDiv_1.style.color = 'white';
+    secondDiv_1.style.backgroundColor = 'rgb(0, 93, 119)';
+    secondDiv_1.style.color = 'white';
+    thirdDiv_1.style.backgroundColor = 'rgb(0, 93, 119)';
+    thirdDiv_1.style.color = 'white';
+
+
+    setTimeout(() => {
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }, 500);
+}
+
+
+/* Function to replace the clicked clint movement h2 text with the copied one */
+runReplaceClickedClintMovementH2TextFunction = function (currentClintMovementsDataDiv) {
+
+    /* Store the second clicked clint movement row div for replacing */
+    lastClickedClintMovementRowDiv_for_replacing = currentClintMovementsDataDiv;
+    lastClickedClintMovementH2Text_for_replacing = currentClintMovementsDataDiv.querySelector('h2').innerText;
+
+
+    /* Replace the text beteen both clicked clint movement row divs */
+    if (lastCopiedClintMovementRowDiv !== null) {
+
+        /* Play a sound effect if the value of the 'lastCopiedClintMovementRowDiv' is not null*/
+        playSoundEffect('success');
+
+
+        lastCopiedClintMovementRowDiv.querySelector('h2').innerText = lastClickedClintMovementH2Text_for_replacing;
+        lastClickedClintMovementRowDiv_for_replacing.querySelector('h2').innerText = lastCopiedClintMovementH2Text;
+
+
+
+        // Apply the background and text color changes to only the two divs
+        let firstDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[0];
+        let secondDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[1];
+        let thirdDiv_1 = lastCopiedClintMovementRowDiv.querySelectorAll('div')[2];
+        firstDiv_1.style.backgroundColor = 'green';
+        firstDiv_1.style.color = 'white';
+        secondDiv_1.style.backgroundColor = 'green';
+        secondDiv_1.style.color = 'white';
+        thirdDiv_1.style.backgroundColor = 'green';
+        thirdDiv_1.style.color = 'white';
+
+        let firstDiv_2 = lastClickedClintMovementRowDiv_for_replacing.querySelectorAll('div')[0];
+        let secondDiv_2 = lastClickedClintMovementRowDiv_for_replacing.querySelectorAll('div')[1];
+        let thirdDiv_2 = lastClickedClintMovementRowDiv_for_replacing.querySelectorAll('div')[2];
+        firstDiv_2.style.backgroundColor = 'green';
+        firstDiv_2.style.color = 'white';
+        secondDiv_2.style.backgroundColor = 'green';
+        secondDiv_2.style.color = 'white';
+        thirdDiv_2.style.backgroundColor = 'green';
+        thirdDiv_2.style.color = 'white';
+
+
+
+        // Set a timeout to change the background and text color back after 1 second
+        setTimeout(() => {
+
+            firstDiv_1.style.backgroundColor = 'white'; // Change background back to white
+            firstDiv_1.style.color = 'black'; // Change text color back to black
+            secondDiv_1.style.backgroundColor = 'white'; // Change background back to white
+            secondDiv_1.style.color = 'black'; // Change text color back to black
+            thirdDiv_1.style.backgroundColor = 'white'; // Change background back to white
+            thirdDiv_1.style.color = 'black'; // Change text color back to black
+
+
+            firstDiv_2.style.backgroundColor = 'white'; // Change background back to white
+            firstDiv_2.style.color = 'black'; // Change text color back to black
+            secondDiv_2.style.backgroundColor = 'white'; // Change background back to white
+            secondDiv_2.style.color = 'black'; // Change text color back to black
+            thirdDiv_2.style.backgroundColor = 'white'; // Change background back to white
+            thirdDiv_2.style.color = 'black'; // Change text color back to black
+
+        }, 1000);
+
+
+
+        /* Reset all the variables to null for a new replacing functionality */
+        lastCopiedClintMovementRowDiv = null;
+        lastCopiedClintMovementH2Text = null;
+
+        lastClickedClintMovementRowDiv_for_replacing = null;
+        lastClickedClintMovementH2Text_for_replacing = null;
+
+
+
+    } else {
+
+        /* Play a sound effect if the value of the 'lastCopiedClintMovementRowDiv' is null*/
+        playSoundEffect('error');
+
+    }
+
+
+    // Get the following element to hide them
+    let deleteclintMovementsRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+    let overlayLayer = document.querySelector('.black_overlay');
+
+    deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -130vh)';
+    overlayLayer.style.opacity = '0';
+    setTimeout(() => {
+        // Only remove the overlay if it is still a child of the body
+        if (document.body.contains(overlayLayer)) {
+            document.body.removeChild(overlayLayer);
+        }
+    }, 300);
+
+
+    setTimeout(() => {
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }, 1000);
+}
+
+
+
+
+let lastSplitClintMovementRowDiv = null;
+let lastSplitClintMovementH2Text = null;
+
+let lastClickedClintMovementRowDiv_for_placing = null;
+
+
+/* Function to split the clint visting places */
+runSplitAndPlaceClintMovementsRowTableDivFunction = function (currentClintMovementsDataDiv) {
+    /* Reset the old clicked clint movement row div for copping if exist */
+    if (lastSplitClintMovementRowDiv !== null) {
+
+        // Apply the background and text color changes to only the two divs
+        let firstDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[0];
+        let secondDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[1];
+        let thirdDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[2];
+        firstDiv_1.style.backgroundColor = 'white';
+        firstDiv_1.style.color = 'black';
+        secondDiv_1.style.backgroundColor = 'white';
+        secondDiv_1.style.color = 'black';
+        thirdDiv_1.style.backgroundColor = 'white';
+        thirdDiv_1.style.color = 'black';
+    }
+
+
+
+    /* Store the second clicked clint movement row div for copping */
+    lastSplitClintMovementRowDiv = currentClintMovementsDataDiv;
+    lastSplitClintMovementH2Text = currentClintMovementsDataDiv.querySelector('h2').innerText;
+
+
+    // Get the following element to hide them
+    let deleteclintMovementsRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+    let overlayLayer = document.querySelector('.black_overlay');
+
+    deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -130vh)';
+    overlayLayer.style.opacity = '0';
+    setTimeout(() => {
+        // Only remove the overlay if it is still a child of the body
+        if (document.body.contains(overlayLayer)) {
+            document.body.removeChild(overlayLayer);
+        }
+    }, 300);
+
+
+
+    // Apply the background and text color changes to all three divs
+    let firstDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[0];
+    let secondDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[1];
+    let thirdDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[2];
+    firstDiv_1.style.backgroundColor = 'rgb(0, 93, 119)';
+    firstDiv_1.style.color = 'white';
+    secondDiv_1.style.backgroundColor = 'rgb(0, 93, 119)';
+    secondDiv_1.style.color = 'white';
+    thirdDiv_1.style.backgroundColor = 'rgb(0, 93, 119)';
+    thirdDiv_1.style.color = 'white';
+
+
+    setTimeout(() => {
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }, 500);
+}
+
+
+
+/* Function to add "يوم مفتوح بدون سائق" text inside the clicked div */
+runAddFreeTransportationDayWithoutDriverFunction = function (currentClintMovementsDataDiv) {
+
+    /* Play a sound effect if the value of the 'lastCopiedClintMovementRowDiv' is not null*/
+    playSoundEffect('success');
+
+    currentClintMovementsDataDiv.querySelector('h2').innerText = 'يوم مفتوح بدون سائق';
+
+
+
+
+    // Apply the background and text color changes to only the two divs
+    let firstDiv_1 = currentClintMovementsDataDiv.querySelectorAll('div')[0];
+    let secondDiv_1 = currentClintMovementsDataDiv.querySelectorAll('div')[1];
+    let thirdDiv_1 = currentClintMovementsDataDiv.querySelectorAll('div')[2];
+    firstDiv_1.style.backgroundColor = 'green';
+    firstDiv_1.style.color = 'white';
+    secondDiv_1.style.backgroundColor = 'green';
+    secondDiv_1.style.color = 'white';
+    thirdDiv_1.style.backgroundColor = 'green';
+    thirdDiv_1.style.color = 'white';
+
+
+    // Set a timeout to change the background and text color back after 1 second
+    setTimeout(() => {
+
+        firstDiv_1.style.backgroundColor = 'white'; // Change background back to white
+        firstDiv_1.style.color = 'black'; // Change text color back to black
+        secondDiv_1.style.backgroundColor = 'white'; // Change background back to white
+        secondDiv_1.style.color = 'black'; // Change text color back to black
+        thirdDiv_1.style.backgroundColor = 'white'; // Change background back to white
+        thirdDiv_1.style.color = 'black'; // Change text color back to black
+
+    }, 1000);
+
+
+
+
+
+    // Get the following element to hide them
+    let deleteclintMovementsRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+    let overlayLayer = document.querySelector('.black_overlay');
+
+    deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -130vh)';
+    overlayLayer.style.opacity = '0';
+    setTimeout(() => {
+        // Only remove the overlay if it is still a child of the body
+        if (document.body.contains(overlayLayer)) {
+            document.body.removeChild(overlayLayer);
+        }
+    }, 300);
+
+
+    setTimeout(() => {
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }, 1000);
+}
+
+
+
+/* Function to add "يوم مفتوح بدون سائق" text inside the clicked div */
+runAddFreeTransportationDayWithDriverFunction = function (currentClintMovementsDataDiv) {
+
+    /* Play a sound effect if the value of the 'lastCopiedClintMovementRowDiv' is not null*/
+    playSoundEffect('success');
+
+    currentClintMovementsDataDiv.querySelector('h2').innerText = 'جولة مع سائق خاص لمدة 8 ساعات';
+
+
+
+
+    // Apply the background and text color changes to only the two divs
+    let firstDiv_1 = currentClintMovementsDataDiv.querySelectorAll('div')[0];
+    let secondDiv_1 = currentClintMovementsDataDiv.querySelectorAll('div')[1];
+    let thirdDiv_1 = currentClintMovementsDataDiv.querySelectorAll('div')[2];
+    firstDiv_1.style.backgroundColor = 'green';
+    firstDiv_1.style.color = 'white';
+    secondDiv_1.style.backgroundColor = 'green';
+    secondDiv_1.style.color = 'white';
+    thirdDiv_1.style.backgroundColor = 'green';
+    thirdDiv_1.style.color = 'white';
+
+
+    // Set a timeout to change the background and text color back after 1 second
+    setTimeout(() => {
+
+        firstDiv_1.style.backgroundColor = 'white'; // Change background back to white
+        firstDiv_1.style.color = 'black'; // Change text color back to black
+        secondDiv_1.style.backgroundColor = 'white'; // Change background back to white
+        secondDiv_1.style.color = 'black'; // Change text color back to black
+        thirdDiv_1.style.backgroundColor = 'white'; // Change background back to white
+        thirdDiv_1.style.color = 'black'; // Change text color back to black
+
+    }, 1000);
+
+
+
+
+
+    // Get the following element to hide them
+    let deleteclintMovementsRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+    let overlayLayer = document.querySelector('.black_overlay');
+
+    deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -130vh)';
+    overlayLayer.style.opacity = '0';
+    setTimeout(() => {
+        // Only remove the overlay if it is still a child of the body
+        if (document.body.contains(overlayLayer)) {
+            document.body.removeChild(overlayLayer);
+        }
+    }, 300);
+
+
+    setTimeout(() => {
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }, 1000);
+}
+
+
+
+/* Function to place the splited clint movements visiting places */
+runPlaceClintMovementsRowTableDivFunction = function (currentClintMovementsDataDiv) {
+
+    /* Store the second clicked clint movement row div for replacing */
+    lastClickedClintMovementRowDiv_for_placing = currentClintMovementsDataDiv;
+
+
+    /* in case the second clicked clint movements row is empty */
+    if (currentClintMovementsDataDiv.querySelector('h2').innerText === '') {
+
+        /* Replace the text beteen both clicked clint movement row divs */
+        if (lastSplitClintMovementRowDiv !== null) {
+
+            /* Play a sound effect if the value of the 'lastCopiedClintMovementRowDiv' is not null*/
+            playSoundEffect('success');
+
+
+
+            /* Split the 'lastSplitClintMovementH2Text' text based on the + sign */
+            let splitTextArray = lastSplitClintMovementH2Text.split('+').map(item => item.trim());
+
+            if (splitTextArray.length > 1) {
+                /* Determine the midpoint to split the text into two halves */
+                let midIndex = Math.ceil(splitTextArray.length / 2);
+
+                /* Join the first half of the text */
+                let firstHalf = splitTextArray.slice(0, midIndex).join(' + ');
+
+                /* Join the second half of the text */
+                let secondHalf = splitTextArray.slice(midIndex).join(' + ');
+
+                /* Update the original div's text to the first half */
+                lastSplitClintMovementRowDiv.querySelector('h2').innerText = firstHalf;
+
+                /* Place the second half into the current clint movement div */
+                currentClintMovementsDataDiv.querySelector('h2').innerText = secondHalf;
+            }
+
+
+
+            // Apply the background and text color changes to only the two divs
+            let firstDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[0];
+            let secondDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[1];
+            let thirdDiv_1 = lastSplitClintMovementRowDiv.querySelectorAll('div')[2];
+            firstDiv_1.style.backgroundColor = 'green';
+            firstDiv_1.style.color = 'white';
+            secondDiv_1.style.backgroundColor = 'green';
+            secondDiv_1.style.color = 'white';
+            thirdDiv_1.style.backgroundColor = 'green';
+            thirdDiv_1.style.color = 'white';
+
+            let firstDiv_2 = lastClickedClintMovementRowDiv_for_placing.querySelectorAll('div')[0];
+            let secondDiv_2 = lastClickedClintMovementRowDiv_for_placing.querySelectorAll('div')[1];
+            let thirdDiv_2 = lastClickedClintMovementRowDiv_for_placing.querySelectorAll('div')[2];
+            firstDiv_2.style.backgroundColor = 'green';
+            firstDiv_2.style.color = 'white';
+            secondDiv_2.style.backgroundColor = 'green';
+            secondDiv_2.style.color = 'white';
+            thirdDiv_2.style.backgroundColor = 'green';
+            thirdDiv_2.style.color = 'white';
+
+
+
+            // Set a timeout to change the background and text color back after 1 second
+            setTimeout(() => {
+
+                firstDiv_1.style.backgroundColor = 'white'; // Change background back to white
+                firstDiv_1.style.color = 'black'; // Change text color back to black
+                secondDiv_1.style.backgroundColor = 'white'; // Change background back to white
+                secondDiv_1.style.color = 'black'; // Change text color back to black
+                thirdDiv_1.style.backgroundColor = 'white'; // Change background back to white
+                thirdDiv_1.style.color = 'black'; // Change text color back to black
+
+
+                firstDiv_2.style.backgroundColor = 'white'; // Change background back to white
+                firstDiv_2.style.color = 'black'; // Change text color back to black
+                secondDiv_2.style.backgroundColor = 'white'; // Change background back to white
+                secondDiv_2.style.color = 'black'; // Change text color back to black
+                thirdDiv_2.style.backgroundColor = 'white'; // Change background back to white
+                thirdDiv_2.style.color = 'black'; // Change text color back to black
+
+            }, 1000);
+
+
+
+            /* Reset all the variables to null for a new replacing functionality */
+            lastSplitClintMovementRowDiv = null;
+            lastSplitClintMovementH2Text = null;
+
+            lastClickedClintMovementRowDiv_for_placing = null;
+        }
+
+
+
+        /* in case there is no splited clint movements row div found */
+    } else {
+
+        /* Play a sound effect if the value of the 'lastCopiedClintMovementRowDiv' is null*/
+        playSoundEffect('error');
+
+    }
+
+
+    // Get the following element to hide them
+    let deleteclintMovementsRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+    let overlayLayer = document.querySelector('.black_overlay');
+
+    deleteclintMovementsRowDiv.style.transform = 'translate(-50%, -130vh)';
+    overlayLayer.style.opacity = '0';
+    setTimeout(() => {
+        // Only remove the overlay if it is still a child of the body
+        if (document.body.contains(overlayLayer)) {
+            document.body.removeChild(overlayLayer);
+        }
+    }, 300);
+
+
+    setTimeout(() => {
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }, 1000);
+}
+
+
+
+
+
+
+/* Function to add more clint movements days */
+addMoreClintMovementsRowTableDivFunction = function (position) {
+    let allClintMovementsRows = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+    if (allClintMovementsRows.length > 0) {
+        let referenceRow, newDate;
+
+        if (position === 'up') {
+            // Handle 'up' position: Add above the first found div
+            referenceRow = allClintMovementsRows[0];  // First found div
+            let firstDate = referenceRow.querySelector('h1').innerText;
+            newDate = decrementDate(firstDate);  // Date before the firstDate
+        } else if (position === 'down') {
+            // Handle 'down' position: Add below the last found div
+            referenceRow = allClintMovementsRows[allClintMovementsRows.length - 1];  // Last found div
+            let lastDate = referenceRow.querySelector('h1').innerText;
+            newDate = incrementDate(lastDate);  // Date after the lastDate
+        }
+
+        // Create the new clintMovementsRowTableDiv
+        let newClintMovementsRowTableDiv = document.createElement('div');
+        newClintMovementsRowTableDiv.className = 'clint_movements_row_class clint_movements_row_class_for_editing';
+
+        // Set the inner HTML of the new div with the new date and empty h2 and h3
+        newClintMovementsRowTableDiv.innerHTML = `
+            <div><h1>${newDate}</h1></div>
+            <div><h2></h2></div>
+            <div class="clint_movements_row_controller" style="cursor: pointer;"><h3>${referenceRow.querySelector('h3').innerText}</h3></div>
+        `;
+
+        // Insert the new div at the appropriate position
+        if (position === 'up') {
+            referenceRow.parentNode.insertBefore(newClintMovementsRowTableDiv, referenceRow);
+        } else if (position === 'down') {
+            referenceRow.parentNode.insertBefore(newClintMovementsRowTableDiv, referenceRow.nextSibling);
+        }
+
+
+
+        // Hide delete button div
+        let overlayLayer = document.querySelector('.black_overlay');
+        let deleteFlightRowDiv = document.getElementById('ensure_delete_or_edit_clint_movemnt_data_div');
+        deleteFlightRowDiv.style.transform = 'translate(-50%, -130vh)';
+
+        // Hide overlay layer with opacity transition
+        overlayLayer.style.opacity = '0';
+
+        // Remove overlay and edit/delete div from DOM after transition
+        setTimeout(() => {
+            document.body.removeChild(overlayLayer);
+        }, 300); // Match transition duration in CSS
+
+
+
+
+        // Get all elements with the class name 'flight_row_class'
+        let clintMovementsRowTableDiv = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+        // Loop through each 'flight_row_class' element
+        clintMovementsRowTableDiv.forEach(clintMovementsRowTableDiv => {
+
+            // Get all dynamically created elements with the class 'clint_movements_row_controller'
+            clintMovementsRowTableDiv.querySelectorAll('.clint_movements_row_controller').forEach(function (element) {
+                element.onclick = function (event) {
+                    clintMovementsRowCityNameControllerFunction(event, element);
+                };
+            });
+
+        });
+
+
+        /* Call a function to make sure if all package dates should be hidden or no */
+        ensureAllPackageDatesHiddenOrNo();
+
+
+
+
+        // Loop through each found div
+        allClintMovementsRows.forEach((clintMovementRow, index) => {
+            // Target the h4 element inside each found div
+            let h4Element = clintMovementRow.querySelector('h4');
+
+            // Check if the h4 element exists
+            if (h4Element) {
+                // Reset the innerText of the h4 element with a serial number starting from 1
+                h4Element.innerText = (index + 1).toString();
+            }
+        });
+
+
+
+        /* Call a function to highlight the Saturday and Sanday days */
+        highlightWeekendClintMovements();
+    }
+}
+
+// Helper function to decrement a date by one day
+function decrementDate(dateString) {
+    let dateParts = dateString.split(' ');
+    let day = parseInt(dateParts[0], 10);
+    let month = dateParts[1];
+
+    let newDate = new Date(); // Create a new Date object
+    newDate.setDate(day - 1); // Subtract one day
+    // Assuming the month doesn't change, return the new day with the same month
+    return `${newDate.getDate()} ${month}`;
+}
+// Helper function to increment a date by one day
+function incrementDate(dateString) {
+    let dateParts = dateString.split(' ');
+    let day = parseInt(dateParts[0], 10);
+    let month = dateParts[1];
+
+    let newDate = new Date(); // Create a new Date object
+    newDate.setDate(day + 1); // Add one day
+    // Assuming the month doesn't change, return the new day with the same month
+    return `${newDate.getDate()} ${month}`;
+}
+
+
+/* Function to update the available client visiting places based on the current existing visiting places */
+function filterUsedClintVisitingPlacesNames() {
+
+    // Select all divs with the class 'clint_movements_row_class_for_editing'
+    let allClintMovementsDivs = document.querySelectorAll('.clint_movements_row_class_for_editing');
+
+    // Initialize an array to store all sentences from the h2 elements inside these divs
+    let sentencesFromH2 = [];
+
+    // Loop through each 'clint_movements_row_class_for_editing' div
+    allClintMovementsDivs.forEach((div) => {
+        // Get the innerText of the h2 element inside the current div
+        let h2Text = div.querySelector('h2').innerText;
+
+        // Split the h2 text into individual sentences based on the '+' delimiter
+        let sentences = h2Text.split('+').map(sentence => sentence.trim());
+
+        // Add each sentence to the 'sentencesFromH2' array
+        sentencesFromH2 = sentencesFromH2.concat(sentences);
+    });
+
+    // Select the div containing all the p elements
+    let allClintMovementsPlacesPageDivsContainer = document.getElementById('all_clint_movements_places_page_divs_container');
+
+    // Select all p elements inside the container
+    let allPElements = allClintMovementsPlacesPageDivsContainer.querySelectorAll('p');
+
+    // Function to normalize spaces in a text (replace multiple spaces with a single space)
+    function normalizeSpaces(text) {
+        return text.replace(/\s+/g, ' ').trim();
+    }
+
+    // Loop through each p element
+    allPElements.forEach((pElement) => {
+        // Get the normalized innerText of the current p element
+        let pText = normalizeSpaces(pElement.innerText);
+
+        // Check if the normalized innerText of the p element exists in the 'sentencesFromH2' array
+        if (sentencesFromH2.some(sentence => normalizeSpaces(sentence) === pText)) {
+            // If the sentence exists, set the display of the p element to 'none' to hide it
+            pElement.style.display = 'none';
+
+        } else {
+            // If the sentence does not exist, set the display of the p element to 'block' to show it
+            pElement.style.display = 'block';
+        }
+    });
+}
+
+
+
+/* Function to highlight the first div inside the clint movements row that are in Saturday or Sunday */
+function highlightWeekendClintMovements() {
+    let monthNames = {
+        "يناير": 0,
+        "فبراير": 1,
+        "مارس": 2,
+        "أبريل": 3,
+        "مايو": 4,
+        "يونيو": 5,
+        "يوليو": 6,
+        "أغسطس": 7,
+        "سبتمبر": 8,
+        "أكتوبر": 9,
+        "نوفمبر": 10,
+        "ديسمبر": 11
+    };
+
+    // Target all divs with the class "clint_movements_row_class_for_editing"
+    let clintMovementDivs = document.querySelectorAll(".clint_movements_row_class_for_editing");
+
+    // Iterate through each found div
+    clintMovementDivs.forEach(div => {
+        let h1Element = div.querySelector("h1");
+        let h3Element = div.querySelector("h3");
+
+        if (h1Element && h3Element) {
+            // Extract date in Arabic format
+            let dateText = h1Element.innerText.trim(); // Example: "2 مايو" or "10 يوليو"
+            let [day, monthName] = dateText.split(" ");
+            let dayNumber = parseInt(day, 10);
+            let monthNumber = monthNames[monthName];
+
+            if (!isNaN(dayNumber) && monthNumber !== undefined) {
+                // Create a new Date object using the extracted day and month
+                let date = new Date();
+                date.setDate(dayNumber);
+                date.setMonth(monthNumber);
+
+                // Check if the day is Saturday or Sunday
+                let dayOfWeek = date.getDay(); // 0 = Sunday, 6 = Saturday
+                if ((dayOfWeek === 0 || dayOfWeek === 6) && h3Element.innerText.includes('بونشاك')) {
+                    // Find the first div inside the target .clint_movements_row_class_for_editing div
+                    let firstChildDiv = div.querySelector("div:first-child");
+
+                    if (firstChildDiv) {
+                        // Change the background color of the first child div
+                        // Masure the color '' matches the reseting color functionaity inside the 'downloadPdfWithCurrentUserCodeName' function
+                        firstChildDiv.style.backgroundColor = "rgb(190, 0, 0)";
+                        firstChildDiv.style.color = "white";
+                    }
+                }
+            }
+        }
+    });
+}
+
+
+
+
+
+/* Up All Functions For Clint Movements Data Up */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Function to open choosing pdf file name box */
+openPdfDownloadBox = function () {
+
+    if (document.getElementById('package_user_code_name_for_later_import_reference_p_id').innerText !== '' && document.getElementById('downloaded_pdf_clint_data_page').style.display !== 'none') {
+        let packageUserCodeNameForLaterImportReferenceP = document.getElementById('package_user_code_name_for_later_import_reference_p_id').innerText;
+        document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id').innerText = `استخدم كود صاحب البكج ${packageUserCodeNameForLaterImportReferenceP}`;
+        document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id').style.backgroundColor = 'rgb(85, 127, 137)';
+
+    } else {
+        document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id').innerText = 'تأكد من إدخال معلومات العميل';
+        document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id').style.backgroundColor = 'rgb(190, 0, 0)';
+
+    }
+
+    // Create overlay layer
+    let overlayLayer = document.createElement('div');
+    overlayLayer.className = 'black_overlay';
+    document.body.appendChild(overlayLayer);
+
+
+    // Show overlay layer with smooth opacity transition
+    setTimeout(() => {
+        overlayLayer.style.opacity = '1'; // Delayed opacity transition for smooth appearance
+
+        // Slide to the center of the screen
+        document.getElementById('name_pdf_file_div').style.transform = 'translate(-50%, -50%)';
+    }, 100);
+
+
+
+
+    // Event listener to close overlay and delete box div on click outside
+    overlayLayer.onclick = () => {
+        // Hide delete box options div
+        document.getElementById('name_pdf_file_div').style.transform = 'translate(-50%, -130vh)';
+
+        // Hide overlay layer with opacity transition
+        overlayLayer.style.opacity = '0';
+
+        // Remove overlay and delete box div from DOM after transition
+        setTimeout(() => {
+            document.body.removeChild(overlayLayer);
+        }, 300); // Match transition duration in CSS
+    };
+};
+
+// Updated function using .then()
+downloadPdfWithCurrentUserCodeName = function () {
+    if (document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id').style.backgroundColor !== 'rgb(190, 0, 0)') {
+
+        let formPromise = Promise.resolve(); // Default to a resolved promise
+
+        // Only call submitForm if 'existingDataStatus' is equal to "newData"
+        if (websiteUserUniqueNumber === "newUniqueNumber") {
+            handleUserPackageUniqueNumber(document.getElementById('website_users_name_input_id').value, 'insert');
+        }
+
+
+        playSoundEffect('success');
+        document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id').style.pointerEvents = 'none';
+
+
+        document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id').innerText = 'جاري التحميل..';
+
+
+        let clintMovementDivs = document.querySelectorAll(".clint_movements_row_class_for_editing");
+
+        clintMovementDivs.forEach(clintMovementDiv => {
+            let childDivs = clintMovementDiv.querySelectorAll("div");
+            childDivs.forEach(childDiv => {
+                if (childDiv.style.backgroundColor !== "rgb(190, 0, 0)") {
+                    childDiv.style.backgroundColor = "white";
+                    childDiv.style.color = "black";
+                }
+            });
+        });
+
+
+        // Ensure 'handleUserPackageUniqueNumber' function that is called above to completes first, then call the sendDataToSupabase
+        formPromise
+            .then(() => {
+                sendDataToSupabase();
+            })
+            .then(() => {
+                const userCodeNameAsPdfDownloadedFIleName = document.getElementById('package_user_code_name_for_later_import_reference_p_id').innerText;
+                downloadPdfWithCustomName(userCodeNameAsPdfDownloadedFIleName);
+            });
+    }
+};
+
+/* Download the pdf file with the given name */
+downloadPdfWithCustomName = async function (pdfName) {
+    let { jsPDF } = window.jspdf;
+
+    // Function to capture a canvas of a given section
+    let captureCanvas = async function (section, scale) {
+        try {
+            // Ensure resources are loaded and elements are visible before capturing
+            await new Promise(resolve => setTimeout(resolve, 500)); // Increase the wait to 500ms
+
+            let canvas = await html2canvas(section, {
+                scale: scale,
+                backgroundColor: 'white',
+                scrollY: 0,
+                useCORS: true, // Ensure cross-origin images are loaded correctly
+                logging: false // Disable logging to improve speed
+            });
+            return canvas;
+        } catch (error) {
+        }
+    };
+
+    // Ensure the downloaded_pdf_clint_movements_data_page section has a consistent aspect ratio
+    let adjustClintMovementsCanvas = function (canvas) {
+        let pdfWidth = 210; // A4 width in mm
+        let pdfHeight = 297; // A4 height in mm
+        let scaleFactor = canvas.width / pdfWidth;
+
+        // Calculate the minimum required height in pixels for the A4 page
+        let minHeight = pdfHeight * scaleFactor;
+
+        // If the canvas is shorter than the minimum height, pad it with empty space
+        if (canvas.height < minHeight) {
+            let paddedCanvas = document.createElement('canvas');
+            paddedCanvas.width = canvas.width;
+            paddedCanvas.height = minHeight;
+
+            let context = paddedCanvas.getContext('2d');
+            context.fillStyle = '#ffffff'; // Set background color to white
+            context.fillRect(0, 0, paddedCanvas.width, paddedCanvas.height);
+            context.drawImage(canvas, 0, 0);
+
+            return paddedCanvas;
+        }
+
+        return canvas;
+    };
+
+    // Show all elements with the class name before checking visibility
+    let images = document.querySelectorAll('.inserted_package_data_section_page_image_class');
+    images.forEach(img => {
+        img.style.display = 'inline';
+    });
+
+
+
+    // Hide the company name image and show the importatnt noted page in the end of the pdf file
+    document.getElementById('downloaded_pdf_important_notes_data_page').style.display = 'block';
+    document.getElementById('inserted_company_name_image_position_div').style.display = 'none';
+
+
+
+    /* Show All The Important Notes Divs Before Downloading The PDF */
+    // Select all divs with the given class name
+    const notesDivs = document.querySelectorAll('.Important_notes_for_each_pdf_section_div_class');
+    // Loop through each and set display to 'block'
+    notesDivs.forEach(div => {
+        div.style.display = 'block';
+    });
+
+
+
+
+
+
+
+
+
+
+    /* Code Hiding Text For Sky Global Company PDF Style */
+    // Get the input element
+    const clientInput = document.getElementById('clint_company_name_input_id');
+
+    // Check if input exists
+    if (clientInput) {
+        // Get the value of the input
+        const clientValue = clientInput.value.trim();
+
+        // Select all elements with the target class
+        const elementsToHide = document.querySelectorAll('.hide_for_sky_global');
+
+        // Check if the value matches "سكاي جلوبال"
+        if (clientValue === 'سكاي جلوبال') {
+
+            // Loop and hide each one
+            elementsToHide.forEach(el => {
+                el.style.display = 'none';
+            });
+
+
+        } else {
+
+            // Loop and hide each one
+            elementsToHide.forEach(el => {
+                el.style.display = 'block';
+            });
+
+
+            /* Set the display value of the following element to flex (because it will be 'blcok' because of the above code) */
+            document.getElementById('pdf_section_title_div_usuful_notes_id').style.display = 'flex';
+        }
+    }
+
+
+
+
+
+    // Define the sections we want to include
+    let sectionsToInclude = [
+        'downloaded_pdf_clint_data_page',
+        'downloaded_pdf_flight_data_page',
+        'downloaded_pdf_hotel_data_page',
+        'downloaded_pdf_package_including_data_page',
+        'downloaded_pdf_clint_movements_data_page',
+        'downloaded_pdf_important_notes_data_page' // Always include important notes as the last page
+    ];
+
+
+
+
+
+    // Get all h6 elements inside .pdf_section_title_div_class
+    const h6Elements = document.querySelectorAll('.pdf_section_title_div_class h6');
+    const divElements = document.querySelectorAll('.inserted_main_row_color_class');
+    const imgElements = document.querySelectorAll('.inserted_package_data_section_page_image_class');
+
+
+    /* Change the pdf colors in case a Special Company is choosen */
+    if (document.getElementById('clint_company_name_input_id').value === 'مغادر') {
+
+        // Change to white text on blue background
+        h6Elements.forEach(h6 => {
+            h6.style.backgroundColor = 'rgb(214, 156, 57)'; // Google blue background
+            h6.style.color = 'white';
+        });
+
+
+        // Change to white text on blue background
+        divElements.forEach(div => {
+            div.style.backgroundColor = 'rgb(5, 52, 90)'; // Google blue background
+            div.style.color = 'white';
+        });
+
+
+
+
+        // Remove class from all elements with class "pdf_section_title_div_class"
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_h6_class');
+        });
+        document.querySelectorAll('.inserted_main_row_color_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_div_class');
+        });
+        document.querySelectorAll('.special_package_including_data_background_color_text').forEach(p => {
+            p.style.background = 'rgb(85, 127, 137)';
+        });
+        // Remove class from elements with specified IDs
+        document.getElementById('package_clint_code_number_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('welcome_pdf_first_page_image_id')?.classList.remove('no_right_padding_for_vid_design_img_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.textAlign = 'left';
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.float = 'left';
+        document.getElementById('package_clint_code_number_p_id').style.textAlign = 'right';
+        document.getElementById('package_clint_code_number_p_id').style.float = 'right';
+
+
+
+        /* Show all icons elements */
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(section => {
+            section.querySelectorAll('ion-icon').forEach(icon => {
+                icon.style.display = '';
+            });
+        });
+
+
+        /* Hide the clint deposit noted p element */
+        if (document.getElementById('vid_clint_deposit_note_p_id')) {
+            document.getElementById('vid_clint_deposit_note_p_id').style.display = 'none';
+        }
+
+
+
+        // Change to white text on blue background
+        imgElements.forEach(img => {
+            img.src = 'moghader-middle-pdf-image.jpg'; // Google blue background
+        });
+
+
+        document.getElementById('welcome_pdf_first_page_image_id').src = 'خلفية-الشركات/مغادر.jpg';
+        /* document.getElementById('inserted_package_important_notes_data_section_page_image_id').src = 'moghader-last-pdf-image.jpg'; */
+
+
+        document.getElementById('package_clint_code_number_p_id').style.display = 'block';
+
+
+
+
+        /* Change the pdf colors in case a Special Company is choosen */
+    } else if (document.getElementById('clint_company_name_input_id').value === 'فيد') {
+
+        // Add class to all elements with class "pdf_section_title_div_class"
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(div => {
+            div.classList.add('no_right_padding_for_vid_design_h6_class');
+        });
+        document.querySelectorAll('.inserted_main_row_color_class').forEach(div => {
+            div.classList.add('no_right_padding_for_vid_design_div_class');
+        });
+        document.querySelectorAll('.special_package_including_data_background_color_text').forEach(p => {
+            p.style.background = 'rgb(99, 37, 35)';
+        });
+        // Add class to elements with specified IDs
+        document.getElementById('package_clint_code_number_p_id')?.classList.add('no_right_padding_for_vid_design_p_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id')?.classList.add('no_right_padding_for_vid_design_p_class');
+        document.getElementById('welcome_pdf_first_page_image_id')?.classList.add('no_right_padding_for_vid_design_img_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.textAlign = 'right';
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.float = 'right';
+        document.getElementById('package_clint_code_number_p_id').style.textAlign = 'left';
+        document.getElementById('package_clint_code_number_p_id').style.float = 'left';
+
+
+        /* Show all icons elements */
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(section => {
+            section.querySelectorAll('ion-icon').forEach(icon => {
+                icon.style.display = '';
+            });
+        });
+
+
+
+        /* Show the clint deposit noted p element */
+        if (document.getElementById('vid_clint_deposit_note_p_id')) {
+            document.getElementById('vid_clint_deposit_note_p_id').style.display = 'block';
+        }
+
+
+
+        // Change to white text on blue background
+        imgElements.forEach(img => {
+            img.src = 'vid-middle-pdf-image.jpg'; // Google blue background
+        });
+
+
+        document.getElementById('welcome_pdf_first_page_image_id').src = 'خلفية-الشركات/فيد.jpg';
+        /* document.getElementById('inserted_package_important_notes_data_section_page_image_id').src = 'vid-last-pdf-image.jpg'; */
+
+        document.getElementById('package_clint_code_number_p_id').style.display = 'block';
+
+
+
+
+
+    } else if (document.getElementById('clint_company_name_input_id').value === 'سكاي جلوبال') {
+
+        // Change to white text on blue background
+        h6Elements.forEach(h6 => {
+            h6.style.backgroundColor = 'rgb(4, 52, 90)'; // Google blue background
+            h6.style.color = 'white'; // Google blue background
+        });
+
+        // Change to white text on blue background
+        divElements.forEach(div => {
+            div.style.backgroundColor = 'rgb(120, 202, 223)'; // Google blue background
+            div.style.color = 'black'; // Google blue background
+        });
+
+
+
+
+        // Remove class from all elements with class "pdf_section_title_div_class"
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_h6_class');
+        });
+        document.querySelectorAll('.inserted_main_row_color_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_div_class');
+        });
+        document.querySelectorAll('.special_package_including_data_background_color_text').forEach(p => {
+            p.style.background = 'rgb(4, 52, 90)';
+        });
+        // Remove class from elements with specified IDs
+        document.getElementById('package_clint_code_number_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('welcome_pdf_first_page_image_id')?.classList.remove('no_right_padding_for_vid_design_img_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.textAlign = 'left';
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.float = 'left';
+        document.getElementById('package_clint_code_number_p_id').style.textAlign = 'right';
+        document.getElementById('package_clint_code_number_p_id').style.float = 'right';
+
+
+        /* Hide all icons elements */
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(section => {
+            section.querySelectorAll('ion-icon').forEach(icon => {
+                icon.style.display = 'none';
+            });
+        });
+
+
+
+        /* Hide the clint deposit noted p element */
+        if (document.getElementById('vid_clint_deposit_note_p_id')) {
+            document.getElementById('vid_clint_deposit_note_p_id').style.display = 'none';
+        }
+
+
+
+        // Change to white text on blue background
+        imgElements.forEach(img => {
+            img.src = 'sky-global-middle-pdf-image.jpg'; // Google blue background
+        });
+
+
+        document.getElementById('welcome_pdf_first_page_image_id').src = 'خلفية-الشركات/سكاي-جلوبال.jpg';
+        /* document.getElementById('inserted_package_important_notes_data_section_page_image_id').src = 'ajwaa-sky-last-pdf-image.jpg'; */
+
+
+        document.getElementById('package_clint_code_number_p_id').style.display = 'block';
+
+
+
+
+
+
+
+    } else if (document.getElementById('clint_company_name_input_id').value === 'ترافل جت') {
+
+        // Change to white text on blue background
+        h6Elements.forEach(h6 => {
+            h6.style.backgroundColor = 'rgb(232, 107, 41)'; // Google blue background
+            h6.style.color = 'white'; // Google blue background
+        });
+
+        // Change to white text on blue background
+        divElements.forEach(div => {
+            div.style.backgroundColor = 'rgb(5, 150, 152)'; // Google blue background
+            div.style.color = 'white'; // Google blue background
+        });
+
+
+
+
+        // Remove class from all elements with class "pdf_section_title_div_class"
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_h6_class');
+        });
+        document.querySelectorAll('.inserted_main_row_color_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_div_class');
+        });
+        document.querySelectorAll('.special_package_including_data_background_color_text').forEach(p => {
+            p.style.background = 'rgb(5, 150, 152)';
+        });
+        // Remove class from elements with specified IDs
+        document.getElementById('package_clint_code_number_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('welcome_pdf_first_page_image_id')?.classList.remove('no_right_padding_for_vid_design_img_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.textAlign = 'left';
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.float = 'left';
+        document.getElementById('package_clint_code_number_p_id').style.textAlign = 'right';
+        document.getElementById('package_clint_code_number_p_id').style.float = 'right';
+
+
+        /* Hide all icons elements */
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(section => {
+            section.querySelectorAll('ion-icon').forEach(icon => {
+                icon.style.display = '';
+            });
+        });
+
+
+
+        /* Hide the clint deposit noted p element */
+        if (document.getElementById('vid_clint_deposit_note_p_id')) {
+            document.getElementById('vid_clint_deposit_note_p_id').style.display = 'none';
+        }
+
+
+
+        // Change to white text on blue background
+        imgElements.forEach(img => {
+            img.src = 'travel-gate-middle-pdf-image.jpg'; // Google blue background
+        });
+
+
+        document.getElementById('welcome_pdf_first_page_image_id').src = 'خلفية-الشركات/ترافل-جت.jpg';
+        /* document.getElementById('inserted_package_important_notes_data_section_page_image_id').src = 'travel-gate-last-pdf-image.jpg'; */
+
+
+        document.getElementById('package_clint_code_number_p_id').style.display = 'block';
+
+
+
+
+
+    } else if (document.getElementById('clint_company_name_input_id').value === 'الهدف') {
+
+        // Change to white text on blue background
+        h6Elements.forEach(h6 => {
+            h6.style.backgroundColor = 'rgb(196, 17, 47)'; // Google blue background
+            h6.style.color = 'white'; // Google blue background
+        });
+
+        // Change to white text on blue background
+        divElements.forEach(div => {
+            div.style.backgroundColor = 'rgb(13, 63, 46)'; // Google blue background
+            div.style.color = 'white'; // Google blue background
+        });
+
+
+
+
+        // Remove class from all elements with class "pdf_section_title_div_class"
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_h6_class');
+        });
+        document.querySelectorAll('.inserted_main_row_color_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_div_class');
+        });
+        document.querySelectorAll('.special_package_including_data_background_color_text').forEach(p => {
+            p.style.background = 'rgb(196, 17, 47)';
+        });
+        // Remove class from elements with specified IDs
+        document.getElementById('package_clint_code_number_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('welcome_pdf_first_page_image_id')?.classList.remove('no_right_padding_for_vid_design_img_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.textAlign = 'left';
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.float = 'left';
+        document.getElementById('package_clint_code_number_p_id').style.textAlign = 'right';
+        document.getElementById('package_clint_code_number_p_id').style.float = 'right';
+
+
+        /* Hide all icons elements */
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(section => {
+            section.querySelectorAll('ion-icon').forEach(icon => {
+                icon.style.display = '';
+            });
+        });
+
+
+
+        /* Hide the clint deposit noted p element */
+        if (document.getElementById('vid_clint_deposit_note_p_id')) {
+            document.getElementById('vid_clint_deposit_note_p_id').style.display = 'none';
+        }
+
+
+
+        // Change to white text on blue background
+        imgElements.forEach(img => {
+            img.src = 'alhadf-middle-pdf-image.jpg'; // Google blue background
+        });
+
+
+        document.getElementById('welcome_pdf_first_page_image_id').src = 'خلفية-الشركات/الهدف.jpg';
+        /* document.getElementById('inserted_package_important_notes_data_section_page_image_id').src = 'travel-gate-last-pdf-image.jpg'; */
+
+
+        document.getElementById('package_clint_code_number_p_id').style.display = 'block';
+
+
+
+
+    } else if (document.getElementById('clint_company_name_input_id').value === '') {
+
+        // Change to white text on blue background
+        h6Elements.forEach(h6 => {
+            h6.style.backgroundColor = 'rgb(161, 45, 10)'; // Google blue background
+            h6.style.color = 'white';
+        });
+
+        // Change to white text on blue background
+        divElements.forEach(div => {
+            div.style.backgroundColor = 'rgb(207, 83, 21)'; // Google blue background
+            div.style.color = 'white';
+        });
+
+
+
+        // Remove class from all elements with class "pdf_section_title_div_class"
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_h6_class');
+        });
+        document.querySelectorAll('.inserted_main_row_color_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_div_class');
+        });
+        document.querySelectorAll('.special_package_including_data_background_color_text').forEach(p => {
+            p.style.background = 'rgb(85, 127, 137)';
+        });
+        // Remove class from elements with specified IDs
+        document.getElementById('package_clint_code_number_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('welcome_pdf_first_page_image_id')?.classList.remove('no_right_padding_for_vid_design_img_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.textAlign = 'left';
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.float = 'left';
+        document.getElementById('package_clint_code_number_p_id').style.textAlign = 'right';
+        document.getElementById('package_clint_code_number_p_id').style.float = 'right';
+
+
+        /* Show all icons elements */
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(section => {
+            section.querySelectorAll('ion-icon').forEach(icon => {
+                icon.style.display = '';
+            });
+        });
+
+
+        /* Hide the clint deposit noted p element */
+        if (document.getElementById('vid_clint_deposit_note_p_id')) {
+            document.getElementById('vid_clint_deposit_note_p_id').style.display = 'none';
+        }
+
+
+
+        // Change to white text on blue background
+        imgElements.forEach(img => {
+            img.src = 'middle-pdf-image.jpg'; // Google blue background
+        });
+
+
+        document.getElementById('welcome_pdf_first_page_image_id').src = 'first-pdf-image.jpg';
+        /* document.getElementById('inserted_package_important_notes_data_section_page_image_id').src = 'last-pdf-image.jpg'; */
+
+        document.getElementById('package_clint_code_number_p_id').style.display = 'none';
+
+
+
+    } else {
+
+        // Change to white text on blue background
+        h6Elements.forEach(h6 => {
+            h6.style.backgroundColor = 'rgb(161, 45, 10)';
+        });
+
+        // Change to white text on blue background
+        divElements.forEach(div => {
+            div.style.backgroundColor = 'rgb(207, 83, 21)';
+        });
+
+
+
+        // Remove class from all elements with class "pdf_section_title_div_class"
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_h6_class');
+        });
+        document.querySelectorAll('.inserted_main_row_color_class').forEach(div => {
+            div.classList.remove('no_right_padding_for_vid_design_div_class');
+        });
+        document.querySelectorAll('.special_package_including_data_background_color_text').forEach(p => {
+            p.style.background = 'rgb(85, 127, 137)';
+        });
+        // Remove class from elements with specified IDs
+        document.getElementById('package_clint_code_number_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id')?.classList.remove('no_right_padding_for_vid_design_p_class');
+        document.getElementById('welcome_pdf_first_page_image_id')?.classList.remove('no_right_padding_for_vid_design_img_class');
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.textAlign = 'left';
+        document.getElementById('package_user_code_name_for_later_import_reference_p_id').style.float = 'left';
+        document.getElementById('package_clint_code_number_p_id').style.textAlign = 'right';
+        document.getElementById('package_clint_code_number_p_id').style.float = 'right';
+
+
+        /* Show all icons elements */
+        document.querySelectorAll('.pdf_section_title_div_class').forEach(section => {
+            section.querySelectorAll('ion-icon').forEach(icon => {
+                icon.style.display = '';
+            });
+        });
+
+
+
+        /* Hide the clint deposit noted p element */
+        if (document.getElementById('vid_clint_deposit_note_p_id')) {
+            document.getElementById('vid_clint_deposit_note_p_id').style.display = 'none';
+        }
+
+
+
+        // Change to white text on blue background
+        imgElements.forEach(img => {
+            img.src = 'middle-pdf-image.jpg';
+        });
+
+        document.getElementById('welcome_pdf_first_page_image_id').src = `خلفية-الشركات/${document.getElementById('clint_company_name_input_id').value.replace(/\s+/g, '-')}.jpg`;
+        /* document.getElementById('inserted_package_important_notes_data_section_page_image_id').src = 'last-pdf-image.jpg'; */
+
+        document.getElementById('package_clint_code_number_p_id').style.display = 'none';
+    }
+
+
+
+
+
+    // Check which sections are visible
+    let visibleSections = [];
+
+    sectionsToInclude.forEach(sectionId => {
+        let section = document.getElementById(sectionId);
+        if (section && isVisible(section)) {
+            visibleSections.push(section);
+        }
+    });
+
+    if (visibleSections.length === 0) {
+        return;
+    }
+
+    let scale = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 3.3 : 3.3;
+    let pdf = null;
+    let pdfWidth = 210;
+
+    // Always keep important notes and clint movements as separate pages
+    let importantNotesSection = visibleSections.find(s => s.id === 'downloaded_pdf_important_notes_data_page');
+    let clintMovementsSection = visibleSections.find(s => s.id === 'downloaded_pdf_clint_movements_data_page');
+    let regularSections = visibleSections.filter(s =>
+        s.id !== 'downloaded_pdf_important_notes_data_page' &&
+        s.id !== 'downloaded_pdf_clint_movements_data_page'
+    );
+
+    // Helper: merge up to two canvases vertically into one
+    let mergeCanvasesVertically = function (topCanvas, bottomCanvas) {
+        let mergedWidth = Math.max(topCanvas.width, bottomCanvas ? bottomCanvas.width : 0);
+        let mergedHeight = topCanvas.height + (bottomCanvas ? bottomCanvas.height : 0);
+        let merged = document.createElement('canvas');
+        merged.width = mergedWidth;
+        merged.height = mergedHeight;
+        let ctx = merged.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, merged.width, merged.height);
+        // Center each canvas horizontally if widths differ
+        let topX = Math.floor((mergedWidth - topCanvas.width) / 2);
+        ctx.drawImage(topCanvas, topX, 0);
+        if (bottomCanvas) {
+            let bottomX = Math.floor((mergedWidth - bottomCanvas.width) / 2);
+            ctx.drawImage(bottomCanvas, bottomX, topCanvas.height);
+        }
+        return merged;
+    };
+
+    // Process regular sections in pairs (2 per PDF page)
+    for (let i = 0; i < regularSections.length; i += 2) {
+        let firstSection = regularSections[i];
+        let secondSection = regularSections[i + 1];
+
+        let firstCanvas = await captureCanvas(firstSection, scale);
+        if (!firstCanvas) { continue; }
+
+        let secondCanvas = null;
+        if (secondSection) {
+            secondCanvas = await captureCanvas(secondSection, scale);
+        }
+
+        let combinedCanvas = mergeCanvasesVertically(firstCanvas, secondCanvas);
+        let pdfHeight = (combinedCanvas.height * pdfWidth) / combinedCanvas.width;
+        if (!pdf) {
+            pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+        } else {
+            pdf.addPage([pdfWidth, pdfHeight]);
+        }
+        let imgData = combinedCanvas.toDataURL('image/jpeg', 0.9);
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
+    }
+
+    // Add Clint Movements as a separate page (if visible)
+    if (clintMovementsSection) {
+        let movementsCanvas = await captureCanvas(clintMovementsSection, scale);
+        if (movementsCanvas) {
+            movementsCanvas = adjustClintMovementsCanvas(movementsCanvas);
+            let pdfHeight = (movementsCanvas.height * pdfWidth) / movementsCanvas.width;
+            if (!pdf) {
+                pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+            } else {
+                pdf.addPage([pdfWidth, pdfHeight]);
+            }
+            let imgData = movementsCanvas.toDataURL('image/jpeg', 0.9);
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
+        }
+    }
+
+    // Add Important Notes as the final separate page (if visible)
+    if (importantNotesSection) {
+        let notesCanvas = await captureCanvas(importantNotesSection, scale);
+        if (notesCanvas) {
+            let pdfHeight = (notesCanvas.height * pdfWidth) / notesCanvas.width;
+            if (!pdf) {
+                pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+            } else {
+                pdf.addPage([pdfWidth, pdfHeight]);
+            }
+            let imgData = notesCanvas.toDataURL('image/jpeg', 0.9);
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
+        }
+    }
+
+    if (pdf) {
+        pdf.save(pdfName);
+    }
+
+    // Hide all images with class name of 'inserted_package_data_section_page_image_class'
+    images.forEach(img => {
+        img.style.display = 'none';
+    });
+
+
+    /* Hide All The Important Notes Divs After Downloading The PDF */
+    // Loop through each and set display to 'none'
+    notesDivs.forEach(div => {
+        div.style.display = 'none';
+    });
+
+
+    // Hide the the last pdf page (thank you page)
+    document.getElementById('downloaded_pdf_important_notes_data_page').style.display = 'none';
+
+
+
+    // The important notes page is now handled by sectionsToInclude, so no need to explicitly hide it here.
+    document.getElementById('inserted_company_name_image_position_div').style.display = 'flex';
+
+
+    // Play a sound effect
+    playSoundEffect('success');
+
+
+
+    let packageUserCodeNameForLaterImportReferenceP = document.getElementById('package_user_code_name_for_later_import_reference_p_id').innerText;
+    document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id').innerText = `استخدم كود صاحب البكج ${packageUserCodeNameForLaterImportReferenceP}`;
+
+
+    /* Call a function to highlight the Saturday and Sanday days */
+    highlightWeekendClintMovements();
+};
+
+// Helper function to check if an element is visible
+function isVisible(element) {
+    return element.offsetWidth > 0 && element.offsetHeight > 0;
+}
+
+
+
+/* Function to check if the clint movements data div is visible or no */
+downloadOnlyClintMovementsDataFunction = function () {
+
+    if (document.getElementById('downloaded_pdf_clint_movements_data_page').style.display !== 'none') {
+
+
+        let formPromise = Promise.resolve(); // Default to a resolved promise
+
+        // Only call submitForm if 'existingDataStatus' is equal to "newData"
+        if (websiteUserUniqueNumber === "newUniqueNumber") {
+            handleUserPackageUniqueNumber(document.getElementById('website_users_name_input_id').value, 'insert');
+        }
+
+
+
+        // Play a sound effect
+        playSoundEffect('success');
+
+
+        document.getElementById('download_clint_movements_data_p_id').style.backgroundColor = 'rgb(0, 46, 57)';
+        document.getElementById('download_clint_movements_data_p_id').innerText = 'جاري التحميل..';
+
+
+        // Ensure 'handleUserPackageUniqueNumber' function that is called above to completes first, then call the sendDataToSupabase
+        formPromise
+            .then(() => {
+                sendDataToSupabase();
+            })
+            .then(() => {
+                /* Call a function to dowwnload the clint movements data */
+                runDownloadOnlyClintMovementsDataFunction();
+            });
+
+
+    } else {
+
+        // Play a sound effect
+        playSoundEffect('error');
+
+        document.getElementById('download_clint_movements_data_p_id').style.backgroundColor = 'red';
+        // Set the background color of the submit icon back to default color
+        setTimeout(() => {
+            document.getElementById('download_clint_movements_data_p_id').style.backgroundColor = 'rgb(0, 87, 116)';
+        }, 500);
+
+    }
+
+}
+
+/* Function to download only trtthe clint movements data */
+runDownloadOnlyClintMovementsDataFunction = async function () {
+
+    // Target all divs with the class "clint_movements_row_class_for_editing"
+    let clintMovementDivs = document.querySelectorAll(".clint_movements_row_class_for_editing");
+
+    // Iterate through each found clint_movements_row_class_for_editing div
+    clintMovementDivs.forEach(clintMovementDiv => {
+        // Target all child divs inside the current clint_movements_row_class_for_editing div
+        let childDivs = clintMovementDiv.querySelectorAll("div");
+
+        // Set background to white and color to black for each child div
+        childDivs.forEach(childDiv => {
+            childDiv.style.backgroundColor = "white";
+            childDiv.style.color = "black";
+        });
+    });
+
+
+
+    let { jsPDF } = window.jspdf;
+
+    // Function to capture a canvas of the Clint Movements section
+    let captureCanvas = async function (section, scale) {
+        try {
+            // Ensure resources are loaded and elements are visible before capturing
+            await new Promise(resolve => setTimeout(resolve, 500)); // Increase the wait to 500ms
+
+            let canvas = await html2canvas(section, {
+                scale: scale,
+                backgroundColor: 'white',
+                scrollY: 0,
+                useCORS: true, // Ensure cross-origin images are loaded correctly
+                logging: false // Disable logging to improve speed
+            });
+            return canvas;
+        } catch (error) {
+        }
+    };
+
+    // Function to adjust the canvas of the Clint Movements page
+    let adjustClintMovementsCanvas = function (canvas) {
+        let pdfWidth = 210; // A4 width in mm
+        let pdfHeight = 297; // A4 height in mm
+        let scaleFactor = canvas.width / pdfWidth;
+
+        // Calculate the minimum required height in pixels for the A4 page
+        let minHeight = pdfHeight * scaleFactor;
+
+        // If the canvas is shorter than the minimum height, pad it with empty space
+        if (canvas.height < minHeight) {
+            let paddedCanvas = document.createElement('canvas');
+            paddedCanvas.width = canvas.width;
+            paddedCanvas.height = minHeight;
+
+            let context = paddedCanvas.getContext('2d');
+            context.fillStyle = '#ffffff'; // Set background color to white
+            context.fillRect(0, 0, paddedCanvas.width, paddedCanvas.height);
+            context.drawImage(canvas, 0, 0);
+
+            return paddedCanvas;
+        }
+
+        return canvas;
+    };
+
+
+    let pdfName = '';
+
+
+    if (document.getElementById('clint_company_name_input_id').value !== '') {
+
+        // Replace spaces with dashes in the company name
+        let companyNameWithoutSpaces = document.getElementById('clint_company_name_input_id').value.replace(/\s+/g, '-');
+
+        // in case there is campany name then set the company name as the first pdf image inside the 'downloaded_pdf_clint_movements_data_page'
+        document.getElementById('downloaded_pdf_clint_movements_data_page').querySelector('img').src = `خلفية-الشركات/${companyNameWithoutSpaces}.jpg`;
+
+
+        /* Name the clint movements data pdf file */
+        pdfName = `جدول تحركات ${document.getElementById('clint_company_name_input_id').value} ${document.getElementById('store_google_sheet_package_raw_user_with_no_riv_for_later_reference_when_importing').innerText}`;
+
+    } else {
+
+        // in case there is no campany name then set the default first pdf image to the first image inside the 'downloaded_pdf_clint_movements_data_page'
+        document.getElementById('downloaded_pdf_clint_movements_data_page').querySelector('img').src = 'first-pdf-image.jpg';
+
+
+        /* Name the clint movements data pdf file */
+        pdfName = `جدول تحركات بكج ${document.getElementById('store_google_sheet_package_raw_user_with_no_riv_for_later_reference_when_importing').innerText}`;
+    }
+
+
+    // Find the first image:
+    document.getElementById('downloaded_pdf_clint_movements_data_page').querySelector('img').style.display = 'inline';
+
+    // Find the second image:
+    document.getElementById('downloaded_pdf_clint_movements_data_page').querySelectorAll('img')[1].src = 'last-pdf-image.jpg';
+    document.getElementById('downloaded_pdf_clint_movements_data_page').querySelectorAll('img')[1].style.display = 'inline';
+
+
+
+
+    /* Show All The Important Notes Divs Before Downloading The PDF */
+    // Select all divs with the given class name
+    const notesDivs = document.querySelectorAll('.Important_notes_for_each_pdf_section_div_class');
+    // Loop through each and set display to 'block'
+    notesDivs.forEach(div => {
+        div.style.display = 'block';
+    });
+
+
+
+
+
+    // Show the Clint Movements section and hide the company name image
+    let section = document.getElementById('downloaded_pdf_clint_movements_data_page');
+
+    // Check if the section is visible
+    if (!section || !isVisible(section)) {
+        return;
+    }
+
+    let scale = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 3.3 : 3.3;
+
+    // Capture the Clint Movements section as a canvas
+    let combinedCanvas = await captureCanvas(section, scale);
+    if (!combinedCanvas) {
+        return;
+    }
+
+    // Adjust the captured canvas to fit the A4 size
+    combinedCanvas = adjustClintMovementsCanvas(combinedCanvas);
+
+    let pdf = new jsPDF('p', 'mm', 'a4');
+    let pdfWidth = 210;
+    let pdfHeight = (combinedCanvas.height * pdfWidth) / combinedCanvas.width;
+
+    // Add the captured Clint Movements section to the PDF
+    pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+    let imgData = combinedCanvas.toDataURL('image/jpeg', 0.9);
+    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
+
+    // Save the PDF with the custom name
+    pdf.save(pdfName);
+
+
+
+    /* Hide All The Important Notes Divs After Downloading The PDF */
+    // Loop through each and set display to 'none'
+    notesDivs.forEach(div => {
+        div.style.display = 'none';
+    });
+
+
+    // Play a sound effect
+    playSoundEffect('success');
+
+
+    /* Call a function to highlight the Saturday and Sunday days */
+    highlightWeekendClintMovements();
+
+
+    document.getElementById('download_clint_movements_data_p_id').style.backgroundColor = 'rgb(0, 87, 116)';
+    document.getElementById('download_clint_movements_data_p_id').innerText = 'تحميل التحركات';
+
+
+    // Reset all clint movements images src to the default image 'middle-pdf-image.jpg'
+    document.getElementById('downloaded_pdf_clint_movements_data_page').querySelector('img').style.display = 'none';
+    document.getElementById('downloaded_pdf_clint_movements_data_page').querySelectorAll('img')[1].style.display = 'none';
+
+    document.getElementById('downloaded_pdf_clint_movements_data_page').querySelector('img').src = 'middle-pdf-image.jpg';
+    document.getElementById('downloaded_pdf_clint_movements_data_page').querySelectorAll('img')[1].src = 'middle-pdf-image.jpg';
+};

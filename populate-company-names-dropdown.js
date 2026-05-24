@@ -36,27 +36,21 @@ function populateCompanyNamesDropdown() {
     });
 }
 
-// Function to populate hotel names dropdown from all-company-and-hotel-names.js
-function populateHotelNamesDropdown() {
-    // Get the container div
+// Function to populate hotel names dropdown.
+// Pass a names array (strings) to use DB data; omit to fall back to the static hotelNames array.
+function populateHotelNamesDropdown(names) {
     const container = document.querySelector('#all_hotel_names_dropdown .company_names_options_dropdown_class');
-    
+
     if (!container) {
         console.error('Hotel names dropdown container not found');
         return;
     }
 
-    // Clear any existing content
+    const source = names || (typeof hotelNames !== 'undefined' ? hotelNames : []);
+
     container.innerHTML = '';
 
-    // Check if hotelNames array exists
-    if (typeof hotelNames === 'undefined') {
-        console.error('hotelNames array not found. Make sure all-company-and-hotel-names.js is loaded.');
-        return;
-    }
-
-    // Loop through hotelNames and create h3 elements
-    hotelNames.forEach(hotel => {
+    source.forEach(hotel => {
         const h3 = document.createElement('h3');
         h3.textContent = hotel;
         container.appendChild(h3);
