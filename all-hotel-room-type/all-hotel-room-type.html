@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أنواع غرف الفنادق</title>
+  <link rel="stylesheet" href="all-hotel-room-type.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-title">🏨 إدارة أنواع غرف الفنادق</div>
+  <div class="header-controls">
+    <input type="text" id="search" class="search-input" placeholder="بحث عن فندق...">
+  </div>
+</header>
+
+<div class="main-content">
+  <div id="hotels-count" class="hotels-count hidden"></div>
+
+  <div id="loading-state" class="loading-state">جاري التحميل...</div>
+  <div id="hotels-list" class="hidden"></div>
+</div>
+
+<!-- Room Type Add/Edit Modal -->
+<div id="room-modal" class="modal-overlay hidden" onclick="closeRoomModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-title" id="room-modal-title">إضافة نوع غرفة</div>
+
+    <div class="form-group">
+      <label class="form-label">🇬🇧 الاسم بالإنجليزية</label>
+      <input type="text" id="room-en-input" class="form-input ltr" placeholder="e.g. 1 Bedroom Villa" dir="ltr">
+    </div>
+    <div class="form-group">
+      <label class="form-label">🇸🇦 الاسم بالعربية</label>
+      <input type="text" id="room-ar-input" class="form-input rtl" placeholder="مثال: فيلا من غرفة نوم واحدة">
+    </div>
+
+    <div class="room-pair-preview">
+      <div>
+        <div class="preview-label" style="direction:ltr;text-align:left">English Preview</div>
+        <div id="preview-en" class="preview-en">...</div>
+      </div>
+      <div>
+        <div class="preview-label" style="text-align:right">معاينة العربية</div>
+        <div id="preview-ar" class="preview-ar">...</div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeRoomModal()">إلغاء</button>
+      <button class="btn btn-primary" id="room-modal-save">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div id="confirm-modal" class="modal-overlay hidden" onclick="closeConfirmModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-title">⚠️ تأكيد الحذف</div>
+    <p class="confirm-message" id="confirm-message"></p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeConfirmModal()">إلغاء</button>
+      <button class="btn btn-danger" id="confirm-yes">حذف</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="all-hotel-room-type.js"></script>
+</body>
+</html>

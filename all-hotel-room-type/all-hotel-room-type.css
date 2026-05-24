@@ -1,0 +1,586 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Arial, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a1a;
+  direction: rtl;
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #1565c0;
+  color: white;
+  padding: 12px 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.header-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.3px;
+}
+
+.header-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  direction: rtl;
+  outline: none;
+  background: white;
+  color: #1a1a1a;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s;
+  gap: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  opacity: 0.75;
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: #43a047;
+  color: white;
+}
+
+.btn-secondary {
+  background: #757575;
+  color: white;
+}
+
+.btn-danger {
+  background: #e53935;
+  color: white;
+}
+
+.btn-edit {
+  background: #1976d2;
+  color: white;
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.btn-delete {
+  background: #e53935;
+  color: white;
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.btn-sm {
+  padding: 4px 6px;
+  font-size: 11px;
+  border-radius: 5px;
+  line-height: 1.3;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  padding: 10px 10px 80px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.hotels-count {
+  font-size: 12px;
+  color: #777;
+  padding: 4px 2px 8px;
+  text-align: center;
+}
+
+/* ===== SEED BANNER ===== */
+.seed-banner {
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.seed-banner p {
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: #5d4037;
+  line-height: 1.5;
+}
+
+/* ===== HOTEL CARD ===== */
+.hotel-card {
+  background: white;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
+  overflow: hidden;
+}
+
+.hotel-header {
+  display: flex;
+  align-items: center;
+  padding: 11px 12px;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  background: #e3f2fd;
+  transition: background 0.15s;
+}
+
+.hotel-header:active {
+  background: #bbdefb;
+}
+
+.hotel-toggle {
+  font-size: 10px;
+  color: #1565c0;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.hotel-toggle.open {
+  transform: rotate(180deg);
+}
+
+.hotel-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.hotel-name-text {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0d47a1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hotel-location-text {
+  font-size: 11px;
+  color: #777;
+  margin-top: 1px;
+}
+
+.hotel-header-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* ===== HOTEL BODY ===== */
+.hotel-body {
+  display: none;
+  padding: 0 10px 10px;
+}
+
+.hotel-body.open {
+  display: block;
+}
+
+.room-list {
+  margin-bottom: 8px;
+}
+
+.room-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 60px;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 8px;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background 0.1s;
+}
+
+.room-item:last-child {
+  border-bottom: none;
+}
+
+.room-item:hover {
+  background: #fafafa;
+}
+
+.room-en-name {
+  font-size: 12px;
+  color: #1565c0;
+  direction: ltr;
+  text-align: left;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.room-ar-name {
+  font-size: 12px;
+  color: #2e7d32;
+  text-align: right;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.room-item-actions {
+  display: flex;
+  width: fit-content;
+  gap: 3px;
+  justify-self: self-end;
+  flex-shrink: 0;
+}
+
+.no-rooms {
+  text-align: center;
+  color: #bbb;
+  font-size: 12px;
+  padding: 12px;
+}
+
+.add-room-btn {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background: #e8f5e9;
+  border: 1.5px dashed #66bb6a;
+  border-radius: 6px;
+  color: #388e3c;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.add-room-btn:active {
+  background: #c8e6c9;
+}
+
+/* ===== MODALS ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 18px 18px 0 0;
+  padding: 20px 16px 32px;
+  width: 100%;
+  max-width: 520px;
+  animation: slideUp 0.22s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 12px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  background: #fafafa;
+}
+
+.form-input:focus {
+  border-color: #1565c0;
+  background: white;
+}
+
+.form-input.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+.form-input.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Room pair preview */
+.room-pair-preview {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.preview-label {
+  font-size: 10px;
+  color: #999;
+  margin-bottom: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.preview-en {
+  font-size: 13px;
+  color: #1565c0;
+  direction: ltr;
+  text-align: left;
+  min-height: 18px;
+  word-break: break-word;
+}
+
+.preview-ar {
+  font-size: 13px;
+  color: #2e7d32;
+  text-align: right;
+  min-height: 18px;
+  word-break: break-word;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.confirm-message {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.5;
+  padding: 6px 0 4px;
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: #323232;
+  color: white;
+  padding: 10px 22px;
+  border-radius: 24px;
+  font-size: 13px;
+  z-index: 400;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+  white-space: nowrap;
+  max-width: 90vw;
+  text-align: center;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===== LOADING / EMPTY ===== */
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 50px 20px;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.error-state {
+  text-align: center;
+  padding: 20px;
+  color: #c62828;
+  font-size: 13px;
+  line-height: 1.6;
+  background: #fff5f5;
+  border-radius: 10px;
+  border: 1px solid #ffcdd2;
+}
+
+.error-state code {
+  display: block;
+  background: #1a1a1a;
+  color: #80cbc4;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  text-align: left;
+  direction: ltr;
+  margin-top: 10px;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ===== INLINE EDITING ===== */
+.room-inline-input {
+  display: block;
+  width: 100%;
+  padding: 5px 7px;
+  border: 1.5px solid #1565c0;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: inherit;
+  outline: none;
+  background: white;
+  line-height: 1.4;
+  resize: none;
+  overflow: hidden;
+  min-height: 28px;
+  align-self: start;
+}
+
+.room-inline-input.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+.room-inline-input.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.room-inline-input:focus {
+  border-color: #0d47a1;
+  box-shadow: 0 0 0 2px rgba(21, 101, 192, 0.15);
+}
+
+.room-item.editing {
+  background: #e3f2fd;
+  align-items: start;
+}
+
+.new-room-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 56px;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 8px;
+  background: #f1f8e9;
+  border-top: 1.5px dashed #66bb6a;
+}
+
+.new-room-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: stretch;
+}
+
+/* ===== DRAG & DROP ===== */
+.drag-handle {
+  cursor: grab;
+  color: #bbb;
+  font-size: 16px;
+  padding: 3px 4px;
+  line-height: 1;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.drag-handle:hover  { color: #1565c0; background: rgba(21,101,192,0.08); }
+.drag-handle:active { cursor: grabbing; color: #1565c0; }
+
+.drag-placeholder {
+  opacity: 0.25;
+  background: #e3f2fd !important;
+  border-radius: 4px;
+}
+
+body.is-dragging,
+body.is-dragging * { cursor: grabbing !important; user-select: none; -webkit-user-select: none; }
+
+.hidden {
+  display: none !important;
+}
+
+@media (min-width: 520px) {
+  .modal-overlay {
+    align-items: center;
+    padding: 16px;
+  }
+
+  .modal-box {
+    border-radius: 16px;
+    padding-bottom: 20px;
+  }
+}
