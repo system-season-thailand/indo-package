@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>أنواع غرف الفنادق</title>
+  <title>اسماء الغرف في اندونيسيا</title>
   <link rel="stylesheet" href="all-hotel-room-type.css">
 </head>
 <body>
 
 <header class="app-header">
-  <div class="header-title">🏨 إدارة أنواع غرف الفنادق</div>
+  <div class="header-top">
+    <div class="header-title">🏨 إدارة اسماء غرف الفنادق (اندونيسيا)</div>
+    <button class="lock-btn" id="lock-btn" onclick="toggleLock()" title="تسجيل الدخول كمشرف"></button>
+  </div>
   <div class="header-controls">
     <input type="text" id="search" class="search-input" placeholder="بحث عن فندق...">
   </div>
@@ -62,6 +65,25 @@
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeConfirmModal()">إلغاء</button>
       <button class="btn btn-danger" id="confirm-yes">حذف</button>
+    </div>
+  </div>
+</div>
+
+<!-- Password Modal -->
+<div id="password-modal" class="modal-overlay hidden" onclick="closePasswordModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-title">🔐 دخول المشرف</div>
+    <div class="form-group">
+      <label class="form-label">كلمة المرور</label>
+      <input type="password" id="password-input" class="form-input ltr"
+             placeholder="أدخل كلمة المرور"
+             dir="ltr"
+             onkeydown="if(event.key==='Enter') submitPassword()">
+    </div>
+    <div id="password-error" class="password-error hidden">❌ كلمة المرور غير صحيحة</div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closePasswordModal()">إلغاء</button>
+      <button class="btn btn-primary" onclick="submitPassword()">دخول</button>
     </div>
   </div>
 </div>

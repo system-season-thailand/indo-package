@@ -25,11 +25,52 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
 .header-title {
   font-size: 16px;
   font-weight: 700;
-  margin-bottom: 10px;
   letter-spacing: 0.3px;
+}
+
+.lock-btn {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  color: white;
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lock-btn:hover  { background: rgba(255, 255, 255, 0.28); }
+.lock-btn:active { transform: scale(0.93); }
+
+.lock-btn.unlocked {
+  background: rgba(67, 160, 71, 0.45);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.password-error {
+  color: #c62828;
+  font-size: 13px;
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: #fff5f5;
+  border: 1px solid #ffcdd2;
+  border-radius: 6px;
 }
 
 .header-controls {

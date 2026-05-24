@@ -23,6 +23,7 @@ let currentFilter = '';
 let openHotelIds = new Set();
 let confirmCallback = null;
 let _drag = null;
+let isAdmin = false;   // false = staff (Arabic-only edit), true = full access
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 async function init() {
@@ -95,7 +96,8 @@ function renderHotels() {
 }
 
 function renderHotelCard(hotel) {
-  const loc = [hotel.hotel_location, hotel.hotel_area].filter(Boolean).join(' · ');
+  const loc      = [hotel.hotel_location, hotel.hotel_area].filter(Boolean).join(' · ');
+  const addClick = isAdmin ? ` onclick="showAddRow(${hotel.id})"` : '';
 
   return `
     <div class="hotel-card" id="hcard-${hotel.id}">
@@ -111,7 +113,7 @@ function renderHotelCard(hotel) {
           ${renderRoomRows(hotel)}
         </div>
         <div class="add-room-row" id="add-row-${hotel.id}">
-          <button class="add-room-btn" onclick="showAddRow(${hotel.id})">+ إضافة نوع غرفة</button>
+          <button class="add-room-btn"${addClick}>+ إضافة نوع غرفة</button>
         </div>
       </div>
     </div>`;
@@ -126,21 +128,28 @@ function renderRoomRows(hotel) {
 }
 
 function roomViewRow(hotelId, index, rt) {
+  // Identical HTML for both roles — handlers are omitted (not the elements) for staff.
+  const enClick  = isAdmin ? ` onclick="editRoomRow(${hotelId},${index},'en')"` : '';
+  const dragDown = isAdmin ? ` onpointerdown="startDrag(event,${hotelId},${index})"` : '';
+  const delClick = isAdmin ? ` onclick="confirmDeleteRoom(${hotelId},${index})"` : '';
   return `
     <div class="room-item" id="room-row-${hotelId}-${index}">
       <span class="room-ar-name" onclick="editRoomRow(${hotelId},${index},'ar')">${esc(rt.ar || '—')}</span>
-      <span class="room-en-name" onclick="editRoomRow(${hotelId},${index},'en')">${esc(rt.en || '—')}</span>
+      <span class="room-en-name"${enClick}>${esc(rt.en || '—')}</span>
       <div class="room-item-actions">
-        <span class="drag-handle" onpointerdown="startDrag(event,${hotelId},${index})" title="اسحب لإعادة الترتيب">⠿</span>
-        <button class="btn btn-delete" onclick="confirmDeleteRoom(${hotelId},${index})" title="حذف">🗑️</button>
+        <span class="drag-handle"${dragDown} title="اسحب لإعادة الترتيب">⠿</span>
+        <button class="btn btn-delete"${delClick} title="حذف">🗑️</button>
       </div>
     </div>`;
 }
 
 function roomEditRow(hotelId, index) {
+  // Same layout for both roles — English textarea is readonly for staff.
+  const enReadonly = isAdmin ? '' : ' readonly';
+  const delClick   = isAdmin ? ` onclick="confirmDeleteRoom(${hotelId},${index})"` : '';
   return `
     <div class="room-item editing" id="room-row-${hotelId}-${index}">
-    <textarea class="room-inline-input rtl"
+      <textarea class="room-inline-input rtl"
                 id="edit-ar-${hotelId}-${index}"
                 placeholder="الاسم بالعربية"
                 rows="1"
@@ -151,12 +160,12 @@ function roomEditRow(hotelId, index) {
                 id="edit-en-${hotelId}-${index}"
                 placeholder="English name"
                 dir="ltr"
-                rows="1"
+                rows="1"${enReadonly}
                 oninput="syncEditHeights(${hotelId},${index})"
                 onblur="handleEditBlur(${hotelId},${index})"
                 onkeydown="handleEditKey(event,${hotelId},${index})"></textarea>
       <div class="room-item-actions">
-        <button class="btn btn-delete" onclick="confirmDeleteRoom(${hotelId},${index})" title="حذف">🗑️</button>
+        <button class="btn btn-delete"${delClick} title="حذف">🗑️</button>
       </div>
     </div>`;
 }
@@ -219,18 +228,25 @@ function handleEditBlur(hotelId, index) {
 }
 
 async function commitEdit(hotelId, index) {
-  const enInput = document.getElementById('edit-en-' + hotelId + '-' + index);
   const arInput = document.getElementById('edit-ar-' + hotelId + '-' + index);
-  if (!enInput || !arInput) return; // row already committed or cancelled
-
-  const newEn = enInput.value.trim();
-  const newAr = arInput.value.trim();
+  if (!arInput) return; // row already committed or cancelled
 
   const hotel = hotels.find(h => h.id === hotelId);
   if (!hotel) return;
 
   const rooms = [...(hotel.room_types || [])];
   const old = rooms[index] || {};
+
+  const newAr = arInput.value.trim();
+  let newEn;
+
+  if (isAdmin) {
+    const enInput = document.getElementById('edit-en-' + hotelId + '-' + index);
+    if (!enInput) return;
+    newEn = enInput.value.trim();
+  } else {
+    newEn = old.en || ''; // staff: preserve existing English text
+  }
 
   // No change — just restore view
   if (newEn === (old.en || '') && newAr === (old.ar || '')) {
@@ -514,6 +530,49 @@ function esc(str) {
   return String(str)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;')
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ─── Access control ───────────────────────────────────────────────────────────
+function toggleLock() {
+  if (isAdmin) {
+    // Lock: drop back to staff mode
+    isAdmin = false;
+    const btn = document.getElementById('lock-btn');
+    btn.textContent = '🔒';
+    btn.classList.remove('unlocked');
+    renderHotels();
+    showToast('تم تسجيل الخروج — وضع الموظف');
+  } else {
+    openPasswordModal();
+  }
+}
+
+function openPasswordModal() {
+  document.getElementById('password-input').value = '';
+  document.getElementById('password-error').classList.add('hidden');
+  document.getElementById('password-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('password-input').focus(), 60);
+}
+
+function closePasswordModal() {
+  document.getElementById('password-modal').classList.add('hidden');
+}
+
+function submitPassword() {
+  const val = document.getElementById('password-input').value;
+  if (val === 'bndr123') {
+    isAdmin = true;
+    const btn = document.getElementById('lock-btn');
+    btn.textContent = '🔓';
+    btn.classList.add('unlocked');
+    closePasswordModal();
+    renderHotels();
+    showToast('مرحباً — صلاحيات كاملة ✓');
+  } else {
+    document.getElementById('password-error').classList.remove('hidden');
+    document.getElementById('password-input').value = '';
+    document.getElementById('password-input').focus();
+  }
 }
 
 // ─── Boot ─────────────────────────────────────────────────────────────────────
