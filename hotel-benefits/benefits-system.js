@@ -15,16 +15,19 @@
     let allHotelsModalRefs = null;
     let allHotelsHideTimer = null;
 
-    const resolvedHotelNames = (() => {
-        if (typeof hotelNames !== "undefined" && Array.isArray(hotelNames)) return hotelNames;
-        if (Array.isArray(window.hotelNames)) return window.hotelNames;
-        return [];
-    })();
+    let allowedHotelNames = [];
+    let allowedHotelNameSet = new Set();
 
-    const allowedHotelNames = Array.isArray(resolvedHotelNames)
-        ? [...new Set(resolvedHotelNames.map(name => String(name).trim()).filter(Boolean))]
-        : [];
-    const allowedHotelNameSet = new Set(allowedHotelNames);
+    async function loadHotelNamesFromDB(client) {
+        const { data, error } = await client
+            .from("indo_hotel_room_types")
+            .select("hotel_name, hotel_location")
+            .order("hotel_location", { ascending: true })
+            .order("hotel_name", { ascending: true });
+        if (error || !data) return;
+        allowedHotelNames = [...new Set(data.map(r => String(r.hotel_name || "").trim()).filter(Boolean))];
+        allowedHotelNameSet = new Set(allowedHotelNames);
+    }
 
     function toTitleCase(text) {
         return String(text || "")
@@ -152,7 +155,7 @@
         let expiredText = "";
 
         normalized.forEach(line => {
-            const bookingMatch = line.match(/^stay\s*period\s*:\s*(.+)$/i);
+            const bookingMatch = line.match(/^booking\s*period\s*:\s*(.+)$/i);
             if (bookingMatch) {
                 bookingPeriodText = bookingMatch[1].trim();
                 return;
@@ -560,13 +563,13 @@
 
             const bookingPeriodTitle = document.createElement("div");
             bookingPeriodTitle.className = "benefits-title booking-period-title";
-            bookingPeriodTitle.innerHTML = '<i class="fas fa-calendar-alt"></i> STAY PERIOD';
+            bookingPeriodTitle.innerHTML = '<i class="fas fa-calendar-alt"></i> BOOKING PERIOD';
             benefitsSection.appendChild(bookingPeriodTitle);
 
             const bookingPeriodInput = document.createElement("input");
             bookingPeriodInput.type = "text";
             bookingPeriodInput.className = "booking-period-input";
-            bookingPeriodInput.placeholder = "Stay Period";
+            bookingPeriodInput.placeholder = "Booking Period";
             bookingPeriodInput.value = bookingPeriodText;
             attachLiveTitleCase(bookingPeriodInput);
             benefitsSection.appendChild(bookingPeriodInput);
@@ -655,7 +658,7 @@
             });
             const bookingPeriodInput = card.querySelector(".booking-period-input");
             const bookingPeriodText = (bookingPeriodInput?.value || "").trim();
-            if (bookingPeriodText) benefits.push(`Stay Period: ${bookingPeriodText}`);
+            if (bookingPeriodText) benefits.push(`Booking Period: ${bookingPeriodText}`);
             const expiredInput = card.querySelector(".expired-info-input");
             const expiredText = (expiredInput?.value || "").trim();
             if (expiredText) benefits.push(`Expired: ${expiredText}`);
@@ -861,12 +864,7 @@
         showToast(`"${selectedName}" added. Edit benefits then save.`, false);
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        if (!allowedHotelNames.length) {
-            document.getElementById("hotelsContainer").innerHTML = '<div class="loading-overlay" style="color:#b91c1c"><i class="fas fa-exclamation-triangle"></i> hotelNames array is not loaded. Check script path.</div>';
-            return;
-        }
-
+    document.addEventListener("DOMContentLoaded", async () => {
         try {
             sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         } catch (e) {
@@ -876,6 +874,7 @@
         if (!sbClient) {
             document.getElementById("hotelsContainer").innerHTML = '<div class="loading-overlay">❗ Supabase credentials are invalid or missing.</div>';
         } else {
+            await loadHotelNamesFromDB(sbClient);
             loadAndRenderHotels();
         }
 
