@@ -1,8 +1,8 @@
 /* Function to prevent the page refresh by mistake */
-window.addEventListener('beforeunload', function (event) {
+/* window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-});
+}); */
 
 
 
@@ -1179,14 +1179,6 @@ changeInsertHotelDataSystem = function () {
         document.getElementById('hotel_room_type_description_input_id').value = '';
         document.getElementById('hotel_room_type_description_input_id_2').value = '';
 
-        document.getElementById('hotel_room_contain_pool_input_id').value = '';
-        document.getElementById('hotel_room_contain_pool_input_id_2').value = '';
-
-
-        document.getElementById('hotel_room_view_input_id').value = '';
-        document.getElementById('hotel_room_view_input_id_2').value = '';
-
-
         document.getElementById('hotel_special_room_request_input_id').value = '';
         document.getElementById('hotel_special_room_request_input_id_2').value = '';
 
@@ -1245,14 +1237,6 @@ changeInsertHotelDataSystem = function () {
         document.getElementById('hotel_name_input_id').value = '';
         document.getElementById('hotel_room_type_description_input_id').value = '';
         document.getElementById('hotel_room_type_description_input_id_2').value = '';
-
-        document.getElementById('hotel_room_contain_pool_input_id').value = '';
-        document.getElementById('hotel_room_contain_pool_input_id_2').value = '';
-
-
-        document.getElementById('hotel_room_view_input_id').value = '';
-        document.getElementById('hotel_room_view_input_id_2').value = '';
-
 
         document.getElementById('hotel_special_room_request_input_id').value = '';
         document.getElementById('hotel_special_room_request_input_id_2').value = '';
@@ -1372,10 +1356,6 @@ function createH3ElementsForAvailableDates() {
                         document.getElementById('hotel_name_input_id').value = '';
                         document.getElementById('hotel_room_type_description_input_id').value = '';
                         document.getElementById('hotel_room_type_description_input_id_2').value = '';
-                        document.getElementById('hotel_room_contain_pool_input_id').value = '';
-                        document.getElementById('hotel_room_contain_pool_input_id_2').value = '';
-                        document.getElementById('hotel_room_view_input_id').value = '';
-                        document.getElementById('hotel_room_view_input_id_2').value = '';
                         document.getElementById('hotel_special_room_request_input_id').value = '';
                         document.getElementById('hotel_special_room_request_input_id_2').value = '';
                         document.getElementById('hotel_room_extra_info_textarea_id').value = '';
@@ -1537,13 +1517,11 @@ function setupHotelNamesDropdown() {
                 // Set the title message dynamically to only include the hotel name
                 document.getElementById("important_hotel_info_message_title_id").innerText = `[${option.textContent}]`;
 
-                // Loop through messageInfo_p properties and create <p> elements
-                Object.keys(foundHotel).forEach(key => {
-                    if (key.startsWith("messageInfo_p")) {
-                        const pElement = document.createElement("p");
-                        pElement.textContent = foundHotel[key];
-                        document.getElementById("hotelDetails").appendChild(pElement);
-                    }
+                // Loop through messages array and create <p> elements
+                (foundHotel.messages || []).forEach(msg => {
+                    const pElement = document.createElement("p");
+                    pElement.textContent = msg;
+                    document.getElementById("hotelDetails").appendChild(pElement);
                 });
 
                 // Show the modal smoothly
@@ -1560,12 +1538,6 @@ function setupHotelNamesDropdown() {
             if (option.textContent !== currentHotelName) {
                 document.getElementById('hotel_room_type_description_input_id').value = '';
                 document.getElementById('hotel_room_type_description_input_id_2').value = '';
-
-                document.getElementById('hotel_room_contain_pool_input_id').value = '';
-                document.getElementById('hotel_room_contain_pool_input_id_2').value = '';
-
-                document.getElementById('hotel_room_view_input_id').value = '';
-                document.getElementById('hotel_room_view_input_id_2').value = '';
 
                 document.getElementById('hotel_special_room_request_input_id').value = '';
                 document.getElementById('hotel_special_room_request_input_id_2').value = '';
@@ -1734,81 +1706,12 @@ hotelStarsRateInputOptions.forEach(option => {
 
 
 
-/* Function to insert the hotel room view and including pool text */
-
-// Variable to track the last clicked input field
-let lastClickedPoolInput = null;
-
-// Add event listeners to track the last clicked input
-document.getElementById('hotel_room_contain_pool_input_id').addEventListener('click', function () {
-    lastClickedPoolInput = this;
-});
-
-document.getElementById('hotel_room_contain_pool_input_id_2').addEventListener('click', function () {
-    lastClickedPoolInput = this;
-});
-
-/* Dropdown airport line names functionality */
-// Get the options within the dropdown
-let hotelRoomContainPoolInputOptions = document.querySelectorAll('#hotel_room_contain_pool_dropdown h3');
-
-hotelRoomContainPoolInputOptions.forEach(option => {
-    option.addEventListener('click', () => {
-
-        // Play a sound effect
-        playSoundEffect('click');
-
-        if (lastClickedPoolInput) {
-            if (option.textContent === 'حذف') {
-                lastClickedPoolInput.value = ''; // Clear the input value if "حذف" is selected
-            } else {
-                lastClickedPoolInput.value = `with ${option.textContent}`; // Set the input value to the selected option
-            }
-        }
-
-        hideOverlay(); // Hide overlay after selection
-    });
-});
 
 
 
 
 
 
-// Variable to track the last clicked input field
-let lastClickedViewInput = null;
-
-// Add event listeners to track the last clicked input
-document.getElementById('hotel_room_view_input_id').addEventListener('click', function () {
-    lastClickedViewInput = this;
-});
-
-document.getElementById('hotel_room_view_input_id_2').addEventListener('click', function () {
-    lastClickedViewInput = this;
-});
-
-/* Dropdown airport line names functionality */
-// Get the options within the dropdown
-let hotelRoomViewInputOptions = document.querySelectorAll('#hotel_room_view_dropdown h3');
-
-hotelRoomViewInputOptions.forEach(option => {
-    option.addEventListener('click', () => {
-
-        // Play a sound effect
-        playSoundEffect('click');
-
-
-        if (lastClickedViewInput) {
-            if (option.textContent === 'حذف') {
-                lastClickedViewInput.value = ''; // Clear the input value if "حذف" is selected
-            } else {
-                lastClickedViewInput.value = `with ${option.textContent} View`; // Set the input value to the selected option
-            }
-        }
-
-        hideOverlay(); // Hide overlay after selection
-    });
-});
 
 
 
