@@ -1,33 +1,36 @@
-// Function to populate company names dropdown from all-company-and-hotel-names.js
-function populateCompanyNamesDropdown() {
-    // Get the container div
+async function populateCompanyNamesDropdown() {
     const container = document.querySelector('#company_names_dropdown .company_names_options_dropdown_class');
-    
+
     if (!container) {
         console.error('Company names dropdown container not found');
         return;
     }
 
-    // Clear any existing content
     container.innerHTML = '';
 
-    // Check if companyNames array exists
-    if (typeof companyNames === 'undefined') {
-        console.error('companyNames array not found. Make sure all-company-and-hotel-names.js is loaded.');
+    // Wait for the Supabase client to be ready
+    while (!window.supabase || typeof window.supabase.from !== 'function') {
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+
+    const { data, error } = await window.supabase
+        .from('all_company_names')
+        .select('name, company_by_value')
+        .order('id', { ascending: true });
+
+    if (error) {
+        console.error('Error fetching company names:', error);
         return;
     }
 
-    // Loop through companyNames and create h3 elements
-    companyNames.forEach(company => {
+    data.forEach(company => {
         const h3 = document.createElement('h3');
         h3.textContent = company.name;
 
-        // Add company_by_value attribute if it exists
         if (company.company_by_value) {
             h3.setAttribute('company_by_value', company.company_by_value);
         }
 
-        // Add red color style for "حذف" (delete)
         if (company.name === 'حذف') {
             h3.style.color = 'red';
         }
