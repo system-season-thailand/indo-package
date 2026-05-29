@@ -655,7 +655,7 @@ async function importContentForSelectedName(name) {
         }
 
 
-        
+
 
 
         // Hide the overlay
@@ -1460,6 +1460,11 @@ reActiveDragAndDropFunctionality = function (visiableDivIdName) {
         });
 
 
+
+        // Reset the drag-drop guard flag so the freshly-imported DOM re-registers its listener
+        // (the flag gets stored in the DB with the HTML and would otherwise block re-registration)
+        const _dropZoneForReset = document.getElementById('inserted_hotel_data_position_div');
+        if (_dropZoneForReset) delete _dropZoneForReset.dataset.hotelDragDropReady;
 
         // Call the function to set up drag-and-drop functionality
         createHotelDragAndDropMood();
