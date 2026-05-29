@@ -1,8 +1,8 @@
 /* Function to prevent the page refresh by mistake */
-/* window.addEventListener('beforeunload', function (event) {
+window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-}); */
+});
 
 
 
