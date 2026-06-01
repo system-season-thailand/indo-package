@@ -1,4 +1,4 @@
-﻿/* Function to prevent the page refresh by mistake */
+/* Function to prevent the page refresh by mistake */
 window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
@@ -3047,6 +3047,7 @@ hideAndShowFlightSectionFunction = function () {
 
     } else {
         document.getElementById('downloaded_pdf_flight_data_page').style.display = 'none';
+        document.getElementById('manually_add_flight_row_icon').style.display = 'block';
     }
 
 }
