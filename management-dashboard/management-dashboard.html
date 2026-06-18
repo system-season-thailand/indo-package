@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>سيزون ترافل · لوحة الإدارة</title>
+  <link rel="stylesheet" href="management-dashboard.css">
+</head>
+<body>
+
+  <!-- ============ Top command bar ============ -->
+  <header class="topbar" hidden>
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none">
+            <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z"
+                  stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-tag">لوحة الإدارة · عروض إندونيسيا</span>
+        </span>
+      </div>
+
+      <div class="topbar-spacer"></div>
+
+      <div class="topbar-meta">
+        <div class="role-badge" id="roleBadge" title="وضع الوصول الحالي — للإدارة فقط">—</div>
+        <div class="asof-box">
+          <span class="asof-label">محدّثة حتى</span>
+          <span class="asof" id="asof">—</span>
+        </div>
+        <div class="seg" id="periodControl" role="group" aria-label="الفترة الزمنية">
+          <button type="button" data-period="7">٧ أيام</button>
+          <button type="button" data-period="30" class="active">٣٠ يوم</button>
+          <button type="button" data-period="90">٩٠ يوم</button>
+          <button type="button" data-period="month">هذا الشهر</button>
+        </div>
+        <button type="button" class="logout-btn" id="logoutBtn" title="تسجيل الخروج">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5"/><path d="M5 12h11"/>
+          </svg>
+          خروج
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" hidden>
+
+    <!-- ============ Section navigation (tablet / mobile) ============ -->
+    <nav class="sec-nav" aria-label="التنقل بين الأقسام">
+      <div class="sec-nav-inner">
+        <a href="#" class="sec-nav-pill sec-nav-top" aria-label="للأعلى">↑</a>
+        <a href="#sec-overview"  class="sec-nav-pill">النظرة التنفيذية</a>
+        <a href="#sec-daily"     class="sec-nav-pill">العروض اليومية</a>
+        <a href="#sec-monthly"   class="sec-nav-pill">الاتجاه الشهري</a>
+        <a href="#sec-health"    class="sec-nav-pill">صحة الشركات</a>
+        <a href="#sec-companies" class="sec-nav-pill">ذكاء الشركات</a>
+        <a href="#sec-top"       class="sec-nav-pill">أفضل الشركات</a>
+        <a href="#sec-lost"      class="sec-nav-pill">المفقودات</a>
+        <a href="#sec-staff"     class="sec-nav-pill">الموظفون</a>
+        <a href="#sec-hotels"    class="sec-nav-pill">الفنادق</a>
+        <a href="#sec-alerts"    class="sec-nav-pill">التنبيهات</a>
+      </div>
+    </nav>
+
+    <!-- ============ 1 · Executive Overview ============ -->
+    <section class="sec" id="sec-overview" aria-labelledby="t-overview">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠١</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-overview">النظرة التنفيذية</h2>
+          <span class="sec-sub">لقطة الإدارة اللحظية — مستقلة عن الفترة المختارة</span>
+        </div>
+      </div>
+
+      <!-- headline management snapshot (always-on, lifetime/today) -->
+      <div class="headline-grid" id="headlineKpis"></div>
+
+      <div class="overview-grid">
+        <div class="card reveal" id="monthFeature"></div>
+        <div class="card reveal">
+          <h3 class="card-title"><span class="pip"></span>توزيع حالات العروض <span class="sec-sub">(حسب الفترة)</span></h3>
+          <div id="statusDonut"></div>
+        </div>
+      </div>
+
+      <h3 class="sub-label">تفاصيل حسب الفترة المختارة</h3>
+      <div class="kpi-grid" id="kpiGrid"></div>
+    </section>
+
+    <!-- ============ 2 · Daily Quotations ============ -->
+    <section class="sec" id="sec-daily" aria-labelledby="t-daily">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٢</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-daily">العروض اليومية</h2>
+          <span class="sec-sub">عدد عروض الأسعار المُنشأة يومياً ضمن الفترة</span>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div id="dailyChart"></div>
+        <div class="daily-stats" id="dailyStats"></div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · Monthly Trend ============ -->
+    <section class="sec" id="sec-monthly" aria-labelledby="t-monthly">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٣</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-monthly">الاتجاه الشهري</h2>
+          <span class="sec-sub">تطور النشاط عبر الأشهر</span>
+        </div>
+        <div class="sec-tools">
+          <span class="metric-label">القياس</span>
+          <div class="seg" id="monthlyMetric" role="group" aria-label="مقياس الاتجاه">
+            <button type="button" data-metric="count" class="active">عدد العروض</button>
+            <button type="button" data-metric="value">إجمالي القيمة</button>
+          </div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div id="monthlyChart"></div>
+        <p class="monthly-note" id="monthlyNote"></p>
+      </div>
+    </section>
+
+    <!-- ============ 4 · Company Health Score ============ -->
+    <section class="sec" id="sec-health" aria-labelledby="t-health">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٤</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-health">صحة الشركات</h2>
+          <span class="sec-sub">تصنيف كل عميل: بلاتيني · ذهبي · فضي · في خطر · مفقود</span>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div id="healthDist"></div>
+      </div>
+      <div class="card reveal" style="margin-top:16px">
+        <h3 class="card-title"><span class="pip"></span>تصنيف الشركات بالتفصيل</h3>
+        <div id="healthTable"></div>
+        <p class="health-legend" id="healthCriteria"></p>
+      </div>
+    </section>
+
+    <!-- ============ 5 · Companies Intelligence ============ -->
+    <section class="sec" id="sec-companies" aria-labelledby="t-companies">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٥</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-companies">ذكاء الشركات</h2>
+          <span class="sec-sub">الأفضل · المتعثرة · الجديدة</span>
+        </div>
+        <div class="sec-tools">
+          <input type="search" class="field" id="companySearch" placeholder="ابحث عن شركة…" aria-label="بحث عن شركة">
+        </div>
+      </div>
+
+      <div class="company-grid">
+        <div class="card reveal">
+          <h3 class="card-title"><span class="pip"></span>أفضل الشركات <span class="sec-sub">(حسب القيمة خلال الفترة)</span></h3>
+          <div id="bestCompanies"></div>
+        </div>
+        <div class="split-2">
+          <div class="card reveal">
+            <h3 class="card-title"><span class="pip"></span>شركات متعثرة أو اختفت</h3>
+            <div id="atRiskCompanies"></div>
+          </div>
+          <div class="card reveal">
+            <h3 class="card-title"><span class="pip"></span>شركات جديدة نشطة</h3>
+            <div id="newCompanies"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6 · Top Companies Lifetime ============ -->
+    <section class="sec" id="sec-top" aria-labelledby="t-top">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٦</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-top">أفضل الشركات — مقارنة زمنية</h2>
+          <span class="sec-sub">التاريخ الكامل · آخر ٩٠ يوم · هذا الشهر</span>
+        </div>
+      </div>
+      <div class="split-3">
+        <div class="card reveal">
+          <h3 class="card-title"><span class="pip"></span>الأفضل تاريخياً <span class="sec-sub">(كل الفترة)</span></h3>
+          <div id="topLifetime"></div>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title"><span class="pip"></span>الأفضل خلال ٩٠ يوم</h3>
+          <div id="top90"></div>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title"><span class="pip"></span>الأفضل هذا الشهر</h3>
+          <div id="topMonthCompanies"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7 · Lost Companies Center ============ -->
+    <section class="sec" id="sec-lost" aria-labelledby="t-lost">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٧</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-lost">مركز الشركات المفقودة</h2>
+          <span class="sec-sub">عملاء انقطعوا أكثر من ٦٠ يوماً — مرشّحون لإعادة الكسب</span>
+        </div>
+        <div class="sec-tools">
+          <span class="metric-label">قيمة مقدّرة مفقودة</span>
+          <span class="lost-total" id="lostTotal">—</span>
+        </div>
+      </div>
+      <div class="lost-grid" id="lostCenter"></div>
+    </section>
+
+    <!-- ============ 8 · Staff Performance ============ -->
+    <section class="sec" id="sec-staff" aria-labelledby="t-staff">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٨</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-staff">أداء الموظفين</h2>
+          <span class="sec-sub">اضغط على رأس العمود للترتيب</span>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div id="staffTable"></div>
+      </div>
+    </section>
+
+    <!-- ============ 9 · Hotels & Destinations ============ -->
+    <section class="sec" id="sec-hotels" aria-labelledby="t-hotels">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٩</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-hotels">الفنادق والوجهات</h2>
+          <span class="sec-sub">الأكثر طلباً ضمن الفترة</span>
+        </div>
+      </div>
+      <div class="split-2">
+        <div class="card reveal">
+          <h3 class="card-title"><span class="pip"></span>الفنادق الأكثر طلباً</h3>
+          <div id="topHotels"></div>
+        </div>
+        <div class="card reveal">
+          <h3 class="card-title"><span class="pip"></span>الوجهات والمناطق الأكثر طلباً</h3>
+          <div id="topRegions"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 10 · Management Alerts ============ -->
+    <section class="sec" id="sec-alerts" aria-labelledby="t-alerts">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">١٠</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-alerts">تنبيهات الإدارة</h2>
+          <span class="sec-sub">شركات وعروض وموظفون يحتاجون متابعة</span>
+        </div>
+        <div class="sec-tools">
+          <span class="metric-label">تنبيهات مفتوحة</span>
+          <span class="alert-badge" id="alertCount">٠</span>
+        </div>
+      </div>
+      <div class="alerts-wrap" id="alertsList"></div>
+    </section>
+
+    <footer class="foot">
+      بيانات حقيقية · Supabase · جدول <code>indo_all_package</code> — مخصّصة للإدارة فقط.
+    </footer>
+  </main>
+
+  <!-- admin login gate (shown when there is no valid management session) -->
+  <div class="login-gate" id="loginGate" hidden></div>
+
+  <!-- access gate screen (shown only when a non-management role opens the page) -->
+  <div class="access-denied" id="accessDenied" hidden></div>
+
+  <!-- company timeline panel (filled on demand when a company is clicked) -->
+  <div class="company-modal" id="companyModal" hidden></div>
+
+  <!-- data loading overlay (visible until Supabase fetch completes) -->
+  <div class="mgmt-loading-overlay" id="mgmt-loading">
+    <div class="mgmt-spinner"></div>
+    <p class="mgmt-loading-text">جارٍ تحميل البيانات…</p>
+  </div>
+
+  <!-- error overlay (shown on fetch / parse failure) -->
+  <div class="mgmt-error-overlay" id="mgmt-load-error" hidden>
+    <div class="mgmt-error-card">
+      <svg class="err-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.5" fill="currentColor" stroke="none"/>
+      </svg>
+      <p class="err-title">تعذّر تحميل البيانات</p>
+      <p class="err-msg"></p>
+      <button type="button" onclick="location.reload()">إعادة المحاولة</button>
+    </div>
+  </div>
+
+  <!-- Supabase client (read-only adapter uses this to fetch indo_all_package) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <!-- Adapter fetches real data, sets window.MGMT_DATA, then loads dashboard.js -->
+  <script src="management-dashboard-supabase-adapter.js"></script>
+</body>
+</html>
