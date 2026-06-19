@@ -315,6 +315,23 @@
     <footer class="foot">
       لوحة إدارية · بيانات حقيقية من Supabase · قراءة فقط · مخصّصة للإدارة فقط.
     </footer>
+
+    <!-- mobile section navigation — fixed bottom bar, visible ≤768px -->
+    <nav class="mobile-sec-nav" id="mobileSecNav" aria-label="قائمة الأقسام">
+      <a href="#sec-overview"><span class="nav-idx">٠١</span><span class="nav-label">عامة</span></a>
+      <a href="#sec-compare"><span class="nav-idx">٠٢</span><span class="nav-label">مقارنة</span></a>
+      <a href="#sec-daily"><span class="nav-idx">٠٣</span><span class="nav-label">يومي</span></a>
+      <a href="#sec-monthly"><span class="nav-idx">٠٤</span><span class="nav-label">شهري</span></a>
+      <a href="#sec-demand"><span class="nav-idx">٠٥</span><span class="nav-label">الطلب</span></a>
+      <a href="#sec-health"><span class="nav-idx">٠٦</span><span class="nav-label">الصحة</span></a>
+      <a href="#sec-companies"><span class="nav-idx">٠٧</span><span class="nav-label">الشركات</span></a>
+      <a href="#sec-top"><span class="nav-idx">٠٨</span><span class="nav-label">الأفضل</span></a>
+      <a href="#sec-lost"><span class="nav-idx">٠٩</span><span class="nav-label">المفقود</span></a>
+      <a href="#sec-heatmap"><span class="nav-idx">١٠</span><span class="nav-label">الخريطة</span></a>
+      <a href="#sec-staff"><span class="nav-idx">١١</span><span class="nav-label">الموظفون</span></a>
+      <a href="#sec-hotels"><span class="nav-idx">١٢</span><span class="nav-label">الفنادق</span></a>
+      <a href="#sec-alerts"><span class="nav-idx">١٣</span><span class="nav-label">تنبيهات</span></a>
+    </nav>
   </main>
 
   <!-- admin login gate (shown when there is no valid management session) -->
@@ -329,5 +346,31 @@
   <!-- adapter fetches live data from Supabase (READ-ONLY), then fires mgmt:data-ready -->
   <script src="management-dashboard-supabase-adapter.js"></script>
   <script src="management-dashboard.js"></script>
+
+  <!-- mobile section nav: highlight active section while scrolling -->
+  <script>
+  (function () {
+    var SECS = ['sec-overview','sec-compare','sec-daily','sec-monthly','sec-demand',
+                'sec-health','sec-companies','sec-top','sec-lost','sec-heatmap',
+                'sec-staff','sec-hotels','sec-alerts'];
+    function init() {
+      var nav = document.getElementById('mobileSecNav');
+      if (!nav || !('IntersectionObserver' in window)) return;
+      var links = nav.querySelectorAll('a');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var href = '#' + e.target.id;
+          links.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('href') === href); });
+          var active = nav.querySelector('a.is-active');
+          if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        });
+      }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+      SECS.forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
 </body>
 </html>

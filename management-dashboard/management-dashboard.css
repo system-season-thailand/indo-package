@@ -846,3 +846,297 @@ tr.hm-warn > td.name::before {
   content: ""; position: absolute; inset-inline-start: -2px; top: 50%; transform: translateY(-50%);
   width: 3px; height: 60%; background: var(--warn); border-radius: 2px;
 }
+
+/* =====================================================================
+   RESPONSIVE OVERHAUL — v2
+   Mobile section nav · enhanced breakpoints · bottom-sheet modal ·
+   touch targets · scrollable controls · stacking grids
+   ===================================================================== */
+
+/* ─── A · Mobile section navigation (fixed bottom bar) ────────────── */
+
+.mobile-sec-nav {
+  display: none;              /* visible only via @media below */
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 50;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  background: rgba(7, 13, 11, 0.97);
+  border-top: 1px solid var(--hair-brass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.mobile-sec-nav::-webkit-scrollbar { display: none; }
+
+.mobile-sec-nav a {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 7px 12px 9px;
+  min-width: 54px;
+  min-height: 50px;
+  color: var(--ink-3);
+  text-decoration: none;
+  font-family: "Tajawal", sans-serif;
+  font-weight: 700;
+  white-space: nowrap;
+  text-align: center;
+  border-top: 2px solid transparent;
+  transition: color .15s ease, border-color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-sec-nav a:hover,
+.mobile-sec-nav a.is-active {
+  color: var(--brass-soft);
+  border-top-color: var(--brass);
+}
+.mobile-sec-nav .nav-idx {
+  font-family: "El Messiri", serif;
+  font-size: 13px;
+  line-height: 1;
+}
+.mobile-sec-nav .nav-label { font-size: 8.5px; line-height: 1.2; }
+
+/* ─── B · Touch-target minimums ──────────────────────────────────── */
+
+.seg button,
+.logout-btn,
+.login-btn,
+.login-tab,
+.ct-close,
+.ad-back { min-height: 44px; }
+
+/* ─── C · Large tablet (≤1100px) — split-3 → 2-col ──────────────── */
+
+@media (max-width: 1100px) {
+  .split-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ─── D · Tablet (≤900px) — additions to existing rules ─────────── */
+
+@media (max-width: 900px) {
+  .split-3 { grid-template-columns: 1fr; }        /* collapse to 1-col */
+  .company-grid { grid-template-columns: 1fr; }
+  .sec-title { font-size: 20px; }
+  .chart-svg { height: 190px; }
+  .demand-grid .chart-svg { height: 158px; }
+  .donut { width: 124px; height: 124px; }
+}
+
+/* ─── E · Phablet (≤768px) — activate mobile nav ─────────────────── */
+
+@media (max-width: 768px) {
+  .mobile-sec-nav { display: flex; }
+
+  /* main content clears fixed bottom nav */
+  .wrap { padding-bottom: 82px; }
+
+  .chart-svg { height: 175px; }
+  .demand-grid .chart-svg { height: 148px; }
+  .feat-num { font-size: 46px; }
+  .donut { width: 116px; height: 116px; }
+}
+
+/* ─── F · Small phone (≤560px) — augment existing rules ─────────── */
+
+@media (max-width: 560px) {
+  /* spacing */
+  .wrap { padding: 18px 14px 82px; }
+  .sec { margin-top: 28px; }
+
+  /* section head stacks */
+  .sec-head { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+  .sec-tools { width: 100%; margin-inline-start: 0; justify-content: flex-start; }
+
+  /* topbar brand */
+  .brand-tag { display: none; }
+  .brand-name { font-size: 17px; }
+  .brand-mark { width: 32px; height: 32px; }
+  .topbar-spacer { display: none; }
+  .topbar-inner { flex-wrap: wrap; padding: 10px 12px; gap: 8px; }
+  .topbar-meta { width: 100%; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+  .asof-label { font-size: 10px; }
+  .asof { font-size: 12px; }
+
+  /* seg controls — horizontally scrollable, no wrapping */
+  #destControl,
+  #periodControl {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  #destControl::-webkit-scrollbar,
+  #periodControl::-webkit-scrollbar { display: none; }
+  #destControl button,
+  #periodControl button { flex: 0 0 auto; }
+  #destControl { width: 100%; justify-content: flex-start; }
+
+  /* topbar-meta reorder: dest (row1) · period + logout (row2) · role hidden */
+  .topbar-meta { align-items: center; }
+  #roleBadge { display: none; }
+  #periodControl { flex: 1 1 auto; min-width: 0; }
+  #logoutBtn { flex: 0 0 auto; order: 10; }
+
+  /* charts */
+  .chart-svg { height: 158px; }
+  .demand-grid .chart-svg { height: 142px; }
+  .donut { width: 108px; height: 108px; }
+
+  /* alert stacks */
+  .alert { flex-direction: column; gap: 8px; padding: 12px 14px; }
+  .alert::before { inset: 0 auto 0 0; width: 3px; }
+  .alert-side { flex-direction: row; flex: 0 1 auto; padding-top: 0; gap: 10px; align-items: center; }
+
+  /* mini stats */
+  .mini { padding: 9px 10px; }
+  .mini-v { font-size: 15px; }
+
+  /* rank */
+  .rank-name { font-size: 12.5px; }
+  .rank-val  { font-size: 12px; }
+
+  /* newco kpis: 2-across */
+  .newco-kpis { flex-wrap: wrap; }
+  .newco-kpi  { flex: 1 1 calc(50% - 5px); min-width: 0; }
+  .newco-kpi .nk-v { font-size: 18px; }
+
+  /* tables */
+  .tbl            { font-size: 12.5px; }
+  .tbl th,
+  .tbl td         { padding: 9px 8px; }
+  .tbl thead th   { font-size: 11px; }
+
+  /* heatmap: ensure scroll wrapper */
+  #heatmapTable   { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+
+/* ─── G · Medium mobile (≤480px) ─────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .wrap    { padding: 14px 10px 82px; }
+  .sec     { margin-top: 22px; }
+  .sec-title { font-size: 16.5px; }
+  .idx     { font-size: 16px; }
+  .tick    { height: 24px; }
+
+  /* topbar compact */
+  .topbar-inner { padding: 8px 10px; gap: 6px; }
+  .brand-name   { font-size: 15.5px; }
+  .brand-mark   { width: 28px; height: 28px; }
+  .role-badge   { font-size: 10.5px; padding: 3px 7px; }
+  .logout-btn   { padding: 5px 9px; font-size: 11.5px; }
+  .logout-btn svg { width: 12px; height: 12px; }
+
+  /* numbers */
+  .feat-num { font-size: 36px; }
+  .kpi-v    { font-size: 21px; }
+
+  /* donut: stack vertically */
+  .donut-wrap { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .donut { width: 96px; height: 96px; }
+
+  /* charts */
+  .chart-svg { height: 138px; }
+  .demand-grid .chart-svg { height: 128px; }
+
+  /* company modal — bottom sheet */
+  .company-modal  { padding: 0; align-items: flex-end; }
+  .ct-backdrop    { background: rgba(6, 12, 10, 0.88); }
+  .ct-panel {
+    width: 100%; max-width: 100%;
+    max-height: 86vh;
+    border-radius: var(--r) var(--r) 0 0;
+    padding: 18px 14px;
+  }
+  @keyframes ctIn {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* tables */
+  .tbl th, .tbl td { padding: 8px 7px; font-size: 11.5px; }
+  .tbl thead th    { font-size: 10.5px; }
+
+  /* inner split in company section */
+  .company-grid .split-2 { grid-template-columns: 1fr; }
+
+  /* card */
+  .card       { padding: 14px; }
+  .card-title { font-size: 14.5px; margin-bottom: 11px; }
+  .mini-v     { font-size: 14px; }
+
+  /* lost cards */
+  .lost-card { padding: 13px 14px; }
+  .lost-name { font-size: 14.5px; }
+
+  /* alerts */
+  .alert-title  { font-size: 14px; }
+  .alert-detail { font-size: 12.5px; }
+}
+
+/* ─── H · Very small phone (≤380px) ─────────────────────────────── */
+
+@media (max-width: 380px) {
+  .wrap  { padding: 10px 8px 82px; }
+  .sec   { margin-top: 16px; }
+  .sec-title { font-size: 15.5px; }
+
+  .topbar-inner { padding: 6px 8px; }
+  .brand-name   { font-size: 14px; }
+  .brand-mark   { width: 26px; height: 26px; }
+  .asof-box     { display: none; }
+
+  .feat-num { font-size: 30px; }
+  .kpi-v    { font-size: 18px; }
+
+  .card       { padding: 12px; }
+  .card-title { font-size: 14px; margin-bottom: 9px; }
+
+  .chart-svg { height: 120px; }
+  .demand-grid .chart-svg { height: 110px; }
+
+  .daily-stats { flex-direction: column; gap: 6px; }
+  .mini        { width: 100%; }
+
+  .tbl th, .tbl td { padding: 6px 5px; font-size: 11px; }
+  .tbl thead th    { font-size: 10px; }
+
+  .ct-panel { padding: 10px; }
+  .ct-name  { font-size: 17px; }
+  .ct-facts { grid-template-columns: 1fr; }
+
+  .alert         { padding: 10px 12px; }
+  .alert-title   { font-size: 13.5px; }
+
+  .mobile-sec-nav a        { padding: 6px 9px 8px; min-width: 44px; }
+  .mobile-sec-nav .nav-idx { font-size: 12px; }
+  .mobile-sec-nav .nav-label { font-size: 8px; }
+}
+
+/* ─── I · Smooth scroll + anchor offset ──────────────────────────── */
+
+html { scroll-behavior: smooth; }
+
+/* desktop: topbar ~68px single row */
+.sec[id] { scroll-margin-top: 72px; }
+
+/* tablet (≤768px): topbar still single row ~68px, but mobile nav is present */
+@media (max-width: 768px) {
+  .sec[id] { scroll-margin-top: 72px; }
+  .foot    { padding-bottom: 8px; }
+}
+
+/* mobile (≤560px): topbar wraps to 3 rows, ~156px tall */
+@media (max-width: 560px) {
+  .sec[id] { scroll-margin-top: 164px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
