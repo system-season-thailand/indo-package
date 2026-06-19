@@ -1,337 +1,382 @@
 /* =====================================================================
    management-dashboard-supabase-adapter.js
    ---------------------------------------------------------------------
-   Connects the management dashboard to the real Supabase database.
-   Fetches all rows from indo_all_package, parses the stored HTML to
-   extract structured data, and builds window.MGMT_DATA in exactly the
-   shape expected by management-dashboard.js.
+   Calls a Supabase RPC function to fetch pre-extracted dashboard data
+   (READ-ONLY). Fires "mgmt:data-ready" when done.
 
-   Read-only — this file never writes, updates, or deletes anything.
-   Only SELECT is used. No RLS bypass.
+   ⚠️  REQUIRED SETUP — run this SQL once in your Supabase SQL editor:
+   -----------------------------------------------------------------------
+   CREATE OR REPLACE FUNCTION public.mgmt_get_dashboard_data()
+   RETURNS TABLE (
+     destination  text,
+     package_name text,
+     package_date timestamptz,
+     company_name text,
+     staff_name   text,
+     total_price  text,
+     hotel_name   text,
+     city         text,
+     area         text
+   )
+   LANGUAGE sql
+   SECURITY DEFINER
+   STABLE
+   AS $$
+     SELECT
+       'indonesia'::text,
+       name,
+       package_indo_user_current_date,
+       TRIM(COALESCE((regexp_match(downloaded_pdf_clint_data_page,
+         'id="store_google_sheet_clint_company_name_value"[^>]*>([^<]*)<'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_clint_data_page,
+         'id="store_google_sheet_package_user_name_value"[^>]*>([^<]*)<'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_package_including_data_page,
+         'id="store_google_sheet_package_total_price_value"[^>]*>([^<]*)<'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_hotel_data_page,
+         '<h1[^>]*>([^<]+)</h1>'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_hotel_data_page,
+         '<h5[^>]*>([^<]+)</h5>'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_hotel_data_page,
+         '<h6[^>]*>([^<]+)</h6>'))[1],''))
+     FROM public.indo_all_package
+     UNION ALL
+     SELECT
+       'thailand'::text,
+       name,
+       package_thai_user_current_date,
+       TRIM(COALESCE((regexp_match(downloaded_pdf_clint_data_page,
+         'id="store_google_sheet_clint_company_name_value"[^>]*>([^<]*)<'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_clint_data_page,
+         'id="store_google_sheet_package_user_name_value"[^>]*>([^<]*)<'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_package_including_data_page,
+         'id="store_google_sheet_package_total_price_value"[^>]*>([^<]*)<'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_hotel_data_page,
+         '<h1[^>]*>([^<]+)</h1>'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_hotel_data_page,
+         '<h5[^>]*>([^<]+)</h5>'))[1],'')),
+       TRIM(COALESCE((regexp_match(downloaded_pdf_hotel_data_page,
+         '<h6[^>]*>([^<]+)</h6>'))[1],''))
+     FROM public.thai_all_package;
+   $$;
+
+   GRANT EXECUTE ON FUNCTION public.mgmt_get_dashboard_data() TO anon;
+   -----------------------------------------------------------------------
    ===================================================================== */
 (function () {
   "use strict";
 
-  var SUPABASE_URL = "https://zrunsrimyijarswjfycw.supabase.co";
-  var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpydW5zcmlteWlqYXJzd2pmeWN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MjgzOTEsImV4cCI6MjA2MjMwNDM5MX0.UdW4LiIY-t1jZlrat1VUGnW0yRE7YEzW5SHbpkE29H8";
+  /* ============================================================
+     SUPABASE CONFIG — same project used by the main system
+     ============================================================ */
+  var SUPABASE_URL      = "https://zrunsrimyijarswjfycw.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpydW5zcmlteWlqYXJzd2pmeWN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MjgzOTEsImV4cCI6MjA2MjMwNDM5MX0.UdW4LiIY-t1jZlrat1VUGnW0yRE7YEzW5SHbpkE29H8";
 
-  /* ── Overlay helpers ────────────────────────────────────────────── */
-  function showLoading(msg) {
-    var el = document.getElementById("mgmt-loading");
-    if (!el) return;
-    var t = el.querySelector(".mgmt-loading-text");
-    if (t && msg) t.textContent = msg;
-    el.removeAttribute("hidden");
-  }
-  function hideLoading() {
-    var el = document.getElementById("mgmt-loading");
-    if (el) el.setAttribute("hidden", "");
-  }
-  function showError(msg) {
-    hideLoading();
-    var el = document.getElementById("mgmt-load-error");
-    if (!el) return;
-    var t = el.querySelector(".err-msg");
-    if (t) t.textContent = msg;
-    el.removeAttribute("hidden");
-  }
+  /* ============================================================
+     STAFF PREFIX MAP
+     Package name prefix (e.g. "ss_123") → staff display name
+     ============================================================ */
+  var STAFF_BY_PREFIX = {
+    "ss": "مستر سامي",
+    "mm": "معتز",
+    "oo": "عبد الرحمن",
+    "tt": "عبد الله",
+    "ww": "وائل",
+    "aa": "علي",
+    "zz": "ناصر",
+    "hh": "محمد",
+    "kk": "صبري",
+    "jj": "جلال",
+    "bb": "بندر"
+  };
 
-  /* ── DOM / number helpers ───────────────────────────────────────── */
-  var _domParser = new DOMParser();
-
-  function parseHTML(html) {
-    return _domParser.parseFromString(html || "", "text/html");
-  }
-
-  function getById(doc, id) {
-    var el = doc.getElementById(id);
-    return el ? el.textContent.trim() : "";
-  }
-
-  /* Arabic-Indic → Western digits */
-  function toWestern(str) {
-    return (str || "").replace(/[٠-٩]/g, function (ch) {
-      return ch.charCodeAt(0) - 1632;
-    });
-  }
-
-  /* Extract the first numeric value from a possibly Arabic-formatted price string */
-  function parsePrice(text) {
-    if (!text) return 0;
-    var n = parseFloat(toWestern(text).replace(/[^\d.]/g, ""));
-    return isNaN(n) ? 0 : n;
+  /* ============================================================
+     LOADING SCREEN (shown while fetching from Supabase)
+     ============================================================ */
+  function buildLoadingScreen() {
+    var div = document.createElement("div");
+    div.id = "mgmt_loading_screen";
+    div.style.cssText = [
+      "position:fixed;inset:0;background:#0e1817",
+      "display:flex;flex-direction:column;align-items:center;justify-content:center",
+      "z-index:99999;gap:18px;font-family:system-ui,sans-serif"
+    ].join(";");
+    div.innerHTML =
+      "<svg viewBox='0 0 40 40' fill='none' style='width:44px;height:44px;color:#c9a24b'>" +
+        "<path d='M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round'/>" +
+        "<circle cx='20' cy='20' r='3.4' fill='currentColor'/>" +
+      "</svg>" +
+      "<p id='mgmt_loading_msg' style='margin:0;font-size:14px;color:#b7c2bc;letter-spacing:0.05em'>جاري تحميل البيانات…</p>" +
+      "<div style='width:200px;height:3px;background:rgba(240,235,224,0.08);border-radius:2px;overflow:hidden'>" +
+        "<div id='mgmt_progress_fill' style='height:100%;width:0%;background:#c9a24b;transition:width 0.5s ease;border-radius:2px'></div>" +
+      "</div>";
+    return div;
   }
 
-  function parseIntSafe(text) {
-    if (!text) return 0;
-    var n = parseInt(toWestern(text).replace(/[^\d]/g, ""), 10);
-    return isNaN(n) ? 0 : n;
-  }
-
-  /* Convert any parseable date value to YYYY-MM-DD; empty string if not parseable */
-  function toDateKey(val) {
-    if (!val) return "";
-    var d = new Date(val);
-    return isNaN(d.getTime()) ? "" : d.toISOString().slice(0, 10);
-  }
-
-  /* Try to parse Arabic or mixed date strings like "٢٥ يونيو ٢٠٢٦" */
-  function parseArabicDate(str) {
-    if (!str) return "";
-    // First try direct ISO / RFC parse
-    var direct = new Date(str);
-    if (!isNaN(direct.getTime())) return direct.toISOString().slice(0, 10);
-    // Arabic month map
-    var mo = {
-      "يناير":"01","فبراير":"02","مارس":"03","أبريل":"04",
-      "مايو":"05","يونيو":"06","يوليو":"07","أغسطس":"08",
-      "سبتمبر":"09","أكتوبر":"10","نوفمبر":"11","ديسمبر":"12"
-    };
-    var s = toWestern(str);
-    for (var m in mo) {
-      if (str.indexOf(m) !== -1) {
-        var nums = s.match(/\d+/g) || [];
-        var year = (nums.find(function (n) { return n.length === 4; }) || "");
-        var day  = (nums.find(function (n) { return n.length <= 2; }) || "01").padStart(2, "0");
-        if (year) return year + "-" + mo[m] + "-" + day;
-      }
+  function showLoadingScreen() {
+    var existing = document.getElementById("mgmt_loading_screen");
+    if (existing) return;
+    var div = buildLoadingScreen();
+    if (document.body) {
+      document.body.appendChild(div);
+    } else {
+      document.addEventListener("DOMContentLoaded", function () {
+        document.body.appendChild(div);
+      });
     }
-    return "";
+    setTimeout(function () { setProgress(15); }, 200);
+    setTimeout(function () { setProgress(40); }, 2000);
+    setTimeout(function () { setProgress(70); }, 5000);
   }
 
-  /* ── Parse one row from indo_all_package ────────────────────────── */
-  function parseRow(row) {
-    var clintDoc = parseHTML(row.downloaded_pdf_clint_data_page);
-    var hotelDoc = parseHTML(row.downloaded_pdf_hotel_data_page);
-    var pkgDoc   = parseHTML(row.downloaded_pdf_package_including_data_page);
+  function setProgress(pct) {
+    var fill = document.getElementById("mgmt_progress_fill");
+    if (fill) fill.style.width = pct + "%";
+  }
 
-    /* ── Company name (stored inside client-data page) ── */
-    var companyName = getById(clintDoc, "store_google_sheet_clint_company_name_value")
-                   || "شركة غير محددة";
+  function hideLoadingScreen() {
+    setProgress(100);
+    setTimeout(function () {
+      var div = document.getElementById("mgmt_loading_screen");
+      if (!div) return;
+      div.style.transition = "opacity 0.35s";
+      div.style.opacity   = "0";
+      setTimeout(function () { if (div.parentNode) div.parentNode.removeChild(div); }, 370);
+    }, 250);
+  }
 
-    /* ── Staff name ──
-       Primary  : store_google_sheet_package_user_name_value inside the HTML
-       Fallback : extract from package code "StaffName_indo_YY_NNN"              */
-    var staffName = getById(clintDoc, "store_google_sheet_package_user_name_value");
-    if (!staffName && row.name) {
-      var parts = row.name.split("_indo_");
-      staffName = parts[0] || "";
+  function showLoadingError(msg) {
+    var div = document.getElementById("mgmt_loading_screen");
+    if (!div) {
+      div = buildLoadingScreen();
+      document.body.appendChild(div);
     }
-    if (!staffName) staffName = "موظف";
-
-    /* ── Quotation date ──
-       Use the package creation timestamp (when it was saved to DB)               */
-    var date = toDateKey(row.package_indo_user_current_date) || toDateKey(new Date());
-
-    /* ── Pax (passengers) ── */
-    var adults  = parseIntSafe(getById(clintDoc, "store_google_sheet_package_adult_amount_value"));
-    var kids    = parseIntSafe(getById(clintDoc, "store_google_sheet_package_kids_amount_value"));
-    var pax     = Math.max(adults + kids, 1);
-
-    /* ── Nights ── */
-    var nights = parseIntSafe(getById(clintDoc, "store_google_sheet_whole_package_total_nights_value"));
-    if (nights <= 0) nights = 7;
-
-    /* ── Hotel name & city & area ──
-       Hotel data page: each hotel row has h1 (name), h5 (city), h6 (Bali area)
-       We use the first hotel found as the representative hotel for this package  */
-    var hotelName = "";
-    var hotelCity = "";
-    var hotelArea = "";
-    var h1 = hotelDoc.querySelector("h1");
-    if (h1) hotelName = h1.textContent.trim();
-    var h5 = hotelDoc.querySelector("h5");
-    if (h5) hotelCity = h5.textContent.trim();
-    var h6 = hotelDoc.querySelector("h6");
-    if (h6) hotelArea = h6.textContent.trim();
-    if (!hotelName) hotelName = "فندق غير محدد";
-    if (!hotelCity) hotelCity = "إندونيسيا";
-
-    /* ── Total price ──
-       Stored in the package-including page as store_google_sheet_package_total_price_value */
-    var priceRaw = getById(pkgDoc, "store_google_sheet_package_total_price_value")
-                || getById(clintDoc, "store_google_sheet_package_total_price_value");
-    var value = parsePrice(priceRaw);
-
-    /* ── Status ── packages with a price are approved; without price = sent */
-    var status = value > 0 ? "approved" : "sent";
-
-    return {
-      companyName : companyName,
-      staffName   : staffName,
-      hotelName   : hotelName,
-      hotelCity   : hotelCity,
-      hotelArea   : hotelArea,
-      date        : date,
-      nights      : nights,
-      pax         : pax,
-      value       : value,
-      status      : status
-    };
+    div.innerHTML =
+      "<div style='max-width:480px;text-align:center;padding:32px;color:#d9645a'>" +
+        "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' style='width:40px;height:40px;margin-bottom:12px'>" +
+          "<circle cx='12' cy='12' r='10'/><line x1='12' y1='8' x2='12' y2='12'/><line x1='12' y1='16' x2='12.01' y2='16'/>" +
+        "</svg>" +
+        "<p style='font-size:16px;font-weight:600;margin:0 0 8px'>تعذّر تحميل البيانات</p>" +
+        "<p style='font-size:13px;color:#b7c2bc;margin:0 0 20px;line-height:1.6'>" + msg + "</p>" +
+        "<button onclick='location.reload()' style='padding:9px 22px;background:#c9a24b;border:none;border-radius:6px;cursor:pointer;font-size:13px;color:#0e1817;font-weight:600'>إعادة المحاولة</button>" +
+      "</div>";
   }
 
-  /* ── Build normalized MGMT_DATA from raw Supabase rows ─────────── */
+  /* ============================================================
+     RPC FETCH — POST to the server-side extraction function.
+     Paginates using the Range header (PostgREST standard).
+     Query params on RPC GET requests are treated as function
+     arguments, so we use POST + Range instead.
+     ============================================================ */
+  var RPC_BATCH = 1000;
+
+  function fetchRPC() {
+    var allRows = [];
+
+    function fetchPage(start) {
+      var end = start + RPC_BATCH - 1;
+      return fetch(SUPABASE_URL + "/rest/v1/rpc/mgmt_get_dashboard_data", {
+        method: "POST",
+        headers: {
+          "apikey":        SUPABASE_ANON_KEY,
+          "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+          "Content-Type":  "application/json",
+          "Accept":        "application/json",
+          "Range":         start + "-" + end,
+          "Prefer":        "count=exact"
+        },
+        body: "{}"
+      }).then(function (r) {
+        if (r.status === 404 || r.status === 400) {
+          return r.json().catch(function () { return {}; }).then(function (body) {
+            var hint = (body && (body.message || body.hint)) ? " (" + (body.message || body.hint) + ")" : "";
+            throw new Error(
+              "يبدو أن دالة قاعدة البيانات (mgmt_get_dashboard_data) غير موجودة أو غير صحيحة." + hint + " — " +
+              "يرجى تشغيل كود SQL الموجود في ملف المُحوّل داخل Supabase SQL Editor أولاً، ثم تأكّد من تنفيذ: GRANT EXECUTE ON FUNCTION public.mgmt_get_dashboard_data() TO anon;"
+            );
+          });
+        }
+        if (!r.ok) throw new Error("HTTP " + r.status + " (RPC)");
+        var contentRange = r.headers.get("content-range");
+        return r.json().then(function (rows) {
+          return { rows: rows, contentRange: contentRange };
+        });
+      }).then(function (result) {
+        var rows = result.rows;
+        var contentRange = result.contentRange;
+        if (!Array.isArray(rows) || rows.length === 0) return allRows;
+        allRows = allRows.concat(rows);
+        /* Check Content-Range to see if there are more pages */
+        if (contentRange) {
+          var match = contentRange.match(/\/(\d+)$/);
+          if (match && start + rows.length >= parseInt(match[1], 10)) return allRows;
+        }
+        if (rows.length < RPC_BATCH) return allRows;
+        return fetchPage(start + RPC_BATCH);
+      });
+    }
+
+    return fetchPage(0);
+  }
+
+  /* ============================================================
+     STAFF PREFIX FALLBACK
+     ============================================================ */
+  function staffFromPrefix(packageName) {
+    if (!packageName) return null;
+    var lower = (packageName + "").toLowerCase();
+    for (var prefix in STAFF_BY_PREFIX) {
+      if (lower.indexOf(prefix) === 0) return STAFF_BY_PREFIX[prefix];
+    }
+    return null;
+  }
+
+  /* ============================================================
+     BUILD window.MGMT_DATA from the pre-extracted RPC rows
+     Each row: { destination, package_name, package_date,
+                 company_name, staff_name, total_price,
+                 hotel_name, city, area }
+     ============================================================ */
   function buildMgmtData(rows) {
-    var companyMap = {};   /* name → { id, name, created } */
-    var staffMap   = {};   /* name → { id, name, role }    */
-    var hotelMap   = {};   /* name → { id, name, city, area } */
-    var quotations = [];
+    var companies      = {};
+    var staffRegistry  = {};
+    var hotelRegistry  = {};
+    var quotations     = [];
 
-    var cSeq = 0, sSeq = 0, hSeq = 0, qSeq = 0;
+    var coSeq = 0, stSeq = 0, htSeq = 0, qSeq = 0;
+    var asOf = null, rangeStart = null;
 
-    function pad(prefix, n) {
-      return prefix + String(n).padStart(2, "0");
+    function addCompany(name, dateStr) {
+      name = (name || "").trim() || "شركة غير معروفة";
+      if (!companies[name]) {
+        coSeq++;
+        companies[name] = { id: "C" + coSeq, name: name, created: dateStr };
+      } else if (dateStr && (!companies[name].created || dateStr < companies[name].created)) {
+        companies[name].created = dateStr;
+      }
+      return companies[name].id;
     }
 
-    rows.forEach(function (row) {
-      var p;
-      try { p = parseRow(row); }
-      catch (e) {
-        console.warn("[adapter] Parse error for row:", row.name, e);
-        return;
+    function addStaff(name) {
+      name = (name || "").trim() || "موظف";
+      if (!staffRegistry[name]) {
+        stSeq++;
+        staffRegistry[name] = { id: "S" + stSeq, name: name, role: "sales" };
       }
+      return staffRegistry[name].id;
+    }
 
-      /* Register / update company (track earliest-seen date as "created") */
-      if (!companyMap[p.companyName]) {
-        companyMap[p.companyName] = {
-          id: pad("C", ++cSeq), name: p.companyName, created: p.date
-        };
-      } else if (p.date && p.date < companyMap[p.companyName].created) {
-        companyMap[p.companyName].created = p.date;
-      }
-
-      /* Register staff */
-      if (!staffMap[p.staffName]) {
-        staffMap[p.staffName] = {
-          id: pad("S", ++sSeq), name: p.staffName, role: "sales"
-        };
-      }
-
-      /* Register hotel */
-      if (!hotelMap[p.hotelName]) {
-        hotelMap[p.hotelName] = {
-          id: pad("H", ++hSeq),
-          name: p.hotelName,
-          city: p.hotelCity,
-          area: p.hotelArea || p.hotelCity
+    function addHotel(name, city, area, country) {
+      if (!name) return null;
+      name = name.trim();
+      if (!hotelRegistry[name]) {
+        htSeq++;
+        hotelRegistry[name] = {
+          id:      "H" + htSeq,
+          name:    name,
+          city:    (city  || "").trim(),
+          area:    (area  || "").trim(),
+          country: country || "unknown"
         };
       }
+      return hotelRegistry[name].id;
+    }
 
-      /* Build quotation entry */
-      var co    = companyMap[p.companyName];
-      var staff = staffMap[p.staffName];
-      var hotel = hotelMap[p.hotelName];
-      var region = p.hotelArea
-        ? p.hotelCity + " – " + p.hotelArea
-        : p.hotelCity;
+    (rows || []).forEach(function (row) {
+      var timestamp = row.package_date;
+      if (!timestamp) return;
+
+      var dateStr = (timestamp + "").slice(0, 10);
+      var hourNum = parseInt((timestamp + "").slice(11, 13) || "9", 10);
+
+      if (!rangeStart || dateStr < rangeStart) rangeStart = dateStr;
+      if (!asOf      || dateStr > asOf)        asOf      = dateStr;
+
+      var destination = row.destination || "indonesia";
+      var companyName = (row.company_name || "").trim() || "شركة غير معروفة";
+      var staffName   = (row.staff_name   || "").trim()
+                     || staffFromPrefix(row.package_name)
+                     || "موظف";
+      var priceRaw   = (row.total_price || "").replace(/[^0-9.]/g, "");
+      var price      = parseFloat(priceRaw) || 0;
+      var hotelName  = (row.hotel_name || "").trim() || null;
+      var city       = (row.city       || "").trim();
+      var area       = (row.area       || "").trim();
+
+      var companyId = addCompany(companyName, dateStr);
+      var staffId   = addStaff(staffName);
+      var hotelId   = addHotel(hotelName, city, area, destination) || "H_unknown";
+
+      qSeq++;
+      var region = city ? (area ? city + " – " + area : city) : "";
 
       quotations.push({
-        id        : "Q-" + (++qSeq),
-        date      : p.date,
-        companyId : co.id,
-        staffId   : staff.id,
-        hotelId   : hotel.id,
-        city      : p.hotelCity,
-        region    : region,
-        pax       : p.pax,
-        nights    : p.nights,
-        value     : p.value,
-        status    : p.status
+        id:          "Q-" + qSeq,
+        date:        dateStr,
+        hour:        isNaN(hourNum) ? 9 : hourNum,
+        destination: destination,
+        companyId:   companyId,
+        staffId:     staffId,
+        hotelId:     hotelId,
+        city:        city,
+        region:      region,
+        value:       Math.round(price),
+        status:      "approved"
       });
     });
 
-    /* Newest first */
     quotations.sort(function (a, b) {
       return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
     });
 
-    /* Determine overall date range */
-    var today      = new Date().toISOString().slice(0, 10);
-    var rangeStart = today;
-    quotations.forEach(function (q) {
-      if (q.date && q.date < rangeStart) rangeStart = q.date;
-    });
+    var today = new Date().toISOString().slice(0, 10);
+    asOf       = asOf       || today;
+    rangeStart = rangeStart || today;
+
+    if (Object.keys(hotelRegistry).length === 0) {
+      hotelRegistry["فندق"] = { id: "H_unknown", name: "فندق", city: "", area: "", country: "indonesia" };
+    }
+    if (Object.keys(staffRegistry).length === 0) {
+      staffRegistry["موظف"] = { id: "S1", name: "موظف", role: "sales" };
+    }
 
     return {
       meta: {
-        product    : "سيزون ترافل — لوحة الإدارة",
-        currency   : "ر.س",
-        asOf       : today,
-        rangeStart : rangeStart,
-        generated  : "بيانات حقيقية · Supabase · جدول indo_all_package",
-        access     : {
-          roles          : ["admin", "manager", "sales"],
-          dashboardRoles : ["admin", "manager"]
-        }
+        product:    "سيزون ترافل — لوحة الإدارة",
+        currency:   "ر.س",
+        asOf:       asOf,
+        rangeStart: rangeStart,
+        generated:  "بيانات حقيقية من Supabase — قراءة فقط"
       },
-      companies  : Object.values(companyMap),
-      staff      : Object.values(staffMap),
-      hotels     : Object.values(hotelMap),
-      quotations : quotations
+      destinations: [
+        { id: "indonesia", name: "إندونيسيا" },
+        { id: "thailand",  name: "تايلاند"   }
+      ],
+      companies:  Object.keys(companies).map(function (k) { return companies[k]; }),
+      staff:      Object.keys(staffRegistry).map(function (k) { return staffRegistry[k]; }),
+      hotels:     Object.keys(hotelRegistry).map(function (k) { return hotelRegistry[k]; }),
+      quotations: quotations
     };
   }
 
-  /* ── Dynamically load dashboard.js after data is ready ─────────── */
-  function loadDashboard() {
-    var s = document.createElement("script");
-    s.src = "management-dashboard.js";
-    s.onerror = function () {
-      showError("تعذّر تحميل ملف management-dashboard.js.");
-    };
-    document.body.appendChild(s);
-  }
+  /* ============================================================
+     BOOT
+     ============================================================ */
+  showLoadingScreen();
 
-  /* ── Main entry point ───────────────────────────────────────────── */
-  document.addEventListener("DOMContentLoaded", function () {
-    if (!window.supabase) {
-      showError("مكتبة Supabase غير محملة. يرجى التحقق من الاتصال بالإنترنت.");
-      return;
+  fetchRPC().then(function (rows) {
+    try {
+      window.MGMT_DATA = buildMgmtData(rows);
+      hideLoadingScreen();
+      document.dispatchEvent(new CustomEvent("mgmt:data-ready"));
+    } catch (buildErr) {
+      showLoadingError("خطأ في معالجة البيانات: " + buildErr.message);
     }
-
-    showLoading("جارٍ الاتصال بقاعدة البيانات…");
-
-    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    sb.from("indo_all_package")
-      .select([
-        "name",
-        "package_indo_user_current_date",
-        "package_indo_last_month_date",
-        "downloaded_pdf_clint_data_page",
-        "downloaded_pdf_hotel_data_page",
-        "downloaded_pdf_package_including_data_page"
-      ].join(", "))
-      .order("package_indo_user_current_date", { ascending: false })
-      .then(function (result) {
-        if (result.error) {
-          console.error("[adapter] Supabase error:", result.error);
-          showError("تعذّر الاتصال بقاعدة البيانات: " + result.error.message);
-          return;
-        }
-
-        var rows = result.data || [];
-
-        if (rows.length === 0) {
-          showError("لا توجد بيانات في جدول indo_all_package حتى الآن.");
-          return;
-        }
-
-        showLoading("جارٍ معالجة " + rows.length + " حزمة…");
-
-        /* Use setTimeout(0) so the loading text update renders before heavy parsing */
-        setTimeout(function () {
-          try {
-            window.MGMT_DATA = buildMgmtData(rows);
-          } catch (e) {
-            console.error("[adapter] Build error:", e);
-            showError("حدث خطأ أثناء معالجة البيانات: " + e.message);
-            return;
-          }
-
-          hideLoading();
-          loadDashboard();
-        }, 0);
-      });
+  }).catch(function (fetchErr) {
+    var msg = (fetchErr && fetchErr.message) ? fetchErr.message : String(fetchErr);
+    if (msg.indexOf("401") !== -1 || msg.indexOf("403") !== -1) {
+      msg = "تأكّد من منح صلاحية EXECUTE للمستخدم anon على الدالة في Supabase. (" + msg + ")";
+    }
+    showLoadingError(msg);
   });
 
 })();

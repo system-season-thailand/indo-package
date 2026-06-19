@@ -7,16 +7,8 @@
 (function () {
   "use strict";
 
-  var DATA = window.MGMT_DATA;
-  if (!DATA) { console.error("MGMT_DATA missing — load sample data first."); return; }
-
-  var CUR = DATA.meta.currency;
-  var AS_OF = parseDate(DATA.meta.asOf);
-
-  // lookups
-  var companyById = index(DATA.companies);
-  var staffById = index(DATA.staff);
-  var hotelById = index(DATA.hotels);
+  // Declared here; initialized by bootDashboard() after async data arrives.
+  var DATA, CUR, AS_OF, companyById, staffById, hotelById;
 
   // palette (mirrors CSS tokens; used inside SVG)
   var C = {
@@ -36,8 +28,39 @@
     period: 30,                 // 7 | 30 | 90 | 'month'
     monthlyMetric: "count",     // 'count' | 'value'
     companyQuery: "",
-    staffSort: { key: "value", dir: -1 }
+    staffSort: { key: "count", dir: -1 },   // management default = activity (count), not value
+    companySort: { key: "count", dir: -1 }, // management default = activity (count), not value
+    destination: "all"          // 'all' | destination id (e.g. 'indonesia' | 'thailand')
   };
+
+  /* =====================================================================
+     FUTURE quotation-status tracking — ARCHITECTURE ONLY (Phase 7 §8)
+     ---------------------------------------------------------------------
+     Not implemented yet. When operations start tracking real outcomes,
+     each quotation will carry one of these lifecycle statuses, and this
+     will become the primary management KPI (conversion / loss reasons).
+     To activate later: populate quotation.trackStatus from the source,
+     then build KPIs off TRACK_STATUS. Nothing here renders today.
+     ===================================================================== */
+  var TRACK_STATUS = {
+    confirmed: { id: "confirmed", label: "مؤكد" },
+    lost:      { id: "lost",      label: "مفقود" },
+    cancelled: { id: "cancelled", label: "ملغى" }
+  };
+  // (intentionally unused for now — kept ready for future integration)
+  void TRACK_STATUS;
+
+  // destination-filtered working view (recomputed by applyDestination)
+  var QSET, VCOMP, VSTAFF;
+  function applyDestination() {
+    var d = state.destination;
+    QSET = (d === "all") ? DATA.quotations
+      : DATA.quotations.filter(function (q) { return q.destination === d; });
+    var coIds = {}, stIds = {};
+    QSET.forEach(function (q) { coIds[q.companyId] = 1; stIds[q.staffId] = 1; });
+    VCOMP = DATA.companies.filter(function (c) { return coIds[c.id]; });
+    VSTAFF = DATA.staff.filter(function (s) { return stIds[s.id]; });
+  }
 
   /* =====================================================================
      طبقة الدخول والصلاحيات — Admin Access Layer (Phase 4)
@@ -144,7 +167,7 @@
     return { from: addDays(AS_OF, -(n - 1)), to: AS_OF, days: n, label: "آخر " + n + " يوم" };
   }
   function inRange(q, w) { var d = parseDate(q.date); return d >= w.from && d <= w.to; }
-  function quotesIn(w) { return DATA.quotations.filter(function (q) { return inRange(q, w); }); }
+  function quotesIn(w) { return QSET.filter(function (q) { return inRange(q, w); }); }
 
   /* ---------- SVG chart helpers ------------------------------------- */
   function svgEl(node) { var w = document.createElement("div"); w.innerHTML = node.trim(); return w.firstChild; }
@@ -258,15 +281,15 @@
 
   function lastActivity(companyId) {
     var last = null;
-    for (var i = 0; i < DATA.quotations.length; i++) {
-      var q = DATA.quotations[i];
+    for (var i = 0; i < QSET.length; i++) {
+      var q = QSET[i];
       if (q.companyId === companyId) { if (!last || q.date > last) last = q.date; }
     }
     return last;
   }
 
   function companyStats(companyId, w) {
-    var qs = DATA.quotations.filter(function (q) { return q.companyId === companyId && (!w || inRange(q, w)); });
+    var qs = QSET.filter(function (q) { return q.companyId === companyId && (!w || inRange(q, w)); });
     var approved = qs.filter(function (q) { return q.status === "approved"; }).length;
     var approvedVal = sum(qs.filter(function (q) { return q.status === "approved"; }), function (q) { return q.value; });
     return { count: qs.length, value: sum(qs, function (q) { return q.value; }), approved: approved, approvedVal: approvedVal };
@@ -277,14 +300,14 @@
   // distinct months that have any quote for this company
   function monthsActiveCount(companyId) {
     var m = {};
-    DATA.quotations.forEach(function (q) { if (q.companyId === companyId) m[q.date.slice(0, 7)] = 1; });
+    QSET.forEach(function (q) { if (q.companyId === companyId) m[q.date.slice(0, 7)] = 1; });
     return Object.keys(m).length;
   }
 
   // the company's single best historical month (by value)
   function bestMonthFor(companyId) {
     var m = {};
-    DATA.quotations.forEach(function (q) {
+    QSET.forEach(function (q) {
       if (q.companyId !== companyId) return;
       var k = q.date.slice(0, 7);
       if (!m[k]) m[k] = { key: k, count: 0, value: 0 };
@@ -298,7 +321,7 @@
   // staff member who handled the most quotes for a company (the account owner)
   function responsibleStaff(companyId) {
     var c = {}; var bestId = null, bestN = -1;
-    DATA.quotations.forEach(function (q) { if (q.companyId === companyId) c[q.staffId] = (c[q.staffId] || 0) + 1; });
+    QSET.forEach(function (q) { if (q.companyId === companyId) c[q.staffId] = (c[q.staffId] || 0) + 1; });
     Object.keys(c).forEach(function (s) { if (c[s] > bestN) { bestN = c[s]; bestId = s; } });
     return bestId ? { id: bestId, name: (staffById[bestId] || {}).name || bestId, handled: bestN } : null;
   }
@@ -325,7 +348,7 @@
   var HEALTH_BY_ID = {};  // id → record
 
   function computeHealth() {
-    var recs = DATA.companies.map(function (c) {
+    var recs = VCOMP.map(function (c) {
       var all = companyStats(c.id, null);
       var la = lastActivity(c.id);
       var gap = la ? daysAgo(la) : 99999;
@@ -348,32 +371,38 @@
     var withData = recs.filter(function (r) { return r.all.count > 0; });
     var maxVal = Math.max.apply(null, withData.map(function (r) { return r.all.value; }).concat([1]));
     var maxCnt = Math.max.apply(null, withData.map(function (r) { return r.all.count; }).concat([1]));
-    // "key account" line — top third by lifetime value (used by alerts)
+    // median lifetime count (used as an activity floor for top tiers / key accounts)
+    var cntsSorted = withData.map(function (r) { return r.all.count; }).sort(function (a, b) { return a - b; });
+    var medianCnt = cntsSorted.length ? cntsSorted[Math.floor(cntsSorted.length / 2)] : 0;
+    // "key account" line — TIGHTENED: top 20% by value AND above-median activity
     var sortedVal = withData.map(function (r) { return r.all.value; }).sort(function (a, b) { return b - a; });
-    var keyCut = sortedVal[Math.max(0, Math.ceil(sortedVal.length / 3) - 1)] || 0;
+    var keyCut = sortedVal[Math.max(0, Math.ceil(sortedVal.length * 0.2) - 1)] || 0;
 
     recs.forEach(function (r) {
-      r.keyAccount = r.all.value >= keyCut && r.all.value > 0;
+      // key account now requires BOTH high value AND real volume (not value alone)
+      r.keyAccount = r.all.value > 0 && r.all.value >= keyCut && r.all.count >= medianCnt;
       // potential tier on lifetime strength alone (ignoring recency) — for "was strong, now slipping"
-      var lifeComposite = 0.55 * (r.all.value / maxVal) + 0.30 * (r.all.count / maxCnt) + 0.15 * r.rate;
-      r.pastTier = lifeComposite >= 0.55 ? "platinum" : lifeComposite >= 0.32 ? "gold" : "silver";
+      var lifeComposite = 0.50 * (r.all.value / maxVal) + 0.35 * (r.all.count / maxCnt) + 0.15 * r.rate;
+      r.pastTier = lifeComposite >= 0.62 ? "platinum" : lifeComposite >= 0.42 ? "gold" : "silver";
 
       if (r.all.count === 0) { r.tier = "silver"; r.score = 0; return; }
       // collapsing = running far below the company's own established norm
-      var collapsing = r.baseMonthly >= 6 && r.declineVsBase < 0.45;
+      var collapsing = r.baseMonthly >= 5 && r.declineVsBase < 0.5;
       if (r.gap > 60) { r.tier = "lost"; r.score = 0; return; }
       if (r.gap > 30 || collapsing) { r.tier = "risk"; r.score = 0.30; return; }
 
-      // active clients → cohort-relative composite
+      // active clients → cohort-relative composite.
+      // Management wants ACTIVITY weighted, not value alone → volume + momentum carry more.
       var valueScore = r.all.value / maxVal;
       var volumeScore = r.all.count / maxCnt;
       var approvalScore = r.rate;
       var momentumScore = clamp01(0.5 + r.momentum / 2);
-      var composite = 0.42 * valueScore + 0.24 * volumeScore + 0.18 * approvalScore + 0.16 * momentumScore;
+      var composite = 0.30 * valueScore + 0.34 * volumeScore + 0.18 * approvalScore + 0.18 * momentumScore;
       r.score = composite;
-      // young clients (≤60d) can't reach Platinum on thin history; cap at Gold
-      if (composite >= 0.62 && r.age > 60) r.tier = "platinum";
-      else if (composite >= 0.38) r.tier = "gold";
+      // TIGHTENED tiers:
+      // Platinum = established (>60d), genuinely high composite, real volume AND good approval.
+      if (composite >= 0.68 && r.age > 60 && volumeScore >= 0.45 && approvalScore >= 0.50) r.tier = "platinum";
+      else if (composite >= 0.48 && volumeScore >= 0.22) r.tier = "gold";
       else r.tier = "silver";
     });
 
@@ -400,14 +429,14 @@
   function renderOverview() {
     var w = currentWindow();
     var qs = quotesIn(w);
-    var today = DATA.quotations.filter(function (q) { return q.date === DATA.meta.asOf; });
+    var today = QSET.filter(function (q) { return q.date === DATA.meta.asOf; });
 
     // this month vs last month
     var mKey = DATA.meta.asOf.slice(0, 7);
     var lastM = new Date(AS_OF.getFullYear(), AS_OF.getMonth() - 1, 1);
     var lastKey = dayKey(lastM).slice(0, 7);
-    var thisMonth = DATA.quotations.filter(function (q) { return q.date.slice(0, 7) === mKey; });
-    var prevMonth = DATA.quotations.filter(function (q) { return q.date.slice(0, 7) === lastKey; });
+    var thisMonth = QSET.filter(function (q) { return q.date.slice(0, 7) === mKey; });
+    var prevMonth = QSET.filter(function (q) { return q.date.slice(0, 7) === lastKey; });
     var delta = prevMonth.length ? (thisMonth.length - prevMonth.length) / prevMonth.length : 0;
 
     var totalVal = sum(qs, function (q) { return q.value; });
@@ -418,7 +447,7 @@
     // active companies in last 30 days (fixed window)
     var w30 = { from: addDays(AS_OF, -29), to: AS_OF };
     var active = {};
-    DATA.quotations.forEach(function (q) { if (inRange(q, w30)) active[q.companyId] = 1; });
+    QSET.forEach(function (q) { if (inRange(q, w30)) active[q.companyId] = 1; });
 
     // daily sparkline (last 30 days)
     var spark = dailySeries({ from: addDays(AS_OF, -29), to: AS_OF, days: 30 }).map(function (d) { return d.value; });
@@ -427,10 +456,10 @@
     var lostCount = HEALTH.filter(function (r) { return r.tier === "lost"; }).length;
     var activeCount = Object.keys(active).length;
     var estRevenue = sum(thisMonth.filter(function (q) { return q.status === "approved"; }), function (q) { return q.value; });
-    var estRevenueAll = sum(DATA.quotations.filter(function (q) { return q.status === "approved"; }), function (q) { return q.value; });
+    var estRevenueAll = sum(QSET.filter(function (q) { return q.status === "approved"; }), function (q) { return q.value; });
     // best employee by approved value (lifetime)
     var staffVal = {};
-    DATA.quotations.forEach(function (q) {
+    QSET.forEach(function (q) {
       if (q.status !== "approved") return;
       staffVal[q.staffId] = (staffVal[q.staffId] || 0) + q.value;
     });
@@ -442,7 +471,7 @@
     var headline = [
       { k: "عروض اليوم", v: fmtInt(today.length), s: DOW_AR[AS_OF.getDay()] + " · " + arNum(DATA.meta.asOf.slice(8)) + "/" + arNum(+DATA.meta.asOf.slice(5, 7)) },
       { k: "عروض هذا الشهر", v: fmtInt(thisMonth.length), s: '<span class="' + (dUp ? "up" : "down") + '">' + (dUp ? "▲" : "▼") + " " + pct(Math.abs(delta)) + "</span> مقارنةً بالشهر السابق", raw: true },
-      { k: "الشركات النشطة", v: fmtInt(activeCount), s: "نشطة آخر ٣٠ يوم · من " + arNum(DATA.companies.length) },
+      { k: "الشركات النشطة", v: fmtInt(activeCount), s: "نشطة آخر ٣٠ يوم · من " + arNum(VCOMP.length) },
       { k: "الشركات المفقودة", v: fmtInt(lostCount), s: "منقطعة أكثر من ٦٠ يوماً", tone: lostCount > 0 ? "bad" : "ok" },
       { k: "الإيرادات التقديرية", v: moneyC(estRevenue), s: "مقبولة هذا الشهر · " + moneyC(estRevenueAll) + " تراكمياً" },
       { k: "أفضل موظف", v: bestEmpName, s: moneyC(bestEmpVal) + " قيمة مقبولة", name: true }
@@ -528,7 +557,7 @@
     var endKey = DATA.meta.asOf.slice(0, 7);
     while (true) {
       var key = dayKey(cur).slice(0, 7);
-      var qs = DATA.quotations.filter(function (q) { return q.date.slice(0, 7) === key; });
+      var qs = QSET.filter(function (q) { return q.date.slice(0, 7) === key; });
       months.push({ key: key, count: qs.length, value: sum(qs, function (q) { return q.value; }), partial: key === endKey });
       if (key === endKey) break;
       cur = new Date(cur.getFullYear(), cur.getMonth() + 1, 1);
@@ -566,32 +595,43 @@
     var q = state.companyQuery.trim();
     function match(c) { return !q || c.name.indexOf(q) !== -1; }
 
-    // Best companies (by value in current period)
-    var best = DATA.companies.map(function (c) {
+    // Best companies — management default = activity (count); sortable by count/value/avg
+    var bestRows = VCOMP.map(function (c) {
       var st = companyStats(c.id, w);
-      return { c: c, count: st.count, value: st.value, approved: st.approved };
-    }).filter(function (r) { return r.count > 0 && match(r.c); })
-      .sort(function (a, b) { return b.value - a.value; }).slice(0, 8);
+      return { c: c, count: st.count, value: st.value, avg: st.count ? st.value / st.count : 0, approved: st.approved };
+    }).filter(function (r) { return r.count > 0 && match(r.c); });
+    var ck = state.companySort.key, cdir = state.companySort.dir;
+    bestRows.sort(function (a, b) { return (a[ck] - b[ck]) * cdir; });
+    var best = bestRows.slice(0, 8);
 
-    el("bestCompanies").innerHTML = best.length ? tableHTML(
-      ["#", "الشركة", "العروض", "القيمة", "القبول"],
-      best.map(function (r, i) {
-        return [
-          '<b class="ri">' + arNum(i + 1) + "</b>",
-          esc(r.c.name),
-          fmtInt(r.count),
-          moneyC(r.value),
-          chip(pct(r.count ? r.approved / r.count : 0), "ok")
-        ];
-      }),
-      best.map(function (r) { return 'data-co="' + r.c.id + '" class="clickable"'; })
-    ) : empty("لا توجد شركات نشطة ضمن هذه الفترة.");
+    var cHeads = [
+      { t: "#", k: null }, { t: "الشركة", k: null }, { t: "العروض", k: "count" },
+      { t: "القيمة", k: "value" }, { t: "المتوسط", k: "avg" }, { t: "القبول", k: null }
+    ];
+    var cThead = "<tr>" + cHeads.map(function (h) {
+      if (!h.k) return "<th>" + h.t + "</th>";
+      var on = ck === h.k;
+      return '<th class="sortable' + (on ? " on" : "") + '" data-csort="' + h.k + '">' + h.t +
+        '<i class="sort-ar">' + (on ? (cdir < 0 ? "▼" : "▲") : "↕") + "</i></th>";
+    }).join("") + "</tr>";
+    var cBody = best.map(function (r, i) {
+      return '<tr data-co="' + esc(r.c.id) + '" class="clickable">' +
+        '<td><b class="ri">' + arNum(i + 1) + "</b></td>" +
+        '<td class="name">' + esc(r.c.name) + "</td>" +
+        "<td>" + fmtInt(r.count) + "</td>" +
+        "<td>" + moneyC(r.value) + "</td>" +
+        "<td>" + moneyC(r.avg) + "</td>" +
+        "<td>" + chip(pct(r.count ? r.approved / r.count : 0), "ok") + "</td></tr>";
+    }).join("");
+    el("bestCompanies").innerHTML = best.length
+      ? '<div class="table-scroll"><table class="tbl"><thead>' + cThead + "</thead><tbody>" + cBody + "</tbody></table></div>"
+      : empty("لا توجد شركات نشطة ضمن هذه الفترة.");
 
     // At-risk: disappeared (>45d silent) or sharp recent drop
     var w30 = { from: addDays(AS_OF, -29), to: AS_OF };
     var wPrev = { from: addDays(AS_OF, -59), to: addDays(AS_OF, -30) };
     var atRisk = [];
-    DATA.companies.forEach(function (c) {
+    VCOMP.forEach(function (c) {
       if (!match(c)) return;
       var la = lastActivity(c.id);
       if (!la) return;
@@ -614,8 +654,18 @@
       atRisk.map(function (r) { return 'data-co="' + r.c.id + '" class="clickable"'; })
     ) : empty("لا توجد شركات متعثرة مطابقة.");
 
+    // New-company growth KPIs (this month + last 90 days)
+    var mFirst = new Date(AS_OF.getFullYear(), AS_OF.getMonth(), 1);
+    var d90 = addDays(AS_OF, -89);
+    var newMonth = VCOMP.filter(function (c) { return parseDate(c.created) >= mFirst; }).length;
+    var new90 = VCOMP.filter(function (c) { return parseDate(c.created) >= d90; }).length;
+    var nk = el("newCompanyStats");
+    if (nk) nk.innerHTML =
+      '<div class="newco-kpi"><span class="nk-v">' + arNum(newMonth) + '</span><span class="nk-k">جديدة هذا الشهر</span></div>' +
+      '<div class="newco-kpi"><span class="nk-v">' + arNum(new90) + '</span><span class="nk-k">جديدة آخر ٩٠ يوم</span></div>';
+
     // New active companies (created within 60 days + have quotes)
-    var news = DATA.companies.map(function (c) {
+    var news = VCOMP.map(function (c) {
       return { c: c, age: daysAgo(c.created), st: companyStats(c.id, null) };
     }).filter(function (r) { return r.age <= 60 && r.st.count > 0 && match(r.c); })
       .sort(function (a, b) { return b.st.value - a.st.value; });
@@ -674,7 +724,7 @@
 
   /* ---------- Top companies — lifetime vs 90d vs month --------------- */
   function topCompaniesBy(w, limit) {
-    return DATA.companies.map(function (c) {
+    return VCOMP.map(function (c) {
       var st = companyStats(c.id, w);
       return { id: c.id, label: c.name, value: st.value, sub: arNum(st.count) + " عرض" };
     }).filter(function (r) { return r.value > 0; })
@@ -684,8 +734,8 @@
     var life = topCompaniesBy(null, 6);
     var d90 = topCompaniesBy(win(-89, 0), 6);
     var mFirst = new Date(AS_OF.getFullYear(), AS_OF.getMonth(), 1);
-    var month = DATA.companies.map(function (c) {
-      var qs = DATA.quotations.filter(function (q) { return q.companyId === c.id && parseDate(q.date) >= mFirst; });
+    var month = VCOMP.map(function (c) {
+      var qs = QSET.filter(function (q) { return q.companyId === c.id && parseDate(q.date) >= mFirst; });
       return { id: c.id, label: c.name, value: sum(qs, function (q) { return q.value; }), sub: arNum(qs.length) + " عرض" };
     }).filter(function (r) { return r.value > 0; }).sort(function (a, b) { return b.value - a.value; }).slice(0, 6);
 
@@ -712,8 +762,9 @@
         ? "اتصال مباشر من مدير المبيعات وعرض حصري لإعادة التفعيل"
         : "رسالة متابعة ودّية مع استبيان لسبب التوقّف";
       var facts = [
-        ["آخر نشاط", (r.la || "—") + " · قبل " + arNum(r.gap) + " يوم"],
+        ["آخر عرض", (r.la || "—")],
         ["أيام الانقطاع", arNum(r.gap) + " يوم (" + arNum(monthsDormant) + " شهر)"],
+        ["إجمالي العروض التاريخية", arNum(r.all.count) + " عرض"],
         ["أعلى شهر سابق", bestM],
         ["القيمة التقديرية المفقودة", moneyC(estLost)],
         ["الموظف المسؤول", r.staff ? r.staff.name : "—"]
@@ -733,8 +784,8 @@
 
   function renderStaff() {
     var w = currentWindow();
-    var rows = DATA.staff.map(function (s) {
-      var qs = DATA.quotations.filter(function (q) { return q.staffId === s.id && inRange(q, w); });
+    var rows = VSTAFF.map(function (s) {
+      var qs = QSET.filter(function (q) { return q.staffId === s.id && inRange(q, w); });
       var val = sum(qs, function (q) { return q.value; });
       var approved = qs.filter(function (q) { return q.status === "approved"; }).length;
       return { s: s, count: qs.length, value: val, avg: qs.length ? val / qs.length : 0, rate: qs.length ? approved / qs.length : 0 };
@@ -783,6 +834,78 @@
     var regions = Object.keys(rc).map(function (r) { return { label: r, value: rc[r] }; })
       .sort(function (a, b) { return b.value - a.value; }).slice(0, 8);
     rankBars(el("topRegions"), regions, { color: C.jade });
+  }
+
+  /* ---------- Demand Analysis (Phase 7) ------------------------------ */
+  function renderDemand() {
+    var w = currentWindow();
+    var qs = quotesIn(w);
+
+    // A) by day of week — management order: Sat, Sun, Mon, Tue, Wed, Thu, Fri
+    var dowCount = [0, 0, 0, 0, 0, 0, 0]; // index = JS getDay (0=Sun..6=Sat)
+    qs.forEach(function (q) { dowCount[parseDate(q.date).getDay()]++; });
+    var dowOrder = [6, 0, 1, 2, 3, 4, 5];
+    var dayItems = dowOrder.map(function (d) {
+      return { value: dowCount[d], label: DOW_AR[d].replace("ال", ""), tick: DOW_AR[d].replace("ال", ""), full: DOW_AR[d] };
+    });
+    barChartV(el("demandDay"), dayItems);
+    // strongest / weakest annotation
+    var best = dayItems[0], worst = dayItems[0];
+    dayItems.forEach(function (it) { if (it.value > best.value) best = it; if (it.value < worst.value) worst = it; });
+    el("demandDayNote").innerHTML = qs.length
+      ? 'الأعلى: <b>' + esc(best.full) + "</b> (" + arNum(best.value) + ") · الأدنى: <b>" + esc(worst.full) + "</b> (" + arNum(worst.value) + ")"
+      : "لا توجد بيانات ضمن الفترة.";
+
+    // B) by hour (business hours 7–22, where timestamps exist)
+    var hourCount = {};
+    qs.forEach(function (q) { if (q.hour != null) hourCount[q.hour] = (hourCount[q.hour] || 0) + 1; });
+    var hourItems = [];
+    for (var h = 7; h <= 22; h++) {
+      hourItems.push({ value: hourCount[h] || 0, label: arNum(h), tick: arNum(h), full: "الساعة " + arNum(h) + ":٠٠" });
+    }
+    barChartV(el("demandHour"), hourItems);
+    var peak = hourItems[0];
+    hourItems.forEach(function (it) { if (it.value > peak.value) peak = it; });
+    el("demandHourNote").innerHTML = qs.length
+      ? "ذروة الطلب حول <b>" + esc(peak.full) + "</b> — يفيد في جدولة المناوبات."
+      : "لا توجد بيانات ضمن الفترة.";
+
+    // C) by month — seasonal trend across the full range (ignores the period filter)
+    var mc = {};
+    QSET.forEach(function (q) { var k = q.date.slice(0, 7); mc[k] = (mc[k] || 0) + 1; });
+    var months = Object.keys(mc).sort();
+    var monthItems = months.map(function (k) {
+      var p = k.split("-");
+      return { value: mc[k], label: MONTH_AR[+p[1] - 1].slice(0, 3), tick: MONTH_AR[+p[1] - 1].slice(0, 3), full: monthLabel(k) };
+    });
+    barChartV(el("demandMonth"), monthItems);
+  }
+
+  /* ---------- Company Activity Heat Map (Phase 7) -------------------- */
+  function renderHeatmap() {
+    var rows = VCOMP.map(function (c) {
+      var q30 = companyStats(c.id, win(-29, 0)).count;
+      var q90 = companyStats(c.id, win(-89, 0)).count;
+      var p30 = companyStats(c.id, win(-59, -30)).count;
+      var momentum = p30 > 0 ? (q30 - p30) / p30 : (q30 > 0 ? 1 : 0);
+      return { c: c, q30: q30, q90: q90, momentum: momentum };
+    }).filter(function (r) { return r.q90 > 0; })
+      .sort(function (a, b) { return b.q90 - a.q90; });
+
+    var max30 = Math.max.apply(null, rows.map(function (r) { return r.q30; }).concat([1]));
+    var body = rows.map(function (r) {
+      var intensity = (r.q30 / max30);
+      var heat = "background:rgba(79,179,160," + (0.05 + intensity * 0.5).toFixed(2) + ")";
+      var warn = (r.momentum < -0.3 && r.q30 >= 0) ? " hm-warn" : "";
+      return '<tr data-co="' + esc(r.c.id) + '" class="clickable' + warn + '">' +
+        '<td class="name">' + esc(r.c.name) + "</td>" +
+        '<td class="hm-cell" style="' + heat + '">' + fmtInt(r.q30) + "</td>" +
+        "<td>" + fmtInt(r.q90) + "</td>" +
+        "<td>" + trendTag(r.momentum) + "</td></tr>";
+    }).join("");
+    el("heatmapTable").innerHTML = rows.length
+      ? '<div class="table-scroll"><table class="tbl"><thead><tr><th>الشركة</th><th>آخر ٣٠ يوم</th><th>آخر ٩٠ يوم</th><th>الاتجاه</th></tr></thead><tbody>' + body + "</tbody></table></div>"
+      : empty("لا توجد شركات نشطة ضمن آخر ٩٠ يوماً.");
   }
 
   function renderAlerts() {
@@ -846,9 +969,9 @@
     });
 
     // ---- staff over-reliance on a single company ----
-    DATA.staff.forEach(function (s) {
+    VSTAFF.forEach(function (s) {
       var byCo = {}, total = 0;
-      DATA.quotations.forEach(function (q) {
+      QSET.forEach(function (q) {
         if (q.staffId !== s.id) return;
         byCo[q.companyId] = (byCo[q.companyId] || 0) + q.value;
         total += q.value;
@@ -866,9 +989,9 @@
     });
 
     // ---- stale high-value pending quotations ----
-    var valSorted = DATA.quotations.slice().sort(function (a, b) { return b.value - a.value; });
+    var valSorted = QSET.slice().sort(function (a, b) { return b.value - a.value; });
     var highCut = valSorted[Math.floor(valSorted.length * 0.15)] ? valSorted[Math.floor(valSorted.length * 0.15)].value : 0;
-    var stale = DATA.quotations.filter(function (q) {
+    var stale = QSET.filter(function (q) {
       return q.status === "sent" && q.value >= highCut && daysAgo(q.date) >= 7 && daysAgo(q.date) <= 45;
     }).sort(function (a, b) { return b.value - a.value; }).slice(0, 4);
     stale.forEach(function (q) {
@@ -914,7 +1037,7 @@
   function companyMonthlySeries(companyId, months) {
     months = months || 12;
     var m = {};
-    DATA.quotations.forEach(function (q) {
+    QSET.forEach(function (q) {
       if (q.companyId !== companyId) return;
       var k = q.date.slice(0, 7);
       if (!m[k]) m[k] = { count: 0, value: 0, approved: 0 };
@@ -1076,8 +1199,8 @@
 
   /* ---------- Staff drill-down --------------------------------------- */
   function staffRankById(id) {
-    var totals = DATA.staff.map(function (s) {
-      return { id: s.id, value: sum(DATA.quotations.filter(function (q) { return q.staffId === s.id; }), function (q) { return q.value; }) };
+    var totals = VSTAFF.map(function (s) {
+      return { id: s.id, value: sum(QSET.filter(function (q) { return q.staffId === s.id; }), function (q) { return q.value; }) };
     }).sort(function (a, b) { return b.value - a.value; });
     var rank = totals.length;
     for (var i = 0; i < totals.length; i++) { if (totals[i].id === id) { rank = i + 1; break; } }
@@ -1086,7 +1209,7 @@
   function openStaff(staffId) {
     var s = staffById[staffId];
     if (!s) return;
-    var qs = DATA.quotations.filter(function (q) { return q.staffId === staffId; });
+    var qs = QSET.filter(function (q) { return q.staffId === staffId; });
     var approved = qs.filter(function (q) { return q.status === "approved"; }).length;
     var value = sum(qs, function (q) { return q.value; });
     var rate = qs.length ? approved / qs.length : 0;
@@ -1120,7 +1243,7 @@
   function openHotel(hotelId) {
     var h = hotelById[hotelId];
     if (!h) return;
-    var qs = DATA.quotations.filter(function (q) { return q.hotelId === hotelId; });
+    var qs = QSET.filter(function (q) { return q.hotelId === hotelId; });
     var value = sum(qs, function (q) { return q.value; });
 
     var topCos = topGroup(qs, function (q) { return q.companyId; }, "count",
@@ -1145,10 +1268,85 @@
     openModal(h.name, sub, body);
   }
 
+  /* ---------- Destination comparison (always from full data) --------- */
+  function destStats(destId) {
+    var qs = DATA.quotations.filter(function (q) { return q.destination === destId; });
+    var coVal = {}, stVal = {}, coSeen = {}, stSeen = {}, value = 0;
+    qs.forEach(function (q) {
+      coSeen[q.companyId] = 1; stSeen[q.staffId] = 1;
+      coVal[q.companyId] = (coVal[q.companyId] || 0) + q.value;
+      stVal[q.staffId] = (stVal[q.staffId] || 0) + q.value;
+      value += q.value;
+    });
+    function topKey(obj) { var b = null, bv = -1; Object.keys(obj).forEach(function (k) { if (obj[k] > bv) { bv = obj[k]; b = k; } }); return b; }
+    var tc = topKey(coVal), ts = topKey(stVal);
+    return {
+      count: qs.length,
+      companies: Object.keys(coSeen).length,
+      staff: Object.keys(stSeen).length,
+      value: value,
+      topCompany: tc ? ((companyById[tc] || {}).name || "—") : "—",
+      topEmployee: ts ? ((staffById[ts] || {}).name || "—") : "—"
+    };
+  }
+  function renderComparison() {
+    var box = el("destCompare"); if (!box) return;
+    var dests = DATA.destinations || [];
+    if (dests.length < 2) { box.innerHTML = ""; return; }
+    // stable color per destination (cycles → future-proof for more destinations)
+    var palette = [C.brass, C.jade, C.coral, C.brassSoft, C.jadeDeep, C.danger];
+    var stats = dests.map(function (d, i) {
+      var s = destStats(d.id);
+      s.avg = s.count ? s.value / s.count : 0;
+      return { d: d, s: s, color: palette[i % palette.length] };
+    });
+
+    var metrics = [
+      { k: "إجمالي العروض",    get: function (s) { return s.count; },       fmt: function (v) { return fmtInt(v); },  num: true },
+      { k: "قيمة العروض",      get: function (s) { return s.value; },       fmt: function (v) { return moneyC(v); },  num: true },
+      { k: "متوسط قيمة العرض", get: function (s) { return s.avg; },         fmt: function (v) { return moneyC(v); },  num: true },
+      { k: "الشركات النشطة",   get: function (s) { return s.companies; },   fmt: function (v) { return fmtInt(v); },  num: true },
+      { k: "الموظفون النشطون", get: function (s) { return s.staff; },       fmt: function (v) { return fmtInt(v); },  num: true },
+      { k: "أفضل شركة",        get: function (s) { return s.topCompany; },  fmt: function (v) { return esc(v); },     num: false },
+      { k: "أفضل موظف",        get: function (s) { return s.topEmployee; }, fmt: function (v) { return esc(v); },     num: false }
+    ];
+
+    box.innerHTML = metrics.map(function (m) {
+      var vals = stats.map(function (x) { return m.get(x.s); });
+      var leadIdx = -1, total = 0;
+      if (m.num) {
+        var best = -Infinity;
+        vals.forEach(function (v, i) { total += v; if (v > best) { best = v; leadIdx = i; } });
+      }
+      var sides = stats.map(function (x, i) {
+        var lead = (m.num && i === leadIdx) ? " vs-lead" : "";
+        return '<div class="vs-side' + lead + '">' +
+          '<span class="vs-dest"><i class="vs-dot" style="background:' + x.color + '"></i>' + esc(x.d.name) + "</span>" +
+          '<span class="vs-val">' + m.fmt(vals[i]) + "</span>" +
+          (m.num && i === leadIdx ? '<span class="vs-tag">الأعلى</span>' : "") +
+          "</div>";
+      });
+      var pair = (stats.length === 2)
+        ? sides[0] + '<span class="vs-vs">VS</span>' + sides[1]
+        : sides.join("");
+      var bar = "";
+      if (m.num && total > 0) {
+        bar = '<div class="vs-bar">' + stats.map(function (x, i) {
+          return '<i style="width:' + ((vals[i] / total) * 100).toFixed(1) + "%;background:" + x.color + '"></i>';
+        }).join("") + "</div>";
+      }
+      return '<div class="vs-card' + (m.num ? "" : " vs-text") + '">' +
+        '<div class="vs-metric">' + m.k + "</div>" +
+        '<div class="vs-pair">' + pair + "</div>" + bar + "</div>";
+    }).join("");
+  }
+
   /* ---------- render all + wiring ------------------------------------ */
   function renderAll() {
+    applyDestination();     // scope the working view to the selected destination
     computeHealth();        // lifetime model shared by several sections
     renderOverview();
+    renderComparison();     // Indonesia vs Thailand (always from full data)
     renderDaily();
     renderMonthly();
     renderHealth();
@@ -1157,12 +1355,30 @@
     renderLostCenter();
     renderStaff();
     renderHotelsRegions();
+    renderDemand();
+    renderHeatmap();
     renderAlerts();
     revealObserve();
   }
 
   function wire() {
     el("asof").textContent = DATA.meta.asOf;
+
+    // destination selector (built from the destination registry → future-ready)
+    var destBox = el("destControl");
+    if (destBox) {
+      var opts = [{ id: "all", name: "كل الوجهات" }].concat(DATA.destinations || []);
+      destBox.innerHTML = opts.map(function (o) {
+        return '<button type="button" data-dest="' + esc(o.id) + '"' +
+          (o.id === state.destination ? ' class="active"' : "") + ">" + esc(o.name) + "</button>";
+      }).join("");
+      destBox.addEventListener("click", function (e) {
+        var b = e.target.closest("[data-dest]"); if (!b) return;
+        state.destination = b.getAttribute("data-dest");
+        setActive("destControl", b);
+        renderAll();   // full re-render (recomputes health for the new scope)
+      });
+    }
 
     // period control
     el("periodControl").addEventListener("click", function (e) {
@@ -1196,6 +1412,15 @@
       if (state.staffSort.key === key) state.staffSort.dir *= -1;
       else state.staffSort = { key: key, dir: -1 };
       renderStaff();
+    });
+
+    // best-companies sortable headers (count / value / average)
+    el("bestCompanies").addEventListener("click", function (e) {
+      var th = e.target.closest("[data-csort]"); if (!th) return;
+      var key = th.getAttribute("data-csort");
+      if (state.companySort.key === key) state.companySort.dir *= -1;
+      else state.companySort = { key: key, dir: -1 };
+      renderCompanies();
     });
 
     // ---- drill-down: open detail modal for company / staff / hotel ----
@@ -1267,45 +1492,12 @@
     showDashboard(role);                                              // admin/manager → dashboard
   }
 
-  /* Section-nav active-pill highlight (IntersectionObserver) ---------- */
-  function wireSecNav() {
-    var pills = document.querySelectorAll(".sec-nav-pill:not(.sec-nav-top)");
-    if (!pills.length || !window.IntersectionObserver) return;
-
-    var secIds = Array.prototype.map.call(pills, function (p) {
-      return p.getAttribute("href").slice(1);
-    });
-
-    var active = null;
-    function setActive(id) {
-      if (id === active) return;
-      active = id;
-      pills.forEach(function (p) {
-        p.classList.toggle("active", p.getAttribute("href") === "#" + id);
-      });
-    }
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) setActive(entry.target.id);
-      });
-    }, { rootMargin: "-20% 0px -70% 0px", threshold: 0 });
-
-    secIds.forEach(function (id) {
-      var sec = document.getElementById(id);
-      if (sec) observer.observe(sec);
-    });
-
-    if (secIds.length) setActive(secIds[0]);
-  }
-
   function showDashboard(role) {
     setView("dashboard");
     var badge = el("roleBadge");
     if (badge) badge.textContent = ACCESS.label(role);
     if (!APP_WIRED) { wire(); APP_WIRED = true; }
     renderAll();
-    wireSecNav();
   }
 
   function logout() { SESSION.clear(); loginMode = "admin"; route(); }
@@ -1373,19 +1565,27 @@
     if (back) back.addEventListener("click", logout);
   }
 
-  function _start() {
+  // Initializes module-level vars from window.MGMT_DATA and starts the dashboard.
+  // Called once: either synchronously (sample data already set) or via mgmt:data-ready.
+  var _booted = false;
+  function bootDashboard() {
+    if (_booted || !window.MGMT_DATA) return;
+    _booted = true;
+    DATA         = window.MGMT_DATA;
+    CUR          = DATA.meta.currency;
+    AS_OF        = parseDate(DATA.meta.asOf);
+    companyById  = index(DATA.companies);
+    staffById    = index(DATA.staff);
+    hotelById    = index(DATA.hotels);
+    QSET         = DATA.quotations;
+    VCOMP        = DATA.companies;
+    VSTAFF       = DATA.staff;
     try { route(); }
-    catch (err) {
-      console.error(err);
-      document.body.insertAdjacentHTML("beforeend",
-        '<pre style="color:#d9645a;padding:16px">خطأ في العرض: ' + esc(err.message) + "</pre>");
-    }
+    catch (err) { console.error(err); document.body.insertAdjacentHTML("beforeend", '<pre style="color:#d9645a;padding:16px">خطأ في العرض: ' + esc(err.message) + "</pre>"); }
   }
-  /* Works whether the script is loaded at parse time (DOMContentLoaded not yet fired)
-     OR dynamically injected after the adapter's async fetch (DOM already ready).    */
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", _start);
-  } else {
-    _start();
-  }
+
+  // Boot on DOMContentLoaded (sync case: window.MGMT_DATA already set by sample data).
+  document.addEventListener("DOMContentLoaded", function () { bootDashboard(); });
+  // Boot when the Supabase adapter fires mgmt:data-ready (async case).
+  document.addEventListener("mgmt:data-ready", function () { bootDashboard(); });
 })();

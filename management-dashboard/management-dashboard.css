@@ -386,72 +386,31 @@ th.sortable.on { color: var(--brass-soft); }
 /* ---- focus visibility -------------------------------------------- */
 :focus-visible { outline: 2px solid var(--brass-soft); outline-offset: 2px; border-radius: 6px; }
 
-/* ====================================================================
-   SECTION NAVIGATION BAR  (tablet + mobile only)
-   Sticky strip below the topbar — horizontally scrollable pill links.
-   ==================================================================== */
-.sec-nav {
-  /* hidden on desktop; shown from 900 px down via media query */
-  display: none;
-  position: sticky;
-  top: var(--topbar-h, 67px);
-  z-index: 25;
-  /* break out of .wrap's inline padding so it spans full viewport width */
-  margin: 0 -22px;
-  padding: 0 22px;
-  background: linear-gradient(180deg, rgba(10,20,17,.96) 70%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--hair-brass);
+/* ---- responsive --------------------------------------------------- */
+@media (max-width: 900px) {
+  .overview-grid { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .split-2 { grid-template-columns: 1fr; }
 }
-.sec-nav-inner {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 0 9px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+@media (max-width: 560px) {
+  .wrap { padding: 22px 14px 56px; }
+  .topbar-inner { padding: 12px 14px; gap: 12px; }
+  .topbar-meta { width: 100%; justify-content: space-between; }
+  .seg button { padding: 7px 10px; font-size: 12px; }
+  .sec-title { font-size: 18px; }
+  .feat-num { font-size: 42px; }
+  .kpi-v { font-size: 23px; }
+  .sec-tools { width: 100%; }
+  .field { width: 100%; min-width: 0; }
 }
-.sec-nav-inner::-webkit-scrollbar { display: none; }
-
-.sec-nav-pill {
-  flex: 0 0 auto;
-  font-family: "Tajawal", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1;
-  padding: 6px 13px;
-  border-radius: 999px;
-  background: rgba(0,0,0,.28);
-  border: 1px solid var(--hair);
-  color: var(--ink-2);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color .15s, background .15s, border-color .15s;
-}
-.sec-nav-pill:hover,
-.sec-nav-pill.active {
-  color: var(--brass-soft);
-  background: rgba(201,162,75,.12);
-  border-color: var(--hair-brass);
+@media (max-width: 380px) {
+  .kpi-grid { grid-template-columns: 1fr; }
 }
 
-/* ↑ back-to-top pill — narrower, brass accent */
-.sec-nav-top {
-  padding: 5px 11px;
-  font-size: 13px;
-  color: var(--brass);
-  border-color: var(--hair-brass);
-  background: rgba(201,162,75,.08);
-}
-.sec-nav-top:hover { background: rgba(201,162,75,.18); }
-
-/* ---- reduced motion (keep near the top so later rules can override) -- */
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .rank-fill { transition: none; }
-  * { scroll-behavior: auto !important; }
+  * { scroll-behavior: auto; }
 }
 
 /* =====================================================================
@@ -572,7 +531,17 @@ th.sortable.on { color: var(--brass-soft); }
   font-weight: 700; margin-bottom: 4px;
 }
 
-/* (Phase 2 breakpoints consolidated into the master responsive block below) */
+/* ---- responsive --------------------------------------------------- */
+@media (max-width: 900px) {
+  .split-3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .lost-grid { grid-template-columns: 1fr; }
+  .headline-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 380px) {
+  .headline-grid { grid-template-columns: 1fr; }
+}
 
 /* ===== Role gate (future RBAC) =================================== */
 .role-badge {
@@ -636,7 +605,9 @@ th.sortable.on { color: var(--brass-soft); }
 .ad-sub { font-size: 13px; color: var(--ink-3); margin: 0; }
 .ad-sub b { color: var(--danger); }
 
-/* (role-badge breakpoint consolidated below) */
+@media (max-width: 560px) {
+  .role-badge { padding: 4px 9px; font-size: 11px; }
+}
 
 /* ===== Company Timeline (Phase 3) =============================== */
 .clickable { cursor: pointer; transition: background .15s ease; }
@@ -713,7 +684,10 @@ body.modal-open { overflow: hidden; }
 .ct-reco span { display: block; font-size: 11px; color: var(--brass); margin-bottom: 5px; letter-spacing: .02em; }
 .ct-reco p { margin: 0; font-size: 14px; color: var(--ink); line-height: 1.7; }
 
-/* (modal breakpoint consolidated below) */
+@media (max-width: 480px) {
+  .ct-facts { grid-template-columns: 1fr; }
+  .ct-panel { padding: 18px; }
+}
 
 /* ===== Admin Login Gate (Phase 4) =============================== */
 .login-gate {
@@ -802,429 +776,73 @@ body.modal-open { overflow: hidden; }
 }
 @media (max-width: 480px) { .ct-2col { grid-template-columns: 1fr; } }
 
-/* ── Supabase loading overlay ──────────────────────────────────────── */
-.mgmt-loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--bg-deep);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  z-index: 9999;
+/* ===== Multi-destination (Phase 6) ============================== */
+.dest-seg button { font-weight: 700; }
+.dest-seg button.active {
+  background: linear-gradient(180deg, var(--brass-soft), var(--brass));
+  color: #2a1e07;
 }
 
-.mgmt-spinner {
-  width: 44px;
-  height: 44px;
-  border: 3px solid var(--hair);
-  border-top-color: var(--brass);
-  border-radius: 50%;
-  animation: mgmt-spin 0.75s linear infinite;
+.cmp-table { width: 100%; }
+.cmp-table th, .cmp-table td { text-align: center; }
+.cmp-table th:first-child, .cmp-table td.cmp-metric { text-align: right; }
+.cmp-metric { color: var(--ink-2); font-size: 13px; }
+.cmp-table td { font-variant-numeric: tabular-nums; }
+.cmp-lead {
+  color: var(--brass-soft); font-weight: 700;
+  background: rgba(201, 162, 75, 0.08);
 }
 
-@keyframes mgmt-spin { to { transform: rotate(360deg); } }
+/* ===== Destination comparison cards (Phase 6) =================== */
+.vs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (min-width: 1100px) { .vs-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .vs-grid { grid-template-columns: 1fr; } }
 
-.mgmt-loading-text {
-  color: var(--ink-2);
-  font-size: 0.92rem;
-  margin: 0;
-  letter-spacing: 0.02em;
+.vs-card {
+  background: linear-gradient(180deg, var(--panel), var(--panel-2));
+  border: 1px solid var(--hair); border-top: 2px solid var(--brass);
+  border-radius: var(--r-sm); padding: 15px 16px 16px;
 }
-
-/* ── Error overlay ─────────────────────────────────────────────────── */
-.mgmt-error-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--bg-deep);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  z-index: 9999;
+.vs-metric { font-size: 12.5px; color: var(--ink-3); font-weight: 600; text-align: center; margin-bottom: 13px; }
+.vs-pair { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.vs-side { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+.vs-dest {
+  font-size: 11.5px; color: var(--ink-2); display: inline-flex; align-items: center; gap: 5px;
+  max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-
-.mgmt-error-card {
-  background: var(--panel);
-  border: 1px solid rgba(217, 100, 90, 0.35);
-  border-radius: var(--r);
-  padding: 40px 40px 36px;
-  max-width: 420px;
-  width: 100%;
-  text-align: center;
-  box-shadow: var(--shadow);
+.vs-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.vs-val { font-size: 19px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.vs-side.vs-lead .vs-val { color: var(--brass-soft); }
+.vs-tag { font-size: 9.5px; color: var(--brass); border: 1px solid var(--hair-brass); border-radius: 999px; padding: 1px 8px; }
+.vs-vs {
+  flex: none; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--ink-3);
+  background: var(--bg-deep); border: 1px solid var(--hair); border-radius: 50%;
 }
+.vs-bar { display: flex; gap: 2px; height: 6px; margin-top: 14px; background: var(--bg-deep); border-radius: 3px; overflow: hidden; }
+.vs-bar i { display: block; height: 100%; border-radius: 3px; min-width: 2px; }
 
-.err-icon {
-  width: 40px;
-  height: 40px;
-  color: var(--danger);
-  margin-bottom: 16px;
+.vs-text .vs-val { font-size: 13.5px; white-space: normal; line-height: 1.45; }
+
+/* ===== Phase 7: new-company KPIs, demand analysis, heat map ====== */
+.newco-kpis { display: flex; gap: 10px; margin-bottom: 12px; }
+.newco-kpi {
+  flex: 1; text-align: center; padding: 11px 8px;
+  background: rgba(201, 162, 75, 0.06); border: 1px solid var(--hair-brass); border-radius: var(--r-sm);
 }
-
-.err-title {
-  font-family: "El Messiri", serif;
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--danger);
-  margin: 0 0 10px;
-}
-
-.err-msg {
-  color: var(--ink-2);
-  font-size: 0.88rem;
-  line-height: 1.65;
-  margin: 0 0 28px;
-  white-space: pre-wrap;
-}
-
-.mgmt-error-card button {
-  background: var(--brass);
-  color: var(--bg-deep);
-  border: none;
-  border-radius: var(--r-sm);
-  padding: 10px 32px;
-  font-family: "Tajawal", sans-serif;
-  font-size: 0.92rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.18s;
-}
-.mgmt-error-card button:hover { background: var(--brass-soft); }
-
-/* ====================================================================
-   MASTER RESPONSIVE SYSTEM
-   Breakpoints: 900px · 680px · 480px · 360px
-   All layout media queries live here — no scattered overrides above.
-
-   Global additions
-   ==================================================================== */
-
-/* smooth scroll (overridden by prefers-reduced-motion above) */
-html { scroll-behavior: smooth; }
-
-/* topbar height token — used by .sec-nav's sticky top offset.
-   Updated at every breakpoint where the topbar layout changes.     */
-:root { --topbar-h: 67px; }
-
-/* sections need breathing room so anchor links don't hide under the sticky bars */
-.sec {
-  scroll-margin-top: calc(var(--topbar-h) + 52px); /* +52 for sec-nav height */
-}
-/* on desktop the sec-nav is hidden; no extra offset needed */
-@media (min-width: 901px) {
-  .sec { scroll-margin-top: 20px; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════
-   900 px — TABLET
-   Collapse multi-column grids; reveal the section nav strip.
-   ══════════════════════════════════════════════════════════════════ */
-@media (max-width: 900px) {
-
-  /* show section nav */
-  .sec-nav { display: block; }
-
-  /* grids → single column */
-  .overview-grid          { grid-template-columns: 1fr; }
-  .split-2                { grid-template-columns: 1fr; }
-  .split-3                { grid-template-columns: 1fr; }
-  .lost-grid              { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-
-  /* KPI rows → 2 columns */
-  .kpi-grid               { grid-template-columns: repeat(2, 1fr); }
-  .headline-grid          { grid-template-columns: repeat(3, 1fr); }
-
-  /* section header: tools wrap below the title */
-  .sec-head               { gap: 10px; margin-bottom: 14px; }
-  .sec-tools              { margin-inline-start: 0; width: 100%; }
-  .field                  { width: 100%; min-width: 0; }
-
-  /* company-grid was already 1fr; keep as is */
-
-  /* topbar period selector: allow wrap without breaking */
-  .topbar-inner           { gap: 12px 16px; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════
-   680 px — LARGE MOBILE
-   Two-row topbar; section nav at new offset; charts shorter.
-   ══════════════════════════════════════════════════════════════════ */
-@media (max-width: 680px) {
-
-  /* ── topbar ──────────────────────────────────────────── */
-  :root { --topbar-h: 96px; }
-
-  .topbar-inner {
-    padding: 10px 16px;
-    gap: 6px 10px;
-    flex-wrap: wrap;          /* brand fills row 1; meta wraps to row 2 */
-    align-items: center;
-  }
-  .brand        { flex: 1 1 auto; }
-  .topbar-spacer { display: none; }
-
-  /* meta fills the full second row */
-  .topbar-meta {
-    width: 100%;
-    gap: 8px;
-    flex-wrap: nowrap;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  /* hide less-critical elements to save row-2 space */
-  .asof-box { display: none; }
-  .role-badge {
-    flex: 0 0 auto;
-    padding: 3px 9px;
-    font-size: 10.5px;
-  }
-
-  /* period selector takes all remaining space and scrolls horizontally */
-  #periodControl {
-    flex: 1 1 0;
-    min-width: 0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    border-radius: 12px;
-    -webkit-overflow-scrolling: touch;
-  }
-  #periodControl::-webkit-scrollbar { display: none; }
-  #periodControl .seg button,
-  .seg button                       { padding: 6px 10px; font-size: 11.5px; }
-
-  .logout-btn {
-    flex: 0 0 auto;
-    padding: 6px 10px;
-    font-size: 12px;
-  }
-
-  /* ── section nav ────────────────────────────────────── */
-  .sec-nav        { margin: 0 -16px; padding: 0 16px; }
-  .sec-nav-inner  { gap: 5px; padding: 7px 0 8px; }
-  .sec-nav-pill   { font-size: 11.5px; padding: 5px 11px; }
-
-  /* ── layout ─────────────────────────────────────────── */
-  .wrap           { padding: 20px 16px 64px; }
-  .sec            { margin-top: 32px; }
-  .sec:first-of-type { margin-top: 20px; }
-
-  .sec-title      { font-size: 19px; }
-  .sec-sub        { font-size: 12px; }
-  .card           { padding: 16px; }
-
-  /* feature card */
-  .feat-num       { font-size: 44px; }
-  .feat-num span  { font-size: 14px; }
-
-  /* KPIs */
-  .kpi-v          { font-size: 24px; }
-  .headline-grid  { grid-template-columns: repeat(2, 1fr); }
-  .headline-grid .kpi-v { font-size: 22px; }
-
-  /* charts shorter */
-  .chart-svg      { height: 170px; }
-
-  /* lost grid: single column */
-  .lost-grid      { grid-template-columns: 1fr; }
-
-  /* tables */
-  .tbl            { font-size: 12.5px; }
-  .tbl th, .tbl td { padding: 10px 10px; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════
-   480 px — SMALL MOBILE
-   Compact everything; bottom-sheet modal; simplified alerts.
-   ══════════════════════════════════════════════════════════════════ */
-@media (max-width: 480px) {
-
-  /* ── topbar ──────────────────────────────────────────── */
-  :root { --topbar-h: 84px; }
-
-  .topbar-inner   { padding: 8px 14px; gap: 5px 8px; }
-
-  /* shrink brand */
-  .brand-mark     { width: 30px; height: 30px; }
-  .brand          { gap: 9px; }
-  .brand-name     { font-size: 16px; }
-  .brand-tag      { display: none; }
-
-  /* hide role badge entirely — no room */
-  .role-badge     { display: none; }
-
-  /* period buttons even tighter */
-  .seg button     { padding: 5px 9px; font-size: 11px; }
-
-  /* logout: icon only — font-size:0 hides the "خروج" text node; SVG size is explicit */
-  .logout-btn     { gap: 0; padding: 6px 10px; font-size: 0; }
-  .logout-btn svg { display: block; width: 15px; height: 15px; }
-
-  /* ── section nav ────────────────────────────────────── */
-  .sec-nav        { margin: 0 -14px; padding: 0 14px; }
-  .sec-nav-inner  { gap: 4px; padding: 6px 0 7px; }
-  .sec-nav-pill   { font-size: 11px; padding: 5px 10px; }
-  .sec-nav-top    { padding: 4px 9px; font-size: 12px; }
-
-  /* ── layout ─────────────────────────────────────────── */
-  .wrap           { padding: 16px 14px 60px; }
-  .sec            { margin-top: 26px; }
-  .sec:first-of-type { margin-top: 14px; }
-
-  .sec-title      { font-size: 17px; }
-  .sec-sub        { font-size: 11.5px; }
-  .card           { padding: 13px; }
-  .card-title     { font-size: 14.5px; margin-bottom: 12px; }
-
-  /* feature card */
-  .feat-num       { font-size: 36px; }
-  .feat-num span  { font-size: 13px; margin-inline-start: 7px; }
-  .feat-val       { font-size: 12px; }
-
-  /* KPIs → 2 columns tight */
-  .kpi-v          { font-size: 21px; }
-  .kpi            { padding: 13px; }
-  .kpi-k          { font-size: 12px; }
-  .kpi-s          { font-size: 11px; }
-  .headline-grid  { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .headline-grid .kpi-v    { font-size: 19px; }
-  .kpi--name .kpi-v        { font-size: 15px; }
-
-  /* charts */
-  .chart-svg      { height: 140px; }
-  .monthly-note   { font-size: 12px; }
-
-  /* daily mini stats: 2 per row */
-  .daily-stats    { gap: 8px; }
-  .mini           { flex: 1 1 calc(50% - 4px); padding: 10px 11px; }
-  .mini-k         { font-size: 11px; }
-  .mini-v         { font-size: 15px; }
-
-  /* rank bars */
-  .rank-name      { font-size: 12px; }
-  .rank-val       { font-size: 12px; }
-  .rank-sub       { font-size: 10.5px; }
-
-  /* tables */
-  .tbl            { font-size: 12px; }
-  .tbl th, .tbl td { padding: 9px 9px; white-space: nowrap; }
-  /* fade on the left edge signals hidden columns in RTL scroll */
-  .table-scroll   { position: relative; border-radius: var(--r); }
-  .table-scroll::after {
-    content: "";
-    position: absolute;
-    top: 0; bottom: 0; left: 0;
-    width: 28px;
-    background: linear-gradient(to left, transparent, rgba(10,20,17,.68));
-    pointer-events: none;
-    border-radius: var(--r) 0 0 var(--r);
-  }
-
-  /* health legend */
-  .health-legend  { font-size: 11px; }
-  .hd-legend      { gap: 6px 12px; }
-  .hd-legend li   { font-size: 12px; }
-
-  /* lost cards */
-  .lost-card      { padding: 14px 15px; }
-  .lost-name      { font-size: 15px; }
-  .lost-fact      { font-size: 12px; }
-  .lost-reco      { font-size: 12px; }
-
-  /* alerts — collapse side column into inline dot */
-  .alert          { gap: 10px; padding: 12px 13px; flex-wrap: nowrap; }
-  .alert-side     {
-    flex: 0 0 auto;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 5px;
-    padding-top: 3px;
-  }
-  .alert-sev      { display: none; }
-  .alert-dot      { width: 10px; height: 10px; flex: 0 0 auto; }
-  .alert-title    { font-size: 14px; gap: 7px; }
-  .alert-who      { font-size: 12px; }
-  .alert-detail   { font-size: 12.5px; margin: 5px 0 8px; }
-  .alert-action   { font-size: 12px; }
-
-  /* field/search */
-  .field          { font-size: 13px; padding: 8px 14px; }
-
-  /* donut */
-  .donut          { width: 120px; height: 120px; }
-  .legend         { min-width: 100px; }
-  .legend li      { font-size: 12px; gap: 6px; }
-
-  /* ── modal → bottom-sheet ────────────────────────────── */
-  .company-modal  {
-    padding: 0;
-    align-items: flex-end;
-    justify-content: stretch;
-  }
-  .ct-panel       {
-    max-width: 100%;
-    width: 100%;
-    max-height: 88vh;
-    border-radius: 20px 20px 0 0;
-    padding: 18px 16px 28px;
-    animation: ctSheetIn .25s cubic-bezier(.32,.72,0,1);
-  }
-  @keyframes ctSheetIn {
-    from { transform: translateY(100%); opacity: .6; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
-  .ct-head        { margin-bottom: 14px; }
-  .ct-name        { font-size: 18px; }
-  .ct-facts       { grid-template-columns: repeat(2, 1fr); }
-  .ct-v           { font-size: 13.5px; }
-  .ct-k           { font-size: 11px; }
-  .ct-2col        { grid-template-columns: 1fr; }
-  .ct-chart-card  { padding: 12px 12px 4px; }
-
-  /* login card */
-  .login-card     { padding: 28px 20px; }
-  .ad-card        { padding: 32px 20px; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════
-   360 px — EXTRA SMALL
-   Single-column everything; minimal type sizes.
-   ══════════════════════════════════════════════════════════════════ */
-@media (max-width: 360px) {
-
-  :root { --topbar-h: 82px; }
-
-  .topbar-inner   { padding: 7px 12px; gap: 4px 7px; }
-  .brand-name     { font-size: 14.5px; }
-  .seg button     { padding: 5px 7px; font-size: 10.5px; }
-
-  .sec-nav        { margin: 0 -12px; padding: 0 12px; }
-  .sec-nav-inner  { gap: 4px; }
-  .sec-nav-pill   { font-size: 10.5px; padding: 4px 9px; }
-
-  .wrap           { padding: 14px 12px 56px; }
-
-  /* everything goes single column */
-  .headline-grid  { grid-template-columns: 1fr; }
-  .kpi-grid       { grid-template-columns: 1fr; }
-  .mini           { flex: 1 1 100%; }
-
-  .sec-title      { font-size: 16px; }
-  .card-title     { font-size: 14px; }
-  .feat-num       { font-size: 32px; }
-  .kpi-v          { font-size: 20px; }
-  .headline-grid .kpi-v { font-size: 18px; }
-
-  .chart-svg      { height: 120px; }
-
-  /* modal */
-  .ct-panel       { max-height: 92vh; border-radius: 16px 16px 0 0; }
-  .ct-facts       { grid-template-columns: 1fr; }
+.newco-kpi .nk-v { display: block; font-size: 22px; font-weight: 700; color: var(--brass-soft); font-variant-numeric: tabular-nums; }
+.newco-kpi .nk-k { display: block; font-size: 11px; color: var(--ink-3); margin-top: 3px; }
+
+.demand-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 900px) { .demand-grid { grid-template-columns: 1fr; } }
+.demand-grid .chart-svg { height: 180px; }
+.chart-wrap { margin-top: 4px; }
+.chart-note { margin: 10px 2px 0; font-size: 12px; color: var(--ink-3); line-height: 1.6; }
+.chart-note b { color: var(--brass-soft); }
+
+.hm-cell { font-variant-numeric: tabular-nums; font-weight: 600; border-radius: 4px; }
+tr.hm-warn > td.name { position: relative; }
+tr.hm-warn > td.name::before {
+  content: ""; position: absolute; inset-inline-start: -2px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 60%; background: var(--warn); border-radius: 2px;
 }
