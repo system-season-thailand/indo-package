@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>بوابة عمليات سيزون B2B</title>
+  <link rel="stylesheet" href="operations-portal.css">
+</head>
+<body>
+
+  <!-- ============ Login (one entry experience) ============ -->
+  <div class="login" id="login">
+    <div class="login-card">
+      <svg class="login-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+      </svg>
+      <h1 class="login-title" id="loginTitle">بوابة العمليات</h1>
+      <p class="login-tag" id="loginTag"></p>
+      <p class="login-prompt">اختر الدور للدخول (نموذج تجريبي):</p>
+      <div class="login-roles" id="loginRoles"></div>
+      <p class="login-note" id="loginNote"></p>
+    </div>
+  </div>
+
+  <!-- ============ App shell ============ -->
+  <div class="app" id="app" hidden>
+    <div class="nav-scrim" id="navScrim"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="side-brand-row">
+        <svg class="side-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <span class="side-brand" id="sideBrand">العمليات</span>
+      </div>
+      <nav class="nav-list" id="navList" aria-label="التنقّل"></nav>
+      <div class="side-foot">
+        <span class="side-foot-k">الدور الحالي</span>
+        <span class="side-foot-v" id="sideRole">—</span>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <header class="portal-top">
+        <button type="button" class="menu-toggle" id="menuToggle" aria-label="القائمة">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="crumb">
+          <span class="brand-name" id="brandName"></span>
+          <div class="crumb-titles">
+            <h1 class="crumb-title" id="crumbTitle">—</h1>
+            <span class="crumb-sub" id="crumbSub"></span>
+          </div>
+        </div>
+        <div class="top-spacer"></div>
+        <div class="seg role-switch" id="roleSwitch" role="group" aria-label="تبديل الدور (تجريبي)"></div>
+        <button type="button" class="ghost-btn" id="logoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" class="ic"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5"/><path d="M5 12h11"/></svg>
+          خروج
+        </button>
+      </header>
+
+      <main class="content">
+        <!-- live modules are embedded here (existing files, unchanged) -->
+        <div class="module-host" id="moduleHost" hidden></div>
+        <!-- placeholder modules render here -->
+        <div class="placeholder-host" id="placeholderHost" hidden></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="operations-portal-sample-data.js"></script>
+  <!-- fetches live badge counts from Supabase (READ-ONLY), then fires portal:data-ready -->
+  <script src="operations-portal-supabase-adapter.js"></script>
+  <script src="operations-portal.js"></script>
+</body>
+</html>

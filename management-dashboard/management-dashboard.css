@@ -160,6 +160,7 @@ h1, h2, h3, .feat-num, .donut-num, .kpi-v {
   padding: 18px;
   box-shadow: var(--shadow);
   position: relative;
+  min-width: 0;
 }
 .card-title {
   font-family: "El Messiri", serif;
