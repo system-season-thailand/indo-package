@@ -1,0 +1,150 @@
+{
+  "schema": "travelbook.program.v1",
+  "program_no": "THA-Q-2026-00001",
+  "country": "Thailand",
+  "customer": {
+    "traveler_name": "MR. FAHAD ALI ALQAHTANI",
+    "phone": "",
+    "email": ""
+  },
+  "dates": {
+    "start": "2026-08-05",
+    "end": "2026-08-15"
+  },
+  "hotels": [
+    {
+      "guest_name": "MR. FAHAD ALI ALQAHTANI",
+      "confirmation_number": "BKK-77451220",
+      "property_name": "GRANDE CENTRE POINT SUKHUMVIT 21",
+      "address": "153/2 Soi Sukhumvit 19, Khlong Toei Nuea, Watthana, Bangkok 10110 - Thailand",
+      "total_room": "1 Unit",
+      "room_type": "Grande Deluxe Room",
+      "bed_type": "King Size Bed",
+      "check_in": "05/08/2026",
+      "check_out": "09/08/2026",
+      "total_nights": "4",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    },
+    {
+      "guest_name": "MR. FAHAD ALI ALQAHTANI",
+      "confirmation_number": "HPT-9930041",
+      "property_name": "HILTON PATTAYA",
+      "address": "333/101 Moo 9, Nong Prue, Bang Lamung, Pattaya, Chonburi 20150 - Thailand",
+      "total_room": "1 Unit",
+      "room_type": "Deluxe Ocean View",
+      "bed_type": "King Size Bed",
+      "check_in": "09/08/2026",
+      "check_out": "12/08/2026",
+      "total_nights": "3",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    },
+    {
+      "guest_name": "MR. FAHAD ALI ALQAHTANI",
+      "confirmation_number": "HKT-2026115",
+      "property_name": "HOLIDAY INN RESORT PHUKET",
+      "address": "52 Thaweewong Road, Patong Beach, Kathu, Phuket 83150 - Thailand",
+      "total_room": "1 Unit",
+      "room_type": "Deluxe Pool Access",
+      "bed_type": "King Size Bed",
+      "check_in": "12/08/2026",
+      "check_out": "15/08/2026",
+      "total_nights": "3",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    }
+  ],
+  "flights": {
+    "note": [],
+    "tickets": []
+  },
+  "transportation": [
+    {
+      "label": "استقبال المطار",
+      "note": "الاستقبال في مطار بانكوك (سوفارنابومي) والتوجّه إلى الفندق"
+    },
+    {
+      "label": "تنقل بين المدن",
+      "note": "بانكوك ← باتايا برّاً، ثم باتايا ← بوكيت عبر رحلة داخلية"
+    },
+    {
+      "label": "سائق خاص",
+      "note": "سيارة خاصة مع سائق طوال الإقامة (٨ ساعات يومياً)"
+    },
+    {
+      "label": "توصيل المغادرة",
+      "note": "التوصيل من فندق بوكيت إلى مطار بوكيت الدولي للمغادرة"
+    }
+  ],
+  "tours": [
+    "جزيرة كورال (Coral Island)",
+    "حديقة نونغ نوش",
+    "جزر في في",
+    "بيج بوذا بوكيت"
+  ],
+  "itinerary": [
+    {
+      "date": "5 أغسطس",
+      "city": "بانكوك",
+      "program": "الاستقبال في مطار بانكوك (سوفارنابومي) + تسجيل الدخول في Grande Centre Point + التجول في منطقة سوكومفيت"
+    },
+    {
+      "date": "6 أغسطس",
+      "city": "بانكوك",
+      "program": "جولة في معبد الفجر (Wat Arun) + القصر الكبير + التسوق في مول ICONSIAM"
+    },
+    {
+      "date": "7 أغسطس",
+      "city": "بانكوك",
+      "program": "زيارة السوق العائم + مول Siam Paragon + عشاء في مطاعم شارع العرب (Soi 3)"
+    },
+    {
+      "date": "8 أغسطس",
+      "city": "بانكوك",
+      "program": "يوم حر للتسوق في CentralWorld و EmQuartier + جولة نهر تشاو فرايا"
+    },
+    {
+      "date": "9 أغسطس",
+      "city": "بانكوك-باتايا",
+      "program": "تسجيل الخروج + التوجّه إلى باتايا + تسجيل الدخول في Hilton Pattaya + التجول في Walking Street"
+    },
+    {
+      "date": "10 أغسطس",
+      "city": "باتايا",
+      "program": "رحلة جزيرة كورال (Coral Island) + الألعاب المائية"
+    },
+    {
+      "date": "11 أغسطس",
+      "city": "باتايا",
+      "program": "زيارة حديقة نونغ نوش + معبد الحقيقة (Sanctuary of Truth) + Terminal 21 Pattaya"
+    },
+    {
+      "date": "12 أغسطس",
+      "city": "باتايا-بوكيت",
+      "program": "تسجيل الخروج + الذهاب إلى بوكيت عبر رحلة داخلية + تسجيل الدخول في Holiday Inn Patong"
+    },
+    {
+      "date": "13 أغسطس",
+      "city": "بوكيت",
+      "program": "رحلة بحرية إلى جزر في في + الغطس + شاطئ مايا باي"
+    },
+    {
+      "date": "14 أغسطس",
+      "city": "بوكيت",
+      "program": "زيارة بيج بوذا + مدينة بوكيت القديمة + التسوق في Central Phuket و Jungceylon"
+    },
+    {
+      "date": "15 أغسطس",
+      "city": "بوكيت-مغادرة",
+      "program": "تسجيل الخروج والتحرك إلى مطار بوكيت الدولي للمغادرة"
+    }
+  ],
+  "cities": [
+    "BANGKOK",
+    "PATTAYA",
+    "PHUKET"
+  ],
+  "vouchers": {
+    "hotel": [],
+    "service": [],
+    "flight": []
+  }
+}

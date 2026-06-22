@@ -1,0 +1,106 @@
+{
+  "schema": "travelbook.program.v1",
+  "program_no": "IDN-Q-2026-00002",
+  "country": "Indonesia",
+  "customer": {
+    "traveler_name": "MR. FAISAL ABDULLAH ALOTAIBI",
+    "phone": "",
+    "email": ""
+  },
+  "dates": {
+    "start": "2026-08-01",
+    "end": "2026-08-06"
+  },
+  "hotels": [
+    {
+      "guest_name": "MR. FAISAL ABDULLAH ALOTAIBI",
+      "confirmation_number": "50H1KY35CC",
+      "property_name": "THE CLAREMONT LUXURY VILLAS",
+      "address": "Jalan Baraban no 56, Seminyak, Bali - Indonesia",
+      "total_room": "1 Unit",
+      "room_type": "1 Bedroom Pool Villa",
+      "bed_type": "King Size Bed",
+      "check_in": "01/08/2026",
+      "check_out": "03/08/2026",
+      "total_nights": "2",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    },
+    {
+      "guest_name": "MR. FAISAL ABDULLAH ALOTAIBI",
+      "confirmation_number": "432735",
+      "property_name": "GRAND MIRAGE RESORT & THALASSO BALI",
+      "address": "Jl. Pratama 74, Tanjung Benoa - Nusa Dua 80363, Bali - Indonesia",
+      "total_room": "1 Unit",
+      "room_type": "New Premier ocean",
+      "bed_type": "King Size Bed",
+      "check_in": "03/08/2026",
+      "check_out": "06/08/2026",
+      "total_nights": "3",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    }
+  ],
+  "flights": {
+    "note": [],
+    "tickets": []
+  },
+  "transportation": [
+    {
+      "label": "استقبال مطار بالي",
+      "note": "الاستقبال في مطار نغوراه راي والتوجّه للفندق"
+    },
+    {
+      "label": "سائق خاص",
+      "note": "سيارة خاصة مع سائق (٨ ساعات يومياً)"
+    },
+    {
+      "label": "توصيل المغادرة",
+      "note": "التوصيل لمطار بالي للمغادرة"
+    }
+  ],
+  "tours": [
+    "WATERBOM",
+    "GWK",
+    "ULUWATU",
+    "Pandawa Beach"
+  ],
+  "itinerary": [
+    {
+      "date": "1 أغسطس",
+      "city": "بالي",
+      "program": "الاستقبال في مطار بالي + تسجيل الدخول في The Claremont"
+    },
+    {
+      "date": "2 أغسطس",
+      "city": "بالي",
+      "program": "الألعاب المائية WATERBOM كوتا + تمثال GWK"
+    },
+    {
+      "date": "3 أغسطس",
+      "city": "بالي",
+      "program": "تسجيل الخروج + الانتقال إلى Grand Mirage + شاطئ Pandawa"
+    },
+    {
+      "date": "4 أغسطس",
+      "city": "بالي",
+      "program": "زيارة ULUWATU + مولات كوتا (بيتش ووك)"
+    },
+    {
+      "date": "5 أغسطس",
+      "city": "بالي",
+      "program": "جولة حرة + المقاهي والمطاعم"
+    },
+    {
+      "date": "6 أغسطس",
+      "city": "بالي-مغادرة",
+      "program": "تسجيل الخروج والتحرك للمطار للمغادرة"
+    }
+  ],
+  "cities": [
+    "BALI"
+  ],
+  "vouchers": {
+    "hotel": [],
+    "service": [],
+    "flight": []
+  }
+}
