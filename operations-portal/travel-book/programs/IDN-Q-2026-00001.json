@@ -1,0 +1,178 @@
+{
+  "schema": "travelbook.program.v1",
+  "program_no": "IDN-Q-2026-00001",
+  "country": "Indonesia",
+  "customer": {
+    "traveler_name": "MR. SAAD ABDULMOHSEN MATAOQ HADAEDI",
+    "phone": "",
+    "email": ""
+  },
+  "dates": {
+    "start": "2026-07-06",
+    "end": "2026-07-19"
+  },
+  "hotels": [
+    {
+      "guest_name": "MR. SAAD ABDULMOHSEN MATAOQ HADAEDI",
+      "confirmation_number": "165.26.JN4JGAEY.1",
+      "property_name": "GRAND ASTON PUNCAK",
+      "address": "Jl. Raya Puncak - Cianjur, Ciloto Kec. Cipanas, Kab. Cianjur, Jawa Barat - Indonesia",
+      "total_room": "1 Unit",
+      "room_type": "Deluxe Mountain View with Honeymoon decoration",
+      "bed_type": "King Size Bed",
+      "check_in": "06/07/2026",
+      "check_out": "09/07/2026",
+      "total_nights": "3",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    },
+    {
+      "guest_name": "MR. SAAD ABDULMOHSEN MATAOQ HADAEDI",
+      "confirmation_number": "50H1KY35CC",
+      "property_name": "THE CLAREMONT LUXURY VILLAS",
+      "address": "Jalan Baraban no 56, Seminyak, Bali - Indonesia",
+      "total_room": "1 Unit",
+      "room_type": "1 Bedroom Pool Villa",
+      "bed_type": "King Size Bed",
+      "check_in": "09/07/2026",
+      "check_out": "12/07/2026",
+      "total_nights": "3",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    },
+    {
+      "guest_name": "MR. SAAD ABDULMOHSEN MATAOQ HADAEDI",
+      "confirmation_number": "432735",
+      "property_name": "GRAND MIRAGE RESORT & THALASSO BALI",
+      "address": "Jl. Pratama 74, Tanjung Benoa - Nusa Dua 80363, Bali - Indonesia",
+      "total_room": "1 Unit",
+      "room_type": "New Premier ocean",
+      "bed_type": "King Size Bed",
+      "check_in": "12/07/2026",
+      "check_out": "16/07/2026",
+      "total_nights": "4",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    },
+    {
+      "guest_name": "MR. SAAD ABDULMOHSEN MATAOQ HADAEDI",
+      "confirmation_number": "21416106",
+      "property_name": "ASCOTT SUDIRMAN JAKARTA",
+      "address": "Ciputra World 2, Jl. Prof. DR. Satrio No.KAV 11 12930, Jakarta - Indonesia",
+      "total_room": "1 Unit",
+      "room_type": "1 Bedroom Premier",
+      "bed_type": "King Size Bed",
+      "check_in": "16/07/2026",
+      "check_out": "19/07/2026",
+      "total_nights": "3",
+      "meal_plan": "Bed & Breakfast for 2 Persons"
+    }
+  ],
+  "flights": {
+    "note": [],
+    "tickets": []
+  },
+  "transportation": [
+    {
+      "label": "استقبال المطار",
+      "note": "الاستقبال في مطار جاكرتا (سوكارنو-هاتا) والتوجّه إلى بونشاك"
+    },
+    {
+      "label": "تنقل بين المدن",
+      "note": "بونشاك ← بالي عبر رحلة داخلية، ثم بالي ← جاكرتا"
+    },
+    {
+      "label": "سائق خاص",
+      "note": "سيارة خاصة مع سائق طوال الإقامة (٨ ساعات يومياً)"
+    },
+    {
+      "label": "توصيل المغادرة",
+      "note": "التوصيل من فندق Ascott Sudirman إلى مطار جاكرتا للمغادرة"
+    }
+  ],
+  "tours": [
+    "حديقة تامان سفاري",
+    "WATERBOM كوتا + GWK",
+    "شاطئ PANDAWA",
+    "ULUWATU"
+  ],
+  "itinerary": [
+    {
+      "date": "6 يوليو",
+      "city": "بونشاك",
+      "program": "الإستقبال في مطار جاكرتا + الذهاب الى بونشاك + تسجيل الدخول في Grand Aston"
+    },
+    {
+      "date": "7 يوليو",
+      "city": "بونشاك",
+      "program": "زيارة حديقة تامان سفاري (تحتاج لنهار كامل) + زيارة كافي DAMAR LANGIT"
+    },
+    {
+      "date": "8 يوليو",
+      "city": "بونشاك",
+      "program": "زيارة حديقة الجنة + زيارة حديقة الزهور + زيارة بحيرة فينيسيا + زيارة منتزه THE NICE FANTASTIC"
+    },
+    {
+      "date": "9 يوليو",
+      "city": "بونشاك-بالي",
+      "program": "تسجيل الخروج من Grand Aston + الذهاب الى بالي + الإستقبال في مطار بالي + تسجيل الدخول في The Claremont Villa + التجول في السنتر"
+    },
+    {
+      "date": "10 يوليو",
+      "city": "بالي",
+      "program": "الالعاب المائية في منطقة كوتا WATERBOM + زيارة تمثال بالي GWK"
+    },
+    {
+      "date": "11 يوليو",
+      "city": "بالي",
+      "program": "زيارة شاطئ PANTAI PANDAWA + زيارة ملاهي ترانس ستوديو"
+    },
+    {
+      "date": "12 يوليو",
+      "city": "بالي",
+      "program": "تسجيل الخروج من The Claremont Villa + تسجيل الدخول في Grand Mirage Resort Bali"
+    },
+    {
+      "date": "13 يوليو",
+      "city": "بالي",
+      "program": "التجديف في نهر تلاقاوجا + فعالية ركوب الخيل على الشاطئ الاسود"
+    },
+    {
+      "date": "14 يوليو",
+      "city": "بالي",
+      "program": "زيارة شاطئ اطلالة الجرف الصخري ULUWATU + زيارة مولات كوتا (ديسكفري + ليبو مول + بيتش مول)"
+    },
+    {
+      "date": "15 يوليو",
+      "city": "بالي",
+      "program": "زيارة شاطئ The Beach Love والجلوس في الكافي المطل + زيارة شاطئ جمبران والجلوس في احد المطاعم ومشاهدة الغروب الجميل"
+    },
+    {
+      "date": "16 يوليو",
+      "city": "بالي-جاكرتا",
+      "program": "تسجيل الخروج من Grand Mirage Resort Bali + الذهاب الى جاكرتا + الإستقبال في مطار جاكرتا + تسجيل الدخول في Ascott Sudirman + الذهاب لمطعم السدة للعشاء"
+    },
+    {
+      "date": "17 يوليو",
+      "city": "جاكرتا",
+      "program": "زيارة بحر وملاهي انشول + زيارة كافي سكاي"
+    },
+    {
+      "date": "18 يوليو",
+      "city": "جاكرتا",
+      "program": "زيارة ملاهي دونيا فانتاستيك + زيارة اكواريوم"
+    },
+    {
+      "date": "19 يوليو",
+      "city": "جاكرتا-مغادرة",
+      "program": "تسجيل الخروج من Ascott Sudirman والتحرك للمطار للمغادرة"
+    }
+  ],
+  "cities": [
+    "JAKARTA",
+    "PUNCAK",
+    "BALI"
+  ],
+  "vouchers": {
+    "hotel": [],
+    "service": [],
+    "flight": []
+  }
+}

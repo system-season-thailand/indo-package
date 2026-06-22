@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>نجوم السفر — محرّر دليل الرحلة</title>
+  <link rel="stylesheet" href="book.css">
+  <style>
+    body{background:#22252a}
+    .ed{display:grid;grid-template-columns:minmax(380px,460px) 1fr;height:100vh}
+    .ef{overflow:auto;background:#f4f5f6}
+    .ev{overflow:auto;background:#2a2d31}
+    .escale{transform-origin:top center}
+    .bar{position:sticky;top:0;z-index:6;display:flex;flex-wrap:wrap;gap:7px;align-items:center;padding:12px 14px;background:#163a5d;color:#fff}
+    .bar .brand{font-family:"Cairo",sans-serif;font-weight:700;font-size:13pt;margin-inline-end:auto}
+    .b{font-family:"Cairo",sans-serif;font-weight:700;font-size:9pt;border:1px solid #c8a85a;background:#c8a85a;color:#1b2a38;padding:7px 11px;border-radius:6px;cursor:pointer}
+    .b.g{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+    .sum{font-family:"Cairo";font-size:8.5pt;font-weight:700;padding:5px 9px;border-radius:5px}
+    .sum.ok{background:#1f7a43;color:#dff5e8}.sum.bad{background:#8a2b1c;color:#ffd9cf}
+    .grp{border-bottom:1px solid #dde2e7;padding:14px 16px}
+    .grp>h3{font-family:"Cairo";font-size:10pt;letter-spacing:1px;color:#163a5d;margin:0 0 10px;font-weight:700}
+    .sub{font-family:"Cairo";font-size:9pt;color:#6b7680;margin:12px 0 6px;font-weight:700}
+    .f{margin:0 0 9px}
+    .f>label{display:block;font-family:"Cairo";font-size:8pt;color:#6b7680;margin-bottom:3px}
+    .f input,.f textarea{width:100%;font-family:"Cairo";font-size:10.5pt;color:#23303a;background:#fff;border:1px solid #d7dde3;padding:7px 9px;border-radius:5px}
+    .f textarea{min-height:54px;resize:vertical;line-height:1.6}
+    .f input:focus,.f textarea:focus{outline:2px solid #163a5d;border-color:#163a5d}
+    .imrow{display:flex;gap:9px;align-items:flex-start}
+    .imrow .th{width:50px;height:38px;flex:0 0 50px;border:1px solid #d7dde3;border-radius:4px;overflow:hidden;background:#e7ecf1;display:flex;align-items:center;justify-content:center;font-size:12px}
+    .imrow .th img{width:100%;height:100%;object-fit:cover}
+    .imrow .th[data-s="missing"]{border:1.5px dashed #c08a3a;color:#c08a3a}
+    .imrow .th[data-s="broken"]{border:1.5px dashed #c0392b;color:#c0392b}
+    .imrow .col{flex:1;min-width:0}
+    .st{font-family:"Cairo";font-size:8pt;font-weight:700;margin-top:3px}
+    .st.loaded{color:#1f7a43}.st.missing{color:#c08a3a}.st.broken{color:#c0392b}.st.pending{color:#8a7b5f}
+    .card{border:1px solid #dde2e7;border-radius:7px;padding:11px;margin:0 0 11px;background:#fbfcfd}
+    .card .ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+    .card .ch b{font-family:"Cairo";font-size:9.5pt;color:#163a5d}
+    .x{font-family:"Cairo";font-size:8pt;font-weight:700;border:1px solid #c0392b;color:#c0392b;background:#fff;border-radius:5px;padding:4px 8px;cursor:pointer}
+    .add{font-family:"Cairo";font-size:8.5pt;font-weight:700;border:1px dashed #163a5d;color:#163a5d;background:#eef3f8;border-radius:6px;padding:7px 10px;cursor:pointer;width:100%}
+    .twocol{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    label.chk{display:flex;gap:6px;align-items:center;font-family:"Cairo";font-size:9pt;color:#23303a}
+    .bar .pin{font-family:"Cairo";font-size:10pt;padding:6px 9px;border-radius:6px;border:1px solid #2b557c;background:#fff;color:#16324a;min-width:175px}
+    .pinfo{font-family:"Cairo";font-size:8.5pt;color:#bfe6cf;flex:1 1 100%;margin-top:1px;line-height:1.5}
+    .rsv{font-family:"Cairo";font-size:7.5pt;font-weight:700;color:#a9701f;background:#fdf1dc;border:1px solid #e6c48f;padding:2px 6px;border-radius:10px;margin-inline-start:6px}
+    .rnote{font-family:"Cairo";font-size:8pt;color:#7a8690;margin:0 0 9px;line-height:1.6}
+    .imbtns{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+    .uic{font-family:"Cairo";font-size:8.5pt;font-weight:700;border:1px solid #163a5d;background:#163a5d;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer}
+    .uic.up{background:#1f7a43;border-color:#1f7a43}
+    .uic.del{background:#fff;color:#c0392b;border-color:#c0392b}
+    .urladv{width:100%;font-family:"Cairo";font-size:9pt;color:#5b6770;background:#fff;border:1px dashed #cfd6dc;padding:6px 9px;border-radius:5px}
+    .chipfile{font-family:"Cairo";font-size:8.5pt;font-weight:700;color:#1f6a3a;background:#e8f5ee;border:1px solid #bfe0cd;border-radius:6px;padding:6px 9px}
+    .filerow{margin:4px 0 0}
+    @media(max-width:860px){.ed{grid-template-columns:1fr;height:auto}.ev{display:none}}
+    /* DS6 — confirmed-booking source banner */
+    .srcb{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 14px;background:#eef6f0;border-bottom:1px solid #cfe6d8;font-family:"Cairo",sans-serif}
+    .srcb[hidden]{display:none}
+    .srcb .tag{font-size:8pt;font-weight:700;color:#1f7a43;background:#dff1e7;border:1px solid #b8e0c8;border-radius:10px;padding:2px 8px}
+    .srcb .k{font-size:8.5pt;color:#5b6770}.srcb .v{font-size:9.5pt;font-weight:700;color:#163a5d}
+    .srcb .pair{display:flex;flex-direction:column;gap:1px;margin-inline-end:6px}
+    .srcb .reload{margin-inline-start:auto;font-family:"Cairo";font-size:8.5pt;font-weight:700;border:1px solid #163a5d;background:#163a5d;color:#fff;border-radius:6px;padding:7px 11px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="ed">
+    <div class="ef">
+      <div class="bar no-print">
+        <select class="pin" id="destSel" title="الوجهة · Destination" style="min-width:150px;cursor:pointer">
+          <option value="Indonesia">الوجهة: إندونيسيا</option>
+          <option value="Thailand">الوجهة: تايلاند</option>
+        </select>
+        <input class="pin" id="progNo" placeholder="IDN-Q-2026-00001">
+        <button class="b" id="bLoad">تحميل البرنامج</button>
+        <span class="brand">محرّر دليل الرحلة</span>
+        <span id="sum" class="sum ok">—</span>
+        <button class="b g" id="bPrev">معاينة</button>
+        <button class="b" id="bSave" hidden>حفظ · Save</button>
+        <span id="saveStat" class="sum ok" hidden>—</span>
+        <button class="b" id="bPdf">تصدير PDF</button>
+        <button class="b g" id="bExp">تصدير JSON</button>
+        <button class="b g" id="bImp">استيراد JSON</button>
+        <button class="b g" id="bReset">استعادة البرنامج</button>
+        <input type="file" id="file" accept="application/json" hidden>
+        <span id="loadInfo" class="pinfo">أدخل رقم العرض ثم «تحميل البرنامج».</span>
+      </div>
+      <div class="srcb no-print" id="srcBanner" hidden></div>
+      <div id="form"></div>
+    </div>
+    <div class="ev" id="evp"><div class="escale" id="escale"></div></div>
+  </div>
+
+  <script src="book.js"></script>
+  <script src="program-source.js"></script>
+  <script src="company-profile-source.js"></script>
+  <script src="confirmed-booking-adapter.js"></script>
+  <script src="travel-book-store.js"></script>
+  <script src="image-store.js"></script>
+  <script src="config.js"></script>
+  <script src="pdf-export.js"></script>
+  <script>
+  (function(){
+    "use strict";
+    var DATA=null;
+    var CAP={restaurants:4,cafes:5,malls:4,markets:3,shopping:5,money:3}; // cafes=5 to match Bali ref
+    var KINDS=[["restaurants","مطاعم"],["cafes","مقاهي"],["malls","مولات"],["markets","أسواق"],["shopping","تسوّق"],["money","صرافة"]];
+    function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+    function get(o,p){var a=p.split(".");for(var i=0;i<a.length;i++){if(o==null)return undefined;o=o[/^\d+$/.test(a[i])?+a[i]:a[i]];}return o;}
+    function set(o,p,v){var a=p.split("."),k;for(var i=0;i<a.length-1;i++){k=/^\d+$/.test(a[i])?+a[i]:a[i];o=o[k];}o[/^\d+$/.test(a[a.length-1])?+a[a.length-1]:a[a.length-1]]=v;}
+
+    function tF(label,path,ta){
+      var v=get(DATA,path);
+      return '<div class="f"><label>'+esc(label)+'</label>'+
+        (ta?'<textarea data-path="'+path+'">'+esc(v)+'</textarea>':'<input data-path="'+path+'" value="'+esc(v)+'">')+'</div>';
+    }
+    function linesF(label,path){ var v=get(DATA,path)||[]; return '<div class="f"><label>'+esc(label)+' (سطر لكل عنصر)</label><textarea data-lines="'+path+'">'+esc(v.join("\n"))+'</textarea></div>'; }
+    function approxKB(ref){ return (window.ImageStore?ImageStore.approxKB(ref):0); }
+    function imF(label,path){
+      var v=get(DATA,path)||"";
+      var isData=/^data:/.test(v), has=!!v;
+      var btns = has
+        ? '<button type="button" class="uic" data-upload="'+path+'">استبدال الصورة</button><button type="button" class="uic del" data-removeimg="'+path+'">إزالة</button>'
+        : '<button type="button" class="uic up" data-upload="'+path+'">⬆ رفع صورة من الجهاز</button>';
+      var adv = isData
+        ? '<div class="chipfile">✓ صورة مرفوعة · '+approxKB(v)+' KB</div>'
+        : '<input class="urladv" data-path="'+path+'" data-img="1" placeholder="أو الصق رابطاً مباشراً (متقدم)" value="'+esc(v)+'">';
+      return '<div class="f"><label>'+esc(label)+'</label><div class="imrow">'+
+        '<div class="th" data-th="'+path+'">▤</div>'+
+        '<div class="col"><div class="imbtns">'+btns+'</div>'+adv+
+        '<div class="st pending" data-st="'+path+'">…</div></div></div>'+
+        '<input type="file" accept="image/*" hidden data-file="'+path+'"></div>';
+    }
+    /* file slot (PDF/image) for tickets & vouchers — stores {filename,url,mime} */
+    function fileF(basePath){
+      var o=get(DATA,basePath)||{}, ref=o.url||"", isData=/^data:/.test(ref);
+      var btns = ref
+        ? '<button type="button" class="uic" data-fileup="'+basePath+'">استبدال الملف</button><button type="button" class="uic del" data-removefile="'+basePath+'">إزالة الملف</button>'
+        : '<button type="button" class="uic up" data-fileup="'+basePath+'">⬆ رفع ملف (PDF/صورة)</button>';
+      var show = isData
+        ? '<div class="chipfile">✓ '+esc(o.filename||"ملف")+' · '+approxKB(ref)+' KB</div>'
+        : '<input class="urladv" data-path="'+basePath+'.url" placeholder="أو رابط مباشر (متقدم)" value="'+esc(ref)+'">';
+      return '<div class="filerow"><div class="imbtns">'+btns+'</div>'+show+
+        '<input type="file" accept="application/pdf,image/*" hidden data-filein="'+basePath+'"></div>';
+    }
+
+    function ensureMeta(d){
+      d.meta=d.meta||{}; var m=d.meta;
+      m.program_no=m.program_no||""; m.country=m.country||"";
+      m.dates=m.dates||{start:"",end:""};
+      m.customer=m.customer||{traveler_name:d.traveler_name||"",phone:"",email:""};
+      m.transportation=m.transportation||[]; m.tours=m.tours||[];
+      m.flights=m.flights||{tickets:[]}; m.flights.tickets=m.flights.tickets||[];
+      m.vouchers=m.vouchers||{hotel:[],service:[],flight:[]};
+      m.vouchers.hotel=m.vouchers.hotel||[]; m.vouchers.service=m.vouchers.service||[]; m.vouchers.flight=m.vouchers.flight||[];
+      // city selection (F4/F5): derive sensible defaults if missing (e.g. imported JSON)
+      m.all_cities=m.all_cities||(LIB&&LIB.city_order)||(d.cities||[]).map(function(c){return c.key||c.name_en;});
+      m.detected_cities=m.detected_cities||(d.cities||[]).map(function(c){return c.key||c.name_en;});
+      m.included_cities=m.included_cities||(d.cities||[]).map(function(c){return c.key||c.name_en;});
+    }
+    function buildForm(){
+      ensureMeta(DATA);
+      var h="";
+      h+='<div class="grp"><h3>الترويسة</h3>'+tF("اسم الوكالة (EN)","agency_en")+tF("اسم الوكالة (AR)","agency_ar")+
+        '<div class="twocol">'+tF("الدولة (EN)","country_en")+tF("الدولة (AR)","country_ar")+'</div>'+
+        tF("اسم العميل · Guest Name","traveler_name")+
+        '<p class="rnote">يُدخل مرة واحدة ويظهر تلقائياً في كل فوتشرات الفنادق.</p></div>';
+
+      // hotels
+      h+='<div class="grp"><h3>الفنادق <button class="add" data-loadhotels="1" style="float:left">⤓ تحميل الفنادق من العرض</button></h3>'+linesF("ملاحظات الفنادق","hotels_note");
+      (DATA.hotels||[]).forEach(function(ht,i){
+        h+='<div class="card"><div class="ch"><b>فندق '+(i+1)+'</b><button class="x" data-del="hotels.'+i+'">حذف</button></div>'+
+          '<div class="rnote">Guest Name: <b>'+esc(DATA.traveler_name||"—")+'</b> · يُملأ تلقائياً من اسم العميل</div>'+
+          tF("Confirmation Number (يدوي)","hotels."+i+".confirmation_number")+
+          tF("Property Name","hotels."+i+".property_name")+tF("Address","hotels."+i+".address",true)+
+          '<div class="twocol">'+tF("Total Room","hotels."+i+".total_room")+tF("Room Type","hotels."+i+".room_type")+'</div>'+
+          '<div class="twocol">'+tF("Bed Type","hotels."+i+".bed_type")+tF("Meal Plan","hotels."+i+".meal_plan")+'</div>'+
+          '<div class="twocol">'+tF("Check In","hotels."+i+".check_in")+tF("Check Out","hotels."+i+".check_out")+'</div>'+
+          tF("Total Nights","hotels."+i+".total_nights")+'</div>';
+      });
+      h+='<button class="add" data-add="hotel">+ إضافة فندق</button></div>';
+
+      // flights + delivery
+      h+='<div class="grp"><h3>الطيران الداخلي</h3>'+linesF("ملاحظات الطيران","flights_note")+'</div>';
+      h+='<div class="grp"><h3>تطبيقات التوصيل</h3>'+tF("العنوان","delivery_title")+linesF("التطبيقات","delivery_apps")+'</div>';
+
+      // flight tickets (Feature 2: upload PDF/JPG/PNG — images render as pages, PDFs merge into final)
+      h+='<div class="grp"><h3>تذاكر الطيران · Flight Tickets</h3>'+
+        '<p class="rnote">ارفع التذاكر (PDF أو JPG/PNG). صور التذاكر تظهر كصفحات أنيقة داخل الدليل؛ تذاكر PDF تُدمج صفحاتها في الملف النهائي. عدد غير محدود — ذهاب / عودة / داخلي.</p>';
+      (DATA.meta.flights.tickets||[]).forEach(function(t,i){
+        var ref=t.url||t.ref||"", hasFile=!!ref,
+            isImg=((t.mime||"").indexOf("image/")===0)||String(ref).indexOf("data:image")===0,
+            kind=hasFile?(isImg?"صورة → صفحة داخل الدليل":"PDF → دمج في الملف النهائي"):"لم تُرفع بعد";
+        h+='<div class="card"><div class="ch"><b>تذكرة '+(i+1)+'</b><button class="x" data-del="meta.flights.tickets.'+i+'">حذف</button></div>'+
+          tF("عنوان التذكرة (ذهاب / عودة / داخلي)","meta.flights.tickets."+i+".title")+
+          '<div class="rnote">النوع: <b>'+esc(kind)+'</b>'+(hasFile&&t.filename?' · '+esc(t.filename):'')+'</div>'+
+          fileF("meta.flights.tickets."+i)+'</div>';
+      });
+      h+='<button class="add" data-add="ticket">+ إضافة تذكرة</button></div>';
+
+      // itinerary
+      h+='<div class="grp"><h3>خط سير البرنامج <button class="add" data-loaditin="1" style="float:left">⤓ تحميل خط السير من العرض</button></h3>'+linesF("ملاحظات البرنامج","itinerary_note");
+      (DATA.itinerary||[]).forEach(function(r,i){
+        h+='<div class="card"><div class="ch"><b>يوم '+(i+1)+'</b><button class="x" data-del="itinerary.'+i+'">حذف</button></div>'+
+          '<div class="twocol">'+tF("التاريخ","itinerary."+i+".date")+tF("المدينة","itinerary."+i+".city")+'</div>'+
+          tF("البرنامج","itinerary."+i+".program",true)+'</div>';
+      });
+      h+='<button class="add" data-add="itin">+ إضافة يوم</button></div>';
+
+      // transportation (editable; pulled from program)
+      h+='<div class="grp"><h3>التنقلات والمواصلات</h3>';
+      (DATA.meta.transportation||[]).forEach(function(t,i){
+        h+='<div class="card"><div class="ch"><b>'+esc(t.label||("تنقل "+(i+1)))+'</b><button class="x" data-del="meta.transportation.'+i+'">حذف</button></div>'+
+          tF("النوع/التسمية","meta.transportation."+i+".label")+tF("الملاحظة","meta.transportation."+i+".note",true)+'</div>';
+      });
+      h+='<button class="add" data-add="transport">+ إضافة تنقل</button></div>';
+
+      // tours / activities (editable)
+      h+='<div class="grp"><h3>الجولات / الأنشطة</h3>'+linesF("الجولات","meta.tours")+
+        '<p class="rnote">الجولات اليومية تُحرَّر أيضاً ضمن «خط سير البرنامج» (نص كل يوم).</p></div>';
+
+      // Included Cities (Feature 4/5) — registry-driven checkboxes; unchecked => removed from PDF entirely
+      h+='<div class="grp"><h3>المدن المُضمَّنة · Included Cities</h3>'+
+        '<p class="rnote">المدن غير المختارة تُحذف بالكامل من الـPDF (الغلاف + كل الأقسام). تُسجَّل مدن جديدة في المكتبة/الإدارة وتظهر هنا تلقائياً دون تعديل كود.</p>';
+      (DATA.meta.all_cities||[]).forEach(function(k){
+        var nm=(LIB&&LIB.cities&&LIB.cities[k]&&LIB.cities[k].name_ar)||k;
+        var on=(DATA.meta.included_cities||[]).indexOf(k)>=0;
+        h+='<label style="display:flex;align-items:center;gap:8px;padding:5px 2px;cursor:pointer">'+
+           '<input type="checkbox" data-city="'+esc(k)+'"'+(on?" checked":"")+'> '+
+           '<b>'+esc(nm)+'</b> <span class="rsv">'+esc(k)+'</span></label>';
+      });
+      h+='</div>';
+
+      // cities
+      (DATA.cities||[]).forEach(function(c,ci){
+        h+='<div class="grp"><h3>مدينة: '+esc(c.name_ar||"")+' <button class="x" data-del="cities.'+ci+'" style="float:left">حذف المدينة</button></h3>'+
+          '<div class="twocol">'+tF("الاسم (AR)","cities."+ci+".name_ar")+tF("الاسم (EN)","cities."+ci+".name_en")+'</div>'+
+          imF("صورة المدينة (الغلاف)","cities."+ci+".photo");
+        (c.sections||[]).forEach(function(sec,si){
+          var cap=CAP[sec.kind]||4;
+          h+='<div class="card"><div class="ch"><b>قسم: '+esc(sec.title||sec.kind)+' ('+(sec.items||[]).length+'/'+cap+')</b>'+
+            '<button class="x" data-del="cities.'+ci+'.sections.'+si+'">حذف القسم</button></div>'+
+            tF("عنوان القسم","cities."+ci+".sections."+si+".title")+
+            '<label class="chk"><input type="checkbox" data-chk="cities.'+ci+'.sections.'+si+'.halal"'+(sec.halal?" checked":"")+'> شارة حلال</label>';
+          (sec.items||[]).forEach(function(it,ii){
+            h+='<div style="border-top:1px dashed #dde2e7;padding-top:8px;margin-top:8px">'+
+              '<div class="ch"><b style="font-size:8.5pt">عنصر '+(ii+1)+'</b><button class="x" data-del="cities.'+ci+'.sections.'+si+'.items.'+ii+'">حذف</button></div>'+
+              tF("الاسم","cities."+ci+".sections."+si+".items."+ii+".name")+
+              imF("الصورة (URL)","cities."+ci+".sections."+si+".items."+ii+".image")+'</div>';
+          });
+          if((sec.items||[]).length<cap) h+='<button class="add" data-additem="cities.'+ci+'.sections.'+si+'">+ إضافة عنصر</button>';
+          h+='</div>';
+        });
+        h+='<button class="add" data-addsec="cities.'+ci+'">+ إضافة قسم</button></div>';
+      });
+      h+='<div class="grp"><button class="add" data-add="city">+ إضافة مدينة</button></div>';
+
+      // vouchers (RESERVED model: include/exclude + merge into final PDF in a later phase)
+      h+='<div class="grp"><h3>الفوشرات / Vouchers <span class="rsv">اختيار + دمج عند التوليد — مرحلة قادمة</span></h3>'+
+        '<p class="rnote">اختر الفوشرات لإدراجها في الـPDF النهائي (فنادق / خدمات / طيران). هذه المرحلة: نحفظ الاختيار فقط.</p>';
+      [["hotel","فنادق"],["service","خدمات"],["flight","طيران"]].forEach(function(g){
+        var kind=g[0];
+        h+='<div class="sub">'+esc(g[1])+'</div>';
+        (DATA.meta.vouchers[kind]||[]).forEach(function(v,i){
+          h+='<div class="card"><div class="ch"><label class="chk"><input type="checkbox" data-chk="meta.vouchers.'+kind+'.'+i+'.include"'+(v.include?" checked":"")+'> إدراج</label>'+
+            '<button class="x" data-del="meta.vouchers.'+kind+'.'+i+'">حذف</button></div>'+
+            tF("التسمية","meta.vouchers."+kind+"."+i+".label")+fileF("meta.vouchers."+kind+"."+i)+'</div>';
+        });
+        h+='<button class="add" data-add="voucher:'+kind+'">+ إضافة فوشر '+esc(g[1])+'</button>';
+      });
+      h+='</div>';
+
+      // embassy + thanks
+      h+='<div class="grp"><h3>السفارة</h3>'+tF("العنوان","embassy_title")+tF("العنوان الفرعي","embassy_subtitle")+
+        tF("اسم الجهة","embassy_org",true);
+      (DATA.embassy_contacts||[]).forEach(function(r,i){
+        h+='<div class="twocol">'+tF("التسمية","embassy_contacts."+i+".label")+tF("القيمة","embassy_contacts."+i+".value")+'</div>';
+      });
+      h+=tF("الموقع","embassy_website")+tF("الحساب","embassy_handle")+'</div>';
+      h+='<div class="grp"><h3>الختام</h3>'+tF("رسالة الشكر","thanks_message",true)+'</div>';
+
+      document.getElementById("form").innerHTML=h;
+      bind();
+    }
+
+    function bind(){
+      Array.prototype.forEach.call(document.querySelectorAll("[data-path]"),function(el){
+        el.addEventListener("input",function(){ var p=el.getAttribute("data-path"); set(DATA,p,el.value);
+          if(p==="traveler_name"){ (DATA.hotels||[]).forEach(function(h){ h.guest_name=el.value; }); }   // F1: one name → all vouchers
+          if(el.getAttribute("data-img"))probe(p); preview(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-lines]"),function(el){
+        el.addEventListener("input",function(){ set(DATA,el.getAttribute("data-lines"),el.value.split("\n").map(function(x){return x.trim();}).filter(Boolean)); preview(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-chk]"),function(el){
+        el.addEventListener("change",function(){ set(DATA,el.getAttribute("data-chk"),el.checked); preview(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-del]"),function(el){
+        el.addEventListener("click",function(){ delPath(el.getAttribute("data-del")); buildForm(); preview(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-add]"),function(el){
+        el.addEventListener("click",function(){ addThing(el.getAttribute("data-add")); buildForm(); preview(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-additem]"),function(el){
+        el.addEventListener("click",function(){ var s=get(DATA,el.getAttribute("data-additem")); s.items=s.items||[]; s.items.push({name:"عنصر جديد",image:""}); buildForm(); preview(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-addsec]"),function(el){
+        el.addEventListener("click",function(){ var c=get(DATA,el.getAttribute("data-addsec")); c.sections=c.sections||[]; c.sections.push({kind:"restaurants",title:"قسم جديد",items:[]}); buildForm(); preview(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-th]"),function(th){ probe(th.getAttribute("data-th")); });
+
+      // ---- image upload / replace / remove ----
+      Array.prototype.forEach.call(document.querySelectorAll("[data-upload]"),function(b){
+        b.addEventListener("click",function(){ var inp=document.querySelector('input[data-file="'+b.getAttribute("data-upload")+'"]'); if(inp)inp.click(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-file]"),function(inp){
+        inp.addEventListener("change",function(e){
+          var p=inp.getAttribute("data-file"), f=e.target.files[0]; e.target.value=""; if(!f)return;
+          ImageStore.putImage(f).then(function(ref){ set(DATA,p,ref); buildForm(); preview(); })
+            .catch(function(err){ alert("تعذّر رفع الصورة: "+err.message); });
+        });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-removeimg]"),function(b){
+        b.addEventListener("click",function(){ set(DATA,b.getAttribute("data-removeimg"),""); buildForm(); preview(); });
+      });
+      // ---- file upload (tickets / vouchers: PDF or image) ----
+      Array.prototype.forEach.call(document.querySelectorAll("[data-fileup]"),function(b){
+        b.addEventListener("click",function(){ var inp=document.querySelector('input[data-filein="'+b.getAttribute("data-fileup")+'"]'); if(inp)inp.click(); });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-filein]"),function(inp){
+        inp.addEventListener("change",function(e){
+          var bp=inp.getAttribute("data-filein"), f=e.target.files[0]; e.target.value=""; if(!f)return;
+          ImageStore.putFile(f).then(function(r){ var o=get(DATA,bp)||{}; o.filename=r.filename; o.url=r.ref; o.mime=r.mime; buildForm(); preview(); })
+            .catch(function(err){ alert("تعذّر رفع الملف: "+err.message); });
+        });
+      });
+      Array.prototype.forEach.call(document.querySelectorAll("[data-removefile]"),function(b){
+        b.addEventListener("click",function(){ var o=get(DATA,b.getAttribute("data-removefile"))||{}; o.url=""; o.mime=""; buildForm(); preview(); });
+      });
+
+      // ---- F1: Load Hotels From Quotation (guest name = single name; confirmation stays manual) ----
+      Array.prototype.forEach.call(document.querySelectorAll("[data-loadhotels]"),function(b){
+        b.addEventListener("click",function(){
+          if(!PROGRAM){ alert("حمّل البرنامج أولاً."); return; }
+          var guest=DATA.traveler_name||"", prev=DATA.hotels||[];
+          DATA.hotels=(PROGRAM.hotels||[]).map(function(h,i){
+            var c=JSON.parse(JSON.stringify(h));
+            c.guest_name=guest;                                              // auto from single name
+            c.confirmation_number=(prev[i]&&prev[i].confirmation_number)||""; // NOT pulled from quotation
+            return c;
+          });
+          buildForm(); preview();
+        });
+      });
+      // ---- F3: Load Itinerary From Quotation (stays fully editable after) ----
+      Array.prototype.forEach.call(document.querySelectorAll("[data-loaditin]"),function(b){
+        b.addEventListener("click",function(){
+          if(!PROGRAM){ alert("حمّل البرنامج أولاً."); return; }
+          DATA.itinerary=JSON.parse(JSON.stringify(PROGRAM.itinerary||[]));
+          buildForm(); preview();
+        });
+      });
+      // ---- F4/F5: include/exclude whole cities ----
+      Array.prototype.forEach.call(document.querySelectorAll("[data-city]"),function(cb){
+        cb.addEventListener("change",function(){
+          var key=cb.getAttribute("data-city"), inc=(DATA.meta.included_cities||[]).slice(), order=DATA.meta.all_cities||[];
+          if(cb.checked){ if(inc.indexOf(key)<0) inc.push(key); } else { inc=inc.filter(function(x){return x!==key;}); }
+          DATA.meta.included_cities=order.filter(function(k){return inc.indexOf(k)>=0;});   // canonical order
+          DATA.cities=ProgramSource.cityObjects(DATA.meta.included_cities, LIB);            // add/remove whole city
+          buildForm(); preview();
+        });
+      });
+    }
+    function delPath(p){ var a=p.split("."),idx=+a.pop(),arr=get(DATA,a.join(".")); if(Array.isArray(arr))arr.splice(idx,1); refreshSum(); }
+    function addThing(k){
+      if(k==="hotel")(DATA.hotels=DATA.hotels||[]).push({guest_name:DATA.traveler_name||"",confirmation_number:"",property_name:"",address:"",total_room:"1 Unit",room_type:"",bed_type:"King Size Bed",check_in:"",check_out:"",total_nights:"",meal_plan:"Bed & Breakfast for 2 Persons"});
+      if(k==="itin")(DATA.itinerary=DATA.itinerary||[]).push({date:"",city:"",program:""});
+      if(k==="city")(DATA.cities=DATA.cities||[]).push({name_ar:"مدينة جديدة",name_en:"NEW CITY",photo:"",sections:[]});
+      if(k==="transport"){ensureMeta(DATA);DATA.meta.transportation.push({label:"تنقل جديد",note:""});}
+      if(k==="ticket"){ensureMeta(DATA);DATA.meta.flights.tickets.push({title:"",filename:"",url:"",mime:""});}
+      if(k&&k.indexOf("voucher:")===0){ensureMeta(DATA);var vk=k.split(":")[1];(DATA.meta.vouchers[vk]=DATA.meta.vouchers[vk]||[]).push({label:"فوشر جديد",url:"",include:true});}
+    }
+
+    function probe(path){
+      var url=get(DATA,path)||"";
+      var th=document.querySelector('[data-th="'+path+'"]'), st=document.querySelector('[data-st="'+path+'"]');
+      function setS(s){ if(st){st.className="st "+s; st.textContent=s==="loaded"?"محمّلة · Loaded":s==="missing"?"مفقودة · Missing":s==="broken"?"رابط معطوب · Broken":"…";} if(th){th.setAttribute("data-s",s);} refreshSum(); }
+      if(!url){ if(th)th.innerHTML="▤"; setS("missing"); return; }
+      setS("pending");
+      var im=new Image();
+      im.onload=function(){ if(th)th.innerHTML='<img src="'+esc(url)+'">'; setS("loaded"); };
+      im.onerror=function(){ if(th)th.innerHTML="⚠"; setS("broken"); };
+      im.src=url;
+    }
+    function allImagePaths(){
+      var out=["? "],list=[];
+      (DATA.cities||[]).forEach(function(c,ci){ list.push("cities."+ci+".photo"); (c.sections||[]).forEach(function(s,si){ (s.items||[]).forEach(function(it,ii){ list.push("cities."+ci+".sections."+si+".items."+ii+".image"); }); }); });
+      return list;
+    }
+    var STAT={};
+    function refreshSum(){
+      // recompute from current DOM statuses
+      var ok=0,bad=0,tot=0;
+      Array.prototype.forEach.call(document.querySelectorAll("[data-s]"),function(th){ tot++; var s=th.getAttribute("data-s"); if(s==="loaded")ok++; else if(s==="missing"||s==="broken")bad++; });
+      var el=document.getElementById("sum");
+      el.textContent="صور: "+ok+" صالحة"+(bad?" · "+bad+" تحتاج مراجعة":"");
+      el.className="sum "+(bad?"bad":"ok");
+    }
+
+    var raf=null;
+    function preview(){ if(raf)cancelAnimationFrame(raf); raf=requestAnimationFrame(function(){
+      var sc=document.getElementById("escale"); BOOK.render(DATA,sc);
+      var pane=document.getElementById("evp").clientWidth-24,pw=794,s=Math.min(1,pane/pw);
+      sc.style.transform="scale("+s+")"; sc.style.width=pw+"px"; sc.style.marginInline="auto";
+      scheduleSave();   // mutable operational record: persist edits (booking mode only)
+    });}
+
+    document.getElementById("bPrev").addEventListener("click",function(){ window.open("book.html"+BOOK.encodeData(DATA),"_blank"); });
+    document.getElementById("bPdf").addEventListener("click",function(){
+      var b=this, t=b.textContent;
+      TBExport.exportViaServer(DATA,{
+        onStart:function(){ b.disabled=true; b.textContent="…جارٍ التوليد"; setInfo("…توليد PDF عبر خادم Chromium"); },
+        onDone:function(){ b.disabled=false; b.textContent=t; setInfo("✓ تم توليد PDF"); },
+        onError:function(e){ b.disabled=false; b.textContent=t; setInfo("✗ تعذّر توليد PDF: "+(e&&e.message||e)); }
+      });
+    });
+    document.getElementById("bExp").addEventListener("click",function(){
+      var b=new Blob([JSON.stringify(DATA,null,2)],{type:"application/json"});var a=document.createElement("a");
+      a.href=URL.createObjectURL(b);a.download="trip-data.json";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},3000);
+    });
+    document.getElementById("bImp").addEventListener("click",function(){document.getElementById("file").click();});
+    document.getElementById("file").addEventListener("change",function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{DATA=JSON.parse(r.result);buildForm();preview();}catch(err){alert("JSON غير صالح: "+err.message);}};r.readAsText(f);e.target.value="";});
+    document.getElementById("bReset").addEventListener("click",function(){ loadProgram(document.getElementById("progNo").value.trim()); });
+    document.getElementById("bLoad").addEventListener("click",function(){ loadProgram(document.getElementById("progNo").value.trim()); });
+    document.getElementById("progNo").addEventListener("keydown",function(e){ if(e.key==="Enter") loadProgram(this.value.trim()); });
+    // DS5 — Destination selector: each destination loads its default program; supports Indonesia + Thailand.
+    var DEST_PROGRAM={ "Indonesia":"IDN-Q-2026-00001", "Thailand":"THA-Q-2026-00001" };
+    (function(){ var ds=document.getElementById("destSel"); if(!ds)return;
+      ds.addEventListener("change",function(){ var no=DEST_PROGRAM[this.value]; if(no){ document.getElementById("progNo").value=no; loadProgram(no); } });
+    })();
+    window.addEventListener("resize",preview);
+
+    var PROGRAM=null, LIB=null;
+    function setInfo(t){ var el=document.getElementById("loadInfo"); if(el) el.textContent=t; }
+    function loadProgram(no){
+      if(!no){ setInfo("أدخل رقم البرنامج"); return; }
+      setInfo("…جارٍ تحميل البرنامج "+no);
+      Promise.all([ProgramSource.load(no), ProgramSource.library()]).then(function(res){
+        PROGRAM=res[0]; LIB=res[1];
+        DATA=ProgramSource.buildBookData(PROGRAM, LIB); ensureMeta(DATA); buildForm(); preview();
+        var m=DATA.meta, cs=(m.included_cities||[]).join(" · ");
+        // DS5 — keep the Destination selector in sync with the loaded program's country
+        var ds=document.getElementById("destSel"), c=(m.country||PROGRAM.country||"");
+        if(ds&&c){ for(var i=0;i<ds.options.length;i++){ if(ds.options[i].value===c){ ds.value=c; break; } } }
+        setInfo("✓ "+no+" — "+(DATA.traveler_name||"")+" — المدن: "+cs+" — "+(m.dates.start||"")+" → "+(m.dates.end||""));
+      }).catch(function(err){ setInfo("✗ تعذّر التحميل: "+err.message+" — شغّل عبر خادم محلي"); });
+    }
+
+    /* ============================================================
+       DS6 — Load Travel Book FROM a confirmed booking.
+       Reuses the same buildBookData + editor + PDF path. The adapter
+       (confirmed-booking-adapter.js) is the only mapping layer.
+       ============================================================ */
+    var CURRENT_BOOKING=null;
+    function syncDestSel(country){
+      var ds=document.getElementById("destSel"); if(!ds||!country)return;
+      for(var i=0;i<ds.options.length;i++){ if(ds.options[i].value===country){ ds.value=country; break; } }
+    }
+
+    /* ---- persistence: the Travel Book is a MUTABLE OPERATIONAL RECORD,
+            one per booking, saved through the TravelBookStore seam. ---- */
+    function setSaved(text, ok){
+      var st=document.getElementById("saveStat"); if(!st) return;
+      st.hidden=false; st.textContent=text; st.className="sum "+(ok===false?"bad":"ok");
+    }
+    function persist(){
+      if(!CURRENT_BOOKING||!CURRENT_BOOKING.booking_id||!DATA) return false;
+      try{ TravelBookStore.save(CURRENT_BOOKING.booking_id, DATA); setSaved("✓ محفوظ · Saved", true); return true; }
+      catch(e){ setSaved("✗ تعذّر الحفظ", false); return false; }
+    }
+    var _saveT=null;
+    function scheduleSave(){
+      if(!CURRENT_BOOKING||!CURRENT_BOOKING.booking_id) return;   // manual program mode stays ephemeral
+      setSaved("…", true);
+      if(_saveT) clearTimeout(_saveT);
+      _saveT=setTimeout(persist, 600);
+    }
+
+    /* ---- Reload merge: refresh SOURCE-OWNED fields only (hotels, dates,
+            cities, itinerary) and PRESERVE every manual/operational field
+            (confirmation numbers, tickets, vouchers, uploaded images,
+            notes, transportation, tours, and any other edits). ---- */
+    function mergeSourceRefresh(cur, fresh){
+      var m=JSON.parse(JSON.stringify(cur));                 // start from current → preserves ALL manual work
+      m.meta=m.meta||{}; fresh.meta=fresh.meta||{};
+      // hotels: refresh structure, keep manual confirmation_number (by property, then index)
+      var confByProp={}, confByIdx=[];
+      (cur.hotels||[]).forEach(function(h,i){ confByIdx[i]=h.confirmation_number||""; if(h.property_name) confByProp[h.property_name]=h.confirmation_number||""; });
+      m.hotels=(fresh.hotels||[]).map(function(h,i){
+        var c=JSON.parse(JSON.stringify(h));
+        var v=(c.property_name&&confByProp[c.property_name]!=null)?confByProp[c.property_name]:confByIdx[i];
+        if(v) c.confirmation_number=v;
+        c.guest_name=m.traveler_name||c.guest_name||"";      // F1 consistency with preserved guest name
+        return c;
+      });
+      // itinerary + dates + destination labels: source-owned
+      m.itinerary=JSON.parse(JSON.stringify(fresh.itinerary||[]));
+      // branding: source-owned — refresh from the latest company profile on reload
+      if(fresh.branding) m.branding=JSON.parse(JSON.stringify(fresh.branding));
+      if(fresh.agency_en) m.agency_en=fresh.agency_en;
+      if(fresh.agency_ar) m.agency_ar=fresh.agency_ar;
+      if(fresh.thanks_message) m.thanks_message=fresh.thanks_message;
+      m.meta.dates=fresh.meta.dates||m.meta.dates;
+      m.country_en=fresh.country_en; m.country_ar=fresh.country_ar; m.meta.country=fresh.meta.country||m.meta.country;
+      // cities: refresh source content + selection, but keep uploaded images
+      var imgByCity={};
+      (cur.cities||[]).forEach(function(c){
+        var key=c.name_en||c.name_ar, rec={photo:(/^data:/.test(c.photo||"")?c.photo:null), items:{}};
+        (c.sections||[]).forEach(function(s,si){ (s.items||[]).forEach(function(it,ii){ if(/^data:/.test(it.image||"")) rec.items[(s.kind||si)+"|"+ii]=it.image; }); });
+        imgByCity[key]=rec;
+      });
+      m.meta.all_cities=fresh.meta.all_cities; m.meta.detected_cities=fresh.meta.detected_cities; m.meta.included_cities=fresh.meta.included_cities;
+      m.cities=(fresh.cities||[]).map(function(c){
+        var nc=JSON.parse(JSON.stringify(c)), key=nc.name_en||nc.name_ar, saved=imgByCity[key];
+        if(saved){
+          if(saved.photo) nc.photo=saved.photo;
+          (nc.sections||[]).forEach(function(s,si){ (s.items||[]).forEach(function(it,ii){ var k=(s.kind||si)+"|"+ii; if(saved.items[k]) it.image=saved.items[k]; }); });
+        }
+        return nc;
+      });
+      return m;
+    }
+
+    function showSourceBanner(booking){
+      var s=ConfirmedBookingAdapter.sourceSummary(booking, DATA);
+      var saved=(CURRENT_BOOKING&&CURRENT_BOOKING.booking_id&&TravelBookStore.savedAt(CURRENT_BOOKING.booking_id));
+      var el=document.getElementById("srcBanner"); if(!el) return;
+      el.innerHTML=
+        '<span class="tag">سجلّ تشغيلي · Travel Book record'+(saved?' · محفوظ':'')+'</span>'+
+        '<div class="pair"><span class="k">رقم الحجز / العرض · Booking / Quotation</span><span class="v">'+esc(s.quotation_id||s.booking_id||"—")+'</span></div>'+
+        '<div class="pair"><span class="k">الضيف · Guest</span><span class="v">'+esc(s.guest||"—")+'</span></div>'+
+        '<div class="pair"><span class="k">الوجهة · Destination</span><span class="v">'+esc(s.country||"—")+'</span></div>'+
+        '<div class="pair"><span class="k">المدن · Cities</span><span class="v">'+esc((s.cities||[]).join("، ")||"—")+'</span></div>'+
+        '<button type="button" class="reload" id="bReloadBooking">↻ تحديث من الحجز المؤكّد · Reload From Confirmed Booking</button>';
+      el.hidden=false;
+      var rb=document.getElementById("bReloadBooking");
+      if(rb) rb.addEventListener("click",function(){
+        if(!CURRENT_BOOKING) return;
+        var ok=window.confirm("سيُحدّث هذا الفنادق والتواريخ والمدن وخط السير من الحجز المؤكّد فقط. أرقام التأكيد، التذاكر، الفوشرات، الصور المرفوعة، الملاحظات وأي تعديلات يدوية ستبقى محفوظة.\n\nThis refreshes hotels, dates, cities and itinerary from the confirmed booking only. Confirmation numbers, tickets, vouchers, uploaded images, notes and any manual edits are preserved.");
+        if(ok) loadFromBooking(CURRENT_BOOKING, { mode:"reloadSource" });
+      });
+    }
+
+    /* open  -> if a saved record exists, OPEN IT (all manual work intact);
+                 otherwise build fresh from the booking and save (first creation).
+       reloadSource -> refresh source-owned fields onto the current record. */
+    function loadFromBooking(booking, opts){
+      if(!booking){ setInfo("لا يوجد حجز"); return; }
+      var mode=(opts&&opts.mode)||"open", bid=booking.booking_id||"";
+      setInfo("…جارٍ فتح سجلّ دليل الرحلة "+(bid||""));
+      var no=ConfirmedBookingAdapter.programNoFor(booking);
+      var baseP=no?ProgramSource.load(no).catch(function(){return null;}):Promise.resolve(null);
+      Promise.all([baseP, ProgramSource.library()]).then(function(res){
+        var base=res[0]; LIB=res[1];
+        PROGRAM=ConfirmedBookingAdapter.confirmedBookingToTravelBook(booking, base, LIB);   // source for F1/F3 buttons
+        var existed=!!(bid&&TravelBookStore.exists(bid));
+        if(mode==="reloadSource"){
+          DATA=mergeSourceRefresh(DATA, ProgramSource.buildBookData(PROGRAM, LIB));
+        } else if(existed){
+          DATA=TravelBookStore.load(bid);                       // OPEN the saved mutable record
+        } else {
+          DATA=ProgramSource.buildBookData(PROGRAM, LIB);       // first creation
+        }
+        ensureMeta(DATA);
+        CURRENT_BOOKING=booking;
+        var m=DATA.meta;
+        if(document.getElementById("progNo")) document.getElementById("progNo").value=m.program_no||no||"";
+        syncDestSel(m.country||PROGRAM.country||"");
+        var btn=document.getElementById("bSave"); if(btn) btn.hidden=false;
+        buildForm(); preview(); showSourceBanner(booking);
+        persist();                                              // create-on-first-open / save-after-reload
+        var cs=(m.included_cities||[]).join(" · ");
+        setInfo("✓ "+(mode==="reloadSource"?"تم التحديث من الحجز":existed?"سجلّ محفوظ":"سجلّ جديد")+" — "+(DATA.traveler_name||"")+" — المدن: "+cs);
+      }).catch(function(err){ setInfo("✗ تعذّر الفتح: "+(err&&err.message||err)); });
+    }
+    // explicit Save
+    (function(){ var sb=document.getElementById("bSave"); if(sb) sb.addEventListener("click",function(){ if(persist()) setSaved("✓ تم الحفظ · Saved", true); }); })();
+    // flush pending autosave before the iframe is hidden/reloaded/suspended (covers reopen + iOS Safari)
+    function flushSave(){ if(_saveT){ clearTimeout(_saveT); _saveT=null; } persist(); }
+    document.addEventListener("visibilitychange",function(){ if(document.hidden) flushSave(); });
+    window.addEventListener("pagehide", flushSave);
+    window.addEventListener("blur", flushSave);
+
+    // Receive the confirmed booking object handed over by the dashboard shell.
+    window.addEventListener("message",function(e){
+      var d=e&&e.data||{};
+      if(d.type==="load-booking"&&d.booking){ loadFromBooking(d.booking,{mode:"open"}); }
+    });
+
+    var _params=new URLSearchParams(location.search);
+    var _bookingId=_params.get("bookingId");
+    if(_bookingId){
+      setInfo("…جارٍ التحميل من حجز مؤكّد ("+_bookingId+")");
+      // Ask the dashboard shell to hand over the booking record for this id.
+      try{ if(window.parent&&window.parent!==window) window.parent.postMessage({type:"request-booking",bookingId:_bookingId},"*"); }catch(_e){}
+    } else {
+      var initNo=_params.get("program")||"IDN-Q-2026-00001";
+      document.getElementById("progNo").value=initNo;
+      loadProgram(initNo);
+    }
+  })();
+  </script>
+</body>
+</html>

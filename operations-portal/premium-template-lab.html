@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سيزون ترافل — محرّك قوالب حقيبة السفر</title>
+  <link rel="stylesheet" href="premium-template-lab.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-sub">محرّك قوالب حقيبة السفر · قالب واحد لكل الأدلة</span>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="asof-box"><span class="asof-label">الوقت المرجعي</span><span class="asof-val" id="now">—</span></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="intro">قالب واحد قابل لإعادة الاستخدام — يُجمَّع كل دليل من <b>بلوكات</b> تستهلك محتوى الاستوديو (وجهات · فنادق · وسائط)، لا صفحات ثابتة. اختر الوجهة، وبدّل بين ثلاث لغات تصميم بالمحتوى نفسه.</p>
+
+    <div class="controls">
+      <label class="ctl"><span class="ctl-k">الوجهة</span><select id="destSelect" class="field sel"></select></label>
+      <div class="ctl-block">
+        <span class="ctl-k">معاينة كـ</span>
+        <div class="concept-tabs" id="conceptTabs" role="tablist"></div>
+      </div>
+      <div class="resolve-chip" id="resolveChip"></div>
+      <button type="button" class="layer-btn" id="layerBtn">نظام الطبقات</button>
+      <button type="button" class="pdf-btn" id="pdfBtn">توليد PDF تجريبي</button>
+      <button type="button" class="pdf-btn" id="cardsBtn">التوصيات</button>
+    </div>
+
+    <div class="board">
+      <div class="stage-wrap"><div id="stage" class="stage"></div></div>
+      <aside id="inspector" class="inspector"></aside>
+    </div>
+
+    <p class="lab-note">نموذج بصري — بيانات تجريبية فقط · لا توليد PDF · لا Supabase · لا كتابة. الهدف: اختيار لغة تصميم واحدة قبل التنفيذ.</p>
+  </main>
+
+  <script src="content-studio-lab-sample-data.js"></script>
+  <script src="premium-template-lab-sample-data.js"></script>
+  <script src="content-store.js"></script>
+  <script src="image-resolver.js"></script>
+  <script src="premium-template-lab.js"></script>
+  <script src="pdf-export-client.js"></script>
+</body>
+</html>

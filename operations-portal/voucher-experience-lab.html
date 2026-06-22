@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سيزون ترافل — مختبر تجربة المستندات</title>
+  <link rel="stylesheet" href="voucher-experience-lab.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-sub">مختبر تجربة المستندات · معاينة بصرية</span>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="asof-box"><span class="asof-label">الوقت المرجعي</span><span class="asof-val" id="now">—</span></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="controls">
+      <label class="ctl"><span class="ctl-k">الحجز التجريبي</span>
+        <select id="bookingSelect" class="field sel"></select>
+      </label>
+      <div class="resolve-chip" id="resolveChip"></div>
+      <div class="view-tabs" role="tablist">
+        <button type="button" class="vtab on" data-view="hotel">قسيمة الفندق</button>
+        <button type="button" class="vtab" data-view="transfer">قسيمة النقل</button>
+        <button type="button" class="vtab" data-view="flights">معلومات الطيران</button>
+        <button type="button" class="vtab" data-view="guide">دليل الوجهة</button>
+        <button type="button" class="vtab" data-view="program">برنامج الرحلة</button>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="device" id="device">
+        <div class="notch"></div>
+        <div class="screen" id="screen"></div>
+      </div>
+    </div>
+
+    <p class="lab-note">معاينة تجربة الجوال (iPhone Safari) — بيانات تجريبية فقط · لا توليد قسائم فعلية · لا PDF · لا Supabase · لا كتابة. الشعار والألوان والرأس تُحلّ تلقائياً من العلامة في الحجز (دون اختيار يدوي).</p>
+  </main>
+
+  <div class="etk-modal" id="etkModal" hidden></div>
+
+  <script src="voucher-experience-lab-sample-data.js"></script>
+  <script src="voucher-experience-lab.js"></script>
+</body>
+</html>

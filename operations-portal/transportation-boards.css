@@ -1,0 +1,103 @@
+:root{ --navy:#16233a; --jade:#1f8f4e; --muted:#5b6b85; --line:#e6e9ec; --bg:#f4f7fa; --gold:#a57c52; }
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--navy);}
+.bd-root{padding:1rem 1.1rem 3rem;max-width:1080px;margin:0 auto;}
+.bd-loading{color:var(--muted);padding:2rem;text-align:center;}
+.bd-head h1{font-size:1.15rem;margin:.2rem 0;}
+.bd-sub{color:var(--muted);font-size:.82rem;margin:.1rem 0 .9rem;}
+.bd-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem;}
+.bd-tab{font-family:inherit;font-weight:800;font-size:.82rem;border:1px solid #d6dbe0;border-radius:10px;padding:.5rem .9rem;background:#fff;color:var(--navy);cursor:pointer;}
+.bd-tab.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.bd-datebar{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:.7rem;}
+.bd-chip{font-family:inherit;font-weight:700;font-size:.78rem;border:1px solid #d6dbe0;border-radius:999px;padding:.3rem .8rem;background:#fff;color:var(--navy);cursor:pointer;}
+.bd-chip.on{background:var(--jade);color:#fff;border-color:var(--jade);}
+.bd-pick{font-size:.78rem;color:var(--muted);display:flex;gap:.3rem;align-items:center;margin-inline-start:.3rem;}
+.bd-pick input{font-family:inherit;border:1px solid #d6dbe0;border-radius:8px;padding:.3rem .5rem;}
+.bd-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.6rem .8rem;margin-bottom:.8rem;box-shadow:0 1px 2px rgba(16,35,58,.04);}
+.bd-tbl{width:100%;border-collapse:collapse;font-size:.84rem;}
+.bd-tbl th,.bd-tbl td{border-bottom:1px solid var(--line);padding:.45rem .5rem;text-align:right;vertical-align:top;}
+.bd-tbl th{color:var(--muted);font-size:.74rem;font-weight:700;background:#f7fafc;}
+.bd-tbl td{font-variant-numeric:tabular-nums;}
+.bd-empty{color:var(--muted);text-align:center;padding:1rem;}
+.b-miss{color:#b23b30;font-size:.78rem;}
+.b-badge{display:inline-block;border-radius:999px;padding:.1rem .55rem;font-size:.72rem;font-weight:800;}
+.b-draft{background:#fdf6e9;color:#8a6d1f;} .b-ready{background:#e6f7ee;color:#1f8f4e;}
+.b-completed{background:#1f8f4e;color:#fff;} .b-cancelled{background:#f6eceb;color:#b23b30;} .b-none{background:#eef2f6;color:var(--muted);}
+.bd-grp-h{font-weight:800;font-size:.86rem;padding:.3rem .2rem .5rem;display:flex;align-items:center;gap:.4rem;}
+.bd-grp-h.u-high{color:#b23b30;} .bd-grp-h.u-mid{color:#8a6d1f;} .bd-grp-h.u-low{color:var(--muted);}
+.bd-grp-n{background:#eef2f6;border-radius:999px;padding:.05rem .5rem;font-size:.74rem;}
+.bd-items{display:flex;flex-wrap:wrap;gap:.3rem;}
+.bd-item{background:#fdf2f1;color:#b23b30;border-radius:6px;padding:.08rem .45rem;font-size:.74rem;}
+@media (max-width:680px){ .bd-tbl{font-size:.78rem;} .bd-tbl th,.bd-tbl td{padding:.35rem .3rem;} }
+
+/* --- Phase 4: summary cards, forecast, workload, priority tiers --- */
+.sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:1rem;}
+.sum-card{border:1px solid var(--line);border-radius:14px;padding:.8rem;text-align:center;background:#fff;box-shadow:0 1px 2px rgba(16,35,58,.04);}
+.sum-n{font-size:1.7rem;font-weight:800;line-height:1;}
+.sum-l{font-size:.72rem;color:var(--muted);margin-top:.4rem;}
+.s-arr .sum-n{color:#1f6fae;} .s-dep .sum-n{color:var(--gold);} .s-ready .sum-n{color:var(--jade);} .s-miss .sum-n{color:#b23b30;}
+.bd-note{font-size:.78rem;color:var(--muted);margin:.1rem 0 .6rem;}
+.bd-fc-h{font-weight:800;font-size:.9rem;color:var(--navy);margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem;}
+.bd-fc-tot{font-size:.74rem;font-weight:700;color:var(--muted);background:#eef2f6;border-radius:999px;padding:.1rem .55rem;}
+.u-crit{color:#b23b30;} .u-imp{color:#b9772a;} .u-fut{color:var(--muted);}
+.wl-heavy td{background:#fdf2f1;font-weight:700;}
+@media (max-width:680px){ .sum-grid{grid-template-columns:repeat(2,1fr);} }
+
+/* Phase 5: invoice counters */
+.sum-inv{grid-template-columns:repeat(3,1fr);margin-top:-.4rem;}
+.s-igen .sum-n{color:var(--jade);} .s-imiss .sum-n{color:#b23b30;} .s-ipend .sum-n{color:#1f6fae;}
+@media (max-width:680px){ .sum-inv{grid-template-columns:repeat(3,1fr);} }
+
+/* Cross Check layer */
+.cc-kpi{grid-template-columns:repeat(6,1fr);margin-top:-.4rem;}
+.cc-k-ok .sum-n{color:var(--jade);} .cc-k-miss .sum-n{color:#b23b30;} .cc-k-pend .sum-n{color:#b9772a;}
+.cc-tbl td{vertical-align:middle;}
+.cc-cell{font-family:inherit;font-weight:800;font-size:.74rem;border-radius:7px;padding:.22rem .5rem;border:1px solid transparent;cursor:pointer;white-space:nowrap;width:100%;text-align:center;}
+.cc-cell.cc-ok{background:#e6f7ee;color:#1f8f4e;border-color:#bfe2cc;}
+.cc-cell.cc-pending{background:#fff6e9;color:#8a6d1f;border-color:#e7cfa0;}
+.cc-cell.cc-missing{background:#fbeceb;color:#b23b30;border-color:#e6c6c2;}
+.cc-cell:hover{filter:brightness(.97);}
+.cc-ov{display:inline-block;font-weight:800;font-size:.73rem;border-radius:999px;padding:.12rem .55rem;}
+.cc-ov.cc-ok{background:#1f8f4e;color:#fff;} .cc-ov.cc-pending{background:#fbeecb;color:#8a6d1f;} .cc-ov.cc-missing{background:#f6e1df;color:#b23b30;}
+@media (max-width:680px){ .cc-kpi{grid-template-columns:repeat(2,1fr);} .cc-tbl{font-size:.72rem;} }
+
+/* Cross Check refinement: critical + filter */
+.cc-crit{grid-template-columns:repeat(2,1fr);margin-bottom:.6rem;}
+.cc-k-crit{border-color:#e6b8b2;background:#fdf3f1;}
+.cc-k-crit .sum-n{color:#b23b30;}
+.cc-cell.cc-critical{background:#b23b30;color:#fff;border-color:#9a2f26;}
+.cc-ov.cc-critical{background:#b23b30;color:#fff;}
+.cc-row{cursor:pointer;}
+.cc-row:hover{background:#f6f9fc;}
+
+/* Final refinement: clickable links, PAX column + KPIs */
+.bd-link{font-family:inherit;font-size:inherit;font-weight:700;background:none;border:none;color:#1f6fae;cursor:pointer;padding:0;text-align:right;text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgba(31,111,174,.35);}
+.bd-link:hover{color:#16233a;text-decoration-color:#16233a;}
+.bd-pax{font-weight:800;font-variant-numeric:tabular-nums;text-align:center;}
+.ops-kpi{grid-template-columns:repeat(5,1fr);margin-top:-.4rem;}
+.s-pax .sum-n{color:#5b3fa0;}
+@media (max-width:680px){ .ops-kpi{grid-template-columns:repeat(2,1fr);} }
+
+/* Invoice Completeness (Phase 4) */
+.cc-comp-h{font-weight:800;font-size:.82rem;margin:.3rem 0 .4rem;color:var(--navy);}
+.cc-comp{grid-template-columns:repeat(5,1fr);margin-bottom:.6rem;}
+.cc-c4 .sum-n{color:#1f8f4e;} .cc-c3 .sum-n{color:#3a7ab0;} .cc-c2 .sum-n{color:#b9772a;} .cc-c1 .sum-n{color:#c0603a;} .cc-c0 .sum-n{color:#b23b30;}
+@media (max-width:680px){ .cc-comp{grid-template-columns:repeat(3,1fr);} }
+
+/* Hotel invoices card + completeness tooltip cursor */
+.sum-inv{grid-template-columns:repeat(4,1fr);}
+.s-ihotel .sum-n{color:#a57c52;}
+.cc-comp .sum-card{cursor:help;}
+@media (max-width:680px){ .sum-inv{grid-template-columns:repeat(2,1fr);} }
+
+/* Tiered overall colours + clickable completeness */
+.cc-ov.cc-critical{background:#b23b30;color:#fff;}
+.cc-ov.cc-high{background:#d9663a;color:#fff;}
+.cc-ov.cc-medium{background:#fbeecb;color:#8a6d1f;}
+.cc-ov.cc-low{background:#e3eef8;color:#2f6aa0;}
+.cc-ov.cc-pending{background:#fdf6e9;color:#8a6d1f;}
+.cc-ov.cc-ok{background:#1f8f4e;color:#fff;}
+.cc-comp .sum-card{cursor:pointer;transition:transform .08s,box-shadow .08s;}
+.cc-comp .sum-card:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(16,35,58,.12);}
+.cc-comp .sum-card.comp-on{outline:2px solid #16233a;outline-offset:1px;}
+.cc-clear{color:#b23b30;text-decoration:none;font-weight:800;margin-inline-start:.4rem;}

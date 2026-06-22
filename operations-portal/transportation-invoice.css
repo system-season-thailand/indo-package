@@ -1,0 +1,44 @@
+:root{ --navy:#16233a; --jade:#1f8f4e; --muted:#5b6b85; --line:#e6e9ec; --bg:#f4f7fa; --gold:#a57c52; }
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--navy);}
+.inv-root{padding:1rem 1.1rem 3rem;max-width:1080px;margin:0 auto;}
+.inv-loading{color:var(--muted);padding:2rem;text-align:center;}
+.inv-head{display:flex;justify-content:space-between;align-items:flex-start;}
+.inv-head h1{font-size:1.12rem;margin:.2rem 0;}
+.inv-sub{color:var(--muted);font-size:.8rem;margin:.1rem 0 .8rem;}
+.inv-statemini{font-weight:800;font-size:.74rem;border-radius:999px;padding:.15rem .6rem;}
+.inv-statemini.st-draft{background:#fdf6e9;color:#8a6d1f;} .inv-statemini.st-generated{background:#e8f1fb;color:#1f6fae;} .inv-statemini.st-finalized{background:var(--jade);color:#fff;}
+.inv-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.7rem .9rem;margin-bottom:.8rem;box-shadow:0 1px 2px rgba(16,35,58,.04);}
+.inv-h{font-weight:800;font-size:.9rem;color:var(--navy);margin-bottom:.55rem;display:flex;align-items:center;gap:.5rem;}
+.inv-auto{font-size:.7rem;font-weight:400;color:var(--muted);background:#eef2f6;border-radius:999px;padding:.05rem .5rem;}
+.inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem 1rem;}
+.inv-kv{display:flex;justify-content:space-between;gap:.6rem;border-bottom:1px dashed #eef1f4;padding:.25rem 0;font-size:.84rem;}
+.ik{color:var(--muted);} .iv{font-weight:700;} .vip{color:var(--gold);}
+.inv-in{font-family:inherit;font-size:.84rem;border:1px solid #d6dbe0;border-radius:7px;padding:.25rem .5rem;width:100%;max-width:200px;}
+.inv-in.sm{max-width:80px;}
+.inv-tbl{width:100%;border-collapse:collapse;font-size:.83rem;}
+.inv-tbl th,.inv-tbl td{border-bottom:1px solid var(--line);padding:.4rem .5rem;text-align:right;vertical-align:middle;}
+.inv-tbl th{color:var(--muted);font-size:.74rem;font-weight:700;background:#f7fafc;}
+.inv-c{text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.inv-cost{font-family:inherit;border:1px solid #d6dbe0;border-radius:7px;padding:.25rem .4rem;width:110px;text-align:left;}
+.inv-miss{color:#b23b30;} .inv-empty{color:var(--muted);text-align:center;padding:.8rem;}
+.inv-quick{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem;}
+.inv-qchip{font-family:inherit;font-size:.76rem;font-weight:700;border:1px solid #d6dbe0;border-radius:999px;padding:.25rem .6rem;background:#fff;color:var(--navy);cursor:pointer;}
+.inv-qchip.alt{border-style:dashed;color:var(--muted);}
+.inv-grand{background:#fbfdff;}
+.inv-grand-row{display:flex;justify-content:space-between;padding:.3rem 0;font-size:.92rem;}
+.inv-grand-row b{font-variant-numeric:tabular-nums;}
+.inv-grand-row.total{border-top:2px solid var(--navy);margin-top:.3rem;padding-top:.6rem;font-size:1.1rem;font-weight:800;}
+.inv-sync{background:#fff6e9;border:1px solid #e7cfa0;border-radius:10px;padding:.5rem .7rem;margin-bottom:.8rem;font-size:.82rem;color:#8a6d1f;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+.inv-sync.warn{background:#f6eceb;border-color:#e6c6c2;color:#b23b30;}
+.inv-status{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.55rem .8rem;margin-bottom:.8rem;}
+.inv-status.st-finalized{background:#eaf5ee;border-color:#bfe2cc;}
+.st-pill{font-weight:800;font-size:.82rem;background:#eef2f6;border-radius:999px;padding:.2rem .7rem;}
+.inv-status.st-finalized .st-pill{background:var(--jade);color:#fff;}
+.st-actions{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;}
+.btn{font-family:inherit;font-weight:800;font-size:.8rem;border:1px solid #d6dbe0;border-radius:9px;padding:.4rem .8rem;background:#fff;color:var(--navy);cursor:pointer;}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy);} .btn.save{background:var(--jade);color:#fff;border-color:var(--jade);}
+.btn.ghost{background:#fff;} .btn.sm{padding:.25rem .6rem;font-size:.76rem;}
+.lnk{background:none;border:none;color:#b23b30;font-family:inherit;font-weight:700;cursor:pointer;font-size:.8rem;}
+.saved-tag{font-size:.74rem;color:var(--muted);}
+@media (max-width:680px){ .inv-grid{grid-template-columns:1fr;} .inv-tbl{font-size:.77rem;} }

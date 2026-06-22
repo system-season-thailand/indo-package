@@ -1,0 +1,601 @@
+{
+  "schema": "travelbook.library.v1",
+  "agency": {
+    "agency_en": "TRAVEL STARS",
+    "agency_ar": "نجوم السفر"
+  },
+  "city_order": [
+    "JAKARTA",
+    "PUNCAK",
+    "BANDUNG",
+    "BALI",
+    "BANGKOK",
+    "PATTAYA",
+    "PHUKET",
+    "KRABI"
+  ],
+  "country": {
+    "Indonesia": {
+      "country_en": "Indonesia",
+      "country_ar": "إندونيسيا",
+      "hotels_note": [
+        "الدخول للفنادق يبدأ عادة من ٢ او ٣ عصراً وتسجيل الخروج حتى ١٢ ظهراً.",
+        "اذا حابب غرف متصلة، بعض الفنادق توفرها لكن حسب التوافر عند الحجز او الوصول.",
+        "بعض الفنادق والفلل يطلبون تأمين عند تسجيل الدخول، والمبلغ يسترجع عند الخروج (يختلف حسب سياسة كل فندق)."
+      ],
+      "flights_note": [
+        "الوزن المسموح 20 كيلو لكل راكب فوق عمر سنتين.",
+        "لإضافة وزن إضافي يرجى إبلاغنا قبل موعد الرحلة بيومين وسيتم ترتيبه لكم بكل سهولة، تطبق رسوم إضافية على الوزن الزائد من قبل شركة الطيران."
+      ],
+      "itinerary_note": [
+        "جولتك الخاصة لمدة ٨ ساعات تبدأ من لحظة وصول السائق إلى فندقك، حسب الموعد المتفق عليه مسبقاً (يُحدد قبلها بيوم) مع إمكانية الانطلاق في أي وقت يناسبك بين ٨ صباحاً و ١١ مساءً.",
+        "استمتع بزيارة أبرز المعالم والمناطق السياحية (ضمن حدود إقامتك) لتعيش تجربة على ذوقك وبأسلوبك."
+      ],
+      "delivery_title": "تطبيقات التوصيل في إندونيسيا",
+      "delivery_apps": [
+        "Gojek",
+        "Grab"
+      ],
+      "embassy_title": "السفارة السعودية في إندونيسيا",
+      "embassy_subtitle": "أرقام التواصل مع السفارة السعودية",
+      "embassy_org": "سفارة المملكة العربية السعودية لدى جمهورية إندونيسيا",
+      "embassy_contacts": [
+        {
+          "label": "هاتف السفارة",
+          "value": "00622128094000"
+        },
+        {
+          "label": "شؤون السعوديين",
+          "value": "00622129023444"
+        },
+        {
+          "label": "هاتف الطوارئ",
+          "value": "00628553003000"
+        },
+        {
+          "label": "البريد الإلكتروني",
+          "value": "IDEMB@MOFA.GOV.SA"
+        }
+      ],
+      "embassy_website": "www.mofa.gov.sa",
+      "embassy_handle": "@KSAembassyID",
+      "thanks_message": "نشكركم على ثقتكم لشركة TRAVEL STARS ونتمنى لكم رحلة ممتعة وتجربة لا تنسى",
+      "cities": [
+        "JAKARTA",
+        "PUNCAK",
+        "BANDUNG",
+        "BALI"
+      ]
+    },
+    "Thailand": {
+      "country_en": "Thailand",
+      "country_ar": "تايلاند",
+      "cities": [
+        "BANGKOK",
+        "PATTAYA",
+        "PHUKET",
+        "KRABI"
+      ],
+      "hotels_note": [
+        "الدخول للفنادق يبدأ عادة من ٢ او ٣ عصراً وتسجيل الخروج حتى ١٢ ظهراً.",
+        "اذا حابب غرف متصلة، بعض الفنادق توفرها لكن حسب التوافر عند الحجز او الوصول.",
+        "بعض الفنادق والفلل يطلبون تأمين عند تسجيل الدخول، والمبلغ يسترجع عند الخروج (يختلف حسب سياسة كل فندق)."
+      ],
+      "flights_note": [
+        "الوزن المسموح 20 كيلو لكل راكب فوق عمر سنتين.",
+        "لإضافة وزن إضافي يرجى إبلاغنا قبل موعد الرحلة بيومين وسيتم ترتيبه لكم بكل سهولة، تطبق رسوم إضافية على الوزن الزائد من قبل شركة الطيران."
+      ],
+      "itinerary_note": [
+        "جولتك الخاصة لمدة ٨ ساعات تبدأ من لحظة وصول السائق إلى فندقك، حسب الموعد المتفق عليه مسبقاً (يُحدد قبلها بيوم) مع إمكانية الانطلاق في أي وقت يناسبك بين ٨ صباحاً و ١١ مساءً.",
+        "استمتع بزيارة أبرز المعالم والمناطق السياحية (ضمن حدود إقامتك) لتعيش تجربة على ذوقك وبأسلوبك."
+      ],
+      "delivery_title": "تطبيقات التوصيل في تايلاند",
+      "delivery_apps": [
+        "Grab",
+        "LINE MAN",
+        "foodpanda"
+      ],
+      "embassy_title": "السفارة السعودية في تايلاند",
+      "embassy_subtitle": "أرقام التواصل مع السفارة السعودية",
+      "embassy_org": "سفارة المملكة العربية السعودية لدى مملكة تايلاند",
+      "embassy_contacts": [
+        {
+          "label": "هاتف السفارة",
+          "value": "006626392999"
+        },
+        {
+          "label": "البريد الإلكتروني",
+          "value": "THEMB@MOFA.GOV.SA"
+        }
+      ],
+      "embassy_website": "www.mofa.gov.sa",
+      "embassy_handle": "",
+      "thanks_message": "نشكركم على ثقتكم لشركة TRAVEL STARS ونتمنى لكم رحلة ممتعة وتجربة لا تنسى"
+    }
+  },
+  "cities": {
+    "JAKARTA": {
+      "name_ar": "جاكرتا",
+      "name_en": "JAKARTA",
+      "photo": "img/city-jakarta.jpg",
+      "sections": [
+        {
+          "kind": "restaurants",
+          "title": "مطاعم منوعة في جاكرتا",
+          "halal": true,
+          "items": [
+            {
+              "name": "QUEEN TANDOOR",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "ALSADDA RESTAURANT",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "BANDAR DJAKARTA",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "21 Steak",
+              "image": "img/ph-food.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "malls",
+          "title": "افخم المولات في جاكرتا",
+          "items": [
+            {
+              "name": "GRAND INDONESIA",
+              "image": "img/ph-mall.jpg"
+            },
+            {
+              "name": "PLAZA INDONESIA",
+              "image": "img/ph-mall.jpg"
+            },
+            {
+              "name": "KOTA KASABLANKA",
+              "image": "img/ph-mall.jpg"
+            },
+            {
+              "name": "CENTRAL PARK MALL",
+              "image": "img/ph-mall.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "markets",
+          "title": "اهم الاسواق الشعبية في جاكرتا",
+          "items": [
+            {
+              "name": "AMBASADOR",
+              "image": "img/ph-market.jpg"
+            },
+            {
+              "name": "TANAH ABANG",
+              "image": "img/ph-market.jpg"
+            },
+            {
+              "name": "ITC MANGGADUA",
+              "image": "img/ph-market.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "money",
+          "title": "محلات الصرافة في جاكرتا",
+          "items": [
+            {
+              "name": "VIP",
+              "image": "img/ph-money.jpg"
+            },
+            {
+              "name": "SMARTDEAI",
+              "image": "img/ph-money.jpg"
+            },
+            {
+              "name": "DOLARINDO",
+              "image": "img/ph-money.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "PUNCAK": {
+      "name_ar": "بونشاك",
+      "name_en": "PUNCAK",
+      "photo": "img/city-puncak.jpg",
+      "sections": [
+        {
+          "kind": "cafes",
+          "title": "افضل المقاهي في بونشاك",
+          "items": [
+            {
+              "name": "Kopi Damar Langi",
+              "image": "img/ph-cafe.jpg"
+            },
+            {
+              "name": "Nicole's Chocolaterie",
+              "image": "img/ph-cafe.jpg"
+            },
+            {
+              "name": "ROOFPARK RAJA",
+              "image": "img/ph-cafe.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "restaurants",
+          "title": "افضل المطاعم العربيه في بونشاك",
+          "items": [
+            {
+              "name": "ريدان الخليج",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "ريم البوادي",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "كماننا",
+              "image": "img/ph-food.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "money",
+          "title": "افضل الصرافات في بونشاك",
+          "items": [
+            {
+              "name": "بافقيه",
+              "image": "img/ph-money.jpg"
+            },
+            {
+              "name": "SMARTDEAI",
+              "image": "img/ph-money.jpg"
+            },
+            {
+              "name": "Dolarasia",
+              "image": "img/ph-money.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "BALI": {
+      "name_ar": "بالي",
+      "name_en": "BALI",
+      "photo": "img/city-bali.jpg",
+      "sections": [
+        {
+          "kind": "shopping",
+          "title": "اماكن التسوق في بالي",
+          "items": [
+            {
+              "name": "BEACHWALK SHOPPING",
+              "image": "img/ph-shop.jpg"
+            },
+            {
+              "name": "ICON BALI",
+              "image": "img/ph-shop.jpg"
+            },
+            {
+              "name": "TRANS STUDIO MALL",
+              "image": "img/ph-shop.jpg"
+            },
+            {
+              "name": "BALI COLLECTION",
+              "image": "img/ph-shop.jpg"
+            },
+            {
+              "name": "Discovery Shopping Mall",
+              "image": "img/ph-shop.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "restaurants",
+          "title": "مطاعم منوعة في بالي",
+          "halal": true,
+          "items": [
+            {
+              "name": "ABUNAWAS",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "SHAI BA",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "Al Jazeerah Signature",
+              "image": "img/ph-food.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "cafes",
+          "title": "مقاهي منوعة في بالي",
+          "items": [
+            {
+              "name": "Cafe & Concept 11/9 Store",
+              "image": "img/ph-cafe.jpg"
+            },
+            {
+              "name": "Pison Coffee",
+              "image": "img/ph-cafe.jpg"
+            },
+            {
+              "name": "Monsieur Spoon",
+              "image": "img/ph-cafe.jpg"
+            },
+            {
+              "name": "suka Espresso",
+              "image": "img/ph-cafe.jpg"
+            },
+            {
+              "name": "Sisterfields",
+              "image": "img/ph-cafe.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "BANDUNG": {
+      "name_ar": "باندونق",
+      "name_en": "BANDUNG",
+      "photo": "img/city-bandung.jpg",
+      "sections": [
+        {
+          "kind": "restaurants",
+          "title": "مطاعم موصى بها في باندونق",
+          "halal": true,
+          "items": [
+            {
+              "name": "The Valley Bistro",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "Sierra Cafe & Lounge",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "Miss Bee Providore",
+              "image": "img/ph-food.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "cafes",
+          "title": "مقاهي باندونق",
+          "halal": false,
+          "items": [
+            {
+              "name": "Armor Kopi",
+              "image": "img/ph-cafe.jpg"
+            },
+            {
+              "name": "Two Hands Full",
+              "image": "img/ph-cafe.jpg"
+            },
+            {
+              "name": "Lacamera Coffee",
+              "image": "img/ph-cafe.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "BANGKOK": {
+      "name_ar": "بانكوك",
+      "name_en": "BANGKOK",
+      "photo": "img/city-bangkok.jpg",
+      "sections": [
+        {
+          "kind": "restaurants",
+          "title": "مطاعم عربية وحلال في بانكوك",
+          "halal": true,
+          "items": [
+            {
+              "name": "Nasir Al-Masri",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "Al Saray",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "Shahrazad",
+              "image": "img/ph-food.jpg"
+            },
+            {
+              "name": "Beirut Restaurant",
+              "image": "img/ph-food.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "malls",
+          "title": "أشهر المولات في بانكوك",
+          "items": [
+            {
+              "name": "ICONSIAM",
+              "image": "img/ph-mall.jpg"
+            },
+            {
+              "name": "Siam Paragon",
+              "image": "img/ph-mall.jpg"
+            },
+            {
+              "name": "CentralWorld",
+              "image": "img/ph-mall.jpg"
+            },
+            {
+              "name": "EmQuartier",
+              "image": "img/ph-mall.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "money",
+          "title": "محلات الصرافة الموثوقة في بانكوك",
+          "items": [
+            {
+              "name": "SuperRich Thailand",
+              "image": "img/ph-money.jpg"
+            },
+            {
+              "name": "Value Plus",
+              "image": "img/ph-money.jpg"
+            },
+            {
+              "name": "Vasu Exchange",
+              "image": "img/ph-money.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "PATTAYA": {
+      "name_ar": "باتايا",
+      "name_en": "PATTAYA",
+      "photo": "img/city-pattaya.jpg",
+      "sections": [
+        {
+          "kind": "malls",
+          "title": "المولات ومراكز التسوّق في باتايا",
+          "items": [
+            {
+              "name": "Terminal 21 Pattaya",
+              "image": "img/ph-mall.jpg"
+            },
+            {
+              "name": "Central Pattaya",
+              "image": "img/ph-mall.jpg"
+            },
+            {
+              "name": "Royal Garden Plaza",
+              "image": "img/ph-mall.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "recommendations",
+          "title": "أبرز المعالم في باتايا",
+          "items": [
+            {
+              "name": "Nong Nooch Garden",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Sanctuary of Truth",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Coral Island",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Walking Street",
+              "image": "img/ph-photo.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "PHUKET": {
+      "name_ar": "بوكيت",
+      "name_en": "PHUKET",
+      "photo": "img/city-phuket.jpg",
+      "sections": [
+        {
+          "kind": "shopping",
+          "title": "أماكن التسوّق في بوكيت",
+          "items": [
+            {
+              "name": "Central Phuket",
+              "image": "img/ph-shop.jpg"
+            },
+            {
+              "name": "Jungceylon",
+              "image": "img/ph-shop.jpg"
+            },
+            {
+              "name": "Premium Outlet Phuket",
+              "image": "img/ph-shop.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "recommendations",
+          "title": "أبرز المعالم في بوكيت",
+          "items": [
+            {
+              "name": "Patong Beach",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Phi Phi Islands",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Big Buddha",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Old Phuket Town",
+              "image": "img/ph-photo.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    "KRABI": {
+      "name_ar": "كرابي",
+      "name_en": "KRABI",
+      "photo": "img/city-krabi.jpg",
+      "sections": [
+        {
+          "kind": "recommendations",
+          "title": "أبرز المعالم في كرابي",
+          "items": [
+            {
+              "name": "Ao Nang Beach",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Railay Beach",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Emerald Pool",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Tiger Cave Temple",
+              "image": "img/ph-photo.jpg"
+            }
+          ]
+        },
+        {
+          "kind": "recommendations",
+          "title": "تجارب موصى بها في كرابي",
+          "items": [
+            {
+              "name": "Four Islands Tour",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Hot Springs Waterfall",
+              "image": "img/ph-photo.jpg"
+            },
+            {
+              "name": "Hong Islands",
+              "image": "img/ph-photo.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

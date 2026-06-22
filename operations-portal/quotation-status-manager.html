@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سيزون ترافل — إدارة حالات العروض</title>
+  <link rel="stylesheet" href="quotation-status-manager.css">
+</head>
+<body>
+
+  <!-- ============ Top bar ============ -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-sub">إدارة حالات العروض · نموذج أولي</span>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-meta">
+        <div class="asof-box"><span class="asof-label">الوقت المرجعي</span><span class="asof-val" id="now">—</span></div>
+        <div class="seg" id="roleControl" role="group" aria-label="الدور">
+          <button type="button" data-role="sales">المبيعات</button>
+          <button type="button" data-role="booking">الحجوزات</button>
+          <button type="button" data-role="management">الإدارة</button>
+        </div>
+        <div class="booking-user" id="bookingUserWrap">
+          <label class="bu-lbl">موظف الحجز
+            <select id="bookingUser" class="field sel"></select>
+          </label>
+        </div>
+        <button type="button" class="ghost-btn" id="dataReset" title="إعادة ضبط البيانات التجريبية">إعادة تعيين</button>
+      </div>
+    </div>
+    <p class="role-note" id="roleNote"></p>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ============ 1 · Conversion Analytics ============ -->
+    <section class="sec" id="sec-analytics" aria-labelledby="t-analytics">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠١</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-analytics">تحليلات التحويل</h2>
+          <span class="sec-sub">من عروض الأسعار إلى حجوزات مؤكّدة</span>
+        </div>
+      </div>
+      <div class="kpi-grid" id="analyticsGrid"></div>
+    </section>
+
+    <!-- ============ 2 · Quotation List ============ -->
+    <section class="sec" id="sec-list" aria-labelledby="t-list">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٢</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-list">قائمة العروض</h2>
+          <span class="sec-sub">اضغط على أي عرض لإدارة حالته — <span id="listCount">—</span></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="filters">
+          <input type="search" class="field" id="fSearch" placeholder="بحث: رقم العرض / الشركة / الموظف…" aria-label="بحث">
+          <select class="field sel" id="fStatus" aria-label="فلتر الحالة"></select>
+          <select class="field sel" id="fDest" aria-label="فلتر الوجهة"></select>
+          <select class="field sel" id="fSales" aria-label="فلتر موظف المبيعات"></select>
+          <label class="date-lbl">من<input type="date" class="field date" id="fFrom"></label>
+          <label class="date-lbl">إلى<input type="date" class="field date" id="fTo"></label>
+          <button type="button" class="ghost-btn" id="fReset">مسح الفلاتر</button>
+        </div>
+        <div id="listTable"></div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · Sales Employee Conversion ============ -->
+    <section class="sec" id="sec-sales" aria-labelledby="t-sales">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٣</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-sales">تحويل موظفي المبيعات</h2>
+          <span class="sec-sub">الاحتساب يُنسب لمن أنشأ العرض</span>
+        </div>
+      </div>
+      <div class="card"><div id="salesTable"></div></div>
+    </section>
+
+    <!-- ============ 4 · Booking Team Activity ============ -->
+    <section class="sec" id="sec-booking" aria-labelledby="t-booking">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٤</span><span class="tick"></span></div>
+        <div class="sec-titles">
+          <h2 class="sec-title" id="t-booking">نشاط فريق الحجوزات</h2>
+          <span class="sec-sub">من نفّذ تغييرات الحالة</span>
+        </div>
+      </div>
+      <div class="card"><div id="bookingTable"></div></div>
+    </section>
+
+    <footer class="foot">
+      <p>نموذج أولي مستقل — بيانات تجريبية فقط، غير متصل بـ Supabase ولا يعدّل النظام الأساسي. كل التغييرات مؤقتة في الذاكرة وتُمحى عند إعادة التحميل.</p>
+    </footer>
+  </main>
+
+  <!-- status action panel (filled on demand) -->
+  <div class="status-modal" id="statusModal" hidden></div>
+
+  <!-- sample data MUST load before the logic -->
+  <script src="quotation-status-sample-data.js"></script>
+  <script src="quotation-status-manager.js"></script>
+</body>
+</html>
