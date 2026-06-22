@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Season Guide — render</title>
+<style>
+  :root{ --ink:#14110b; --ink-2:#5c5547; --hair:#e7e0d2; --brass:#c9a24b; --paper:#fbf8f1; }
+  *{ box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  html,body{ margin:0; padding:0; background:#fff; font-family:"Noto Naskh Arabic","Amiri",serif; color:var(--ink); }
+  @page{ size:A4; margin:0; }
+  .pdf-page{ width:210mm; height:297mm; padding:22mm 20mm; background:var(--paper);
+             page-break-after:always; position:relative; overflow:hidden; }
+  .pdf-page:last-child{ page-break-after:auto; }
+  .eyebrow{ font-size:11pt; letter-spacing:.04em; color:var(--brass); font-weight:700; margin:0 0 4mm; }
+  .p-title{ font-size:30pt; line-height:1.15; margin:0 0 8mm; font-weight:800; }
+  .rule{ height:2px; width:34mm; background:var(--brass); margin:0 0 10mm; border-radius:2px; }
+  .b-heading{ font-size:18pt; font-weight:800; margin:8mm 0 3mm; }
+  .b-text{ font-size:14pt; line-height:1.9; color:#2b2620; margin:0 0 6mm; }
+  figure{ margin:0 0 8mm; }
+  figure img{ width:100%; height:78mm; object-fit:cover; border-radius:6px; display:block; background:#ece6d8; }
+  figcaption{ font-size:11pt; color:var(--ink-2); margin-top:2.5mm; }
+  .cards{ display:flex; gap:6mm; flex-wrap:wrap; }
+  .card{ flex:1 1 40%; border:1px solid var(--hair); border-radius:8px; padding:6mm; font-size:12.5pt; }
+  .alert{ border-right:4px solid var(--brass); background:#f6efdd; padding:5mm 6mm; border-radius:6px; font-size:13pt; margin:0 0 6mm; }
+  .gallery{ display:grid; grid-template-columns:1fr 1fr; gap:5mm; }
+  .gallery img{ width:100%; height:55mm; object-fit:cover; border-radius:6px; }
+  .pfoot{ position:absolute; bottom:12mm; right:20mm; left:20mm; display:flex; justify-content:space-between;
+          font-size:9.5pt; color:var(--ink-2); border-top:1px solid var(--hair); padding-top:3mm; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+(function(){
+  "use strict";
+  var P = window.__GUIDE_PAYLOAD || {};
+  var tb = P.travel_book || {};
+  var media = tb.media || {};
+  var localMap = window.__MEDIA_LOCAL || {};        // offline-render override only
+  var TYPE_AR = {
+    welcome:"ترحيب", arrival_info:"معلومات الوصول", hotel_notes:"الفندق",
+    money_exchange:"الصرافة", emergency_numbers:"أرقام الطوارئ", important_numbers:"أرقام مهمة",
+    restaurants:"مطاعم", malls:"مولات", markets:"أسواق", cities_areas:"مدن ومناطق",
+    delivery_apps:"تطبيقات التوصيل", tours:"جولات", transfer_notes:"التنقلات",
+    domestic_flight_notes:"رحلات داخلية", general_notes:"ملاحظات عامة"
+  };
+  function esc(s){ return String(s==null?"":s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];}); }
+  function srcFor(d){
+    var id = d.media_id;
+    if (id && localMap[id]) return localMap[id];      // sandbox stand-in (offline only)
+    if (id && media[id]) return media[id];            // media_assets / Storage URL (production)
+    if (d.image_url) return d.image_url;
+    return null;                                       // no image -> render nothing (no fallback)
+  }
+  function block(b, title){
+    var d = b.data || {};
+    switch(b.type){
+      case "heading":
+        if ((d.text_ar||"") === (title||"")) return "";   // skip block that duplicates the page title
+        return '<h2 class="b-heading">'+esc(d.text_ar||d.text_en)+'</h2>';
+      case "text":
+        return '<p class="b-text">'+esc(d.content_ar||d.content_en)+'</p>';
+      case "hero":
+      case "image": {
+        var u = srcFor(d); if(!u) return "";
+        var cap = d.title_ar||d.subtitle_ar||"";
+        return '<figure><img src="'+esc(u)+'" alt="'+esc(cap)+'">'+(cap?'<figcaption>'+esc(cap)+'</figcaption>':'')+'</figure>';
+      }
+      case "alert":
+        return '<div class="alert">'+esc(d.content_ar||d.text_ar||d.content_en)+'</div>';
+      case "info_cards": {
+        var items = d.items||d.cards||[];
+        if(!items.length) return "";
+        return '<div class="cards">'+items.map(function(it){return '<div class="card">'+esc(it.text_ar||it.title_ar||it.text_en||"")+'</div>';}).join("")+'</div>';
+      }
+      case "gallery": {
+        var ims = (d.items||d.media_ids||[]).map(function(x){return srcFor(typeof x==="string"?{media_id:x}:x);}).filter(Boolean);
+        if(!ims.length) return "";
+        return '<div class="gallery">'+ims.map(function(u){return '<img src="'+esc(u)+'">';}).join("")+'</div>';
+      }
+      default: return "";
+    }
+  }
+  function page(sec, idx, total){
+    var blocks = (sec.blocks||[]).map(function(b){return block(b, sec.title);}).join("");
+    return '<section class="pdf-page">'+
+             '<p class="eyebrow">'+esc(TYPE_AR[sec.type]||sec.type||"")+'</p>'+
+             '<h1 class="p-title">'+esc(sec.title||"")+'</h1>'+
+             '<div class="rule"></div>'+ blocks +
+             '<div class="pfoot"><span>'+esc((P.destination&&P.destination.name)||"")+'</span>'+
+                '<span>'+esc((P.quotation&&P.quotation.reference)||"")+' · '+idx+'/'+total+'</span></div>'+
+           '</section>';
+  }
+  // order: general sections, then each city's containers
+  var secs = [].concat(tb.general||[]);
+  (tb.cities||[]).forEach(function(c){ (c.containers||[]).forEach(function(s){ secs.push(s); }); });
+  var total = secs.length;
+  document.getElementById("root").innerHTML = secs.map(function(s,i){return page(s,i+1,total);}).join("");
+
+  // signal readiness after fonts + images settle (8s cap)
+  function ready(){ window.__pdfReady = true; document.title = "READY:"+total; }
+  var imgs = Array.prototype.slice.call(document.images);
+  var left = imgs.length, done=false;
+  function tick(){ if(--left<=0 && !done){ done=true; ready(); } }
+  if(!imgs.length){ (document.fonts?document.fonts.ready:Promise.resolve()).then(ready); }
+  else { imgs.forEach(function(im){ if(im.complete) tick(); else { im.addEventListener("load",tick); im.addEventListener("error",tick);} }); }
+  setTimeout(function(){ if(!done){ done=true; ready(); } }, 8000);
+})();
+</script>
+</body>
+</html>

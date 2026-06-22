@@ -1,0 +1,39 @@
+{
+  "schema": "season.guide/v1",
+  "lang": "ar",
+  "quotation": { "id": "90e20d6d-d402-4bf2-9489-91eebafbcfbb", "reference": "IDN-Q-2026-00002", "company_id": "20968860-de47-4e55-a7ae-95a1eb200595", "destination_id": "dc60947c-9859-4c61-9d2a-27f169b39b5e" },
+  "destination": { "id": "dc60947c-9859-4c61-9d2a-27f169b39b5e", "code": "IDN", "name": "Indonesia" },
+  "branding": null,
+  "travel_book": {
+    "destination_id": "dc60947c-9859-4c61-9d2a-27f169b39b5e",
+    "destination_name": "Indonesia",
+    "general": [
+      { "id": "3b617411-478d-4883-8913-278335c68a05", "kind": "section", "type": "welcome", "title": "أهلاً بكم في إندونيسيا", "blocks": [
+        { "type": "heading", "data": { "level": "h2", "text_ar": "أهلاً بكم في إندونيسيا", "text_en": "Welcome to Indonesia" } },
+        { "type": "text", "data": { "content_ar": "نتمنى لكم رحلة سعيدة. هذا الدليل يحتوي معلومات إرشادية عامة عن وجهتكم.", "content_en": "We wish you a pleasant trip. This guide contains general information about your destination." } },
+        { "type": "hero", "data": { "media_id": "5fe43091-8b6a-4ff9-b904-c2d3a3893c71", "title_ar": "مدينة جاكرتا", "title_en": "", "image_url": "", "subtitle_ar": "", "subtitle_en": "" } },
+        { "type": "hero", "data": { "media_id": "5fe43091-8b6a-4ff9-b904-c2d3a3893c71", "title_ar": "", "title_en": "", "image_url": "", "subtitle_ar": "", "subtitle_en": "" } }
+      ] },
+      { "id": "dbbb3a5e-41bb-44b3-b9d9-e31b89f347a9", "kind": "section", "type": "arrival_info", "title": "معلومات الوصول", "blocks": [
+        { "type": "heading", "data": { "level": "h2", "text_ar": "معلومات الوصول", "text_en": "Arrival Information" } },
+        { "type": "text", "data": { "content_ar": "عند الوصول توجّه إلى بوابة الخروج حيث ينتظرك مندوبنا حاملاً لافتة باسمكم.", "content_en": "On arrival, proceed to the exit gate where our representative will be waiting with a sign bearing your name." } }
+      ] },
+      { "id": "c7ad4678-4224-49b2-b9b0-20335a33df40", "kind": "section", "type": "money_exchange", "title": "الصرافة", "blocks": [
+        { "type": "heading", "data": { "level": "h2", "text_ar": "الصرافة", "text_en": "Money Exchange" } },
+        { "type": "text", "data": { "content_ar": "ينصح بالصرف من مراكز الصرافة المعتمدة (Authorized Money Changer) لأفضل سعر.", "content_en": "We recommend using authorized money changers for the best rates." } }
+      ] }
+    ],
+    "cities": [ { "name": "Bali", "containers": [ { "id": "c051af3a-be73-4683-9203-933335312243", "kind": "section", "type": "cities_areas", "title": "بالي", "blocks": [
+      { "type": "heading", "data": { "level": "h2", "text_ar": "بالي", "text_en": "Bali" } },
+      { "type": "text", "data": { "content_ar": "جزيرة بالي تشتهر بشواطئها ومعابدها وثقافتها الفريدة.", "content_en": "Bali is famous for its beaches, temples, and unique culture." } }
+    ] } ], "areas": [] } ],
+    "media": {
+      "5fe43091-8b6a-4ff9-b904-c2d3a3893c71": "https://zoxcuzyfmfulkyqidhmw.supabase.co/storage/v1/object/public/travel-media/tb/1780605907404_e9rwz0.png",
+      "c4ddfd8d-5748-4138-99de-41bc1375c070": "https://picsum.photos/seed/ubud-rice/1000/600",
+      "cb28f5a7-4deb-4736-9b6e-e93577f24541": "https://picsum.photos/seed/ubud-hero/1200/600",
+      "da9a9cdc-9f36-41b2-9a0f-b3e4ac1f63a9": "https://picsum.photos/seed/ubud-temple/600/400"
+    },
+    "fallback": ""
+  },
+  "generated_at": "2026-06-20T12:49:36.07521+00:00"
+}

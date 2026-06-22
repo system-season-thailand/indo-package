@@ -1,0 +1,15 @@
+{
+  "name": "season-b2b-lab-pdf",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Server-side Chromium PDF pipeline for the Season B2B guide (Netlify function).",
+  "dependencies": {
+    "@sparticuz/chromium": "131.0.1",
+    "playwright-core": "1.49.1",
+    "pdf-lib": "1.17.1"
+  },
+  "comments": {
+    "version-pinning": "These two MUST stay version-compatible: @sparticuz/chromium ships a specific Chromium build and playwright-core must support it. If launch() fails with an executable/protocol error, align them (e.g. bump both together) \u2014 this is the #1 cause of serverless PDF failures.",
+    "alternative": "puppeteer-core works as a drop-in for playwright-core with @sparticuz/chromium if you prefer."
+  }
+}

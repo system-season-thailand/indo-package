@@ -1,0 +1,29 @@
+# netlify.toml — Season B2B Lab + server-side Chromium PDF function
+#
+# Deploy this via a Git-connected repo or `netlify deploy` (NOT drag-and-drop),
+# so the function's node dependencies (@sparticuz/chromium, playwright-core)
+# get installed and bundled. Drag-and-drop static deploys cannot run functions.
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  # Keep the Chromium binary package external so its brotli-packed binary ships
+  # with the function instead of being mangled by the bundler.
+  external_node_modules = ["@sparticuz/chromium"]
+  included_files = ["node_modules/@sparticuz/chromium/**"]
+
+# The PDF render can take several seconds on a cold start. Raise the timeout if
+# your Netlify plan allows it (Pro+: up to 26s synchronous). On the free tier the
+# 10s cap may be tight for image-heavy guides — if you hit timeouts, use the
+# dedicated pdf-server.js path instead (see DEPLOY-pdf-pipeline.md).
+[functions."generate-pdf"]
+  # timeout = 26   # uncomment on a plan that supports extended timeouts
+  included_files = ["node_modules/@sparticuz/chromium/**"]
+
+[functions."travel-book-pdf"]
+  # Travel Book PDF render. Same Chromium stack as generate-pdf.
+  # timeout = 26   # uncomment on a plan that supports extended timeouts
+  included_files = ["node_modules/@sparticuz/chromium/**"]

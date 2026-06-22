@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سيزون ترافل — مسار الحجوزات</title>
+  <link rel="stylesheet" href="booking-pipeline.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-sub">مسار الحجوزات التشغيلي · نموذج أولي</span>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="asof-box"><span class="asof-label">الوقت المرجعي</span><span class="asof-val" id="now">—</span></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1 · Conceptual Flow -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠١</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">دورة حياة الحجز</h2><span class="sec-sub">من العرض إلى الإغلاق — وكيف تتفرّع المستندات</span></div>
+      </div>
+      <div class="card concept" id="conceptFlow"></div>
+    </section>
+
+    <!-- 2 · Overview + Funnel -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٢</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">نظرة المسار</h2><span class="sec-sub">توزيع السجلات على المراحل</span></div>
+      </div>
+      <div class="kpi-grid four" id="kpiGrid"></div>
+      <div class="card"><h3 class="card-title"><span class="pip"></span>عدد السجلات في كل مرحلة</h3><div id="funnel" class="funnel"></div></div>
+    </section>
+
+    <!-- 3 · Operational Queues + Table -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٣</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">العرض التشغيلي</h2><span class="sec-sub">المرحلة · الإجراء التالي · الفريق · المتأخرات — اضغط بطاقة للتصفية</span></div>
+      </div>
+      <div class="queue-grid" id="queues"></div>
+      <div class="card">
+        <div class="filters">
+          <input type="search" class="field" id="fSearch" placeholder="بحث: رقم الحجز / العرض / الشركة…" aria-label="بحث">
+          <select class="field sel" id="fStage" aria-label="المرحلة"></select>
+          <select class="field sel" id="fTeam" aria-label="الفريق"></select>
+          <button type="button" class="ghost-btn" id="fReset">مسح الفلاتر</button>
+          <span class="count-pill" id="tableCount">—</span>
+        </div>
+        <div id="pipelineTable"></div>
+      </div>
+    </section>
+
+    <footer class="foot"><p>نموذج أولي مستقل — بيانات تجريبية فقط، غير متصل بقاعدة بيانات ولا يعدّل النظام. <b>booking_id</b> هو المفتاح الرئيسي بعد تأكيد العرض، ومنه تُولّد لاحقاً: البرنامج النهائي · فاتورة الشركة · فاتورة النقل · دليل الوجهة · تقرير العمليات.</p></footer>
+  </main>
+
+  <div class="rec-modal" id="recModal" hidden></div>
+
+  <script src="booking-pipeline-sample-data.js"></script>
+  <script src="booking-pipeline.js"></script>
+</body>
+</html>

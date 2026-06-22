@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سيزون ترافل — إدارة الحجوزات المؤكّدة</title>
+  <link rel="stylesheet" href="confirmed-bookings-manager.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-sub">إدارة الحجوزات المؤكّدة · نموذج أولي</span>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="asof-box"><span class="asof-label">الوقت المرجعي</span><span class="asof-val" id="now">—</span></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1 · Executive Summary -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠١</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">الملخّص التنفيذي</h2><span class="sec-sub">حالة محفظة الحجوزات المؤكّدة</span></div>
+      </div>
+      <div class="kpi-grid" id="summaryGrid"></div>
+    </section>
+
+    <!-- 2 · Booking List -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٢</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">قائمة الحجوزات</h2><span class="sec-sub">اضغط على أي حجز لعرض تفاصيله — <span id="listCount">—</span></span></div>
+      </div>
+      <div class="card">
+        <div class="filters">
+          <input type="search" class="field" id="fSearch" placeholder="بحث: رقم الحجز / العرض / الشركة / الفندق…" aria-label="بحث">
+          <select class="field sel" id="fDest" aria-label="الوجهة"></select>
+          <select class="field sel" id="fCompany" aria-label="الشركة"></select>
+          <select class="field sel" id="fOfficer" aria-label="موظف الحجوزات"></select>
+          <select class="field sel" id="fStatus" aria-label="الحالة"></select>
+          <select class="field sel" id="fOps" aria-label="الحالة التشغيلية">
+            <option value="all">كل الحالات التشغيلية</option>
+            <option value="ready">جاهز للإرسال</option>
+            <option value="miss_hotel">تأكيد فندق ناقص</option>
+            <option value="miss_tickets">تذاكر ناقصة</option>
+            <option value="miss_vouchers">فوشرات ناقصة</option>
+            <option value="miss_tb">دليل الرحلة ناقص</option>
+          </select>
+          <label class="date-lbl">من<input type="date" class="field date" id="fFrom"></label>
+          <label class="date-lbl">إلى<input type="date" class="field date" id="fTo"></label>
+          <button type="button" class="ghost-btn" id="fReset">مسح الفلاتر</button>
+        </div>
+        <div id="listTable"></div>
+      </div>
+    </section>
+
+    <!-- 3 · Booking Officers Performance -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٣</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">أداء موظفي الحجوزات</h2><span class="sec-sub">الإنتاجية ونسبة الإلغاء</span></div>
+      </div>
+      <div class="card"><div id="officersTable"></div></div>
+    </section>
+
+    <!-- 4 · Destination Analysis -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٤</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">تحليل الوجهات</h2><span class="sec-sub">الأكثر حجزاً ومتوسط القيمة</span></div>
+      </div>
+      <div class="split-3">
+        <div class="card"><h3 class="card-title"><span class="pip"></span>الوجهات الأكثر حجزاً</h3><div id="destRank"></div></div>
+        <div class="card"><h3 class="card-title"><span class="pip"></span>الفنادق الأكثر حجزاً</h3><div id="hotelRank"></div></div>
+        <div class="card"><h3 class="card-title"><span class="pip"></span>متوسط قيمة الحجز</h3><div id="avgValue"></div></div>
+      </div>
+    </section>
+
+    <!-- 5 · Daily Workload Analysis -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٥</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">تحليل عبء العمل اليومي</h2><span class="sec-sub">متى يبلغ الطلب ذروته — لتنظيم المناوبات</span></div>
+      </div>
+      <div class="insight-grid" id="wlInsights"></div>
+      <div class="card wl-card">
+        <h3 class="card-title"><span class="pip"></span>الحجوزات حسب اليوم</h3>
+        <div class="chart-wrap" id="wlDay"></div>
+      </div>
+      <div class="split-2">
+        <div class="card"><h3 class="card-title"><span class="pip"></span>الحجوزات حسب يوم الأسبوع</h3><div class="chart-wrap" id="wlWeekday"></div></div>
+        <div class="card"><h3 class="card-title"><span class="pip"></span>الحجوزات حسب الساعة</h3><div class="chart-wrap" id="wlHour"></div></div>
+      </div>
+    </section>
+
+    <footer class="foot"><p>نموذج أولي مستقل — بيانات تجريبية فقط، غير متصل بقاعدة بيانات ولا يعدّل النظام. سيصبح لاحقاً مصدراً لفواتير النقل وفواتير الشركات وأدلة الوجهات وتقارير العمليات.</p></footer>
+  </main>
+
+  <div class="booking-modal" id="bookingModal" hidden></div>
+
+  <script src="confirmed-bookings-manager-sample-data.js"></script>
+  <script src="booking-ops-store.js"></script>
+  <script src="travel-book/travel-book-store.js"></script>
+  <script src="confirmed-bookings-manager.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سيزون ترافل — استوديو المحتوى</title>
+  <link rel="stylesheet" href="content-studio-lab.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-sub">استوديو المحتوى · مصدر الحقيقة</span>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <button type="button" class="ghost" id="exportSnapBtn">⬇ تصدير لقطة المحتوى</button>
+      <div class="asof-box"><span class="asof-label">الوقت المرجعي</span><span class="asof-val" id="now">—</span></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="intro">يُدار المحتوى هنا مرّة واحدة — والوثائق (دليل · قسيمة · برنامج · حقيبة) <b>تستهلكه</b> تلقائياً. الوثائق لا تملك المحتوى.</p>
+    <nav class="sections" role="tablist">
+      <button type="button" class="sec-tab on" data-section="destinations">محتوى الوجهات</button>
+      <button type="button" class="sec-tab" data-section="hotels">محتوى الفنادق</button>
+      <button type="button" class="sec-tab" data-section="brands">العلامات</button>
+      <button type="button" class="sec-tab" data-section="media">مكتبة الوسائط</button>
+      <button type="button" class="sec-tab" data-section="governance">الحوكمة</button>
+    </nav>
+    <div id="main" class="main-panel"></div>
+  </main>
+
+  <div class="flash" id="flash"></div>
+  <div class="modal" id="modal" hidden></div>
+
+  <script src="content-studio-lab-sample-data.js"></script>
+  <script src="content-store.js"></script>
+  <script src="image-resolver.js"></script>
+  <script src="content-studio-lab.js"></script>
+</body>
+</html>

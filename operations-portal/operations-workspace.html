@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سيزون ترافل — مساحة العمليات</title>
+  <link rel="stylesheet" href="operations-workspace.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-sub">مساحة العمليات · الكوكبيت التشغيلي</span>
+        </div>
+      </div>
+      <span class="role-tag" id="roleTag"></span>
+      <div class="topbar-spacer"></div>
+      <div class="sales-bar" id="salesBar" hidden>
+        <label class="bu-lbl">موظف المبيعات <select id="empSelect" class="field sel"></select></label>
+      </div>
+      <div class="asof-box"><span class="asof-label">الوقت المرجعي</span><span class="asof-val" id="now">—</span></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 5 · Operational KPIs -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠١</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">أولويات التشغيل اليوم</h2><span class="sec-sub">ما الذي يحتاج تدخّلك الآن — اضغط أي بطاقة لتصفية السجلات</span></div>
+      </div>
+      <div class="daily-summary" id="dailySummary"></div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <!-- 2 · Workflow Stage View -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٢</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">مسار دورة الحياة</h2><span class="sec-sub">من العرض إلى الإغلاق — اضغط مرحلة لتصفية القائمة</span></div>
+      </div>
+      <div class="card"><div class="stage-view" id="stageView"></div></div>
+    </section>
+
+    <!-- 3 · Action Required -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٣</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">إجراءات مطلوبة</h2><span class="sec-sub">مرتّبة حسب الأولوية — <span id="actionCount">—</span></span></div>
+      </div>
+      <div class="card"><div class="action-list" id="actionList"></div></div>
+    </section>
+
+    <!-- 1 · Operational Queue -->
+    <section class="sec" id="queueWrap">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="idx">٠٤</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">قائمة العمليات</h2><span class="sec-sub">كل السجلات — اضغط أي سجل لفتح مساحة العمل — <span id="queueCount">—</span></span></div>
+      </div>
+      <div class="card">
+        <div class="filters">
+          <input type="search" class="field" id="fSearch" placeholder="بحث: رقم العرض / الحجز / الشركة / الفندق…" aria-label="بحث">
+          <select class="field sel" id="fStage" aria-label="المرحلة"></select>
+          <button type="button" class="ghost-btn" id="fReset">مسح الفلاتر</button>
+        </div>
+        <div class="filter-indicator" id="filterIndicator" hidden></div>
+        <div id="queueTable"></div>
+      </div>
+    </section>
+
+    <footer class="foot"><p>المصدر الموحّد للعمليات — بيانات تجريبية فقط، غير متصل بقاعدة بيانات ولا يعدّل النظام. هذه المساحة هي البيت المستقبلي لـ «حالات العروض» و«الحجوزات المؤكّدة» و«مسار الحجوزات» مجتمعةً.</p></footer>
+  </main>
+
+  <div class="record-modal" id="recordModal" hidden></div>
+
+  <script src="operations-workspace-sample-data.js"></script>
+  <script src="operations-workspace.js"></script>
+</body>
+</html>

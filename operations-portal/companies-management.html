@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>سيزون ترافل — إدارة الشركات</title>
+  <link rel="stylesheet" href="companies-management.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 3 L24 16 L37 20 L24 24 L20 37 L16 24 L3 20 L16 16 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="20" cy="20" r="3.4" fill="currentColor"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">سيزون ترافل</span>
+          <span class="brand-sub">إدارة الشركات · مركز علاقات B2B</span>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <span class="role-tag" id="roleTag"></span>
+      <div class="asof-box"><span class="asof-label">الوقت المرجعي</span><span class="asof-val" id="now">—</span></div>
+    </div>
+    <div class="sales-bar" id="salesBar" hidden>
+      <label class="sb-lbl">أنت (موظف المبيعات):
+        <select id="empSelect" class="field sel"></select>
+      </label>
+      <span class="sb-note">تعرض هذه الواجهة شركاتك المخصّصة فقط — عرض فقط.</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1 · Executive Summary -->
+    <section class="sec" id="sec-summary">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠١</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">الملخّص التنفيذي</h2><span class="sec-sub">توزيع محفظة الشركات حسب الحالة</span></div></div>
+      <div class="kpi-grid" id="summaryGrid"></div>
+    </section>
+
+    <!-- 2 · Company Directory -->
+    <section class="sec" id="sec-dir">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠٢</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">دليل الشركات</h2><span class="sec-sub">اضغط أي شركة لفتح ملف 360° — <span id="dirCount">—</span></span></div></div>
+      <div class="card">
+        <div class="filters">
+          <input type="search" class="field" id="fSearch" placeholder="بحث: اسم الشركة / المدينة / الموظف…" aria-label="بحث">
+          <select class="field sel" id="fCountry" aria-label="الدولة"></select>
+          <span id="fSalesWrap"><select class="field sel" id="fSales" aria-label="الموظف المسؤول"></select></span>
+          <select class="field sel" id="fStatus" aria-label="الحالة"></select>
+          <select class="field sel" id="fDest" aria-label="الوجهة"></select>
+          <select class="field sel" id="fActivity" aria-label="مستوى النشاط"></select>
+          <button type="button" class="ghost-btn" id="fReset">مسح الفلاتر</button>
+        </div>
+        <div id="dirTable"></div>
+      </div>
+    </section>
+
+    <!-- 4 · Top Companies -->
+    <section class="sec" id="sec-top">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠٣</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">أبرز الشركات</h2><span class="sec-sub">الأعلى أداءً عبر مؤشرات مختلفة</span></div></div>
+      <div class="top-grid" id="topGrid"></div>
+    </section>
+
+    <!-- 5 · Sales Employee Analysis -->
+    <section class="sec" id="sec-emp">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠٤</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">تحليل موظفي المبيعات</h2><span class="sec-sub">المحفظة والأداء لكل موظف</span></div></div>
+      <div class="card"><div id="empTable"></div></div>
+    </section>
+
+    <!-- 6 · Activity Analysis -->
+    <section class="sec" id="sec-activity">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠٥</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">تحليل نشاط الشركات</h2><span class="sec-sub">مؤشّرات الخطر حسب آخر نشاط</span></div></div>
+      <div class="activity-legend" id="activityLegend"></div>
+      <div class="card"><div id="activityTable"></div></div>
+    </section>
+
+    <!-- 7 · Destination Analysis -->
+    <section class="sec" id="sec-dest">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠٦</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">تحليل الوجهات</h2><span class="sec-sub">الطلب والنمو حسب الوجهة</span></div></div>
+      <div class="dest-grid" id="destGrid"></div>
+    </section>
+
+    <!-- 8 · Hotel Analysis -->
+    <section class="sec" id="sec-hotel">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠٧</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">تحليل الفنادق</h2><span class="sec-sub">الأكثر طلباً ومتوسط القيمة</span></div></div>
+      <div class="split-3">
+        <div class="card"><h3 class="card-title"><span class="pip"></span>الفنادق الأكثر طلباً</h3><div id="hotelRank"></div></div>
+        <div class="card"><h3 class="card-title"><span class="pip"></span>العلامات الأكثر طلباً</h3><div id="brandRank"></div></div>
+        <div class="card"><h3 class="card-title"><span class="pip"></span>متوسط قيمة الحجز حسب الفندق</h3><div id="hotelAvg"></div></div>
+      </div>
+    </section>
+
+    <!-- 9 · Growth Opportunities -->
+    <section class="sec" id="sec-growth">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠٨</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">فرص النمو</h2><span class="sec-sub" id="growthNote">—</span></div></div>
+      <div class="card attn-card"><div id="growthBody"></div></div>
+    </section>
+
+    <!-- 10 · Lost Companies -->
+    <section class="sec" id="sec-lost">
+      <div class="sec-head"><div class="eyebrow"><span class="idx">٠٩</span><span class="tick"></span></div>
+        <div class="sec-titles"><h2 class="sec-title">الشركات المفقودة</h2><span class="sec-sub" id="lostNote">—</span></div></div>
+      <div class="card lost-card"><div id="lostBody"></div></div>
+    </section>
+
+    <footer class="foot"><p>نموذج أولي مستقل — بيانات تجريبية فقط، غير متصل بقاعدة بيانات. الشركة هي الكيان الرئيسي، و<b>company_id</b> هو المفتاح الذي تترابط عبره العروض والحجوزات والفواتير والتقارير مستقبلاً.</p></footer>
+  </main>
+
+  <div class="profile-modal" id="profileModal" hidden></div>
+
+  <script src="companies-management-sample-data.js"></script>
+  <script src="companies-management.js"></script>
+</body>
+</html>

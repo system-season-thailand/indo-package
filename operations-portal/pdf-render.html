@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Season — PDF Render</title>
+
+  <!-- Render mode MUST be set before the engine script loads so the engine
+       builds only the A4 pages (no header / toolbar / overlay / scroll UI). -->
+  <script>window.PDF_RENDER_MODE = true;</script>
+
+  <!-- Same page/card styling the preview uses, so the export is identical. -->
+  <link rel="stylesheet" href="premium-template-lab.css">
+
+  <!-- Dedicated A4 print geometry. Chromium honors @page{margin:0} and the
+       fixed page box, so each .pdf-page is exactly one A4 sheet:
+       8 logical pages -> 8 PDF pages, no overflow, no blank pages.
+       (This is the whole reason for leaving iOS Safari print behind.) -->
+  <style>
+    @page { size: A4; margin: 0; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    html, body { margin: 0; padding: 0; background: #ffffff; }
+
+    /* No app chrome exists in this document — these guards keep it that way
+       even if a shared stylesheet defines them. */
+    .app-header, .tpl-toolbar, .pdf-overlay, #pdfOverlay, #cardsOverlay,
+    .pdf-toolbar, .pdf-note, .pdf-styles, .tabs, .inspector, .debug-panel { display: none !important; }
+
+    #pdfRenderRoot, #pdfRenderRoot .pdf-doc { margin: 0; padding: 0; display: block; background: #fff; }
+
+    /* Fixed A4 page box — overrides any on-screen preview sizing. */
+    #pdfRenderRoot .pdf-page {
+      width: 210mm;
+      height: 297mm;
+      margin: 0 auto;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: hidden;
+      box-sizing: border-box;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    #pdfRenderRoot .pdf-page:not(:first-child) {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    /* On-screen viewing only (when opened directly in a browser to eyeball
+       the render target). Print/PDF ignores this and uses the A4 rules above. */
+    @media screen {
+      body { background: #2a2d31; }
+      #pdfRenderRoot { padding: 16px 0; }
+      #pdfRenderRoot .pdf-page { box-shadow: 0 8px 30px rgba(0,0,0,.35) !important; margin: 0 auto 16px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- The engine (render mode) injects the A4 pages here and sets
+       window.__pdfReady = true once fonts + images have settled. -->
+  <div id="pdfRenderRoot"></div>
+
+  <!-- Same content + engine the app uses — single source of truth. -->
+  <script src="content-studio-lab-sample-data.js"></script>
+  <script src="premium-template-lab-sample-data.js"></script>
+  <script src="content-store.js"></script>
+  <script src="image-resolver.js"></script>
+  <script src="premium-template-lab.js"></script>
+</body>
+</html>
