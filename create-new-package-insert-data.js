@@ -56,17 +56,8 @@ function _prepareUrlForOpen(url) {
                 const cleanPath = u.pathname.replace(/(\.[a-z]{2}(-[a-z]{2})?)?\.html$/i, '.en-gb.html');
                 finalUrl = u.origin + cleanPath + u.search + u.hash;
             }
-            // Route through _r.html on the same origin so the initial URL seen by the OS
-            // is not booking.com — this prevents iOS Universal Links / Android App Links
-            // from auto-opening the Booking.com app. The hotel page opens in the browser.
-            // Falls back to the direct URL when running from file:// (local dev without server).
-            try {
-                const _base = _pageOriginForRedirect;
-                if (_base && _base !== 'null' && !_base.startsWith('file:') && !_base.includes('localhost') && !/\/\/127\./.test(_base)) {
-                    const _dir = window.location.pathname.replace(/[^/]*$/, '');
-                    return _base + _dir + '_r.html?to=' + encodeURIComponent(finalUrl);
-                }
-            } catch (_e) { }
+            // Open the Booking.com URL directly (locale-normalized above) so the exact URL set in the
+            // admin page is what opens — previously this was wrapped through an _r.html?to=... redirect.
             return finalUrl;
         }
     } catch (e) { }
