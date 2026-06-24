@@ -152,6 +152,58 @@ body {
   line-height: 1.3;
 }
 
+.btn-url {
+  background: #78909c;
+  color: white;
+  padding: 5px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.btn-url.has-url {
+  background: #388e3c;
+}
+
+.room-has-video {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.hotel-booking-url-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f1f8e9;
+  border-bottom: 1px solid #c8e6c9;
+  flex-wrap: wrap;
+}
+
+.booking-url-label {
+  font-size: 12px;
+  color: #388e3c;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.booking-url-input {
+  flex: 1;
+  min-width: 180px;
+  border: 1px solid #a5d6a7;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 12px;
+  direction: ltr;
+  color: #1b5e20;
+  background: white;
+}
+
+.booking-url-input:focus {
+  outline: none;
+  border-color: #388e3c;
+  box-shadow: 0 0 0 2px rgba(56,142,60,0.2);
+}
+
 /* ===== MAIN CONTENT ===== */
 .main-content {
   padding: 10px 10px 80px;
@@ -264,7 +316,7 @@ body {
 
 .room-item {
   display: grid;
-  grid-template-columns: 1fr 1fr 60px;
+  grid-template-columns: 1fr 1fr auto;
   gap: 6px;
   align-items: center;
   padding: 8px 8px;
@@ -300,7 +352,7 @@ body {
 .room-item-actions {
   display: flex;
   width: fit-content;
-  gap: 3px;
+  gap: 5px;
   justify-self: self-end;
   flex-shrink: 0;
 }

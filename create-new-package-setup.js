@@ -1,8 +1,8 @@
-/* Function to prevent the page refresh by mistake */
-window.addEventListener('beforeunload', function (event) {
+﻿/* Function to prevent the page refresh by mistake */
+/* window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-});
+}); */
 
 
 
@@ -1260,6 +1260,9 @@ changeInsertHotelDataSystem = function () {
         document.getElementById('change_insert_hotel_data_system_icon_2').style.background = 'rgb(0, 255, 0)';
         document.getElementById('change_insert_hotel_data_system_icon_2').style.color = 'black';
 
+        document.getElementById('hotel_booking_url_input_id').style.display = 'block';
+        document.getElementById('hotel_booking_url_input_id').value = '';
+
 
     } else {
         // Hide the hotel location input
@@ -1326,7 +1329,7 @@ changeInsertHotelDataSystem = function () {
         document.getElementById('hotel_english_room_type_description_input_id').onclick = function () {
             createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
         };
-        document.getElementById('hhotel_english_room_type_description_input_id_2').style.cursor = 'pointer';
+        document.getElementById('hotel_english_room_type_description_input_id_2').style.cursor = 'pointer';
         document.getElementById('hotel_english_room_type_description_input_id_2').onclick = function () {
             createArabicRoomTypeDescripyionDropDown(); showOverlay('hotel_arabic_room_type_description_dropdown');
         };
@@ -1349,6 +1352,9 @@ changeInsertHotelDataSystem = function () {
 
         document.getElementById('change_insert_hotel_data_system_icon_2').style.background = 'rgb(0, 87, 116)';
         document.getElementById('change_insert_hotel_data_system_icon_2').style.color = 'white';
+
+        document.getElementById('hotel_booking_url_input_id').style.display = 'none';
+        document.getElementById('hotel_booking_url_input_id').value = '';
     }
 }
 
@@ -2009,6 +2015,7 @@ function _findHotelRoomData(hotelName) {
         hotelRoomTypes: (row.room_types || []).map(rt => rt.ar).filter(Boolean),
         hotelRoomTypesEn: (row.room_types || []).map(rt => rt.en).filter(Boolean),
         roomPairs: (row.room_types || []).filter(rt => rt.ar || rt.en),
+        bookingUrl: row.booking_url || '',
     };
 }
 
@@ -2016,7 +2023,7 @@ function _findHotelRoomData(hotelName) {
     function tryLoad() {
         const client = window.supabase;
         if (!client || typeof client.from !== 'function') { setTimeout(tryLoad, 200); return; }
-        client.from('indo_hotel_room_types').select('hotel_name, room_types, hotel_location, hotel_area').then(({ data, error }) => {
+        client.from('indo_hotel_room_types').select('hotel_name, room_types, hotel_location, hotel_area, booking_url').then(({ data, error }) => {
             if (!error && data) {
                 _roomTypesDBCache = data;
                 const sortedNames = data

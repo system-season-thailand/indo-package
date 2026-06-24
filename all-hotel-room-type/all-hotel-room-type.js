@@ -7,9 +7,12 @@
  *   hotel_location TEXT DEFAULT '',
  *   hotel_area  TEXT DEFAULT '',
  *   room_types  JSONB DEFAULT '[]'::jsonb,
+ *   booking_url TEXT DEFAULT '',
  *   created_at  TIMESTAMPTZ DEFAULT NOW(),
  *   updated_at  TIMESTAMPTZ DEFAULT NOW()
  * );
+ * -- To add booking_url to an existing table run:
+ * -- ALTER TABLE "indo_hotel_room_types" ADD COLUMN IF NOT EXISTS booking_url TEXT DEFAULT '';
  */
 
 const SUPABASE_URL = 'https://zrunsrimyijarswjfycw.supabase.co';
@@ -99,6 +102,16 @@ function renderHotelCard(hotel) {
   const loc      = [hotel.hotel_location, hotel.hotel_area].filter(Boolean).join(' · ');
   const addClick = isAdmin ? ` onclick="showAddRow(${hotel.id})"` : '';
 
+  const bookingUrlRow = isAdmin ? `
+        <div class="hotel-booking-url-row">
+          <label class="booking-url-label">🔗 رابط الحجز (احتياطي):</label>
+          <input type="url" class="booking-url-input" id="booking-url-${hotel.id}"
+                 value="${esc(hotel.booking_url || '')}"
+                 placeholder="https://..."
+                 dir="ltr"
+                 onchange="saveHotelBookingUrl(${hotel.id}, this.value)">
+        </div>` : '';
+
   return `
     <div class="hotel-card" id="hcard-${hotel.id}">
       <div class="hotel-header" onclick="toggleHotel(${hotel.id})">
@@ -109,6 +122,7 @@ function renderHotelCard(hotel) {
         </div>
       </div>
       <div class="hotel-body" data-hotel-body="${hotel.id}">
+        ${bookingUrlRow}
         <div class="room-list" id="room-list-${hotel.id}">
           ${renderRoomRows(hotel)}
         </div>
@@ -132,11 +146,15 @@ function roomViewRow(hotelId, index, rt) {
   const enClick  = isAdmin ? ` onclick="editRoomRow(${hotelId},${index},'en')"` : '';
   const dragDown = isAdmin ? ` onpointerdown="startDrag(event,${hotelId},${index})"` : '';
   const delClick = isAdmin ? ` onclick="confirmDeleteRoom(${hotelId},${index})"` : '';
+  const urlBtn   = isAdmin
+    ? `<button class="btn btn-url${rt.video_url ? ' has-url' : ''}" onclick="editRoomVideoUrl(${hotelId},${index})" title="${rt.video_url ? 'تعديل رابط الفيديو' : 'إضافة رابط فيديو'}">🎥</button>`
+    : (rt.video_url ? '<span class="room-has-video" title="يوجد رابط فيديو">🎥</span>' : '');
   return `
     <div class="room-item" id="room-row-${hotelId}-${index}">
       <span class="room-ar-name" onclick="editRoomRow(${hotelId},${index},'ar')">${esc(rt.ar || '—')}</span>
       <span class="room-en-name"${enClick}>${esc(rt.en || '—')}</span>
       <div class="room-item-actions">
+        ${urlBtn}
         <span class="drag-handle"${dragDown} title="اسحب لإعادة الترتيب">⠿</span>
         <button class="btn btn-delete"${delClick} title="حذف">🗑️</button>
       </div>
@@ -254,7 +272,7 @@ async function commitEdit(hotelId, index) {
     return;
   }
 
-  rooms[index] = { en: newEn, ar: newAr };
+  rooms[index] = { ...old, en: newEn, ar: newAr };
 
   // Optimistic update
   hotel.room_types = rooms;
@@ -475,6 +493,55 @@ async function _onDragEnd() {
     .eq('id', hotelId);
 
   showToast(error ? 'خطأ في حفظ الترتيب' : 'تم حفظ الترتيب ✓');
+}
+
+// ─── Video URL per room type (admin only) ─────────────────────────────────────
+async function editRoomVideoUrl(hotelId, index) {
+  const hotel = hotels.find(h => h.id === hotelId);
+  if (!hotel) return;
+  const rt = (hotel.room_types || [])[index];
+  if (!rt) return;
+
+  const currentUrl = rt.video_url || '';
+  const newUrl = prompt(
+    'رابط فيديو الغرفة: "' + (rt.ar || rt.en) + '"\nاتركه فارغاً لإزالة الرابط:',
+    currentUrl
+  );
+  if (newUrl === null) return;
+
+  const trimmed = newUrl.trim();
+  if (trimmed === currentUrl) return;
+
+  const rooms = [...(hotel.room_types || [])];
+  rooms[index] = { ...rooms[index], video_url: trimmed };
+
+  const { error } = await db.from(TABLE).update({ room_types: rooms }).eq('id', hotelId);
+  if (error) { showToast('خطأ في حفظ الرابط'); return; }
+
+  hotel.room_types = rooms;
+  const row = document.getElementById('room-row-' + hotelId + '-' + index);
+  if (row) row.outerHTML = roomViewRow(hotelId, index, rooms[index]);
+  showToast(trimmed ? 'تم حفظ رابط الفيديو ✓' : 'تم حذف الرابط ✓');
+}
+
+// ─── Booking URL per hotel (admin only) ───────────────────────────────────────
+async function saveHotelBookingUrl(hotelId, url) {
+  const hotel = hotels.find(h => h.id === hotelId);
+  if (!hotel) return;
+
+  const trimmed = (url || '').trim();
+  if (trimmed === (hotel.booking_url || '')) return;
+
+  const { error } = await db.from(TABLE).update({ booking_url: trimmed }).eq('id', hotelId);
+  if (error) {
+    showToast('خطأ في حفظ رابط الحجز');
+    const input = document.getElementById('booking-url-' + hotelId);
+    if (input) input.value = hotel.booking_url || '';
+    return;
+  }
+
+  hotel.booking_url = trimmed;
+  showToast(trimmed ? 'تم حفظ رابط الحجز ✓' : 'تم حذف الرابط ✓');
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

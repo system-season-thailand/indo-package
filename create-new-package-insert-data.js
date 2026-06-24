@@ -3,6 +3,108 @@ let insertedFlightDataDivUniqueId;
 let insertedHotelDataDivUniqueId;
 let insertedClintMovementsRowDivUniqueId = 1;
 
+/* ── Hotel row URL helpers ───────────────────────────────────────────────────── */
+function _resolveHotelRowUrl(hotelName, roomTypeEn, isNewWriting) {
+    if (!_roomTypesDBCache) return '';
+    const hotel = _roomTypesDBCache.find(h => h.hotel_name === hotelName);
+    if (!hotel) return '';
+    const bookingUrl = hotel.booking_url || '';
+    if (isNewWriting || !roomTypeEn) return bookingUrl;
+    const rt = (hotel.room_types || []).find(r => r.en === roomTypeEn);
+    return (rt && rt.video_url) || bookingUrl;
+}
+
+function _buildHotelLastDivAttrs(hotelName, roomTypeEn, isNewWriting) {
+    const hn = (hotelName || '').replace(/"/g, '&quot;');
+    const rte = (roomTypeEn || '').replace(/"/g, '&quot;');
+    const url = _resolveHotelRowUrl(hotelName, roomTypeEn, isNewWriting);
+    const urlAttr = url ? ` data-url="${url.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"` : '';
+    return `class="hotel-row-url-cell" data-hotel-name="${hn}" data-room-type-en="${rte}" data-is-new-writing="${isNewWriting}"${urlAttr}`;
+}
+
+/* On localhost, replace "localhost" with the machine's LAN IP so PDF links embedded as
+   http://192.168.x.x:PORT/_r.html?to=... are reachable from phones on the same Wi-Fi.
+   On a real HTTPS deployment _pageOriginForRedirect stays as window.location.origin. */
+var _pageOriginForRedirect = window.location.origin;
+(function () {
+    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') return;
+    try {
+        var _rpc = new RTCPeerConnection({ iceServers: [] });
+        _rpc.createDataChannel('');
+        _rpc.createOffer().then(function (sdp) { _rpc.setLocalDescription(sdp); }).catch(function () { });
+        _rpc.onicecandidate = function (ev) {
+            if (!ev || !ev.candidate || !ev.candidate.candidate) return;
+            var m = ev.candidate.candidate.match(/\b((?:192\.168|10\.|172\.(?:1[6-9]|2\d|3[01]))\.\d+\.\d+)\b/);
+            if (m) {
+                _pageOriginForRedirect = window.location.protocol + '//' + m[1] +
+                    (window.location.port ? ':' + window.location.port : '');
+                try { _rpc.close(); } catch (_) { }
+            }
+        };
+        setTimeout(function () { try { _rpc.close(); } catch (_) { } }, 3000);
+    } catch (_) { }
+})();
+
+function _prepareUrlForOpen(url) {
+    if (!url) return url;
+    try {
+        const u = new URL(url);
+        if (u.hostname === 'www.booking.com' || u.hostname === 'booking.com') {
+            let finalUrl = url;
+            // Normalize locale only for /hotel/... URLs — share links pass through unchanged
+            if (/^\/hotel\//i.test(u.pathname)) {
+                const cleanPath = u.pathname.replace(/(\.[a-z]{2}(-[a-z]{2})?)?\.html$/i, '.en-gb.html');
+                finalUrl = u.origin + cleanPath + u.search + u.hash;
+            }
+            // Route through _r.html on the same origin so the initial URL seen by the OS
+            // is not booking.com — this prevents iOS Universal Links / Android App Links
+            // from auto-opening the Booking.com app. The hotel page opens in the browser.
+            // Falls back to the direct URL when running from file:// (local dev without server).
+            try {
+                const _base = _pageOriginForRedirect;
+                if (_base && _base !== 'null' && !_base.startsWith('file:') && !_base.includes('localhost') && !/\/\/127\./.test(_base)) {
+                    const _dir = window.location.pathname.replace(/[^/]*$/, '');
+                    return _base + _dir + '_r.html?to=' + encodeURIComponent(finalUrl);
+                }
+            } catch (_e) { }
+            return finalUrl;
+        }
+    } catch (e) { }
+    return url;
+}
+
+/* Click handler for hotel row URL cells (event delegation) */
+(function () {
+    document.addEventListener('click', function (e) {
+        /* DISABLED on the website: hotel row URLs must open only from the PDF (via the embedded PDF links), not on the webpage */
+        return;
+        if (e.target.closest('.hotel_row_image_controller')) return;
+        const urlCell = e.target.closest('.hotel-row-url-cell');
+        if (!urlCell || !urlCell.closest('.hotel_row_class_for_editing')) return;
+
+        let url = urlCell.dataset.url;
+        if (!url) {
+            url = _resolveHotelRowUrl(
+                urlCell.dataset.hotelName,
+                urlCell.dataset.roomTypeEn,
+                urlCell.dataset.isNewWriting === 'true'
+            );
+            if (url) urlCell.dataset.url = url;
+        }
+        if (url) {
+            const _openUrl = _prepareUrlForOpen(url);
+            const _a = document.createElement('a');
+            _a.href = _openUrl;
+            _a.target = '_blank';
+            _a.rel = 'noreferrer noopener';
+            document.body.appendChild(_a);
+            _a.click();
+            document.body.removeChild(_a);
+        }
+    });
+})();
+/* ─────────────────────────────────────────────────────────────────────────────── */
+
 
 
 
@@ -2054,7 +2156,7 @@ createHotelsDataFunction = function () {
                 <p id='hotel_total_unit_${insertedHotelDataDivUniqueId}'>${storeHotelTotalUnitNumber}</p>
                 ${hotelUnitAmountInput_2 && document.getElementById('hotel_second_room_data_input_div').style.display !== "none" ? `<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${insertedHotelDataDivUniqueId}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>` : ''}
             </div>
-            <div>
+            <div ${_buildHotelLastDivAttrs(hotelNameReadyText, hotelRoomTypeDescriptionInput, true)}>
                 <h5 id='hotel_location_${insertedHotelDataDivUniqueId}'>${hotelLocationInput}</h5>
                 ${hotelBaliAreaInput ? `<br><h6 id='hotel_area_${insertedHotelDataDivUniqueId}'>${hotelBaliAreaInput}</h6>` : ''}
                 <img src="صور-الفنادق/${starsAmount}-stars-hotel-image.jpg" id='hotel_image_${insertedHotelDataDivUniqueId}' class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">
@@ -2068,6 +2170,13 @@ createHotelsDataFunction = function () {
 
         // Insert the HTML content into the newly created div
         hotelRowTableDiv.innerHTML = hotelRowTableDivContent;
+
+        // Override data-url with manually entered Booking.com URL if provided
+        const _manualBookingUrl = document.getElementById('hotel_booking_url_input_id').value.trim();
+        if (_manualBookingUrl) {
+            const _urlCell = hotelRowTableDiv.querySelector('.hotel-row-url-cell');
+            if (_urlCell) _urlCell.dataset.url = _manualBookingUrl;
+        }
 
         // Append <span> elements for each input with text
         if (hotelBreakfastPeopleAmountInput !== '') {
@@ -2270,6 +2379,8 @@ createHotelsDataFunction = function () {
         document.getElementById('change_insert_hotel_data_system_icon').style.background = 'rgb(0, 87, 116)';
         document.getElementById('change_insert_hotel_data_system_icon').style.color = 'white';
 
+        document.getElementById('hotel_booking_url_input_id').style.display = 'none';
+        document.getElementById('hotel_booking_url_input_id').value = '';
 
 
         /* in case the insert hotel data system is picking then do the following code */
@@ -2305,7 +2416,7 @@ createHotelsDataFunction = function () {
                 <p id='hotel_total_unit_${insertedHotelDataDivUniqueId}'>${storeHotelTotalUnitNumber}</p>
                 ${hotelUnitAmountInput_2 && document.getElementById('hotel_second_room_data_input_div').style.display !== "none" ? `<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${insertedHotelDataDivUniqueId}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>` : ''}
             </div>
-            <div>
+            <div ${_buildHotelLastDivAttrs(hotelNameReadyText, hotelRoomTypeDescriptionInput, false)}>
                 <h5 id='hotel_location_${insertedHotelDataDivUniqueId}'>${hotelLocationReadyText}</h5>
                 ${hotelAreaReadyText ? `<br><h6 id='hotel_area_${insertedHotelDataDivUniqueId}'>${hotelAreaReadyText}</h6>` : ''}
                 <img src="صور-الفنادق/${hotelImgSrcReadyText}.jpg" class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">
@@ -3367,8 +3478,27 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
 
 
 
+    /* By default keep the manual Booking.com URL input hidden — it's only shown for manually-written hotels below */
+    document.getElementById('hotel_booking_url_input_id').style.display = 'none';
+    document.getElementById('hotel_booking_url_input_id').value = '';
+
+
     /* Check if the clicked hotel row has a class name of 'new_hotel_data_by_user_writing_class' or no (hotel inserted by picking or writing) */
     if (clickedHotelDataDiv.classList.contains('new_hotel_data_by_user_writing_class')) {
+
+        /* Show the Booking.com URL input and fill it with this hotel row's stored booking link,
+           so the manually-written hotel's URL can be reviewed/edited while editing the row. */
+        const _editHotelUrlCell = clickedHotelDataDiv.querySelector('.hotel-row-url-cell');
+        let _editHotelBookingUrl = _editHotelUrlCell ? (_editHotelUrlCell.dataset.url || '') : '';
+        if (!_editHotelBookingUrl && _editHotelUrlCell) {
+            _editHotelBookingUrl = _resolveHotelRowUrl(
+                _editHotelUrlCell.dataset.hotelName,
+                _editHotelUrlCell.dataset.roomTypeEn,
+                _editHotelUrlCell.dataset.isNewWriting === 'true'
+            );
+        }
+        document.getElementById('hotel_booking_url_input_id').style.display = 'block';
+        document.getElementById('hotel_booking_url_input_id').value = _editHotelBookingUrl;
         // Enter the values of the clicked hotel row div to inputs
         document.getElementById('hotel_location_input_id').value = hotelLocationText;
         document.getElementById('hotel_bali_area_input_id').value = hotelBaliAreaInput;
@@ -3535,6 +3665,11 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
         document.getElementById('cancel_new_hotel_data_row_icon').style.display = 'none';
         document.getElementById('show_or_hide_second_room_inputs_div_icon_2').style.display = 'none';
         document.getElementById('change_insert_hotel_data_system_icon_2').style.display = 'none';
+
+
+        /* Hide and clear the manual Booking.com URL input when cancelling the hotel row edit/creation */
+        document.getElementById('hotel_booking_url_input_id').style.display = 'none';
+        document.getElementById('hotel_booking_url_input_id').value = '';
 
 
 
@@ -3770,7 +3905,7 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
                     <p id='hotel_total_unit_${insertedHotelDataDivUniqueId}'>${storeHotelTotalUnitNumber}</p>
                     ${hotelUnitAmountInput_2 && document.getElementById('hotel_second_room_data_input_div').style.display !== "none" ? `<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${insertedHotelDataDivUniqueId}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>` : ''}
                 </div>
-                <div>
+                <div ${_buildHotelLastDivAttrs(hotelNameReadyText, hotelRoomTypeDescriptionInput, true)}>
                     <h5 id='hotel_location_${insertedHotelDataDivUniqueId}'>${hotelLocationInput}</h5>
                     ${hotelBaliAreaInput ? `<br><h6 id='hotel_area_${insertedHotelDataDivUniqueId}'>${hotelBaliAreaInput}</h6>` : ''}
                     <img src="صور-الفنادق/${starsAmount}-stars-hotel-image.jpg" id='hotel_image_${insertedHotelDataDivUniqueId}' class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">
@@ -3960,7 +4095,7 @@ editClickedHotelDataFunction = function (clickedHotelRowIdName) {
                     <p id='hotel_total_unit_${insertedHotelDataDivUniqueId}'>${storeHotelTotalUnitNumber}</p>
                     ${hotelUnitAmountInput_2 && document.getElementById('hotel_second_room_data_input_div').style.display !== "none" ? `<p style="width: 100%; background: rgb(5, 17, 21); color: white">+ </p><p id="hotel_total_unit_2_${insertedHotelDataDivUniqueId}" style="width: 100%; background: rgb(5, 17, 21); color: white">${storeHotelTotalUnitNumber_2}</p>` : ''}
                 </div>
-                <div>
+                <div ${_buildHotelLastDivAttrs(hotelNameReadyText, hotelRoomTypeDescriptionInput, false)}>
                     <h5 id='hotel_location_${insertedHotelDataDivUniqueId}'>${hotelLocationReadyText}</h5>
                     ${hotelAreaReadyText ? `<br><h6 id='hotel_area_${insertedHotelDataDivUniqueId}'>${hotelAreaReadyText}</h6>` : ''}
                     <img src="صور-الفنادق/${hotelImgSrcReadyText}.jpg" class="hotel_row_image_controller inserted_hotel_data_row" style="cursor: pointer">
@@ -4880,13 +5015,15 @@ function createHotelDragAndDropMood() {
             sourceRow,
             startY: event.clientY,
             ghostInitialTop: rect.top,
+            // Snapshot the hotels order at drag start so we can tell if the arrangement actually changed on drop
+            initialOrder: [...dropZone.querySelectorAll('.hotel_row_class')],
         };
     }
 
     function finishHotelRowDrag() {
         if (!_hotelDrag) return;
 
-        const { ghost, sourceRow } = _hotelDrag;
+        const { ghost, sourceRow, initialOrder } = _hotelDrag;
         _hotelDrag = null;
 
         ghost.remove();
@@ -4894,6 +5031,18 @@ function createHotelDragAndDropMood() {
         document.body.classList.remove('is-dragging');
 
         handleDrop();
+
+        // If the hotels arrangement actually changed after the drop, rebuild the transportation
+        // (clint movements) data automatically so it matches the new hotels order.
+        const finalOrder = [...dropZone.querySelectorAll('.hotel_row_class')];
+        const orderChanged =
+            finalOrder.length !== initialOrder.length ||
+            finalOrder.some((row, index) => row !== initialOrder[index]);
+
+        if (orderChanged && typeof autoCreateALlClintMovementsData === 'function') {
+            // Pass true so a drag-triggered rebuild keeps the section's current visibility (won't reveal it if it was hidden)
+            autoCreateALlClintMovementsData(true);
+        }
     }
 
     function clearPointerSessionListeners() {
@@ -5013,7 +5162,11 @@ function createHotelDragAndDropMood() {
 /* Down All Functions For Clint Movements Data Down */
 
 /* Function to automaticlly create all clint movements data */
-autoCreateALlClintMovementsData = function () {
+autoCreateALlClintMovementsData = function (preservePageVisibility) {
+
+    /* Remember the clint movements section's visibility before rebuilding, so a drag-triggered
+       rebuild (preservePageVisibility = true) can restore it and avoid revealing a hidden section. */
+    const clintMovementsPageInitialDisplay = document.getElementById('downloaded_pdf_clint_movements_data_page').style.display;
     /* if one of the clint data or hotel data sections is hidden then stop the process */
     if (document.getElementById('downloaded_pdf_clint_data_page').style.display === 'none' || document.getElementById('downloaded_pdf_hotel_data_page').style.display === 'none') {
 
@@ -5352,6 +5505,19 @@ autoCreateALlClintMovementsData = function () {
 
         /* Call a function to highlight the Saturday and Sanday days */
         highlightWeekendClintMovements();
+
+
+        /* Make sure the rebuilt transportation rows are visible:
+           - Normal icon click (preservePageVisibility is falsy): reveal the section AND its inner rows
+             container (the inner container can stay hidden even when the section itself is shown).
+           - Triggered by a hotel-rows drag (preservePageVisibility = true): keep the section's original
+             visibility, so a hidden section stays hidden and only its data gets refreshed. */
+        if (preservePageVisibility) {
+            document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = clintMovementsPageInitialDisplay;
+        } else {
+            document.getElementById('downloaded_pdf_clint_movements_data_page').style.display = 'block';
+            document.getElementById('inserted_clint_movements_data_position_div').style.display = 'block';
+        }
     }
 }
 
@@ -6511,9 +6677,10 @@ downloadPdfWithCurrentUserCodeName = function () {
 
         let formPromise = Promise.resolve(); // Default to a resolved promise
 
-        // Only call submitForm if 'existingDataStatus' is equal to "newData"
+        // For a new package: increment & store the unique number in Supabase FIRST.
+        // Capture the promise so the steps below only run once the DB write is confirmed.
         if (websiteUserUniqueNumber === "newUniqueNumber") {
-            handleUserPackageUniqueNumber(document.getElementById('website_users_name_input_id').value, 'insert');
+            formPromise = handleUserPackageUniqueNumber(document.getElementById('website_users_name_input_id').value, 'insert');
         }
 
 
@@ -6537,14 +6704,24 @@ downloadPdfWithCurrentUserCodeName = function () {
         });
 
 
-        // Ensure 'handleUserPackageUniqueNumber' function that is called above to completes first, then call the sendDataToSupabase
+        // Save everything BEFORE downloading: (1) the unique number, then (2) the package details.
+        // The download only runs once BOTH are confirmed stored; if either fails, abort so staff can retry.
         formPromise
             .then(() => {
-                sendDataToSupabase();
+                // Store the package details and WAIT for the DB write to finish (return the promise).
+                return sendDataToSupabase();
             })
             .then(() => {
                 const userCodeNameAsPdfDownloadedFIleName = document.getElementById('package_user_code_name_for_later_import_reference_p_id').innerText;
                 downloadPdfWithCustomName(userCodeNameAsPdfDownloadedFIleName);
+            })
+            .catch((error) => {
+                console.error('Package data was not stored — PDF download aborted:', error);
+                playSoundEffect('error');
+                let downloadBtn = document.getElementById('use_website_user_code_name_as_downloaded_pdf_file_name_p_id');
+                downloadBtn.innerText = 'لم يتم حفظ البيانات، حاول مجددا';
+                downloadBtn.style.pointerEvents = 'auto';
+                alert('تعذّر حفظ بيانات الباقة في قاعدة البيانات، لذلك لم يتم تحميل ملف الـ PDF. يرجى المحاولة مرة أخرى.');
             });
     }
 };
@@ -7147,6 +7324,9 @@ downloadPdfWithCustomName = async function (pdfName) {
 
 
 
+    // Show hotel links guide note only during PDF capture
+    document.getElementById('hotel_links_guide_note_p_id')?.style.setProperty('display', 'block'); // optional: old packages may not contain this note element
+
     // Check which sections are visible
     let visibleSections = [];
 
@@ -7193,6 +7373,28 @@ downloadPdfWithCustomName = async function (pdfName) {
         return merged;
     };
 
+    // Collect hotel row link annotations before html2canvas captures the section
+    const _hotelSection = document.getElementById('downloaded_pdf_hotel_data_page');
+    const _hotelLinkAnnotations = [];
+    if (_hotelSection && isVisible(_hotelSection)) {
+        const _sRect = _hotelSection.getBoundingClientRect();
+        _hotelSection.querySelectorAll('.hotel_row_class_for_editing .hotel-row-url-cell').forEach(function (cell) {
+            let url = cell.dataset.url;
+            if (!url) url = _resolveHotelRowUrl(cell.dataset.hotelName, cell.dataset.roomTypeEn, cell.dataset.isNewWriting === 'true');
+            if (!url) return;
+            const _cRect = cell.getBoundingClientRect();
+            _hotelLinkAnnotations.push({
+                url: url,
+                relX: _cRect.left - _sRect.left,
+                relY: _cRect.top - _sRect.top,
+                relW: _cRect.width,
+                relH: _cRect.height,
+                sW: _sRect.width
+            });
+        });
+    }
+    const _hotelSectionIdxInRegular = regularSections.findIndex(function (s) { return s.id === 'downloaded_pdf_hotel_data_page'; });
+
     // Process regular sections in pairs (2 per PDF page)
     for (let i = 0; i < regularSections.length; i += 2) {
         let firstSection = regularSections[i];
@@ -7215,6 +7417,20 @@ downloadPdfWithCustomName = async function (pdfName) {
         }
         let imgData = combinedCanvas.toDataURL('image/jpeg', 0.9);
         pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
+
+        // Add clickable link annotations for hotel row URL cells
+        if (_hotelLinkAnnotations.length > 0 && _hotelSectionIdxInRegular >= i && _hotelSectionIdxInRegular <= i + 1) {
+            const _isFirst = _hotelSectionIdxInRegular === i;
+            const _yOffMM = _isFirst ? 0 : (firstCanvas.height * pdfWidth / combinedCanvas.width);
+            _hotelLinkAnnotations.forEach(function (ann) {
+                const x = ann.relX * pdfWidth / ann.sW;
+                const y = _yOffMM + ann.relY * pdfWidth / ann.sW;
+                const w = ann.relW * pdfWidth / ann.sW;
+                const h = ann.relH * pdfWidth / ann.sW;
+                const _pdfUrl = _prepareUrlForOpen(ann.url.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
+                pdf.link(x, y, w, h, { url: _pdfUrl });
+            });
+        }
     }
 
     // Add Clint Movements as a separate page (if visible)
@@ -7264,6 +7480,9 @@ downloadPdfWithCustomName = async function (pdfName) {
         div.style.display = 'none';
     });
 
+    // Hide hotel links guide note after PDF capture
+    document.getElementById('hotel_links_guide_note_p_id')?.style.setProperty('display', 'none'); // optional: old packages may not contain this note element
+
 
     // Hide the the last pdf page (thank you page)
     document.getElementById('downloaded_pdf_important_notes_data_page').style.display = 'none';
@@ -7302,9 +7521,10 @@ downloadOnlyClintMovementsDataFunction = function () {
 
         let formPromise = Promise.resolve(); // Default to a resolved promise
 
-        // Only call submitForm if 'existingDataStatus' is equal to "newData"
+        // For a new package: increment & store the unique number in Supabase FIRST.
+        // Capture the promise so the steps below only run once the DB write is confirmed.
         if (websiteUserUniqueNumber === "newUniqueNumber") {
-            handleUserPackageUniqueNumber(document.getElementById('website_users_name_input_id').value, 'insert');
+            formPromise = handleUserPackageUniqueNumber(document.getElementById('website_users_name_input_id').value, 'insert');
         }
 
 
@@ -7317,14 +7537,24 @@ downloadOnlyClintMovementsDataFunction = function () {
         document.getElementById('download_clint_movements_data_p_id').innerText = 'جاري التحميل..';
 
 
-        // Ensure 'handleUserPackageUniqueNumber' function that is called above to completes first, then call the sendDataToSupabase
+        // Save everything BEFORE downloading: (1) the unique number, then (2) the package details.
+        // The download only runs once BOTH are confirmed stored; if either fails, abort so staff can retry.
         formPromise
             .then(() => {
-                sendDataToSupabase();
+                // Store the package details and WAIT for the DB write to finish (return the promise).
+                return sendDataToSupabase();
             })
             .then(() => {
                 /* Call a function to dowwnload the clint movements data */
                 runDownloadOnlyClintMovementsDataFunction();
+            })
+            .catch((error) => {
+                console.error('Package data was not stored — PDF download aborted:', error);
+                playSoundEffect('error');
+                let movementsBtn = document.getElementById('download_clint_movements_data_p_id');
+                movementsBtn.innerText = 'لم يتم حفظ البيانات، حاول مجددا';
+                movementsBtn.style.backgroundColor = 'red';
+                alert('تعذّر حفظ بيانات الباقة في قاعدة البيانات، لذلك لم يتم تحميل ملف الـ PDF. يرجى المحاولة مرة أخرى.');
             });
 
 

@@ -1091,14 +1091,19 @@ async function handleUserPackageUniqueNumber(userType, action) {
             // Calculate new value
             const newValue = data[userType] + 1;
 
-            // Update only the specific column
-            // Use the first valid column name in your filter instead of 'baby'
-            const { error: updateError } = await supabase
+            // Update the specific column, then read the row back to CONFIRM the new number was actually stored
+            const { data: updatedRows, error: updateError } = await supabase
                 .from('indo_package_unique_number')
                 .update({ [userType]: newValue })
-                .not(userType, 'is', null); // Use the same userType as filter
+                .not(userType, 'is', null) // Use the same userType as filter
+                .select();
 
             if (updateError) throw updateError;
+
+            // Make sure the new value was really persisted before returning; otherwise the caller must not download
+            if (!updatedRows || updatedRows.length === 0 || updatedRows[0][userType] !== newValue) {
+                throw new Error('Package unique number update could not be confirmed for: ' + userType);
+            }
 
             return newValue;
         }

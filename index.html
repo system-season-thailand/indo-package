@@ -603,6 +603,8 @@
                             placeholder="معلومات اكثر؟" autocomplete="off"></textarea>
                         <ion-icon name="scan" class="textarea_open_fullscreen_icon_class"
                             onclick="playSoundEffect('click'); toggleFullscreen('hotel_room_extra_info_textarea_id')"></ion-icon>
+                        <input type="text" id="hotel_booking_url_input_id" placeholder="رابط بوكينج" autocomplete="off"
+                            style="display: none;">
                     </div>
 
                     <!-- Second hotel room data inputs div -->
@@ -2093,14 +2095,13 @@
 
         <p id="vid_clint_deposit_note_p_id" style="display: none;">يتم التأكد من التوافر بعد دفع العربون، وفي حال عدم
             التوافر نعرض البدائل المناسبة، وإذا لم يتم القبول يُعاد العربون للعميل.</p>
-
-
-
-
         <div class="pdf_section_title_div_class">
             <h6>الفنادق / الفلل</h6>
             <p style="display: inline-block; transform: scaleX(-1);">🛏️</p>
         </div>
+
+        <p id="hotel_links_guide_note_p_id" style="display: none;">اضغط على صورة الفندق / الفيلا لمعلومات اكثر حول السكن 👇
+        </p>
 
 
         <div class="hotel_row_class inserted_main_row_color_class smaller_main_hotel_row_text_size_class">
