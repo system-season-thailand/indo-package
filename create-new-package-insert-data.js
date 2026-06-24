@@ -22,28 +22,6 @@ function _buildHotelLastDivAttrs(hotelName, roomTypeEn, isNewWriting) {
     return `class="hotel-row-url-cell" data-hotel-name="${hn}" data-room-type-en="${rte}" data-is-new-writing="${isNewWriting}"${urlAttr}`;
 }
 
-/* On localhost, replace "localhost" with the machine's LAN IP so PDF links embedded as
-   http://192.168.x.x:PORT/_r.html?to=... are reachable from phones on the same Wi-Fi.
-   On a real HTTPS deployment _pageOriginForRedirect stays as window.location.origin. */
-var _pageOriginForRedirect = window.location.origin;
-(function () {
-    if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') return;
-    try {
-        var _rpc = new RTCPeerConnection({ iceServers: [] });
-        _rpc.createDataChannel('');
-        _rpc.createOffer().then(function (sdp) { _rpc.setLocalDescription(sdp); }).catch(function () { });
-        _rpc.onicecandidate = function (ev) {
-            if (!ev || !ev.candidate || !ev.candidate.candidate) return;
-            var m = ev.candidate.candidate.match(/\b((?:192\.168|10\.|172\.(?:1[6-9]|2\d|3[01]))\.\d+\.\d+)\b/);
-            if (m) {
-                _pageOriginForRedirect = window.location.protocol + '//' + m[1] +
-                    (window.location.port ? ':' + window.location.port : '');
-                try { _rpc.close(); } catch (_) { }
-            }
-        };
-        setTimeout(function () { try { _rpc.close(); } catch (_) { } }, 3000);
-    } catch (_) { }
-})();
 
 function _prepareUrlForOpen(url) {
     if (!url) return url;
