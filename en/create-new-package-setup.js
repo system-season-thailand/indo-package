@@ -1,8 +1,8 @@
 /* Function to prevent the page refresh by mistake */
-window.addEventListener('beforeunload', function (event) {
+/* window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-});
+}); */
 
 
 
@@ -1221,6 +1221,9 @@ changeInsertHotelDataSystem = function () {
         document.getElementById('change_insert_hotel_data_system_icon_2').style.background = 'rgb(0, 255, 0)';
         document.getElementById('change_insert_hotel_data_system_icon_2').style.color = 'black';
 
+        document.getElementById('hotel_booking_url_input_id').style.display = 'block';
+        document.getElementById('hotel_booking_url_input_id').value = '';
+
 
     } else {
         // Hide the hotel location input
@@ -1285,6 +1288,9 @@ changeInsertHotelDataSystem = function () {
 
         document.getElementById('change_insert_hotel_data_system_icon_2').style.background = 'rgb(0, 87, 116)';
         document.getElementById('change_insert_hotel_data_system_icon_2').style.color = 'white';
+
+        document.getElementById('hotel_booking_url_input_id').style.display = 'none';
+        document.getElementById('hotel_booking_url_input_id').value = '';
     }
 }
 

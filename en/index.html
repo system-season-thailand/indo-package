@@ -596,6 +596,8 @@
                             placeholder="معلومات اكثر؟" autocomplete="off"></textarea>
                         <ion-icon name="scan" class="textarea_open_fullscreen_icon_class"
                             onclick="playSoundEffect('click'); toggleFullscreen('hotel_room_extra_info_textarea_id')"></ion-icon>
+                        <input type="text" id="hotel_booking_url_input_id" placeholder="Booking Link" autocomplete="off"
+                            style="display: none;">
                     </div>
 
                     <!-- Second hotel room data inputs div -->
@@ -2020,14 +2022,14 @@
 
         <p id="vid_clint_deposit_note_p_id" style="display: none;">If your chosen option isn’t available after deposit,
             we’ll be happy to offer suitable alternatives, or provide you with a full refund.</p>
-
-
-
-
         <div class="pdf_section_title_div_class pdf_english_section">
             <h6>Hotels / Villas</h6>
             <p style="display: inline-block;">🛏️</p>
         </div>
+
+        <p id="hotel_links_guide_note_p_id" style="display: none;">Click on the hotel / villa image for more information
+            about the accommodation 👇
+        </p>
 
 
         <div

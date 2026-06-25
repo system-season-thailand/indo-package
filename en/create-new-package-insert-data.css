@@ -784,6 +784,18 @@
     color: white;
 }
 
+#hotel_links_guide_note_p_id {
+    font-size: 1.6vw;
+    width: fit-content;
+    text-align: start;
+    margin: 5px 0 8px;
+    padding: 5px 12px;
+    background: rgb(85, 127, 137);
+    color: white;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
 
 
 
@@ -1096,6 +1108,10 @@
         font-size: 2.1vw;
     }
 
+    #hotel_links_guide_note_p_id {
+        font-size: 2.3vw;
+    }
+
 
 
 
@@ -1253,5 +1269,9 @@
 
     #vid_clint_deposit_note_p_id {
         font-size: 2.2vw;
+    }
+
+    #hotel_links_guide_note_p_id {
+        font-size: 2.4vw;
     }
 }

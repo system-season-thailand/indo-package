@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Opening hotel…</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+      background:#f5f7fa;font-family:system-ui,-apple-system,sans-serif;padding:24px}
+    .card{text-align:center;max-width:320px}
+    .btn{display:inline-block;padding:15px 44px;background:#003580;color:#fff;
+      border-radius:10px;font-size:17px;font-weight:600;text-decoration:none;
+      -webkit-tap-highlight-color:transparent}
+    .btn:active{background:#00266a}
+    .sub{margin-top:14px;font-size:13px;color:#888;line-height:1.6}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a id="lnk" href="#" class="btn" target="_blank" rel="noreferrer noopener">
+      Open Hotel Page
+    </a>
+    <p class="sub">Tap to open the hotel page in your browser.</p>
+  </div>
+  <script>
+    (function () {
+      var to = new URLSearchParams(location.search).get('to');
+      if (to) document.getElementById('lnk').href = decodeURIComponent(to);
+    }());
+  </script>
+</body>
+</html>
