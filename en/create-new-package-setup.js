@@ -1,8 +1,8 @@
 /* Function to prevent the page refresh by mistake */
-/* window.addEventListener('beforeunload', function (event) {
+window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
-}); */
+});
 
 
 
@@ -2391,26 +2391,26 @@ specificCarTypeInputOptions.forEach(option => {
 
         } else if (option.textContent === 'افانزا') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'Private Avanza car with a private driver for the entire duration of the trip, and there are no free days in the packages';
+            specificCarTypeInput.value = 'Private Avanza car with a private driver and well organized daily tourism';
 
 
         } else if (option.textContent === 'اينوفا') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'Private Innova car with a private driver for the entire duration of the trip, and there are no free days in the packages';
+            specificCarTypeInput.value = 'Private Innova car with a private driver and well organized daily tourism';
 
 
         } else if (option.textContent === 'اينوفا ريبون') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'Private Innova Reborn car with a private driver for the entire duration of the trip, and there are no free days in the packages';
+            specificCarTypeInput.value = 'Private Innova Reborn car with a private driver and well organized daily tourism';
 
 
         } else if (option.textContent === 'باص هايس') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'Private Hiace Bus with a private driver for the entire duration of the trip, and there are no free days in the packages';
+            specificCarTypeInput.value = 'Private Hiace Bus with a private driver and well organized daily tourism';
 
         } else if (option.textContent === 'باص الفارد') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'Private Alphard Bus with a private driver for the entire duration of the trip, and there are no free days in the packages';
+            specificCarTypeInput.value = 'Private Alphard Bus with a private driver and well organized daily tourism';
 
         }
 
