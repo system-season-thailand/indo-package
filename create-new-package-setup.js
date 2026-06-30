@@ -1,4 +1,4 @@
-﻿/* Function to prevent the page refresh by mistake */
+/* Function to prevent the page refresh by mistake */
 window.addEventListener('beforeunload', function (event) {
     event.preventDefault(); // Prevent the default action
     event.returnValue = ''; // Set the return value to trigger the default browser confirmation dialog
@@ -2608,26 +2608,26 @@ specificCarTypeInputOptions.forEach(option => {
 
         } else if (option.textContent === 'افانزا') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'سيارة افانزا خاصة مع سائق خاص طوال مدة الرحلة ولاتوجد أيام حرة في البرنامج';
+            specificCarTypeInput.value = 'سيارة افانزا خاصة مناسبة لكم مع سائق خاص لضمان راحتكم';
 
 
         } else if (option.textContent === 'اينوفا') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'سيارة اينوفا خاصة مع سائق خاص طوال مدة الرحلة ولاتوجد أيام حرة في البرنامج';
+            specificCarTypeInput.value = 'سيارة اينوفا خاصة مناسبة لكم مع سائق خاص لضمان راحتكم';
 
 
         } else if (option.textContent === 'اينوفا ريبون') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'سيارة اينوفا ريبون خاصة مع سائق خاص طوال مدة الرحلة ولاتوجد أيام حرة في البرنامج';
+            specificCarTypeInput.value = 'سيارة اينوفا ريبون خاصة مناسبة لكم مع سائق خاص لضمان راحتكم';
 
 
         } else if (option.textContent === 'باص هايس') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'باص هايس خاص مع سائق خاص طوال مدة الرحلة ولاتوجد أيام حرة في البرنامج';
+            specificCarTypeInput.value = 'باص هايس خاص مناسب لكم مع سائق خاص لضمان راحتكم';
 
         } else if (option.textContent === 'باص الفارد') {
             /* Set the input value with the clicked rooms number h3 innerText */
-            specificCarTypeInput.value = 'باص الفارد خاص مع سائق خاص طوال مدة الرحلة ولاتوجد أيام حرة في البرنامج';
+            specificCarTypeInput.value = 'باص الفارد خاص مناسب لكم مع سائق خاص لضمان راحتكم';
 
         }
 
