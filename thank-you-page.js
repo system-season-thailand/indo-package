@@ -51,6 +51,10 @@
                 // Light blue family
                 bg = 'linear-gradient(to bottom, rgba(58, 165, 217, 0.9) 0%, rgba(124, 198, 242, 0.55) 40%, rgba(255, 255, 255, 0) 100%)';
                 break;
+            case 'اجواء السماء':
+                // Deep emerald green family
+                bg = 'linear-gradient(to bottom, rgba(13, 63, 46, 0.9) 0%, rgba(35, 110, 83, 0.55) 40%, rgba(255, 255, 255, 0) 100%)';
+                break;
             default:
                 // Default matches current CSS palette
                 bg = 'linear-gradient(to bottom, rgba(164, 177, 151, 0.8) 0%, rgba(164, 177, 151, 0.4) 40%, rgba(255, 255, 255, 0) 100%)';
@@ -131,6 +135,8 @@
                 return '✨️ شكر وتقدير من سكاي جلوبال';
             case 'ترافل جت':
                 return 'ترافل جت سعيدة لخدمتكم';
+            case 'اجواء السماء':
+                return '🧡 أجواء السماء تعتز بثقتكم';
             default:
                 return '💌 شكراً من القلب';
         }
