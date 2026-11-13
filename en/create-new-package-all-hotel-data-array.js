@@ -32,7 +32,7 @@
    
        const { data, error } = await window.supabase
            .from('indo_hotel_room_types')
-           .select('hotel_name, hotel_location, hotel_area, room_types')
+           .select('hotel_name, hotel_location, hotel_area, room_types, booking_url')
            .order('id', { ascending: true });
    
        if (error) {
@@ -46,7 +46,10 @@
            ...(row.hotel_area ? { hotelArea: indoAreaArabicToEnglish[row.hotel_area] || row.hotel_area } : {}),
            hotelRoomTypes: Array.isArray(row.room_types)
                ? row.room_types.map(rt => (rt && typeof rt === 'object' ? rt.en : rt) || '')
-               : []
+               : [],
+           // Read by _resolveHotelRowUrl for the hotel row's PDF link
+           roomTypes: Array.isArray(row.room_types) ? row.room_types : [],
+           bookingUrl: row.booking_url || ''
        }));
    }
    
